@@ -27,7 +27,7 @@ const cls = BEMHelper('utregning');
 const Utregning: FunctionComponent<Props> = (props) => {
     const bruttoLønnLabel = (
         <>
-            Brutto lønn i perioden (hentet fra a-meldingen)
+            <Normaltekst>Brutto lønn i perioden (hentet fra a-meldingen)</Normaltekst>
             {props.refusjon.inntektsgrunnlag && (
                 <Element>
                     Sist hentet:{' '}
@@ -53,6 +53,16 @@ const Utregning: FunctionComponent<Props> = (props) => {
         props.refusjon.inntektsgrunnlag &&
         props.refusjon.inntektsgrunnlag.inntekter.length > 0;
 
+    const inntektBeskrivelse = (beskrivelse: string | undefined) => {
+        if (beskrivelse === undefined) {
+            return '';
+        } else if (beskrivelse === '') {
+            return 'inntekt: ikke funnet';
+        } else {
+            return lønnsbeskrivelseTekst[beskrivelse] ?? 'Inntekt: ' + beskrivelse;
+        }
+    };
+
     return (
         <div className={cls.className}>
             <VerticalSpacer rem={1} />
@@ -73,23 +83,20 @@ const Utregning: FunctionComponent<Props> = (props) => {
                         <Element>Refunderes</Element>
                         {props.refusjon.inntektsgrunnlag.inntekter.map((inntekt) => (
                             <Fragment key={inntekt.id}>
-                                <Normaltekst>
-                                    {inntekt.beskrivelse === undefined
-                                        ? ''
-                                        : lønnsbeskrivelseTekst[inntekt.beskrivelse] ??
-                                          'Inntekt: ' + inntekt.beskrivelse}
-                                </Normaltekst>
+                                <Normaltekst>{inntektBeskrivelse(inntekt.beskrivelse)}</Normaltekst>
 
-                                <Normaltekst>
+                                <div>
                                     {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
                                         formatterPeriode(inntekt.opptjeningsperiodeFom, inntekt.opptjeningsperiodeTom)
                                     ) : (
-                                        <div>
-                                            <Warning style={{ marginRight: '0.25rem', marginBottom: '-0.1rem' }} />
-                                            <em>Ikke rapportert opptjeningsperiode</em>
+                                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                                            <Warning
+                                                style={{ marginRight: '0.25rem', width: '24px', height: '24px' }}
+                                            />
+                                            <Normaltekst>Ikke rapportert opptjeningsperiode</Normaltekst>
                                         </div>
                                     )}
-                                </Normaltekst>
+                                </div>
 
                                 <Normaltekst>{formatterPenger(inntekt.beløp)}</Normaltekst>
 
@@ -127,17 +134,15 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     <AlertStripeAdvarsel>
                         Vi kan ikke finne inntekter for hele perioden som er avtalt. Dette kan skyldes at det ikke er
                         rapportert inn inntekter for alle månedene i den avtalte perioden enda.
-                        <p>
-                            <Element>
-                                Du kan kun søke om refusjon for den avtalte perioden{' '}
-                                {formatterPeriode(
-                                    props.refusjon.tilskuddsgrunnlag.tilskuddFom,
-                                    props.refusjon.tilskuddsgrunnlag.tilskuddTom
-                                )}{' '}
-                                én gang. Sikre deg derfor at alle inntekter innenfor perioden er rapportert før du
-                                klikker fullfør.
-                            </Element>
-                        </p>
+                        <Element>
+                            Du kan kun søke om refusjon for den avtalte perioden{' '}
+                            {formatterPeriode(
+                                props.refusjon.tilskuddsgrunnlag.tilskuddFom,
+                                props.refusjon.tilskuddsgrunnlag.tilskuddTom
+                            )}{' '}
+                            én gang. Sikre deg derfor at alle inntekter innenfor perioden er rapportert før du klikker
+                            fullfør.
+                        </Element>
                     </AlertStripeAdvarsel>
                     <VerticalSpacer rem={2} />
                 </>
