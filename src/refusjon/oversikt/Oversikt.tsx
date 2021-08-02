@@ -10,6 +10,7 @@ import './oversikt.less';
 import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import StatusTekst from '../../komponenter/StatusTekst/StatusTekst';
+import { antallRefusjoner } from '../../utils/amplitude-utils';
 
 const cls = BEMHelper('oversikt');
 
@@ -20,6 +21,7 @@ const Oversikt: FunctionComponent = () => {
     const { filter } = useFilter();
     const refusjoner = useHentRefusjoner(brukerContext.valgtBedrift, filter.status, filter.tiltakstype);
     const history = useHistory();
+    antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);
 
     return (
         <nav className={cls.className} aria-label="Main">

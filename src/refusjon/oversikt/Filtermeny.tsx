@@ -7,12 +7,14 @@ import { storForbokstav } from '../../utils/stringUtils';
 import { Status } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
+import { brukerflate, skjermstorrelse } from '../../utils/amplitude-utils';
 
 const Filtermeny: FunctionComponent = () => {
     const { filter, oppdaterFilter } = useFilter();
     const erDesktopStorrelse = useMediaQuery({ minWidth: 768 });
     const [statusPanelOpen, setStatusPanelOpen] = useState(erDesktopStorrelse);
     const [tiltaksPanelOpen, setTiltaksPanelOpen] = useState(erDesktopStorrelse);
+    brukerflate(erDesktopStorrelse);
 
     useEffect(() => {
         setStatusPanelOpen(erDesktopStorrelse);
