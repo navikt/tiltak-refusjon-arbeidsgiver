@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
 import { Status } from '../status';
 import { Tiltak } from '../tiltak';
+import { registrerMenyValg } from '../../utils/amplitude-utils';
 
 export interface Filter {
     status: Status | undefined;
@@ -28,6 +29,9 @@ export const FilterProvider: FunctionComponent = (props) => {
 
     const oppdaterFilter = (nyttFilter: Partial<Filter>) => {
         setFilter({ ...filter, ...nyttFilter });
+        if (nyttFilter.status) {
+            registrerMenyValg(nyttFilter.status);
+        } else registrerMenyValg('undefined');
     };
 
     return (
