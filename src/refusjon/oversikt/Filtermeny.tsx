@@ -7,7 +7,7 @@ import { storForbokstav } from '../../utils/stringUtils';
 import { Status } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
-import { brukerflate, skjermstorrelse } from '../../utils/amplitude-utils';
+import { brukerflate } from '../../utils/amplitude-utils';
 
 const Filtermeny: FunctionComponent = () => {
     const { filter, oppdaterFilter } = useFilter();
