@@ -17,6 +17,7 @@ import { formatterPenger } from '../utils/PengeUtils';
 import './Utregning.less';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
+// import { refusjonApnet } from '../utils/amplitude-utils';
 
 interface Props {
     refusjon: Refusjon;
@@ -43,14 +44,14 @@ const Utregning: FunctionComponent<Props> = (props) => {
 
     const ingenInntekter = !props.refusjon.inntektsgrunnlag || props.refusjon.inntektsgrunnlag?.inntekter.length === 0;
 
-    const ingenRefunderbareInntekter =
-        props.refusjon.inntektsgrunnlag &&
+    const ingenRefunderbareInntekter: boolean =
+        !!props.refusjon.inntektsgrunnlag &&
         props.refusjon.inntektsgrunnlag.inntekter.length > 0 &&
         antallInntekterSomErMedIGrunnlag === 0;
 
     const harInntekterMenIkkeForHeleTilskuddsperioden =
         !props.refusjon.harInntektIAlleMåneder &&
-        props.refusjon.inntektsgrunnlag &&
+        !!props.refusjon.inntektsgrunnlag &&
         props.refusjon.inntektsgrunnlag.inntekter.length > 0;
 
     const inntektBeskrivelse = (beskrivelse: string | undefined) => {

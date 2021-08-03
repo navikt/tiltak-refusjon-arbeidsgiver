@@ -15,9 +15,20 @@ interface InnSendtRefusjon {
     utbetaltStatus: UtbetaltStatus;
     error: Error | undefined;
     antallDagerTilTidsfrist: number;
-    belop: number;
+    refusjonsbelop: number;
+    beregnetbelop: number;
     tiltak: Tiltaktype;
 }
+
+/*interface ApnetRefusjon {
+    refusjonsbelop: number;
+
+    antallInntekterSomErMedIGrunnlag: number | undefined;
+    ingenInntekter: boolean;
+    ingenRefunderbareInntekter: boolean;
+    harInntekterMenIkkeForHeleTilskuddsperioden: boolean;
+
+}*/
 
 const appkey = '#tiltak-refusjon-utside-';
 
@@ -50,10 +61,17 @@ export const innSendingRefusjon = (status: UtbetaltStatus, refusjon: Refusjon, e
         utbetaltStatus: status,
         error: err,
         antallDagerTilTidsfrist: antalldagerTilfristen,
-        belop: refusjon.beregning?.refusjonsbeløp ?? 0,
+        refusjonsbelop: refusjon.beregning?.refusjonsbeløp ?? 0,
+        beregnetbelop: refusjon.beregning?.beregnetBeløp ?? 0,
         tiltak: refusjon?.tilskuddsgrunnlag?.tiltakstype ?? 'UNDEFINED',
     };
     return amplitude.logEvent(appkey.concat('innsendt-refusjon'), { ...data });
 };
+
+/*export const refusjonApnet = (refusjon: Refusjon): LogReturn => {
+
+
+    return amplitude.logEvent(appkey.concat('apnet-refusjon'), {})
+}*/
 
 export const feilVedInnSending = (err: string): LogReturn => amplitude.logEvent(appkey.concat(err));
