@@ -9,12 +9,11 @@ import ScrollToTop from './komponenter/ScrollToTop';
 import Landingsside from './Landingsside';
 import OversiktSide from './refusjon/OversiktSide/OversiktSide';
 import Refusjon from './refusjon/RefusjonSide/Refusjon';
-import { registrereBesok, skjermstorrelse } from './utils/amplitude-utils';
+import { registrereBesok } from './utils/amplitude-utils';
 
 function App() {
     useEffect(() => {
         registrereBesok();
-        skjermstorrelse(window.innerWidth);
     });
     return (
         <BrowserRouter>

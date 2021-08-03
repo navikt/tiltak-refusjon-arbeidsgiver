@@ -31,7 +31,7 @@ export const FilterProvider: FunctionComponent = (props) => {
         setFilter({ ...filter, ...nyttFilter });
         if (nyttFilter.status) {
             registrerMenyValg(nyttFilter.status);
-        } else registrerMenyValg('undefined');
+        } else registrerMenyValg('Alle');
     };
 
     return (

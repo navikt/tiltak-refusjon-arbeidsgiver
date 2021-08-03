@@ -8,12 +8,17 @@ export const registrerMenyValg = (key: string): LogReturn => amplitude.logEvent(
 export const brukerflate = (erDesktop: boolean): LogReturn =>
     amplitude.logEvent(appkey.concat(erDesktop ? 'desktop' : 'mobil'));
 
-export const registrereBesok = (): LogReturn => amplitude.logEvent(appkey.concat('besok'));
-
-export const skjermstorrelse = (size: number): LogReturn =>
-    amplitude.logEvent(appkey.concat('skjermStorrelse-'.concat(size.toString(10))));
+export const registrereBesok = (): LogReturn =>
+    amplitude.logEvent(appkey.concat('besok'), {
+        date: new Date().toISOString().split('T')[0],
+        size: window.innerWidth,
+        platform: window.innerWidth < 768 ? 'Desktop' : 'mobil',
+    });
 
 export const antallRefusjoner = (size: number): LogReturn =>
-    amplitude.logEvent(appkey.concat('antall-refusjoner-'.concat(size.toString(10))), { dato: new Date() });
+    amplitude.logEvent(appkey.concat('antall-refusjoner'), {
+        antallRefusjoner: size,
+        dato: new Date().toISOString().split('T')[0],
+    });
 
 export const feilVedInnSending = (err: string): LogReturn => amplitude.logEvent(appkey.concat(err));
