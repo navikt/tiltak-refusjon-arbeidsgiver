@@ -12,7 +12,7 @@ import BEMHelper from '../../utils/bem';
 import NokkelInfo from './NokkelInfo';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
-import { feilVedInnSending } from '../../utils/amplitude-utils';
+import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 
 const cls = BEMHelper('refusjonside');
 
@@ -32,9 +32,10 @@ const RefusjonSide: FunctionComponent = () => {
             try {
                 await godkjennRefusjon(refusjonId);
                 history.push({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
+                innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
             } catch (error) {
                 console.log('feil ved innsending:', error);
-                feilVedInnSending(error);
+                innSendingRefusjon(UtbetaltStatus.FEILET, refusjon, error);
                 throw error;
             }
         } else {
