@@ -20,17 +20,25 @@ interface InnSendtRefusjon {
     tiltak: Tiltaktype;
 }
 
-/*interface ApnetRefusjon {
+interface ApnetRefusjon {
+    id: string;
     refusjonsbelop: number;
-
-    antallInntekterSomErMedIGrunnlag: number | undefined;
+    beregnetbelop: number;
+    antallDagerTilTidsfrist: number;
+    antallInntekterSomErMedIGrunnlag: number;
     ingenInntekter: boolean;
     ingenRefunderbareInntekter: boolean;
     harInntekterMenIkkeForHeleTilskuddsperioden: boolean;
-
-}*/
+}
 
 const appkey = '#tiltak-refusjon-utside-';
+
+export const regnUtDifferanseMellomDato = (fristForGodkjenning: string) => {
+    const dagensdato = new Date().valueOf();
+    const sluttdato = new Date(fristForGodkjenning).valueOf();
+    const differanseTid = Math.abs(sluttdato - dagensdato);
+    return Math.ceil(differanseTid / (1000 * 60 * 60 * 24));
+};
 
 export const registrerMenyValg = (key: string): LogReturn => amplitude.logEvent(appkey.concat(key));
 
@@ -51,16 +59,11 @@ export const antallRefusjoner = (size: number): LogReturn =>
     });
 
 export const innSendingRefusjon = (status: UtbetaltStatus, refusjon: Refusjon, err: Error | undefined): LogReturn => {
-    const dagensdato = new Date().valueOf();
-    const sluttdato = new Date(refusjon.fristForGodkjenning).valueOf();
-    const differanseTid = Math.abs(sluttdato - dagensdato);
-    const antalldagerTilfristen = Math.ceil(differanseTid / (1000 * 60 * 60 * 24));
-
     const data: InnSendtRefusjon = {
         id: refusjon.id,
         utbetaltStatus: status,
         error: err,
-        antallDagerTilTidsfrist: antalldagerTilfristen,
+        antallDagerTilTidsfrist: regnUtDifferanseMellomDato(refusjon.fristForGodkjenning),
         refusjonsbelop: refusjon.beregning?.refusjonsbeløp ?? 0,
         beregnetbelop: refusjon.beregning?.beregnetBeløp ?? 0,
         tiltak: refusjon?.tilskuddsgrunnlag?.tiltakstype ?? 'UNDEFINED',
@@ -68,10 +71,24 @@ export const innSendingRefusjon = (status: UtbetaltStatus, refusjon: Refusjon, e
     return amplitude.logEvent(appkey.concat('innsendt-refusjon'), { ...data });
 };
 
-/*export const refusjonApnet = (refusjon: Refusjon): LogReturn => {
-
-
-    return amplitude.logEvent(appkey.concat('apnet-refusjon'), {})
-}*/
+export const refusjonApnet = (
+    refusjon: Refusjon,
+    antallInntekterSomErMedIGrunnlag: number,
+    ingenInntekter: boolean,
+    ingenRefunderbareInntekter: boolean,
+    harInntekterMenIkkeForHeleTilskuddsperioden: boolean
+): LogReturn => {
+    const data: ApnetRefusjon = {
+        id: refusjon.id,
+        refusjonsbelop: refusjon.beregning?.refusjonsbeløp ?? 0,
+        beregnetbelop: refusjon.beregning?.beregnetBeløp ?? 0,
+        antallDagerTilTidsfrist: regnUtDifferanseMellomDato(refusjon.fristForGodkjenning),
+        antallInntekterSomErMedIGrunnlag: antallInntekterSomErMedIGrunnlag,
+        ingenInntekter: ingenInntekter,
+        ingenRefunderbareInntekter: ingenRefunderbareInntekter,
+        harInntekterMenIkkeForHeleTilskuddsperioden: harInntekterMenIkkeForHeleTilskuddsperioden,
+    };
+    return amplitude.logEvent(appkey.concat('apnet-refusjon'), { ...data });
+};
 
 export const feilVedInnSending = (err: string): LogReturn => amplitude.logEvent(appkey.concat(err));

@@ -17,7 +17,7 @@ import { formatterPenger } from '../utils/PengeUtils';
 import './Utregning.less';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
-// import { refusjonApnet } from '../utils/amplitude-utils';
+import { refusjonApnet } from '../utils/amplitude-utils';
 
 interface Props {
     refusjon: Refusjon;
@@ -63,6 +63,14 @@ const Utregning: FunctionComponent<Props> = (props) => {
             return lønnsbeskrivelseTekst[beskrivelse] ?? 'Inntekt: ' + beskrivelse;
         }
     };
+
+    refusjonApnet(
+        props.refusjon,
+        antallInntekterSomErMedIGrunnlag ?? 0,
+        ingenInntekter,
+        ingenRefunderbareInntekter,
+        harInntekterMenIkkeForHeleTilskuddsperioden
+    );
 
     return (
         <div className={cls.className}>
