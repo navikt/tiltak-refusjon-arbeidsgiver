@@ -91,4 +91,6 @@ export const refusjonApnet = (
     return amplitude.logEvent(appkey.concat('apnet-refusjon'), { ...data });
 };
 
-export const feilVedInnSending = (err: string): LogReturn => amplitude.logEvent(appkey.concat(err));
+export const eksternlenkerTrykket = (url: string) => {
+    return amplitude.logEvent(appkey.concat('eksternlenke-trykket'), { lenke: url });
+};
