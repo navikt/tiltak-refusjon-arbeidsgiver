@@ -40,7 +40,11 @@ export const regnUtDifferanseMellomDato = (fristForGodkjenning: string) => {
     return Math.ceil(differanseTid / (1000 * 60 * 60 * 24));
 };
 
-export const registrerMenyValg = (key: string): LogReturn => amplitude.logEvent(appkey.concat(key));
+export const registrerMenyValg = (key: string): LogReturn =>
+    amplitude.logEvent(appkey.concat('menyvalg'), {
+        menyvalg: key,
+        date: new Date().toISOString().split('T')[0],
+    });
 
 export const brukerflate = (erDesktop: boolean): LogReturn =>
     amplitude.logEvent(appkey.concat(erDesktop ? 'desktop' : 'mobil'));
