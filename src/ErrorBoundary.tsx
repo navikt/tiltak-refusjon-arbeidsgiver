@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/browser';
 import { Simulate } from 'react-dom/test-utils';
 import error = Simulate.error;
 

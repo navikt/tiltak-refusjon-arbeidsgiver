@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/browser';
 
 if (process.env.NODE_ENV === 'production') {
     Sentry.init({
