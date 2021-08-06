@@ -3,9 +3,7 @@ import * as React from 'react';
 import { FunctionComponent, Suspense } from 'react';
 import ErrorBoundary from './ErrorBoundary';
 
-interface Props {}
-
-const ErrorOgSuspenseHandler: FunctionComponent<Props> = (props) => {
+const ErrorOgSuspenseHandler: FunctionComponent<{}> = (props) => {
     const key = window.location.pathname;
     return (
         <ErrorBoundary key={key} fallback={<AlertStripeFeil>Feil ved lasting.</AlertStripeFeil>}>
