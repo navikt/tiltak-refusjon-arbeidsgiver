@@ -7,6 +7,7 @@ import config from './config';
 import logger from './logger';
 import apiProxy from './proxy/api-proxy';
 import decoratorProxy from './proxy/decorator-proxy';
+import sentryProxy from './proxy/sentry-proxy';
 
 const asyncHandler = require('express-async-handler');
 
@@ -84,6 +85,7 @@ const setup = (tokenxClient, idportenClient) => {
 
     apiProxy.setup(router, tokenxClient);
     decoratorProxy.setup(router);
+    sentryProxy.setup(router);
 
     router.use(express.static(path.join(__dirname, '../build')));
 
