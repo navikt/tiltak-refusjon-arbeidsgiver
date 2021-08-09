@@ -85,7 +85,7 @@ const setup = (tokenxClient, idportenClient) => {
 
     apiProxy.setup(router, tokenxClient);
     decoratorProxy.setup(router);
-    sentryProxy.setup(router);
+    //sentryProxy.setup(router);
 
     router.use(express.static(path.join(__dirname, '../build')));
 
