@@ -2,3 +2,5 @@
 project=tiltak-refusjon-utside
 url=https://sentry.gc.nav.no/
 org=nav
+
+[auth]
