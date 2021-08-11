@@ -53,6 +53,7 @@ const setup = (tokenxClient, idportenClient) => {
 
     const ensureAuthenticated = async (req, res, next) => {
         const frontendTokenSet = frontendTokenSetFromSession(req);
+        console.log('REQUEST:', req);
 
         if (!frontendTokenSet) {
             res.redirect('/login');
