@@ -53,9 +53,6 @@ const setup = (tokenxClient, idportenClient) => {
 
     const ensureAuthenticated = async (req, res, next) => {
         const frontendTokenSet = frontendTokenSetFromSession(req);
-        console.log('REQUEST:', req.headers?.referer, typeof req.headers?.referer);
-        console.log('split', req.headers?.referer?.split('nav.no'));
-        console.log('referer includes refusjon: ', req.headers?.referer?.includes('refusjon'));
 
         const s = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
         console.log('subpath har refusjon: ', s);
