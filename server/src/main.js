@@ -19,7 +19,14 @@ async function startNormal(server) {
 
         // setup sane defaults for CORS and HTTP headers
         // server.use(helmet());
-        server.use(cors);
+        server.use(() => {
+            const whitelist = [process.env.HOST, `${process.env.HOST}/refusjon`, '.nais.io', '.nav.no'];
+            const isAllowedDomain = whitelist.some((domain) => origin?.endsWith(domain));
+            const isLocalhost = origin?.startsWith('http://localhost:');
+            if (isAllowedDomain || isLocalhost) {
+                return cors;
+            }
+        });
 
         const tokenxAuthClient = await tokenx.client();
         const idportenAuthClient = await idporten.client();
