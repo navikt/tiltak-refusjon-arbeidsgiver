@@ -53,8 +53,8 @@ const setup = (tokenxClient, idportenClient) => {
 
     const ensureAuthenticated = async (req, res, next) => {
         const frontendTokenSet = frontendTokenSetFromSession(req);
-        console.log('REQUEST:', req.headers.referer);
-        console.log('referer includes refusjon: ', req.headers.referer.includes('refusjon'));
+        console.log('REQUEST:', req.headers?.referer);
+        console.log('referer includes refusjon: ', req.headers?.referer?.includes('refusjon'));
 
         if (!frontendTokenSet) {
             res.redirect('/login');
