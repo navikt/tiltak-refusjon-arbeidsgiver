@@ -53,13 +53,13 @@ const setup = (tokenxClient, idportenClient) => {
 
     const ensureAuthenticated = async (req, res, next) => {
         const frontendTokenSet = frontendTokenSetFromSession(req);
+        const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
+        console.log('innlogget side: ', authExpected);
+        console.log('ACL CORS list:', process.env.HOST);
 
-        const s = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
-        console.log('subpath har refusjon: ', s);
-
-        if (s && !frontendTokenSet) {
+        if (authExpected && !frontendTokenSet) {
             res.redirect('/login');
-        } else if (s && frontendTokenSet.expired()) {
+        } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
