@@ -57,9 +57,12 @@ const setup = (tokenxClient, idportenClient) => {
         console.log('split', req.headers?.referer?.split('nav.no'));
         console.log('referer includes refusjon: ', req.headers?.referer?.includes('refusjon'));
 
-        if (req.headers?.referer?.includes('refusjon') && !frontendTokenSet) {
+        const s = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
+        console.log('subpath har refusjon: ', s);
+
+        if (s && req.headers?.referer?.includes('refusjon') && !frontendTokenSet) {
             res.redirect('/login');
-        } else if (frontendTokenSet.expired()) {
+        } else if (s && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
