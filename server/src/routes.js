@@ -61,7 +61,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (authExpected && !frontendTokenSet) {
             logger.info('redirect to /login');
-            res.redirect('../login');
+            res.redirect(301, '/login');
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
