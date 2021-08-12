@@ -21,6 +21,7 @@ const setup = (tokenxClient, idportenClient) => {
         `${process.env.HOST}/login`,
         asyncHandler(async (req, res) => {
             // lgtm [js/missing-rate-limiting]
+            logger.info('get login async handler working...');
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
@@ -55,10 +56,12 @@ const setup = (tokenxClient, idportenClient) => {
         const frontendTokenSet = frontendTokenSetFromSession(req);
         const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
         console.log('innlogget side: ', authExpected);
-        console.log('ACL CORS list:', process.env.HOST);
+        console.log('host:', process.env.HOST);
 
         if (authExpected && !frontendTokenSet) {
-            await res.redirect(`${process.env.HOST}/login`);
+            logger.info('redirect to /login');
+            res.redirect(`${process.env.HOST}/login`);
+            next();
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -66,7 +69,7 @@ const setup = (tokenxClient, idportenClient) => {
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
                 req.session.destroy();
-                await res.redirect(`${process.env.HOST}/login`);
+                res.redirect(`${process.env.HOST}/login`);
             }
         } else {
             next();
