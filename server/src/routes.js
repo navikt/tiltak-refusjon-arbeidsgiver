@@ -58,6 +58,7 @@ const setup = (tokenxClient, idportenClient) => {
         console.log('ACL CORS list:', process.env.HOST);
 
         if (authExpected && !frontendTokenSet) {
+            console.log('REDIRECT to /login');
             res.redirect('/login');
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
