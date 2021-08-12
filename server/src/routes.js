@@ -58,7 +58,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (authExpected && !frontendTokenSet) {
             logger.info('redirect to /login');
-            res.redirect(301, '/login');
+            res.redirect(301, `${process.env.HOST}/login`);
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -66,7 +66,7 @@ const setup = (tokenxClient, idportenClient) => {
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
                 req.session.destroy();
-                res.redirect(301, '/login');
+                res.redirect(301, `${process.env.HOST}/login`);
             }
         } else {
             next();
@@ -90,7 +90,7 @@ const setup = (tokenxClient, idportenClient) => {
 
     router.use(express.static(path.join(__dirname, '../build')));
 
-    router.get(['/', '/refusjon', '/refusjon/*'], (req, res) => {
+    router.get(['/*'], (req, res) => {
         res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
     });
     return router;
