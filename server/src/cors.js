@@ -1,9 +1,10 @@
 export default (req, res, next) => {
     const origin = req.get('origin');
     const whitelist = [process.env.HOST, `${process.env.HOST}/refusjon`, '.nais.io', '.nav.no'];
-    const isAllowedDomain = whitelist.some((domain) => origin?.endsWith(domain));
-    const isLocalhost = origin?.startsWith('http://localhost:');
-    if (isAllowedDomain || isLocalhost) {
+    const navDomain = whitelist.some((domain) => origin?.endsWith(domain));
+    console.log('origin:', origin);
+
+    if (navDomain) {
         res.setHeader('Access-Control-Allow-Origin', req.get('origin'));
         res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, POST, PUT');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
