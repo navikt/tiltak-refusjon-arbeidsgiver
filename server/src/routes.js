@@ -18,7 +18,7 @@ const setup = (tokenxClient, idportenClient) => {
     router.get('/isReady', (req, res) => res.send('Ready'));
 
     router.get(
-        `${process.env.HOST}/login`,
+        '/login',
         asyncHandler(async (req, res) => {
             // lgtm [js/missing-rate-limiting]
             await res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
@@ -61,8 +61,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (authExpected && !frontendTokenSet) {
             logger.info('redirect to /login');
-            res.redirect(`${process.env.HOST}/login`);
-            next();
+            res.redirect('/login');
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
