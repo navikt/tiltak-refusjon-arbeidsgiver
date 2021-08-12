@@ -25,7 +25,7 @@ async function startNormal(server) {
         const idportenAuthClient = await idporten.client();
 
         // setup routes
-        server.use(['/', '/refusjon'], routes.setup(tokenxAuthClient, idportenAuthClient));
+        server.use('/', routes.setup(tokenxAuthClient, idportenAuthClient));
 
         const port = 3000;
         server.listen(port, () => logger.info(`Listening on port ${port}`));

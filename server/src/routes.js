@@ -25,7 +25,7 @@ const setup = (tokenxClient, idportenClient) => {
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
-            res.redirect(idporten.authUrl(session, idportenClient));
+            res.redirect(301, idporten.authUrl(session, idportenClient));
         })
     );
 
