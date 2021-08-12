@@ -18,13 +18,13 @@ const setup = (tokenxClient, idportenClient) => {
     router.get('/isReady', (req, res) => res.send('Ready'));
 
     router.get(
-        '/login',
+        `${process.env.HOST}/login`,
         asyncHandler(async (req, res) => {
             // lgtm [js/missing-rate-limiting]
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
-            res.redirect(idporten.authUrl(session, idportenClient));
+            await res.redirect(idporten.authUrl(session, idportenClient));
         })
     );
 
@@ -58,7 +58,6 @@ const setup = (tokenxClient, idportenClient) => {
         console.log('ACL CORS list:', process.env.HOST);
 
         if (authExpected && !frontendTokenSet) {
-            console.log('REDIRECT to /login');
             await res.redirect(`${process.env.HOST}/login`);
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
@@ -67,7 +66,7 @@ const setup = (tokenxClient, idportenClient) => {
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
                 req.session.destroy();
-                res.redirect(`${process.env.HOST}/login`);
+                await res.redirect(`${process.env.HOST}/login`);
             }
         } else {
             next();
