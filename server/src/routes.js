@@ -21,6 +21,7 @@ const setup = (tokenxClient, idportenClient) => {
         `${process.env.HOST}/login`,
         asyncHandler(async (req, res) => {
             // lgtm [js/missing-rate-limiting]
+            await res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
             logger.info('get login async handler working...');
             const session = req.session;
             session.nonce = generators.nonce();
