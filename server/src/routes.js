@@ -21,7 +21,7 @@ const setup = (tokenxClient, idportenClient) => {
         '/login',
         asyncHandler(async (req, res) => {
             // lgtm [js/missing-rate-limiting]
-            await res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+            // await res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
             logger.info('get login async handler working...');
             const session = req.session;
             session.nonce = generators.nonce();
@@ -61,7 +61,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (authExpected && !frontendTokenSet) {
             logger.info('redirect to /login');
-            res.redirect('/login');
+            res.redirect('../login');
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
