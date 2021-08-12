@@ -90,7 +90,7 @@ const setup = (tokenxClient, idportenClient) => {
 
     router.use(express.static(path.join(__dirname, '../build')));
 
-    router.get('/*', (req, res) => {
+    router.get(['/', '/refusjon/*'], (req, res) => {
         res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
     });
     return router;
