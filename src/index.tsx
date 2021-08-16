@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { init as Sentry, Integrations, captureException } from '@sentry/react';
+import { init as Sentry, Integrations, captureException, configureScope } from '@sentry/react';
 
 // sentry init
 Sentry({
@@ -12,6 +12,9 @@ Sentry({
     environment: window.location.hostname,
     integrations: [new Integrations.Breadcrumbs({ console: false })],
     autoSessionTracking: false,
+});
+configureScope((scope) => {
+    scope.setTag('commit', process.env.GIT_COMMIT_HASH);
 });
 
 ReactDOM.render(
