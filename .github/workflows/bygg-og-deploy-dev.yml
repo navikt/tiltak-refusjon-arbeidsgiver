@@ -28,7 +28,7 @@ jobs:
       - name: Frontend yarn build
         run: yarn build
       - name: Sett opp sentry release
-        run: yarn run release
+        run: yarn run release --log-level=debug
       - name: Bygg, tag og push Docker-image
         run: |
           docker build --tag $IMAGE .
