@@ -2,3 +2,5 @@
 project=tiltak-refusjon-arbeidsgiver
 url=https://sentry.gc.nav.no/
 org=nav
+[auth]
+token=$SENTRY_AUTH_TOKEN
