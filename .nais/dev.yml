@@ -5,7 +5,6 @@ host:
 outbound:
   - tiltak-refusjon-api
   - tiltak-refusjon-arbeidsgiver-redis
-  - sentry.gc.nav.no
 env:
   DECORATOR_URL: https://www.nav.no/dekoratoren
   API_AUDIENCE: "dev-gcp:arbeidsgiver:tiltak-refusjon-api"
