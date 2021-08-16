@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 
 const ErrorOgSuspenseHandler: FunctionComponent<{}> = (props) => {
-    const key = window.location.pathname;
+    // const key = window.location.pathname;
     return (
         <Sentry.ErrorBoundary
             fallback={({ error, componentStack, resetError }) => <AlertStripeFeil>Feil ved lasting.</AlertStripeFeil>}
