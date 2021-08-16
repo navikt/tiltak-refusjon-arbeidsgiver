@@ -7,7 +7,7 @@ import { init as Sentry, Integrations, captureException, configureScope } from '
 
 // sentry init
 Sentry({
-    dsn: 'https://3a5b579938bc4d6c9011c48d34af18f8@sentry.gc.nav.no/4',
+    dsn: 'https://6e57e48b384e45d797d8278d9e963916@sentry.gc.nav.no/87',
     release: process.env.GIT_COMMIT_HASH || 'unknown',
     environment: window.location.hostname,
     integrations: [new Integrations.Breadcrumbs({ console: false })],
