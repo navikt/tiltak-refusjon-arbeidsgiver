@@ -11,6 +11,9 @@ import decoratorProxy from './proxy/decorator-proxy';
 const asyncHandler = require('express-async-handler');
 
 const router = express.Router();
+const hostname = process.env.HOST ?? '';
+
+const setHostnamePath = (path) => hostname.concat(path);
 
 const setup = (tokenxClient, idportenClient) => {
     // Unprotected
@@ -21,7 +24,6 @@ const setup = (tokenxClient, idportenClient) => {
         '/login',
         asyncHandler(async (req, res) => {
             // lgtm [js/missing-rate-limiting]
-            logger.info('get login async handler working...');
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
@@ -52,21 +54,23 @@ const setup = (tokenxClient, idportenClient) => {
         })
     );
 
-    const ensureAuthenticated = async (req, res, next) => {
-        const frontendTokenSet = frontendTokenSetFromSession(req);
-        const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
+    const ensureAuthenticated = async (request, response, next) => {
+        const frontendTokenSet = frontendTokenSetFromSession(request);
+        const authExpected = request.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
         if (authExpected && !frontendTokenSet) {
             logger.info('redirect to /login');
-            res.redirect(301, `${process.env.HOST}/login`);
+            response.set('location', setHostnamePath('/login'));
+            response.status(301).send();
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
-                req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
+                request.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
-                req.session.destroy();
-                res.redirect(301, `${process.env.HOST}/login`);
+                request.session.destroy();
+                response.set('location', setHostnamePath('/login'));
+                response.status(301).send();
             }
         } else {
             next();
