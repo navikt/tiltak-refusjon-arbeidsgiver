@@ -1,13 +1,15 @@
-name: Bygg og deploy
+name: Bygg og deploy dev
 
 on:
   push:
     tags:
       - "v*-dev"
+  workflow_dispatch:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   bygg:

@@ -1,4 +1,4 @@
-name: Bygg og deploy
+name: Bygg og deploy main
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   bygg:
@@ -26,6 +27,8 @@ jobs:
         run: yarn install
       - name: Frontend yarn build
         run: yarn build
+      - name: Sett opp sentry release
+        run: yarn run release
       - name: Bygg, tag og push Docker-image
         run: |
           docker build --tag $IMAGE .
