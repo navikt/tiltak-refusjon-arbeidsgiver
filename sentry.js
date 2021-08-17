@@ -7,7 +7,6 @@ async function createReleaseAndUpload() {
         return;
     }
     const cli = new SentryCli();
-    cli.options.authToken = process.env.SENTRY_AUTH_TOKEN ?? '';
 
     try {
         console.log('Creating sentry release ' + release);
