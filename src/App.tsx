@@ -24,16 +24,14 @@ function App() {
     });
 
     const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
-        const { from, to, status, children } = props;
+        const { from, to, status } = props;
+        console.log('header status code ', status);
         return (
             <Route
                 render={({ staticContext }) => {
-                    if (staticContext) staticContext.statusCode = status;
-                    return (
-                        <Redirect from={from} to={to}>
-                            {children}
-                        </Redirect>
-                    );
+                    if (staticContext?.statusCode === status) {
+                        return <Redirect from={from} to={to} />;
+                    } else return <>{props.children}</>;
                 }}
             />
         );
