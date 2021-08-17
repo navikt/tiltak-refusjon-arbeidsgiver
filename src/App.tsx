@@ -30,8 +30,12 @@ function App() {
             <Route
                 render={({ staticContext }) => {
                     if (staticContext?.statusCode === status) {
+                        console.log('status code 301 set');
                         return <Redirect from={from} to={to} />;
-                    } else return <>{props.children}</>;
+                    } else {
+                        console.log('current status code', status);
+                        return <>{props.children}</>;
+                    }
                 }}
             />
         );
