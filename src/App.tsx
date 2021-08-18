@@ -20,6 +20,7 @@ interface Props {
 function App() {
     useEffect(() => {
         registrereBesok();
+        console.log('registrerer besøk på siden.');
     });
 
     const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
