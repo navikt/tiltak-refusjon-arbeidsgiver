@@ -45,7 +45,7 @@ const setup = (tokenxClient, idportenClient) => {
                 if (session.redirectTo) {
                     res.redirect(session.redirectTo);
                 } else {
-                    res.redirect('/');
+                    res.redirect('/refusjon');
                 }
             } catch (error) {
                 logger.error(error);

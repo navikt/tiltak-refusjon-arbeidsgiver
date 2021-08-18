@@ -47,7 +47,7 @@ function App() {
             <Route
                 render={() => {
                     console.log('rendering redirect route. status header: ', status);
-                    if (status === httpStatus.HTTP_REDIRECT || status === httpStatus.HTTP_FOUND_REDIRECT) {
+                    if (status === httpStatus.HTTP_REDIRECT) {
                         return <RedirectLoginService to={to} />;
                     }
                 }}
