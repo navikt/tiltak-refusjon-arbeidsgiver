@@ -22,7 +22,7 @@ function App() {
         registrereBesok();
     });
 
-    const RedirectWithStatus = (props: Props) => {
+    const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
         const { from, to, status } = props;
         console.log('header status code ', status);
 
