@@ -27,14 +27,13 @@ enum httpStatus {
 }
 
 function App() {
-    const history = useHistory();
-
     useEffect(() => {
         registrereBesok();
         console.log('registrerer besøk på siden.');
     });
 
     const RedirectLoginService: FunctionComponent<RedirectUrl> = (props: RedirectUrl) => {
+        const history = useHistory();
         useEffect(() => {
             history.push(props.to);
         });
