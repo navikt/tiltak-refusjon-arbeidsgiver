@@ -50,6 +50,10 @@ export const godkjennRefusjon = async (refusjonId: string) => {
     return response.data;
 };
 
+export const getLogin = async (): Promise<void> => {
+    await axios.get('/login');
+};
+
 export const useHentRefusjoner = (bedriftnummer: string, status?: Status, tiltakstype?: Tiltak) => {
     const { data } = useSWR<Refusjon[]>(
         `/refusjon?bedriftNr=${bedriftnummer}&status=${status || ''}&tiltakstype=${tiltakstype || ''}`,

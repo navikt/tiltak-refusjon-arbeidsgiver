@@ -1,6 +1,6 @@
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import HvitBoks from '../komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from '../komponenter/VerticalSpacer';
 import LokalLogin from '../LokalLogin';
@@ -12,10 +12,6 @@ interface Props {
     from: string;
     to: string;
     status: number;
-}
-
-interface RedirectUrl {
-    to: string;
 }
 
 enum httpStatus {
@@ -43,13 +39,6 @@ export const BrukerProvider: FunctionComponent = (props) => {
 
     const history = useHistory();
 
-    const RedirectLoginService: FunctionComponent<RedirectUrl> = (props: RedirectUrl) => {
-        useEffect(() => {
-            window.location.href = props.to;
-        });
-        return null;
-    };
-
     const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
         const { status, to } = props;
         console.log('header status code ', status);
@@ -59,7 +48,14 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 render={() => {
                     console.log('rendering redirect route. status header: ', status);
                     if (status === httpStatus.HTTP_REDIRECT && window.location.pathname.includes('refusjon')) {
-                        return <RedirectLoginService to={to} />;
+                        return (
+                            <Redirect
+                                to={{
+                                    pathname: to,
+                                    state: { from: location },
+                                }}
+                            />
+                        );
                     }
                 }}
             />

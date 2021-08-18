@@ -1,5 +1,5 @@
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
-import React, { useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AdvarselBannerTestversjon from './AdvarselBannerTestversjon/AdvarselBannerTestversjon';
 import './App.css';
@@ -10,12 +10,20 @@ import Landingsside from './Landingsside';
 import OversiktSide from './refusjon/OversiktSide/OversiktSide';
 import Refusjon from './refusjon/RefusjonSide/Refusjon';
 import { registrereBesok } from './utils/amplitude-utils';
+import { getLogin } from './services/rest-service';
 
 function App() {
     useEffect(() => {
         registrereBesok();
         console.log('registrerer besøk på siden.');
     });
+
+    const Login: FunctionComponent = () => {
+        useEffect(() => {
+            getLogin();
+        });
+        return <div>Redirect to loginservice</div>;
+    };
 
     return (
         <BrowserRouter>
@@ -24,6 +32,9 @@ function App() {
             <Switch>
                 <Route exact path="/">
                     <Landingsside />
+                </Route>
+                <Route exact path="/login">
+                    <Login />
                 </Route>
                 <BrukerProvider>
                     <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
