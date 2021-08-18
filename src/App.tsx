@@ -47,23 +47,21 @@ function App() {
                 <Route exact path="/">
                     <Landingsside />
                 </Route>
+                <RedirectWithStatus from="/refusjon" to="/login" status={301} />
+                <RedirectWithStatus from="/refusjon" to="/login" status={302} />
                 <BrukerProvider>
-                    <>
-                        <RedirectWithStatus from="/refusjon" to="/login" status={301} />
-                        <RedirectWithStatus from="/refusjon" to="/login" status={302} />
-                        <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
-                            <Route exact path="/refusjon">
-                                <ErrorOgSuspenseHandler>
-                                    <OversiktSide />
-                                </ErrorOgSuspenseHandler>
-                            </Route>
-                            <Route path="/refusjon/:refusjonId">
-                                <ErrorOgSuspenseHandler>
-                                    <Refusjon />
-                                </ErrorOgSuspenseHandler>
-                            </Route>
-                        </div>
-                    </>
+                    <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
+                        <Route exact path="/refusjon">
+                            <ErrorOgSuspenseHandler>
+                                <OversiktSide />
+                            </ErrorOgSuspenseHandler>
+                        </Route>
+                        <Route path="/refusjon/:refusjonId">
+                            <ErrorOgSuspenseHandler>
+                                <Refusjon />
+                            </ErrorOgSuspenseHandler>
+                        </Route>
+                    </div>
                 </BrukerProvider>
             </Switch>
         </BrowserRouter>
