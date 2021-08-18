@@ -32,7 +32,7 @@ function App() {
                 render={() => {
                     console.log('rendering redirect route. status header: ', status);
                     if (status === 301) {
-                        return <Redirect from={from} to={to} />;
+                        return <Redirect from={from} to={{ pathname: to, state: { from: from } }} push={true} />;
                     }
                 }}
             />
