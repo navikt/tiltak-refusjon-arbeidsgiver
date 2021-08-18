@@ -1,5 +1,5 @@
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AdvarselBannerTestversjon from './AdvarselBannerTestversjon/AdvarselBannerTestversjon';
 import './App.css';
