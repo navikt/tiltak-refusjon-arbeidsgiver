@@ -15,7 +15,6 @@ interface Props {
     from: string;
     to: string;
     status: number;
-    children: React.ReactNode;
 }
 
 function App() {
@@ -23,18 +22,16 @@ function App() {
         registrereBesok();
     });
 
-    const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
+    const RedirectWithStatus = (props: Props) => {
         const { from, to, status } = props;
         console.log('header status code ', status);
+
         return (
             <Route
-                render={({ staticContext }) => {
-                    if (staticContext?.statusCode === status) {
-                        console.log('status code 301 set');
+                render={() => {
+                    console.log('rendering redirect route. status header: ', status);
+                    if (status === 301) {
                         return <Redirect from={from} to={to} />;
-                    } else {
-                        console.log('current status code', status);
-                        return <>{props.children}</>;
                     }
                 }}
             />
@@ -50,7 +47,9 @@ function App() {
                     <Landingsside />
                 </Route>
                 <BrukerProvider>
-                    <RedirectWithStatus from="/refusjon" to="/login" status={301}>
+                    <>
+                        <RedirectWithStatus from="/refusjon" to="/login" status={301} />
+                        <RedirectWithStatus from="/refusjon" to="/login" status={302} />
                         <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
                             <Route exact path="/refusjon">
                                 <ErrorOgSuspenseHandler>
@@ -63,7 +62,7 @@ function App() {
                                 </ErrorOgSuspenseHandler>
                             </Route>
                         </div>
-                    </RedirectWithStatus>
+                    </>
                 </BrukerProvider>
             </Switch>
         </BrowserRouter>
