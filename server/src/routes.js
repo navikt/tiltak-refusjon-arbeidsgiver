@@ -61,6 +61,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (authExpected && !frontendTokenSet) {
             logger.info('redirect to /login');
+            logger.info('auth expected ', authExpected);
             response.set('location', setHostnamePath('/login'));
             response.status(301).send();
         } else if (authExpected && frontendTokenSet.expired()) {

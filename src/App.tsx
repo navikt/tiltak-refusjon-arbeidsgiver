@@ -23,7 +23,6 @@ interface RedirectUrl {
 
 enum httpStatus {
     HTTP_REDIRECT = 301,
-    HTTP_FOUND_REDIRECT = 302,
 }
 
 function App() {
@@ -47,7 +46,7 @@ function App() {
             <Route
                 render={() => {
                     console.log('rendering redirect route. status header: ', status);
-                    if (status === httpStatus.HTTP_REDIRECT) {
+                    if (status === httpStatus.HTTP_REDIRECT && window.location.pathname.includes('refusjon')) {
                         return <RedirectLoginService to={to} />;
                     }
                 }}
@@ -64,7 +63,6 @@ function App() {
                     <Landingsside />
                 </Route>
                 <RedirectWithStatus from="/refusjon" to="/login" status={301} />
-                <RedirectWithStatus from="/refusjon" to="/login" status={302} />
                 <BrukerProvider>
                     <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
                         <Route exact path="/refusjon">
