@@ -11,48 +11,11 @@ import OversiktSide from './refusjon/OversiktSide/OversiktSide';
 import Refusjon from './refusjon/RefusjonSide/Refusjon';
 import { registrereBesok } from './utils/amplitude-utils';
 
-interface Props {
-    from: string;
-    to: string;
-    status: number;
-}
-
-interface RedirectUrl {
-    to: string;
-}
-
-enum httpStatus {
-    HTTP_REDIRECT = 301,
-}
-
 function App() {
     useEffect(() => {
         registrereBesok();
         console.log('registrerer besøk på siden.');
     });
-
-    const RedirectLoginService: FunctionComponent<RedirectUrl> = (props: RedirectUrl) => {
-        useEffect(() => {
-            window.location.href = props.to;
-        });
-        return null;
-    };
-
-    const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
-        const { status, to } = props;
-        console.log('header status code ', status);
-
-        return (
-            <Route
-                render={() => {
-                    console.log('rendering redirect route. status header: ', status);
-                    if (status === httpStatus.HTTP_REDIRECT && window.location.pathname.includes('refusjon')) {
-                        return <RedirectLoginService to={to} />;
-                    }
-                }}
-            />
-        );
-    };
 
     return (
         <BrowserRouter>
@@ -62,7 +25,6 @@ function App() {
                 <Route exact path="/">
                     <Landingsside />
                 </Route>
-                <RedirectWithStatus from="/refusjon" to="/login" status={301} />
                 <BrukerProvider>
                     <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
                         <Route exact path="/refusjon">
