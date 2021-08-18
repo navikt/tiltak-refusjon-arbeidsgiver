@@ -1,6 +1,6 @@
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import React, { FunctionComponent, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AdvarselBannerTestversjon from './AdvarselBannerTestversjon/AdvarselBannerTestversjon';
 import './App.css';
 import { BrukerProvider } from './bruker/BrukerContext';
@@ -33,9 +33,8 @@ function App() {
     });
 
     const RedirectLoginService: FunctionComponent<RedirectUrl> = (props: RedirectUrl) => {
-        const history = useHistory();
         useEffect(() => {
-            history.push(props.to);
+            window.location.href = props.to;
         });
         return null;
     };
