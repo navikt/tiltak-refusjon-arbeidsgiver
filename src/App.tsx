@@ -1,6 +1,6 @@
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import React, { FunctionComponent, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import AdvarselBannerTestversjon from './AdvarselBannerTestversjon/AdvarselBannerTestversjon';
 import './App.css';
 import { BrukerProvider } from './bruker/BrukerContext';
@@ -17,22 +17,40 @@ interface Props {
     status: number;
 }
 
+interface RedirectUrl {
+    to: string;
+}
+
+enum httpStatus {
+    HTTP_REDIRECT = 301,
+    HTTP_FOUND_REDIRECT = 302,
+}
+
 function App() {
+    const history = useHistory();
+
     useEffect(() => {
         registrereBesok();
         console.log('registrerer besøk på siden.');
     });
 
+    const RedirectLoginService: FunctionComponent<RedirectUrl> = (props: RedirectUrl) => {
+        useEffect(() => {
+            history.push(props.to);
+        });
+        return null;
+    };
+
     const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
-        const { from, to, status } = props;
+        const { status, to } = props;
         console.log('header status code ', status);
 
         return (
             <Route
                 render={() => {
                     console.log('rendering redirect route. status header: ', status);
-                    if (status === 301) {
-                        return <Redirect from={from} to={{ pathname: to, state: { from: from } }} push={true} />;
+                    if (status === httpStatus.HTTP_REDIRECT || status === httpStatus.HTTP_FOUND_REDIRECT) {
+                        return <RedirectLoginService to={to} />;
                     }
                 }}
             />
