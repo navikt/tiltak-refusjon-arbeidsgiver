@@ -40,9 +40,8 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const history = useHistory();
 
     const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
-        const { status, to } = props;
+        const { status, to, from } = props;
         console.log('header status code ', status);
-
         return (
             <Route
                 render={() => {
@@ -52,7 +51,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                             <Redirect
                                 to={{
                                     pathname: to,
-                                    state: { from: location },
+                                    state: { from: from },
                                 }}
                             />
                         );
