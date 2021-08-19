@@ -36,6 +36,11 @@ const swrConfig = {
 export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
     const response = await axios.get<InnloggetBruker>(`${API_URL}/innlogget-bruker`).catch((err) => {
         console.log('axios feilet med henting av bruker context, ', err);
+        if (err.response) {
+            console.log(err.response.data);
+            console.log(err.response.status);
+            console.log(err.response.headers);
+        }
         return err;
     });
     console.log('raw res:', response);
