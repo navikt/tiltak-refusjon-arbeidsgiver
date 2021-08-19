@@ -34,6 +34,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const [valgtBedrift, setValgtBedrift] = useState();
 
     useEffect(() => {
+        console.log('laster bruker context.');
         hentInnloggetBruker().then((response) => {
             console.log('response ', response);
             setInnloggetBruker(response);

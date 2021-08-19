@@ -63,8 +63,8 @@ const setup = (tokenxClient, idportenClient) => {
             logger.info('redirect to /login');
             logger.info('auth expected ', authExpected);
             response.set('location', setHostnamePath('/login'));
-            response.status(301).send();
-            response.redirect(301, setHostnamePath('/login'));
+            response.status(301);
+            response.redirect(301, setHostnamePath('/login')).send();
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 request.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -73,15 +73,15 @@ const setup = (tokenxClient, idportenClient) => {
                 logger.error('Feil ved refresh av token', err);
                 request.session.destroy();
                 response.set('location', setHostnamePath('/login'));
-                response.status(301).send();
-                response.redirect(301, setHostnamePath('/login'));
+                response.status(301);
+                response.redirect(301, setHostnamePath('/login')).send();
             }
         } else {
             next();
         }
     };
 
-    router.use(asyncHandler(ensureAuthenticated));
+    router.all('*', asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
