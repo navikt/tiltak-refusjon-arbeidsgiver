@@ -35,10 +35,14 @@ export const BrukerProvider: FunctionComponent = (props) => {
 
     useEffect(() => {
         console.log('laster bruker context.');
-        hentInnloggetBruker().then((response) => {
-            console.log('response ', response);
-            setInnloggetBruker(response);
-        });
+        hentInnloggetBruker()
+            .then((response) => {
+                console.log('response ', response);
+                setInnloggetBruker(response);
+            })
+            .catch((err) => {
+                console.log('failed to fetch bruker context, ', err);
+            });
     }, []);
 
     const history = useHistory();
