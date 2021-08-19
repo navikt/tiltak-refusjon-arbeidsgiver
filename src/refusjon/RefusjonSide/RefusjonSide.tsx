@@ -8,11 +8,14 @@ import LagreKnapp from '../../komponenter/LagreKnapp';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
+import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 import BEMHelper from '../../utils/bem';
+import { formatterPeriode } from '../../utils/datoUtils';
+import { formatterPenger } from '../../utils/PengeUtils';
+import GodkjennModal from './GodkjennModal';
 import NokkelInfo from './NokkelInfo';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
-import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 
 const cls = BEMHelper('refusjonside');
 
@@ -22,6 +25,7 @@ const RefusjonSide: FunctionComponent = () => {
     const refusjon = useHentRefusjon(refusjonId);
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState(false);
     const [ikkeBekreftetFeilmelding, seTikkeBekreftetFeilmelding] = useState('');
+    const [visGodkjennModal, setVisGodkjennModal] = useState(false);
 
     const bekreftOpplysninger = () => {
         setBekrefetKorrekteOpplysninger(!bekrefetKorrekteOpplysninger);
@@ -29,61 +33,91 @@ const RefusjonSide: FunctionComponent = () => {
     };
     const fullførRefusjon = async () => {
         if (bekrefetKorrekteOpplysninger) {
-            try {
-                await godkjennRefusjon(refusjonId);
-                history.push({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
-                innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
-            } catch (error) {
-                console.log('feil ved innsending:', error);
-                innSendingRefusjon(UtbetaltStatus.FEILET, refusjon, error);
-                throw error;
-            }
+            setVisGodkjennModal(true);
         } else {
             seTikkeBekreftetFeilmelding('Du må samtykke at opplysningene er riktig, før du kan sende inn skjemaet.');
         }
     };
 
+    const godkjennRefusjonen = async () => {
+        try {
+            await godkjennRefusjon(refusjonId);
+            history.push({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
+            innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
+        } catch (error) {
+            console.log('feil ved innsending:', error);
+            innSendingRefusjon(UtbetaltStatus.FEILET, refusjon, error);
+            throw error;
+        }
+    };
+
     return (
-        <HvitBoks>
-            <VerticalSpacer rem={2} />
-            <Innholdstittel role="heading">Beregning av refusjon</Innholdstittel>
-            <VerticalSpacer rem={1} />
-            <Normaltekst>
-                Vi henter inntektsopplysninger for deltakeren fra a-meldingen automatisk. A-meldingen er en månedlig
-                melding fra arbeidsgiver til NAV, SSB og Skatteetaten om ansattes inntekt, arbeidsforhold og
-                forskuddstrekk, samt arbeidsgiveravgift og finansskatt for virksomheten. Hvis inntektsopplysningene ikke
-                stemmer så må det{' '}
-                <EksternLenke href={'https://www.altinn.no/skjemaoversikt/a-ordningen/a-melding2/'}>
-                    oppdateres i ditt lønnssystem.
-                </EksternLenke>
-                Feriepenger, innskudd obligatorisk tjenestepensjon, arbeidsgiveravgiften og lønnstilskuddsprosenten er
-                hentet fra avtalen om midlertidig lønnstilskudd.
-            </Normaltekst>
-            <VerticalSpacer rem={2} />
-            <NokkelInfo />
-            <VerticalSpacer rem={2} />
-            <Utregning refusjon={refusjon} />
-            <VerticalSpacer rem={4} />
-            {refusjon.beregning && refusjon.beregning.refusjonsbeløp > 0 && (
-                <>
-                    <SummeringBoks />
+        <>
+            <HvitBoks>
+                <VerticalSpacer rem={2} />
+                <Innholdstittel role="heading">Beregning av refusjon</Innholdstittel>
+                <VerticalSpacer rem={1} />
+                <Normaltekst>
+                    Vi henter inntektsopplysninger for deltakeren fra a-meldingen automatisk. A-meldingen er en månedlig
+                    melding fra arbeidsgiver til NAV, SSB og Skatteetaten om ansattes inntekt, arbeidsforhold og
+                    forskuddstrekk, samt arbeidsgiveravgift og finansskatt for virksomheten. Hvis inntektsopplysningene
+                    ikke stemmer så må det{' '}
+                    <EksternLenke href={'https://www.altinn.no/skjemaoversikt/a-ordningen/a-melding2/'}>
+                        oppdateres i ditt lønnssystem.
+                    </EksternLenke>
+                    Feriepenger, innskudd obligatorisk tjenestepensjon, arbeidsgiveravgiften og lønnstilskuddsprosenten
+                    er hentet fra avtalen om midlertidig lønnstilskudd.
+                </Normaltekst>
+                <VerticalSpacer rem={2} />
+                <NokkelInfo />
+                <VerticalSpacer rem={2} />
+                <Utregning refusjon={refusjon} />
+                <VerticalSpacer rem={4} />
+                {refusjon.beregning && refusjon.beregning.refusjonsbeløp > 0 && (
+                    <>
+                        <SummeringBoks />
 
-                    <VerticalSpacer rem={1} />
+                        <VerticalSpacer rem={1} />
 
-                    <BekreftCheckboksPanel
-                        className={cls.element('bekrefthandling')}
-                        onChange={() => bekreftOpplysninger()}
-                        checked={bekrefetKorrekteOpplysninger}
-                        label="Jeg bekrefter at opplysningene er korrekte."
-                        feil={ikkeBekreftetFeilmelding}
-                    />
-                    <VerticalSpacer rem={2} />
-                    <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
-                        Fullfør
-                    </LagreKnapp>
-                </>
-            )}
-        </HvitBoks>
+                        <BekreftCheckboksPanel
+                            className={cls.element('bekrefthandling')}
+                            onChange={() => bekreftOpplysninger()}
+                            checked={bekrefetKorrekteOpplysninger}
+                            label="Jeg bekrefter at opplysningene er korrekte."
+                            feil={ikkeBekreftetFeilmelding}
+                        />
+                        <VerticalSpacer rem={2} />
+                        <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+                            Fullfør
+                        </LagreKnapp>
+                    </>
+                )}
+            </HvitBoks>
+            <GodkjennModal
+                isOpen={visGodkjennModal}
+                lukkModal={() => setVisGodkjennModal(false)}
+                godkjenn={godkjennRefusjonen}
+                tittel="Send inn refusjon"
+            >
+                <Normaltekst>
+                    Du søker nå om refusjon for hele den avtalte perioden{' '}
+                    <b>
+                        {formatterPeriode(
+                            refusjon.tilskuddsgrunnlag.tilskuddFom,
+                            refusjon.tilskuddsgrunnlag.tilskuddTom
+                        )}
+                        . Dette kan du kun gjøre en gang.
+                    </b>{' '}
+                    Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at refusjonsbeløpet
+                    stemmer.
+                </Normaltekst>
+                <VerticalSpacer rem={1} />
+                <Normaltekst>
+                    Hvis refusjonsbeløpet på <b>{formatterPenger(refusjon.beregning?.refusjonsbeløp!)}</b> ikke stemmer,
+                    ta kontakt med veileder før du klikker Send inn.
+                </Normaltekst>
+            </GodkjennModal>
+        </>
     );
 };
 
