@@ -64,7 +64,7 @@ const setup = (tokenxClient, idportenClient) => {
             logger.info('auth expected ', authExpected);
             response.set('location', setHostnamePath('/login'));
             response.status(301).send();
-            res.redirect(301, setHostnamePath('/login'));
+            response.redirect(301, setHostnamePath('/login'));
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 request.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -74,7 +74,7 @@ const setup = (tokenxClient, idportenClient) => {
                 request.session.destroy();
                 response.set('location', setHostnamePath('/login'));
                 response.status(301).send();
-                res.redirect(301, setHostnamePath('/login'));
+                response.redirect(301, setHostnamePath('/login'));
             }
         } else {
             next();
