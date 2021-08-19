@@ -10,6 +10,8 @@ import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 import BEMHelper from '../../utils/bem';
+import { formatterPeriode } from '../../utils/datoUtils';
+import { formatterPenger } from '../../utils/PengeUtils';
 import GodkjennModal from './GodkjennModal';
 import NokkelInfo from './NokkelInfo';
 import './RefusjonSide.less';
@@ -32,15 +34,6 @@ const RefusjonSide: FunctionComponent = () => {
     const fullførRefusjon = async () => {
         if (bekrefetKorrekteOpplysninger) {
             setVisGodkjennModal(true);
-            // try {
-            //     await godkjennRefusjon(refusjonId);
-            //     history.push({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
-            //     innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
-            // } catch (error) {
-            //     console.log('feil ved innsending:', error);
-            //     innSendingRefusjon(UtbetaltStatus.FEILET, refusjon, error);
-            //     throw error;
-            // }
         } else {
             seTikkeBekreftetFeilmelding('Du må samtykke at opplysningene er riktig, før du kan sende inn skjemaet.');
         }
@@ -104,7 +97,26 @@ const RefusjonSide: FunctionComponent = () => {
                 isOpen={visGodkjennModal}
                 lukkModal={() => setVisGodkjennModal(false)}
                 godkjenn={godkjennRefusjonen}
-            />
+                tittel="Send inn refusjon"
+            >
+                <Normaltekst>
+                    Du søker nå om refusjon for hele den avtalte perioden{' '}
+                    <b>
+                        {formatterPeriode(
+                            refusjon.tilskuddsgrunnlag.tilskuddFom,
+                            refusjon.tilskuddsgrunnlag.tilskuddTom
+                        )}
+                        . Dette kan du kun gjøre en gang.
+                    </b>{' '}
+                    Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at refusjonsbeløpet
+                    stemmer.
+                </Normaltekst>
+                <VerticalSpacer rem={1} />
+                <Normaltekst>
+                    Hvis refusjonsbeløpet på <b>{formatterPenger(refusjon.beregning?.refusjonsbeløp!)}</b> ikke stemmer,
+                    ta kontakt med veileder før du klikker Send inn.
+                </Normaltekst>
+            </GodkjennModal>
         </>
     );
 };
