@@ -1,6 +1,6 @@
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import HvitBoks from '../komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from '../komponenter/VerticalSpacer';
 import LokalLogin from '../LokalLogin';
@@ -8,7 +8,7 @@ import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 
-interface Props {
+/*interface Props {
     from: string;
     to: string;
     status: number;
@@ -16,7 +16,7 @@ interface Props {
 
 enum httpStatus {
     HTTP_REDIRECT = 301,
-}
+}*/
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -34,12 +34,15 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const [valgtBedrift, setValgtBedrift] = useState();
 
     useEffect(() => {
-        hentInnloggetBruker().then(setInnloggetBruker);
+        hentInnloggetBruker().then((response) => {
+            console.log('response ', response);
+            setInnloggetBruker(response);
+        });
     }, []);
 
     const history = useHistory();
 
-    const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
+    /*    const RedirectWithStatus: FunctionComponent<Props> = (props: Props) => {
         const { status, to, from } = props;
         console.log('header status code ', status);
         return (
@@ -59,7 +62,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 }}
             />
         );
-    };
+    };*/
 
     return (
         <>
@@ -114,9 +117,11 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 </HvitBoks>
             )}
             {!innloggetBruker && (
-                <Switch>
+                <>
+                    {/* <Switch>
                     <RedirectWithStatus from="/refusjon" to="/login" status={301} />
-                </Switch>
+                </Switch>*/}
+                </>
             )}
         </>
     );

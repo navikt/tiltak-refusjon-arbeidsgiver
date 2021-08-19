@@ -35,6 +35,7 @@ const swrConfig = {
 
 export const hentInnloggetBruker = async () => {
     const response = await axios.get<InnloggetBruker>(`${API_URL}/innlogget-bruker`);
+    console.log('raw res:', response);
     return response.data;
 };
 
