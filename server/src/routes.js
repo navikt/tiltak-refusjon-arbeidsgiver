@@ -28,6 +28,10 @@ const setup = (tokenxClient, idportenClient) => {
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
+            response.set('location', setHostnamePath('/login'));
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+            res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, X-Requested-With');
             await res.redirect(idporten.authUrl(session, idportenClient));
         })
     );
