@@ -7,10 +7,10 @@ import config from './config';
 import logger from './logger';
 import apiProxy from './proxy/api-proxy';
 import decoratorProxy from './proxy/decorator-proxy';
-import sentryProxy from './proxy/sentry-proxy';
-
 const asyncHandler = require('express-async-handler');
 
+const hostname = process.env.HOST ?? '';
+const setHostnamePath = (path) => hostname.concat(path);
 const router = express.Router();
 
 const setup = (tokenxClient, idportenClient) => {
@@ -54,24 +54,25 @@ const setup = (tokenxClient, idportenClient) => {
 
     const ensureAuthenticated = async (req, res, next) => {
         const frontendTokenSet = frontendTokenSetFromSession(req);
+        const authExpected = request.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
-        if (!frontendTokenSet) {
-            res.redirect('/login');
-        } else if (frontendTokenSet.expired()) {
+        if (authExpected && !frontendTokenSet) {
+            res.redirect(setHostnamePath('/login'));
+        } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
                 req.session.destroy();
-                res.redirect('/login');
+                res.redirect(setHostnamePath('/login'));
             }
         } else {
             next();
         }
     };
 
-    router.use(asyncHandler(ensureAuthenticated));
+    router.all('*', asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
