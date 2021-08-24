@@ -54,7 +54,7 @@ const setup = (tokenxClient, idportenClient) => {
 
     const ensureAuthenticated = async (req, res, next) => {
         const frontendTokenSet = frontendTokenSetFromSession(req);
-        const authExpected = request.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
+        const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
         if (authExpected && !frontendTokenSet) {
             res.redirect(setHostnamePath('/login'));
