@@ -30,7 +30,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
         hentInnloggetBruker()
             .then((response) => setInnloggetBruker(response))
             .catch((err) => console.log('err', err));
-    }, []);
+    }, [xmlHttpReq]);
 
     const history = useHistory();
     console.log('innloggetBruker', innloggetBruker);
