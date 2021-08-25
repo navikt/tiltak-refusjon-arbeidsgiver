@@ -3,19 +3,13 @@ import { ReactComponent as Success } from '@/asset/image/Success.svg';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
-import { useHistory } from 'react-router-dom';
 import EksternLenke from './komponenter/EksternLenke/EksternLenke';
 import HvitBoks from './komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from './komponenter/VerticalSpacer';
 
 const Landingsside: FunctionComponent = () => {
-    const history = useHistory();
-
     const gåTilOversikten = () => {
-        history.push({
-            pathname: `/login`,
-            search: window.location.search,
-        });
+        window.location.href = '/login';
     };
 
     return (

@@ -11,7 +11,6 @@ import OversiktSide from './refusjon/OversiktSide/OversiktSide';
 import Refusjon from './refusjon/RefusjonSide/Refusjon';
 import { registrereBesok } from './utils/amplitude-utils';
 import { XMLHttpReqHandler } from './services/XMLHttpRequestHandler';
-import Login from './Login';
 
 function App() {
     const [xmlHttpReq, setXmlHttpReq] = useState<boolean>(false);
@@ -26,9 +25,6 @@ function App() {
             <Switch>
                 <Route exact path="/">
                     <Landingsside />
-                </Route>
-                <Route exact path="/login">
-                    <Login />
                 </Route>
                 <BrukerProvider>
                     <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
