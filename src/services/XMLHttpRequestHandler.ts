@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-const UNDEFINED_ACCESS_TOKEN = "cannot read property 'access_token' of undefined";
+const UNDEFINED_ACCESS_TOKEN_MESSAGE = "cannot read property 'access_token' of undefined";
 
 enum Paths {
     INNLOGGET_BRUKER = 'api/arbeidsgiver/innlogget-bruker',
@@ -19,10 +19,8 @@ function redirectlogin(xhr: any) {
         const response = str.replace(/&#(\d+);/g, function (match: string, dec: number) {
             return String.fromCharCode(dec);
         });
-        console.log('status response', response, response.includes(UNDEFINED_ACCESS_TOKEN));
-        if (response.includes(UNDEFINED_ACCESS_TOKEN)) {
+        if (response.includes(UNDEFINED_ACCESS_TOKEN_MESSAGE)) {
             window.location.href = '/login';
-            console.log('OK. Disablet Redirect midlertidig');
         }
     }
 }
@@ -32,12 +30,10 @@ export const XMLHttpReqHandler = (xmlHttpReq: boolean, setXmlHttpReq: Dispatch<S
 
     Object.defineProperty(XMLHttpRequest.prototype, 'responseText', {
         get: function () {
-            console.log('get responseText', this);
             redirectlogin(this);
             return accessor?.get?.call(this);
         },
         set: function (str) {
-            console.log('set responseText: %s', str);
             return accessor?.set?.call(this, str);
         },
         configurable: true,
@@ -54,7 +50,6 @@ export const XMLHttpReqHandler = (xmlHttpReq: boolean, setXmlHttpReq: Dispatch<S
 
     function setupHook(xhr: any) {
         function getter() {
-            console.log('response', xhr);
             delete xhr.responseText;
             var ret = xhr.responseText;
             setup();
