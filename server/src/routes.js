@@ -55,11 +55,12 @@ const setup = (tokenxClient, idportenClient) => {
     const ensureAuthenticated = async (req, res, next) => {
         const session = req.session;
         const frontendTokenSet = frontendTokenSetFromSession(req);
-        const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
+        // const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
-        if (authExpected && !frontendTokenSet) {
-            res.status(401).json({ error: 'Not authenticated' });
-        } else if (authExpected && frontendTokenSet.expired()) {
+        if (!frontendTokenSet) {
+            logger.info('token not set. returning status 401');
+            res.status(401).json({ error: 'Not authenticated' }).send();
+        } else if (frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
@@ -67,7 +68,7 @@ const setup = (tokenxClient, idportenClient) => {
                 logger.error('Feil ved refresh av token', err);
                 session.redirectTo = req.url;
                 req.session.destroy();
-                res.status(401).json({ error: 'Not authenticated' });
+                res.status(401).json({ error: 'Not authenticated' }).send();
             }
         } else {
             next();

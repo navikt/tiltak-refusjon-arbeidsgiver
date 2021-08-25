@@ -21,7 +21,8 @@ function redirectlogin(xhr: any) {
         });
         console.log('status response', response, response.includes(UNDEFINED_ACCESS_TOKEN));
         if (response.includes(UNDEFINED_ACCESS_TOKEN) && !window.location.pathname.includes('/login')) {
-            window.location.href = '/login';
+            //  window.location.href = '/login';
+            console.log('OK. Disablet Redirect midlertidig');
         }
     }
 }
