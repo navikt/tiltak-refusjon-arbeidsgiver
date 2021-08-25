@@ -15,11 +15,11 @@ function redirectlogin(xhr: any) {
     }
 
     if (xhr.status === 500) {
-        console.log(
-            'status response',
-            xhr.response?.toString(),
-            xhr.response?.toString().toLowerCase().includes("cannot read property 'access_token' of undefined")
-        );
+        const str = xhr.response?.toString().toLowerCase() ?? '';
+        const response = str.replace(/&#(\d+);/g, function (match: string, dec: number) {
+            return String.fromCharCode(dec);
+        });
+        console.log('status response', response, response.includes("cannot read property 'access_token' of undefined"));
     }
 }
 
