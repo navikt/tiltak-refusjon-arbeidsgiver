@@ -13,6 +13,14 @@ function redirectlogin(xhr: any) {
     ) {
         window.location.href = '/login';
     }
+
+    if (xhr.status === 500) {
+        console.log(
+            'status response',
+            xhr.response?.toString(),
+            xhr.response?.toString().toLowerCase().includes("cannot read property 'access_token' of undefined")
+        );
+    }
 }
 
 export const XMLHttpReqHandler = (xmlHttpReq: boolean, setXmlHttpReq: Dispatch<SetStateAction<boolean>>) => {
