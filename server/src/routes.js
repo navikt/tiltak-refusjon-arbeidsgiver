@@ -60,7 +60,10 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (!frontendTokenSet) {
             logger.info('token not set. returning status 401');
-            res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
+            res.status(301)
+                .set('location', setHostnamePath('/login'))
+                .redirect(setHostnamePath('/login'))
+                .sendFile(page);
         } else if (frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -69,7 +72,10 @@ const setup = (tokenxClient, idportenClient) => {
                 logger.error('Feil ved refresh av token', err);
                 session.redirectTo = req.url;
                 req.session.destroy();
-                res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
+                res.status(301)
+                    .set('location', setHostnamePath('/login'))
+                    .redirect(setHostnamePath('/login'))
+                    .sendFile(page);
             }
         } else {
             next();
