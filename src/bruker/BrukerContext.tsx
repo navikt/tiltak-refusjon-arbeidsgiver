@@ -33,7 +33,6 @@ export const BrukerProvider: FunctionComponent = (props) => {
     }, [xmlHttpReq]);
 
     const history = useHistory();
-    console.log('innloggetBruker', innloggetBruker);
 
     return (
         <>
