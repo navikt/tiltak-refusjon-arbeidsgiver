@@ -20,7 +20,7 @@ function redirectlogin(xhr: any) {
             return String.fromCharCode(dec);
         });
         console.log('status response', response, response.includes(UNDEFINED_ACCESS_TOKEN));
-        if (response.includes(UNDEFINED_ACCESS_TOKEN) && !window.location.pathname.includes('/login')) {
+        if (response.includes(UNDEFINED_ACCESS_TOKEN)) {
             window.location.href = '/login';
             console.log('OK. Disablet Redirect midlertidig');
         }
