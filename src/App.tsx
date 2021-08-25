@@ -10,14 +10,11 @@ import Landingsside from './Landingsside';
 import OversiktSide from './refusjon/OversiktSide/OversiktSide';
 import Refusjon from './refusjon/RefusjonSide/Refusjon';
 import { registrereBesok } from './utils/amplitude-utils';
-import { XMLHttpReqHandler } from './services/XMLHttpRequestHandler';
 
 function App() {
-    const [xmlHttpReq, setXmlHttpReq] = useState<boolean>(false);
     useEffect(() => {
-        XMLHttpReqHandler(xmlHttpReq, setXmlHttpReq);
         registrereBesok();
-    }, [xmlHttpReq]);
+    });
     return (
         <BrowserRouter>
             <ScrollToTop />

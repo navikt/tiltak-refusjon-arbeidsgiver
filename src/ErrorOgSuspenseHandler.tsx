@@ -8,14 +8,11 @@ const ErrorOgSuspenseHandler: FunctionComponent<{}> = (props) => {
     // const key = window.location.pathname;
     return (
         <Sentry.ErrorBoundary
-            fallback={({ error, componentStack, resetError }) => {
-                console.log('sentry error ', error);
-                return (
-                    <>
-                        <AlertStripeFeil>Feil ved lasting.</AlertStripeFeil>
-                    </>
-                );
-            }}
+            fallback={({ error, componentStack, resetError }) => (
+                <>
+                    <AlertStripeFeil>Feil ved lasting.</AlertStripeFeil>
+                </>
+            )}
         >
             <Suspense fallback={<NavFrontendSpinner transparent={true} type="XL" />}>{props.children}</Suspense>
         </Sentry.ErrorBoundary>
