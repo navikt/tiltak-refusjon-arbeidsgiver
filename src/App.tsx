@@ -15,7 +15,7 @@ import { XMLHttpReqHandler } from './services/XMLHttpRequestHandler';
 function App() {
     const [xmlHttpReq, setXmlHttpReq] = useState<boolean>(false);
     useEffect(() => {
-        //   XMLHttpReqHandler(xmlHttpReq, setXmlHttpReq);
+        XMLHttpReqHandler(xmlHttpReq, setXmlHttpReq);
         registrereBesok();
     });
     return (
