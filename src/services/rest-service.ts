@@ -43,6 +43,8 @@ export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
     return response.data;
 };
 
+export const kontaktLogin = async () => await axios.get('/login');
+
 export const gjorInntektsoppslag = async (refusjonId: string) => {
     const response = await axios.post(`${API_URL}/refusjon/${refusjonId}/inntektsoppslag`).catch(håndterFeil);
     await mutate(`/refusjon/${refusjonId}`);
