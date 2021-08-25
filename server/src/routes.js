@@ -57,11 +57,9 @@ const setup = (tokenxClient, idportenClient) => {
     const ensureAuthenticated = async (req, res, next) => {
         const session = req.session;
         const frontendTokenSet = frontendTokenSetFromSession(req);
-        // const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
         if (!frontendTokenSet) {
-            logger.info('token not set. returning status 401');
-
+            logger.info('token not set. setting status 301 with redirect');
             res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
         } else if (frontendTokenSet.expired()) {
             try {
