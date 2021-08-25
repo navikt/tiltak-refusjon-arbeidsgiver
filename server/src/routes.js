@@ -26,6 +26,7 @@ const setup = (tokenxClient, idportenClient) => {
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
+            res.setHeader('Content-Type', 'application/javascript');
             res.redirect(idporten.authUrl(session, idportenClient));
         })
     );
@@ -60,6 +61,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (authExpected && !frontendTokenSet) {
             logger.info('token not set. returning status 401');
+
             res.status(301)
                 .set('location', setHostnamePath('/login'))
                 .redirect(setHostnamePath('/login'))
