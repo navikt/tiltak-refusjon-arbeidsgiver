@@ -58,8 +58,7 @@ const setup = (tokenxClient, idportenClient) => {
         const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
         if (authExpected && !frontendTokenSet) {
-            session.redirectTo = req.url;
-            res.redirect(setHostnamePath('/login'));
+            res.status(401).json({ error: 'Not authenticated' });
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -68,14 +67,14 @@ const setup = (tokenxClient, idportenClient) => {
                 logger.error('Feil ved refresh av token', err);
                 session.redirectTo = req.url;
                 req.session.destroy();
-                res.redirect(setHostnamePath('/login'));
+                res.status(401).json({ error: 'Not authenticated' });
             }
         } else {
             next();
         }
     };
 
-    router.all('*', asyncHandler(ensureAuthenticated));
+    router.all('/refusjon/*', asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
@@ -89,7 +88,6 @@ const setup = (tokenxClient, idportenClient) => {
 
     apiProxy.setup(router, tokenxClient);
     decoratorProxy.setup(router);
-    //sentryProxy.setup(router);
 
     router.use(express.static(path.join(__dirname, '../build')));
 
