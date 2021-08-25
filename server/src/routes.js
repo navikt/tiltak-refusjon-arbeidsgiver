@@ -53,19 +53,22 @@ const setup = (tokenxClient, idportenClient) => {
     );
 
     const ensureAuthenticated = async (req, res, next) => {
+        const session = req.session;
         const frontendTokenSet = frontendTokenSetFromSession(req);
         const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
         if (authExpected && !frontendTokenSet) {
-            res.redirect(301, setHostnamePath('/login'));
+            session.redirectTo = req.url;
+            res.redirect(setHostnamePath('/login'));
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
+                session.redirectTo = req.url;
                 req.session.destroy();
-                res.redirect(301, setHostnamePath('/login'));
+                res.redirect(setHostnamePath('/login'));
             }
         } else {
             next();
@@ -91,6 +94,7 @@ const setup = (tokenxClient, idportenClient) => {
     router.use(express.static(path.join(__dirname, '../build')));
 
     router.get('/*', (req, res) => {
+        res.status(200);
         res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
     });
     return router;
