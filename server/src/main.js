@@ -2,12 +2,12 @@ import { startLabs } from './labs';
 import express from 'express';
 import session from './session';
 import bodyParser from 'body-parser';
-// import cors from './cors';
 import tokenx from './auth/tokenx';
 import routes from './routes';
 import idporten from './auth/idporten';
 import logger from './logger';
-var cors = require('cors');
+
+const cors = require('cors');
 
 async function startNormal(server) {
     try {
