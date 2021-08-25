@@ -7,6 +7,7 @@ import config from './config';
 import logger from './logger';
 import apiProxy from './proxy/api-proxy';
 import decoratorProxy from './proxy/decorator-proxy';
+
 const asyncHandler = require('express-async-handler');
 
 const hostname = process.env.HOST ?? '';
@@ -24,9 +25,13 @@ const setup = (tokenxClient, idportenClient) => {
         asyncHandler(async (req, res) => {
             // lgtm [js/missing-rate-limiting]
             const session = req.session;
+
             session.nonce = generators.nonce();
             session.state = generators.state();
-            res.redirect(idporten.authUrl(session, idportenClient));
+            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Accept', '*/*');
+            res.path = req.url;
+            res.redirect(idporten.authUrl(session, idportenClient)).send();
         })
     );
 
