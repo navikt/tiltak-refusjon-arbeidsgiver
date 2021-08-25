@@ -13,7 +13,6 @@ type Props = {
 const TOKENX_COOKIE_NAME = `tokenx-token`;
 
 const LokalLogin: FunctionComponent<Props> = (props) => {
-    console.log('bruker props', props);
     const [pid, setPid] = useState('15000000000');
 
     const loggInnKnapp = async (pid: string) => {
