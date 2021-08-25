@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { kontaktLogin } from './services/rest-service';
 
 const Login: FunctionComponent = () => {
