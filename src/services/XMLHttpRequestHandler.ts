@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 
+const UNDEFINED_ACCESS_TOKEN = "cannot read property 'access_token' of undefined";
+
 enum Paths {
     INNLOGGET_BRUKER = 'api/arbeidsgiver/innlogget-bruker',
     LOGIN = '/login',
@@ -12,14 +14,15 @@ function redirectlogin(xhr: any) {
         !window.location.pathname.includes('/login')
     ) {
         window.location.href = '/login';
-    }
-
-    if (xhr.status === 500) {
+    } else if (xhr.status === 500) {
         const str = xhr.response?.toString().toLowerCase() ?? '';
         const response = str.replace(/&#(\d+);/g, function (match: string, dec: number) {
             return String.fromCharCode(dec);
         });
-        console.log('status response', response, response.includes("cannot read property 'access_token' of undefined"));
+        console.log('status response', response, response.includes(UNDEFINED_ACCESS_TOKEN));
+        if (response.includes(UNDEFINED_ACCESS_TOKEN) && !window.location.pathname.includes('/login')) {
+            window.location.href = '/login';
+        }
     }
 }
 
