@@ -82,7 +82,7 @@ const setup = (tokenxClient, idportenClient) => {
         }
     };
 
-    router.all('*', asyncHandler(ensureAuthenticated));
+    router.all(['/*', '/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
