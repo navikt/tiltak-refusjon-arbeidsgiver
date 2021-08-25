@@ -30,7 +30,8 @@ const setup = (tokenxClient, idportenClient) => {
             session.state = generators.state();
             res.setHeader('Content-Type', 'text/html');
             res.setHeader('Accept', '*/*');
-            res.path = req.url;
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.path = '/refusjon';
             res.redirect(idporten.authUrl(session, idportenClient)).send();
         })
     );
