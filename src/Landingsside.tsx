@@ -13,7 +13,7 @@ const Landingsside: FunctionComponent = () => {
 
     const gåTilOversikten = () => {
         history.push({
-            pathname: `/refusjon/`,
+            pathname: `/login`,
             search: window.location.search,
         });
     };

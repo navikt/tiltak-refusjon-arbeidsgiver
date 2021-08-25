@@ -23,15 +23,10 @@ const setup = (tokenxClient, idportenClient) => {
     router.get(
         '/login',
         asyncHandler(async (req, res) => {
-            // lgtm [js/missing-rate-limiting]
             const session = req.session;
-
             session.nonce = generators.nonce();
             session.state = generators.state();
-            res.setHeader('Content-Type', 'application/json');
-            res.setHeader('Accept', '*/*');
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.path = '/refusjon';
+
             res.redirect(idporten.authUrl(session, idportenClient)).send();
         })
     );
@@ -62,13 +57,13 @@ const setup = (tokenxClient, idportenClient) => {
     const ensureAuthenticated = async (req, res, next) => {
         const session = req.session;
         const frontendTokenSet = frontendTokenSetFromSession(req);
-        const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
+        // const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
-        if (authExpected && !frontendTokenSet) {
+        if (!frontendTokenSet) {
             logger.info('token not set. returning status 401');
 
             res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
-        } else if (authExpected && frontendTokenSet.expired()) {
+        } else if (frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
@@ -83,7 +78,7 @@ const setup = (tokenxClient, idportenClient) => {
         }
     };
 
-    router.all(['/*', '/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
+    router.all(['/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
