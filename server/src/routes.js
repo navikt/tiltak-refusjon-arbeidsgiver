@@ -59,7 +59,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (!frontendTokenSet) {
             logger.info('token not set. returning status 401');
-            res.status(401).json({ error: 'Not authenticated' }).send();
+            res.status(401).json({ error: 'Not authenticated' }).set('location', setHostnamePath('/login')).send();
         } else if (frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -68,14 +68,14 @@ const setup = (tokenxClient, idportenClient) => {
                 logger.error('Feil ved refresh av token', err);
                 session.redirectTo = req.url;
                 req.session.destroy();
-                res.status(401).json({ error: 'Not authenticated' }).send();
+                res.status(401).json({ error: 'Not authenticated' }).set('location', setHostnamePath('/login')).send();
             }
         } else {
             next();
         }
     };
 
-    router.all('/refusjon/*', asyncHandler(ensureAuthenticated));
+    router.all(['/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
