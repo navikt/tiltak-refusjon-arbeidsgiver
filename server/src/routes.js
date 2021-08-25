@@ -27,7 +27,7 @@ const setup = (tokenxClient, idportenClient) => {
             session.nonce = generators.nonce();
             session.state = generators.state();
             res.setHeader('Content-Type', 'application/javascript');
-            res.redirect(idporten.authUrl(session, idportenClient));
+            res.redirect(204, idporten.authUrl(session, idportenClient));
         })
     );
 
