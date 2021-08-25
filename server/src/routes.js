@@ -56,15 +56,15 @@ const setup = (tokenxClient, idportenClient) => {
     const ensureAuthenticated = async (req, res, next) => {
         const session = req.session;
         const frontendTokenSet = frontendTokenSetFromSession(req);
-        // const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
+        const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
-        if (!frontendTokenSet) {
+        if (authExpected && !frontendTokenSet) {
             logger.info('token not set. returning status 401');
             res.status(301)
                 .set('location', setHostnamePath('/login'))
                 .redirect(setHostnamePath('/login'))
                 .sendFile(page);
-        } else if (frontendTokenSet.expired()) {
+        } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
@@ -82,7 +82,7 @@ const setup = (tokenxClient, idportenClient) => {
         }
     };
 
-    router.all(['/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
+    router.all('*', asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
