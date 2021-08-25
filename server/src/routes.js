@@ -10,6 +10,7 @@ import decoratorProxy from './proxy/decorator-proxy';
 const asyncHandler = require('express-async-handler');
 
 const hostname = process.env.HOST ?? '';
+const page = path.resolve(__dirname, '../build', 'index.html');
 const setHostnamePath = (path) => hostname.concat(path);
 const router = express.Router();
 
@@ -59,7 +60,7 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (!frontendTokenSet) {
             logger.info('token not set. returning status 401');
-            res.status(401).json({ error: 'Not authenticated' }).set('location', setHostnamePath('/login')).send();
+            res.status(401).set('location', setHostnamePath('/login')).sendFile(page);
         } else if (frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -68,7 +69,7 @@ const setup = (tokenxClient, idportenClient) => {
                 logger.error('Feil ved refresh av token', err);
                 session.redirectTo = req.url;
                 req.session.destroy();
-                res.status(401).json({ error: 'Not authenticated' }).set('location', setHostnamePath('/login')).send();
+                res.status(401).set('location', setHostnamePath('/login')).sendFile(page);
             }
         } else {
             next();
@@ -94,7 +95,7 @@ const setup = (tokenxClient, idportenClient) => {
 
     router.get('/*', (req, res) => {
         res.status(200);
-        res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+        res.sendFile(page);
     });
     return router;
 };
