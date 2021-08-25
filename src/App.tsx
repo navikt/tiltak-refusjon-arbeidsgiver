@@ -17,7 +17,7 @@ function App() {
     useEffect(() => {
         XMLHttpReqHandler(xmlHttpReq, setXmlHttpReq);
         registrereBesok();
-    });
+    }, [xmlHttpReq]);
     return (
         <BrowserRouter>
             <ScrollToTop />
