@@ -35,15 +35,11 @@ const swrConfig = {
 
 export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
     const response = await axios.get<InnloggetBruker>(`${API_URL}/innlogget-bruker`).catch((err) => {
-        console.log('axios feilet med henting av bruker context, ', err);
         console.log('err.response ', err.response);
         return err;
     });
-    console.log('raw res:', response);
     return response.data;
 };
-
-export const kontaktLogin = async () => await axios.get('/login');
 
 export const gjorInntektsoppslag = async (refusjonId: string) => {
     const response = await axios.post(`${API_URL}/refusjon/${refusjonId}/inntektsoppslag`).catch(håndterFeil);
