@@ -28,7 +28,7 @@ const setup = (tokenxClient, idportenClient) => {
 
             session.nonce = generators.nonce();
             session.state = generators.state();
-            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Content-Type', 'application/json');
             res.setHeader('Accept', '*/*');
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.path = '/refusjon';
