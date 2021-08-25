@@ -1,6 +1,19 @@
 import { Dispatch, SetStateAction } from 'react';
 
-function redirectlogin(xhr: any) {}
+enum Paths {
+    INNLOGGET_BRUKER = 'api/arbeidsgiver/innlogget-bruker',
+    LOGIN = '/login',
+}
+
+function redirectlogin(xhr: any) {
+    if (
+        ((xhr.status === 401 && xhr.responseURL.includes(Paths.INNLOGGET_BRUKER)) ||
+            (xhr.status === 301 && xhr.responseURL.includes(Paths.LOGIN))) &&
+        !window.location.pathname.includes('/login')
+    ) {
+        window.location.href = '/login';
+    }
+}
 
 export const XMLHttpReqHandler = (xmlHttpReq: boolean, setXmlHttpReq: Dispatch<SetStateAction<boolean>>) => {
     const accessor = Object.getOwnPropertyDescriptor(XMLHttpRequest.prototype, 'responseText');

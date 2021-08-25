@@ -42,7 +42,7 @@ const setup = (tokenxClient, idportenClient) => {
                 if (session.redirectTo) {
                     res.redirect(session.redirectTo);
                 } else {
-                    res.redirect('/');
+                    res.redirect('/refusjon');
                 }
             } catch (error) {
                 logger.error(error);
@@ -57,7 +57,7 @@ const setup = (tokenxClient, idportenClient) => {
         const authExpected = req.headers?.referer?.split('nav.no')?.[1]?.includes('refusjon');
 
         if (authExpected && !frontendTokenSet) {
-            res.redirect(setHostnamePath('/login'));
+            res.redirect(301, setHostnamePath('/login'));
         } else if (authExpected && frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -65,7 +65,7 @@ const setup = (tokenxClient, idportenClient) => {
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
                 req.session.destroy();
-                res.redirect(setHostnamePath('/login'));
+                res.redirect(301, setHostnamePath('/login'));
             }
         } else {
             next();
