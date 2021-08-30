@@ -16,10 +16,13 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
     const [pid, setPid] = useState('15000000000');
 
     const loggInnKnapp = async (pid: string) => {
-        const response = await axios.get(
-            `https://tiltak-fakelogin.labs.nais.io/token?aud=aud-tokenx&iss=tokenx&acr=Level4&pid=${pid}`
-        );
-        document.cookie = `${TOKENX_COOKIE_NAME}=${response.data};expires=Tue, 15 Jan 2044 21:47:38 GMT;domain=${window.location.hostname};path=/`;
+        console.log('init kall mot fake login', pid);
+        const response = await axios
+            .get(`https://tiltak-fakelogin.labs.nais.io/token?aud=aud-tokenx&iss=tokenx&acr=Level4&pid=${pid}`)
+            .catch((er) => console.log('error', er));
+        if (response) {
+            document.cookie = `${TOKENX_COOKIE_NAME}=${response.data};expires=Tue, 15 Jan 2044 21:47:38 GMT;domain=${window.location.hostname};path=/`;
+        }
         window.location.reload();
     };
 

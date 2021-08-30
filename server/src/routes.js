@@ -7,10 +7,12 @@ import config from './config';
 import logger from './logger';
 import apiProxy from './proxy/api-proxy';
 import decoratorProxy from './proxy/decorator-proxy';
-import sentryProxy from './proxy/sentry-proxy';
 
 const asyncHandler = require('express-async-handler');
 
+const hostname = process.env.HOST ?? '';
+const page = path.resolve(__dirname, '../build', 'index.html');
+const setHostnamePath = (path) => hostname.concat(path);
 const router = express.Router();
 
 const setup = (tokenxClient, idportenClient) => {
@@ -21,11 +23,11 @@ const setup = (tokenxClient, idportenClient) => {
     router.get(
         '/login',
         asyncHandler(async (req, res) => {
-            // lgtm [js/missing-rate-limiting]
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
-            res.redirect(idporten.authUrl(session, idportenClient));
+
+            res.redirect(idporten.authUrl(session, idportenClient)).send();
         })
     );
 
@@ -42,7 +44,7 @@ const setup = (tokenxClient, idportenClient) => {
                 if (session.redirectTo) {
                     res.redirect(session.redirectTo);
                 } else {
-                    res.redirect('/');
+                    res.redirect('/refusjon');
                 }
             } catch (error) {
                 logger.error(error);
@@ -53,25 +55,28 @@ const setup = (tokenxClient, idportenClient) => {
     );
 
     const ensureAuthenticated = async (req, res, next) => {
+        const session = req.session;
         const frontendTokenSet = frontendTokenSetFromSession(req);
 
         if (!frontendTokenSet) {
-            res.redirect('/login');
+            logger.info('token not set. setting status 301 with redirect');
+            res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
         } else if (frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
                 next();
             } catch (err) {
                 logger.error('Feil ved refresh av token', err);
+                session.redirectTo = req.url;
                 req.session.destroy();
-                res.redirect('/login');
+                res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
             }
         } else {
             next();
         }
     };
 
-    router.use(asyncHandler(ensureAuthenticated));
+    router.all(['/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
 
     // Protected
     router.get('/session', (req, res) => {
@@ -85,12 +90,12 @@ const setup = (tokenxClient, idportenClient) => {
 
     apiProxy.setup(router, tokenxClient);
     decoratorProxy.setup(router);
-    //sentryProxy.setup(router);
 
     router.use(express.static(path.join(__dirname, '../build')));
 
     router.get('/*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+        res.status(200);
+        res.sendFile(page);
     });
     return router;
 };

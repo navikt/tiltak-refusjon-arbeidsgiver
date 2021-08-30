@@ -2,11 +2,12 @@ import { startLabs } from './labs';
 import express from 'express';
 import session from './session';
 import bodyParser from 'body-parser';
-import cors from './cors';
 import tokenx from './auth/tokenx';
 import routes from './routes';
 import idporten from './auth/idporten';
 import logger from './logger';
+
+const cors = require('cors');
 
 async function startNormal(server) {
     try {
@@ -19,7 +20,15 @@ async function startNormal(server) {
 
         // setup sane defaults for CORS and HTTP headers
         // server.use(helmet());
-        server.use(cors);
+        server.use(
+            cors({
+                allowedHeaders: ['sessionId', 'Content-Type'],
+                exposedHeaders: ['sessionId'],
+                origin: '*',
+                methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+                preflightContinue: false,
+            })
+        );
 
         const tokenxAuthClient = await tokenx.client();
         const idportenAuthClient = await idporten.client();

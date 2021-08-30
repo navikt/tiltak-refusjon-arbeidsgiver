@@ -7,6 +7,7 @@ import LokalLogin from '../LokalLogin';
 import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
+import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -21,11 +22,15 @@ export const useInnloggetBruker = () => {
 
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
-    const [valgtBedrift, setValgtBedrift] = useState();
+    const [valgtBedrift, setValgtBedrift] = useState<string | undefined>(undefined);
+    const [xmlHttpReq, setXmlHttpReq] = useState<boolean>(false);
 
     useEffect(() => {
-        hentInnloggetBruker().then(setInnloggetBruker);
-    }, []);
+        XMLHttpReqHandler(xmlHttpReq, setXmlHttpReq);
+        hentInnloggetBruker()
+            .then((response) => setInnloggetBruker(response))
+            .catch((err) => console.log('err', err));
+    }, [xmlHttpReq]);
 
     const history = useHistory();
 
