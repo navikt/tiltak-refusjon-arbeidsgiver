@@ -12,7 +12,7 @@ import React, { Fragment, FunctionComponent } from 'react';
 import { lønnsbeskrivelseTekst } from '../messages';
 import { Refusjon } from '../refusjon/refusjon';
 import BEMHelper from '../utils/bem';
-import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT } from '../utils/datoUtils';
+import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../utils/datoUtils';
 import { formatterPenger } from '../utils/PengeUtils';
 import './Utregning.less';
 import Utregningsrad from './Utregningsrad';
@@ -87,12 +87,14 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 <>
                     <div className={cls.element('inntekter')}>
                         <Element>Lønnsbeskrivelse</Element>
+                        <Element>År/måned</Element>
                         <Element>Opptjeningsperiode</Element>
                         <Element>Beløp</Element>
                         <Element>Refunderes</Element>
                         {props.refusjon.inntektsgrunnlag.inntekter.map((inntekt) => (
                             <Fragment key={inntekt.id}>
                                 <Normaltekst>{inntektBeskrivelse(inntekt.beskrivelse)}</Normaltekst>
+                                <Normaltekst>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</Normaltekst>
 
                                 <div>
                                     {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
