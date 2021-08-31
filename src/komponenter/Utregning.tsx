@@ -94,7 +94,14 @@ const Utregning: FunctionComponent<Props> = (props) => {
                         {props.refusjon.inntektsgrunnlag.inntekter
                             .sort((a, b) => {
                                 if (a.måned === b.måned) {
-                                    return a.id.localeCompare(b.id);
+                                    if (
+                                        a.beskrivelse === b.beskrivelse ||
+                                        a.beskrivelse === undefined ||
+                                        b.beskrivelse === undefined
+                                    ) {
+                                        return a.id.localeCompare(b.id);
+                                    }
+                                    return a.beskrivelse.localeCompare(b.beskrivelse);
                                 }
                                 return a.måned.localeCompare(b.måned);
                             })
