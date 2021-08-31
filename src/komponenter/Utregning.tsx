@@ -91,29 +91,39 @@ const Utregning: FunctionComponent<Props> = (props) => {
                         <Element>Opptjeningsperiode</Element>
                         <Element>Beløp</Element>
                         <Element>Refunderes</Element>
-                        {props.refusjon.inntektsgrunnlag.inntekter.map((inntekt) => (
-                            <Fragment key={inntekt.id}>
-                                <Normaltekst>{inntektBeskrivelse(inntekt.beskrivelse)}</Normaltekst>
-                                <Normaltekst>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</Normaltekst>
+                        {props.refusjon.inntektsgrunnlag.inntekter
+                            .sort((a, b) => {
+                                if (a.måned === b.måned) {
+                                    return a.id.localeCompare(b.id);
+                                }
+                                return a.måned.localeCompare(b.måned);
+                            })
+                            .map((inntekt) => (
+                                <Fragment key={inntekt.id}>
+                                    <Normaltekst>{inntektBeskrivelse(inntekt.beskrivelse)}</Normaltekst>
+                                    <Normaltekst>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</Normaltekst>
 
-                                <div>
-                                    {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
-                                        formatterPeriode(inntekt.opptjeningsperiodeFom, inntekt.opptjeningsperiodeTom)
-                                    ) : (
-                                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                                            <Warning
-                                                style={{ marginRight: '0.25rem', width: '24px', height: '24px' }}
-                                            />
-                                            <Normaltekst>Ikke rapportert opptjeningsperiode</Normaltekst>
-                                        </div>
-                                    )}
-                                </div>
+                                    <div>
+                                        {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
+                                            formatterPeriode(
+                                                inntekt.opptjeningsperiodeFom,
+                                                inntekt.opptjeningsperiodeTom
+                                            )
+                                        ) : (
+                                            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                                                <Warning
+                                                    style={{ marginRight: '0.25rem', width: '24px', height: '24px' }}
+                                                />
+                                                <Normaltekst>Ikke rapportert opptjeningsperiode</Normaltekst>
+                                            </div>
+                                        )}
+                                    </div>
 
-                                <Normaltekst>{formatterPenger(inntekt.beløp)}</Normaltekst>
+                                    <Normaltekst>{formatterPenger(inntekt.beløp)}</Normaltekst>
 
-                                <Normaltekst>{inntekt.erMedIInntektsgrunnlag ? 'Ja' : 'Nei'}</Normaltekst>
-                            </Fragment>
-                        ))}
+                                    <Normaltekst>{inntekt.erMedIInntektsgrunnlag ? 'Ja' : 'Nei'}</Normaltekst>
+                                </Fragment>
+                            ))}
                     </div>
                     <VerticalSpacer rem={2} />
                     <div style={{ borderBottom: '1px solid #c6c2bf' }} />
