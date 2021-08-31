@@ -1,6 +1,6 @@
 import { Calender, File, FileContent, Money, People, Warning } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
@@ -18,7 +18,13 @@ const IkonRad = styled.div`
     }
 `;
 
-const NokkelInfo: FunctionComponent = () => {
+const GråBoks = styled.div`
+    background-color: #eee;
+    border-radius: 4px;
+    padding: 1.5rem;
+`;
+
+const InformasjonFraAvtalen: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
 
@@ -27,7 +33,9 @@ const NokkelInfo: FunctionComponent = () => {
     const refusjonsnummer = `${refusjon.tilskuddsgrunnlag.avtaleNr}-${refusjon.tilskuddsgrunnlag.løpenummer}`;
 
     return (
-        <div>
+        <GråBoks>
+            <Undertittel>Informasjon hentet fra avtalen</Undertittel>
+            <VerticalSpacer rem={1} />
             <IkonRad>
                 <EksternLenke href={avtaleLenke}>
                     <File />
@@ -85,8 +93,8 @@ const NokkelInfo: FunctionComponent = () => {
                     </AlertStripeFeil>
                 </>
             )}
-        </div>
+        </GråBoks>
     );
 };
 
-export default NokkelInfo;
+export default InformasjonFraAvtalen;
