@@ -90,8 +90,8 @@ const Utregning: FunctionComponent<Props> = (props) => {
                         <Element>År/måned</Element>
                         <Element>Opptjeningsperiode</Element>
                         <Element>Beløp</Element>
-                        <Element>Refunderes</Element>
                         {props.refusjon.inntektsgrunnlag.inntekter
+                            .filter((inntekt) => inntekt.erMedIInntektsgrunnlag)
                             .sort((a, b) => {
                                 if (a.måned === b.måned) {
                                     if (
@@ -127,8 +127,6 @@ const Utregning: FunctionComponent<Props> = (props) => {
                                     </div>
 
                                     <Normaltekst>{formatterPenger(inntekt.beløp)}</Normaltekst>
-
-                                    <Normaltekst>{inntekt.erMedIInntektsgrunnlag ? 'Ja' : 'Nei'}</Normaltekst>
                                 </Fragment>
                             ))}
                     </div>
