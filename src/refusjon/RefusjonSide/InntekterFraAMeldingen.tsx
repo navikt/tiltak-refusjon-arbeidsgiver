@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useHentRefusjon } from '../../services/rest-service';
@@ -7,14 +7,13 @@ import { refusjonApnet } from '../../utils/amplitude-utils';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
-import { Warning } from '@navikt/ds-icons';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { lønnsbeskrivelseTekst } from '../../messages';
 
 const GråBoks = styled.div`
     background-color: #eee;
     border-radius: 4px;
-    padding: 1.5rem;
+    padding: 1.5rem min(1.5rem, 2%);
 `;
 
 const Fleks = styled.div`
@@ -24,13 +23,22 @@ const Fleks = styled.div`
     align-items: baseline;
 `;
 
-const InntekterTabell = styled.div`
-    background-color: @navLysGra;
-    border-radius: 4px;
-    display: grid;
-    grid-template-columns: auto 5rem 11rem 5.5rem;
-    column-gap: 1rem;
-    row-gap: 0.75rem;
+const InntekterTabell = styled.table`
+    width: 100%;
+    th,
+    td {
+        text-align: left;
+        padding: 0.35rem 0.5rem;
+    }
+    th:first-child,
+    td:first-child {
+        padding: 0.35rem 0;
+    }
+    th:last-child,
+    td:last-child {
+        text-align: right;
+        padding: 0.35rem 0;
+    }
 `;
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
@@ -86,55 +94,63 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                 <>
                     <VerticalSpacer rem={1} />
                     <InntekterTabell>
-                        <Element>Lønnsbeskrivelse</Element>
-                        <Element>År/måned</Element>
-                        <Element>Opptjeningsperiode</Element>
-                        <Element>Beløp</Element>
-                        {refusjon.inntektsgrunnlag.inntekter
-                            .filter((inntekt) => inntekt.erMedIInntektsgrunnlag)
-                            .sort((a, b) => {
-                                if (a.måned === b.måned) {
-                                    if (
-                                        a.beskrivelse === b.beskrivelse ||
-                                        a.beskrivelse === undefined ||
-                                        b.beskrivelse === undefined
-                                    ) {
-                                        return a.id.localeCompare(b.id);
+                        <thead>
+                            <tr>
+                                <th>Beskriv&shy;else</th>
+                                <th>År/mnd</th>
+                                <th>Opptjenings&shy;periode</th>
+                                <th>Beløp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {refusjon.inntektsgrunnlag.inntekter
+                                .filter((inntekt) => inntekt.erMedIInntektsgrunnlag)
+                                .sort((a, b) => {
+                                    if (a.måned === b.måned) {
+                                        if (
+                                            a.beskrivelse === b.beskrivelse ||
+                                            a.beskrivelse === undefined ||
+                                            b.beskrivelse === undefined
+                                        ) {
+                                            return a.id.localeCompare(b.id);
+                                        }
+                                        return a.beskrivelse.localeCompare(b.beskrivelse);
                                     }
-                                    return a.beskrivelse.localeCompare(b.beskrivelse);
-                                }
-                                return a.måned.localeCompare(b.måned);
-                            })
-                            .map((inntekt) => (
-                                <Fragment key={inntekt.id}>
-                                    <Normaltekst>{inntektBeskrivelse(inntekt.beskrivelse)}</Normaltekst>
-                                    <Normaltekst>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</Normaltekst>
+                                    return a.måned.localeCompare(b.måned);
+                                })
+                                .map((inntekt) => (
+                                    <tr key={inntekt.id}>
+                                        <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
+                                        <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
 
-                                    <div>
-                                        {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
-                                            formatterPeriode(
-                                                inntekt.opptjeningsperiodeFom,
-                                                inntekt.opptjeningsperiodeTom
-                                            )
-                                        ) : (
-                                            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                                                <Warning
-                                                    style={{ marginRight: '0.25rem', width: '24px', height: '24px' }}
-                                                />
-                                                <Normaltekst>Ikke rapportert opptjeningsperiode</Normaltekst>
-                                            </div>
-                                        )}
-                                    </div>
+                                        <td>
+                                            {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
+                                                formatterPeriode(
+                                                    inntekt.opptjeningsperiodeFom,
+                                                    inntekt.opptjeningsperiodeTom,
+                                                    'DD.MM'
+                                                )
+                                            ) : (
+                                                <em>Ikke rapportert opptjenings&shy;periode</em>
+                                            )}
+                                        </td>
 
-                                    <Normaltekst>{formatterPenger(inntekt.beløp)}</Normaltekst>
-                                </Fragment>
-                            ))}
-                        {refusjon.beregning?.lønn && (
-                            <>
-                                <Element style={{ gridColumnStart: 'span 3' }}>Sum</Element>
-                                <Element>{formatterPenger(refusjon.beregning.lønn)}</Element>
-                            </>
-                        )}
+                                        <td>{formatterPenger(inntekt.beløp)}</td>
+                                    </tr>
+                                ))}
+                            {refusjon.beregning?.lønn && (
+                                <tr>
+                                    <td colSpan={3}>
+                                        <b>Sum</b>
+                                    </td>
+                                    <td>
+                                        <b style={{ whiteSpace: 'nowrap' }}>
+                                            {formatterPenger(refusjon.beregning.lønn)}
+                                        </b>
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
                     </InntekterTabell>
                     <VerticalSpacer rem={1} />
                 </>
