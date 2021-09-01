@@ -152,7 +152,6 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                             )}
                         </tbody>
                     </InntekterTabell>
-                    <VerticalSpacer rem={1} />
                 </>
             )}
             {ingenInntekter && (
