@@ -131,7 +131,6 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                             ))}
                         {refusjon.beregning?.lønn && (
                             <>
-                                <hr style={{ gridColumnStart: 'span 4', width: '100%' }} />
                                 <Element style={{ gridColumnStart: 'span 3' }}>Sum</Element>
                                 <Element>{formatterPenger(refusjon.beregning.lønn)}</Element>
                             </>
