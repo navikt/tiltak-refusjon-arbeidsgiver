@@ -41,8 +41,17 @@ export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
     return response.data;
 };
 
-export const gjorInntektsoppslag = async (refusjonId: string) => {
-    const response = await axios.post(`${API_URL}/refusjon/${refusjonId}/inntektsoppslag`).catch(håndterFeil);
+export const korrigerBruttolønn = async (
+    refusjonId: string,
+    inntekterKunFraTiltaket: boolean,
+    korrigertBruttoLønn?: number
+) => {
+    const response = await axios
+        .post(`${API_URL}/refusjon/${refusjonId}/korriger-bruttolønn`, {
+            inntekterKunFraTiltaket: inntekterKunFraTiltaket,
+            korrigertBruttoLønn: korrigertBruttoLønn,
+        })
+        .catch(håndterFeil);
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };

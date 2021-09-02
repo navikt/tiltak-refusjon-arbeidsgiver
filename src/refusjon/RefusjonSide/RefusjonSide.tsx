@@ -17,6 +17,7 @@ import InformasjonFraAvtalen from './InformasjonFraAvtalen';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
 import InntekterFraAMeldingen from './InntekterFraAMeldingen';
+import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 
 const cls = BEMHelper('refusjonside');
 
@@ -74,10 +75,14 @@ const RefusjonSide: FunctionComponent = () => {
                 <VerticalSpacer rem={2} />
                 <InntekterFraAMeldingen />
                 <VerticalSpacer rem={2} />
-                <Utregning beregning={refusjon.beregning} tilskuddsgrunnlag={refusjon.tilskuddsgrunnlag} />
-                <VerticalSpacer rem={4} />
+                {refusjon.inntektsgrunnlag?.inntekter?.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
+                    <InntekterFraTiltaketSpørsmål />
+                )}
+                <VerticalSpacer rem={2} />
                 {refusjon.beregning && refusjon.beregning.refusjonsbeløp > 0 && (
                     <>
+                        <Utregning beregning={refusjon.beregning} tilskuddsgrunnlag={refusjon.tilskuddsgrunnlag} />
+                        <VerticalSpacer rem={4} />
                         <SummeringBoks />
 
                         <VerticalSpacer rem={1} />

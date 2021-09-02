@@ -138,14 +138,14 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                         <td>{formatterPenger(inntekt.beløp)}</td>
                                     </tr>
                                 ))}
-                            {refusjon.beregning?.lønn && (
+                            {refusjon.inntektsgrunnlag?.bruttoLønn && (
                                 <tr>
                                     <td colSpan={3}>
                                         <b>Sum</b>
                                     </td>
                                     <td>
                                         <b style={{ whiteSpace: 'nowrap' }}>
-                                            {formatterPenger(refusjon.beregning.lønn)}
+                                            {formatterPenger(refusjon.inntektsgrunnlag.bruttoLønn)}
                                         </b>
                                     </td>
                                 </tr>
