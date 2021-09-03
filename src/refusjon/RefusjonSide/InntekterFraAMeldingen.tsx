@@ -90,7 +90,9 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                     </Normaltekst>
                 )}
             </Fleks>
-            <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
+            {refusjon.inntektsgrunnlag?.bruttoLønn !== undefined && refusjon.inntektsgrunnlag?.bruttoLønn !== null && (
+                <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
+            )}
             {refusjon.inntektsgrunnlag && refusjon.inntektsgrunnlag.inntekter.length > 0 && (
                 <>
                     <VerticalSpacer rem={1} />
