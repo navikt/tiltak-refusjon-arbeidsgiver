@@ -48,6 +48,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 Er inntektene som vi har hentet ({formatterPenger(refusjon.inntektsgrunnlag.bruttoLønn)}) kun fra
                 tiltaket {tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]}?
             </Label>
+            <p>
+                <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller lønnstilskudd</i>
+            </p>
             <RadioPakning>
                 <RadioPanel
                     name="inntekterKunFraTiltaket"
@@ -69,7 +72,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     <VerticalSpacer rem={1} />
                     <Input
                         bredde={'S'}
-                        label={'Skriv inn bruttolønn utbetalt for sommerjobb'}
+                        label={`Skriv inn bruttolønn utbetalt for ${
+                            tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]
+                        }`}
                         onChange={(event: any) => {
                             const verdi = event.currentTarget.value;
                             if (verdi.match(/^\d*$/) && verdi <= bruttoLønn) {

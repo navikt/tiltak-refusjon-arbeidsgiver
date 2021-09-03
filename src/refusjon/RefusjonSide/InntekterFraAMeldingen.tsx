@@ -82,7 +82,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
     return (
         <GråBoks>
             <Fleks>
-                <Undertittel style={{ marginBottom: '0.5rem' }}>Inntekter hentet fra a-meldingen</Undertittel>
+                <Undertittel style={{ marginBottom: '1rem' }}>Inntekter hentet fra a-meldingen</Undertittel>
                 {refusjon.inntektsgrunnlag && (
                     <Normaltekst>
                         Sist hentet:{' '}
@@ -90,6 +90,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                     </Normaltekst>
                 )}
             </Fleks>
+            <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
             {refusjon.inntektsgrunnlag && refusjon.inntektsgrunnlag.inntekter.length > 0 && (
                 <>
                     <VerticalSpacer rem={1} />
