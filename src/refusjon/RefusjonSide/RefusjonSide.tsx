@@ -13,9 +13,11 @@ import BEMHelper from '../../utils/bem';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import GodkjennModal from './GodkjennModal';
-import NokkelInfo from './NokkelInfo';
+import InformasjonFraAvtalen from './InformasjonFraAvtalen';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
+import InntekterFraAMeldingen from './InntekterFraAMeldingen';
+import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 
 const cls = BEMHelper('refusjonside');
 
@@ -69,12 +71,18 @@ const RefusjonSide: FunctionComponent = () => {
                     er hentet fra avtalen om midlertidig lønnstilskudd.
                 </Normaltekst>
                 <VerticalSpacer rem={2} />
-                <NokkelInfo />
+                <InformasjonFraAvtalen />
                 <VerticalSpacer rem={2} />
-                <Utregning refusjon={refusjon} />
-                <VerticalSpacer rem={4} />
+                <InntekterFraAMeldingen />
+                <VerticalSpacer rem={2} />
+                {refusjon.inntektsgrunnlag?.inntekter?.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
+                    <InntekterFraTiltaketSpørsmål />
+                )}
+                <VerticalSpacer rem={2} />
                 {refusjon.beregning && refusjon.beregning.refusjonsbeløp > 0 && (
                     <>
+                        <Utregning beregning={refusjon.beregning} tilskuddsgrunnlag={refusjon.tilskuddsgrunnlag} />
+                        <VerticalSpacer rem={4} />
                         <SummeringBoks />
 
                         <VerticalSpacer rem={1} />

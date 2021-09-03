@@ -15,6 +15,8 @@ export interface Refusjon {
     beregning?: Beregning;
     fristForGodkjenning: string;
     harInntektIAlleMåneder: boolean;
+    inntekterKunFraTiltaket?: boolean;
+    korrigertBruttoLønn?: number;
 }
 
 export interface Tilskuddsgrunnlag {
@@ -40,6 +42,7 @@ export interface Tilskuddsgrunnlag {
 }
 
 export interface Inntektsgrunnlag {
+    bruttoLønn: number;
     innhentetTidspunkt: string;
     inntekter: Inntektslinje[];
 }
@@ -57,7 +60,7 @@ export interface Inntektslinje {
     erMedIInntektsgrunnlag: boolean;
 }
 
-interface Beregning {
+export interface Beregning {
     arbeidsgiveravgift: number;
     commitHash: string;
     feriepenger: number;
@@ -68,11 +71,4 @@ interface Beregning {
     overTilskuddsbeløp: boolean;
     sumUtgifter: number;
     tjenestepensjon: number;
-}
-
-export interface AlleSteg {
-    path: string;
-    label: string;
-    komponent: React.ReactNode;
-    disabled: boolean;
 }
