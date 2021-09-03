@@ -6,7 +6,6 @@ const setup = (router, tokenxClient) => {
     router.use(
         '/api',
         proxy(config.api().url, {
-            parseReqBody: false,
             proxyReqPathResolver: (req) => {
                 return req.originalUrl;
             },
