@@ -8,6 +8,8 @@ const asyncHandler = require('express-async-handler');
 import logger from './logger';
 
 async function startLabs(server) {
+    const page = path.resolve(__dirname, '../build', 'index.html');
+
     try {
         server.use(bodyParser.json());
 
@@ -55,6 +57,11 @@ async function startLabs(server) {
         });
 
         server.use('/dekoratoren', createProxyMiddleware({ target: 'https://www.nav.no', changeOrigin: true }));
+
+        server.get('/*', (req, res) => {
+            res.status(200);
+            res.sendFile(page);
+        });
 
         const port = 3000;
         server.listen(port, () => logger.info(`Listening on port ${port}`));
