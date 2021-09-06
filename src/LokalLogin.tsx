@@ -23,7 +23,7 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
         if (response) {
             document.cookie = `${TOKENX_COOKIE_NAME}=${response.data};expires=Tue, 15 Jan 2044 21:47:38 GMT;domain=${window.location.hostname};path=/`;
         }
-        window.location.reload();
+        window.location.href = window.location.href.replace('login', 'refusjon');
     };
 
     if (props.innloggetBruker !== undefined) {
