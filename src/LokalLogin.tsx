@@ -3,9 +3,10 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { Input } from 'nav-frontend-skjema';
 import React, { FunctionComponent, useState } from 'react';
 import { InnloggetBruker } from './bruker/BrukerContextType';
-import VerticalSpacer from './komponenter/VerticalSpacer';
 import { Element } from 'nav-frontend-typografi';
 import { inneholderUrlnavn } from './utils/miljoUtils';
+import BEMHelper from './utils/bem';
+import './lokalLogin.less';
 
 type Props = {
     innloggetBruker: InnloggetBruker | undefined;
@@ -15,6 +16,7 @@ const TOKENX_COOKIE_NAME = `tokenx-token`;
 
 const LokalLogin: FunctionComponent<Props> = (props) => {
     const [pid, setPid] = useState('15000000000');
+    const cls = BEMHelper('login');
 
     const redirectFraLokalLogin = () => (window.location.href = window.location.href.replace('login', 'refusjon'));
 
@@ -36,41 +38,23 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
     }
 
     return (
-        <div
-            style={{
-                minHeight: '30rem',
-                display: 'flex',
-                justifyContent: 'center',
-                backgroundColor: '#F1F1F1',
-            }}
-        >
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    boxShadow:
-                        '0 0.9px 1.7px rgb(0 0 0 / 3%), 0 3.1px 5.8px rgb(0 0 0 / 6%), 0 14px 26px rgb(0 0 0 / 13%)',
-                    padding: '4rem 6rem',
-                    borderRadius: '8px',
-                    backgroundColor: 'white',
-                }}
-            >
-                <VerticalSpacer rem={2} />
+        <div className={cls.className}>
+            <div className={cls.element('boks')}>
                 <Element>Logg inn med fødselsnummer</Element>
-                <VerticalSpacer rem={1} />
-                <div style={{ display: 'flex' }}>
+                <div className={cls.element('input-wrapper')}>
                     <Input
                         placeholder="Logg inn som"
                         value={pid}
                         onChange={(event) => setPid(event.currentTarget.value)}
                     />
-                    <Hovedknapp style={{ marginLeft: '0.5rem' }} disabled={!pid} onClick={() => loggInnKnapp(pid)}>
+                    <Hovedknapp
+                        className={cls.element('submit-knapp')}
+                        disabled={!pid}
+                        onClick={() => loggInnKnapp(pid)}
+                    >
                         Logg inn
                     </Hovedknapp>
                 </div>
-                <VerticalSpacer rem={2} />
             </div>
         </div>
     );

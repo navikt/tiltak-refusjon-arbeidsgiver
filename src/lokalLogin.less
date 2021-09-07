@@ -1,0 +1,47 @@
+.login {
+    min-height: 30rem;
+    display: flex;
+    justify-content: center;
+    background-color: #f1f1f1;
+
+    &__boks {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0.9px 1.7px rgb(0 0 0 / 3%), 0 3.1px 5.8px rgb(0 0 0 / 6%), 0 14px 26px rgb(0 0 0 / 13%);
+        padding: 4rem 2rem;
+        border-radius: 8px;
+        background-color: white;
+        margin: 5rem 1rem;
+    }
+
+    &__input-wrapper {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .skjemaelement {
+            margin-bottom: 1rem;
+        }
+    }
+
+    @media (min-width: 768px) {
+        &__boks {
+            padding: 4rem 6rem;
+            margin: 5rem 2rem;
+        }
+
+        &__input-wrapper {
+            flex-direction: row;
+            .skjemaelement {
+                margin-bottom: 0;
+            }
+        }
+        &__submit-knapp {
+            margin-left: 0.5rem;
+        }
+    }
+}
