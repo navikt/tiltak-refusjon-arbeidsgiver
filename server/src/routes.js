@@ -26,8 +26,7 @@ const setup = (tokenxClient, idportenClient) => {
             const session = req.session;
             session.nonce = generators.nonce();
             session.state = generators.state();
-
-            res.redirect(idporten.authUrl(session, idportenClient)).send();
+            res.redirect(idporten.authUrl(session, idportenClient));
         })
     );
 
@@ -60,7 +59,8 @@ const setup = (tokenxClient, idportenClient) => {
 
         if (!frontendTokenSet) {
             logger.info('token not set. setting status 301 with redirect');
-            res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
+            res.status(301).set('location', setHostnamePath('/login'));
+            res.redirect(setHostnamePath('/login'));
         } else if (frontendTokenSet.expired()) {
             try {
                 req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
@@ -69,7 +69,8 @@ const setup = (tokenxClient, idportenClient) => {
                 logger.error('Feil ved refresh av token', err);
                 session.redirectTo = req.url;
                 req.session.destroy();
-                res.status(301).set('location', setHostnamePath('/login')).redirect(setHostnamePath('/login')).send();
+                res.status(301).set('location', setHostnamePath('/login'));
+                res.redirect(setHostnamePath('/login'));
             }
         } else {
             next();
