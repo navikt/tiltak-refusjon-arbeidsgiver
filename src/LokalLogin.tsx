@@ -75,5 +75,4 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
         </div>
     );
 };
-
 export default LokalLogin;

@@ -6,7 +6,7 @@ import { hentInnloggetBruker } from '../services/rest-service';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import ManglerRettigheter from '../komponenter/ManglerRettigheter';
-import { erUtviklingsmiljø, inneholderVertsnavn } from '../utils/miljoUtils';
+import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -35,7 +35,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
 
     return (
         <>
-            {(erUtviklingsmiljø() || inneholderVertsnavn('labs.nais.io')) && (
+            {(erUtviklingsmiljo() || inneholderVertsnavn('labs.nais.io')) && (
                 <LokalLogin innloggetBruker={innloggetBruker} />
             )}
             {innloggetBruker && (

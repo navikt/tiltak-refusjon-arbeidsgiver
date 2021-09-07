@@ -1,4 +1,4 @@
-export const erUtviklingsmiljø = () => process.env.NODE_ENV === 'development';
+export const erUtviklingsmiljo = () => process.env.NODE_ENV === 'development';
 
 export const inneholderVertsnavn = (navn: string) => window.location.hostname.includes(navn);
 
