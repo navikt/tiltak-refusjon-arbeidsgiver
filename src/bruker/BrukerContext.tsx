@@ -1,17 +1,16 @@
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import HvitBoks from '../komponenter/hvitboks/HvitBoks';
-import VerticalSpacer from '../komponenter/VerticalSpacer';
 import LokalLogin from '../LokalLogin';
 import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
+import ManglerRettigheter from '../komponenter/ManglerRettigheter';
+import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
-// Egen hook fordi det sjekkes at den blir brukt riktig, og kan ha undefined som defaultValue
+// hook som sjekker at context er satt før bruk.
 export const useInnloggetBruker = () => {
     const context = useContext(BrukerContext);
     if (context === undefined) {
@@ -36,7 +35,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
 
     return (
         <>
-            {(process.env.NODE_ENV === 'development' || window.location.hostname.includes('labs.nais.io')) && (
+            {(erUtviklingsmiljo() || inneholderVertsnavn('labs.nais.io')) && (
                 <LokalLogin innloggetBruker={innloggetBruker} />
             )}
             {innloggetBruker && (
@@ -63,29 +62,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     {props.children}
                 </BrukerContext.Provider>
             )}
-            {innloggetBruker && innloggetBruker.organisasjoner.length === 0 && (
-                <HvitBoks style={{ margin: '1rem auto 2rem auto' }}>
-                    <Systemtittel>Ikke tilgang til noen virksomheter i Altinn</Systemtittel>
-                    <VerticalSpacer rem={2} />
-                    <Normaltekst>
-                        For å få tilgang til refusjoner for din virksomhet må du ha en av disse Altinn-rollene:
-                    </Normaltekst>
-                    <VerticalSpacer rem={1} />
-                    <ul>
-                        <li>ansvarlig revisor</li>
-                        <li>lønn og personalmedarbeider</li>
-                        <li>regnskapsfører lønn</li>
-                        <li>regnskapsfører med signeringsrettighet</li>
-                        <li>regnskapsfører uten signeringsrettighet</li>
-                        <li>revisormedarbeider</li>
-                        <li>norsk representant for utenlandsk enhet</li>
-                    </ul>
-                    <VerticalSpacer rem={1} />
-                    <Normaltekst>
-                        Du kan også ha rettigheten <b>inntektsmelding</b>.
-                    </Normaltekst>
-                </HvitBoks>
-            )}
+            {innloggetBruker?.organisasjoner?.length === 0 && <ManglerRettigheter />}
         </>
     );
 };
