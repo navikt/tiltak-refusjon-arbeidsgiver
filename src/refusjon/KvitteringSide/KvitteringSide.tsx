@@ -1,4 +1,4 @@
-import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
+import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
@@ -8,8 +8,6 @@ import InformasjonFraAvtalen from '../RefusjonSide/InformasjonFraAvtalen';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Utregning from '../../komponenter/Utregning';
 import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
-import { formatterPenger } from '../../utils/PengeUtils';
-import { tiltakstypeTekst } from '../../messages';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 
 const KvitteringSide: FunctionComponent = () => {
