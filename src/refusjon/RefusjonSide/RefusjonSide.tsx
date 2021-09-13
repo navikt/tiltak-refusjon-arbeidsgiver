@@ -14,10 +14,10 @@ import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import GodkjennModal from './GodkjennModal';
 import InformasjonFraAvtalen from './InformasjonFraAvtalen';
-import './RefusjonSide.less';
-import SummeringBoks from './SummeringBoks';
 import InntekterFraAMeldingen from './InntekterFraAMeldingen';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
+import './RefusjonSide.less';
+import SummeringBoks from './SummeringBoks';
 
 const cls = BEMHelper('refusjonside');
 
@@ -79,27 +79,29 @@ const RefusjonSide: FunctionComponent = () => {
                     <InntekterFraTiltaketSpørsmål />
                 )}
                 <VerticalSpacer rem={2} />
-                {refusjon.beregning && refusjon.beregning.refusjonsbeløp > 0 && (
-                    <>
-                        <Utregning beregning={refusjon.beregning} tilskuddsgrunnlag={refusjon.tilskuddsgrunnlag} />
-                        <VerticalSpacer rem={4} />
-                        <SummeringBoks />
+                {refusjon.beregning &&
+                    refusjon.beregning.refusjonsbeløp > 0 &&
+                    refusjon.inntekterKunFraTiltaket !== null && (
+                        <>
+                            <Utregning beregning={refusjon.beregning} tilskuddsgrunnlag={refusjon.tilskuddsgrunnlag} />
+                            <VerticalSpacer rem={4} />
+                            <SummeringBoks />
 
-                        <VerticalSpacer rem={1} />
+                            <VerticalSpacer rem={1} />
 
-                        <BekreftCheckboksPanel
-                            className={cls.element('bekrefthandling')}
-                            onChange={() => bekreftOpplysninger()}
-                            checked={bekrefetKorrekteOpplysninger}
-                            label="Jeg bekrefter at opplysningene er korrekte."
-                            feil={ikkeBekreftetFeilmelding}
-                        />
-                        <VerticalSpacer rem={2} />
-                        <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
-                            Fullfør
-                        </LagreKnapp>
-                    </>
-                )}
+                            <BekreftCheckboksPanel
+                                className={cls.element('bekrefthandling')}
+                                onChange={() => bekreftOpplysninger()}
+                                checked={bekrefetKorrekteOpplysninger}
+                                label="Jeg bekrefter at opplysningene er korrekte."
+                                feil={ikkeBekreftetFeilmelding}
+                            />
+                            <VerticalSpacer rem={2} />
+                            <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+                                Fullfør
+                            </LagreKnapp>
+                        </>
+                    )}
             </HvitBoks>
             <GodkjennModal
                 isOpen={visGodkjennModal}
