@@ -88,13 +88,14 @@ const RefusjonSide: FunctionComponent = () => {
                         <VerticalSpacer rem={1} />
 
                         <BekreftCheckboksPanel
-                            className={cls.element('bekrefthandling')}
                             onChange={() => bekreftOpplysninger()}
                             checked={bekrefetKorrekteOpplysninger}
-                            label="Jeg bekrefter at opplysningene er korrekte.
-                                  NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene nyttes etter
-                                  forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd."
-                        />
+                            label="Jeg bekrefter at opplysningene er korrekte."
+                        >
+                            NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at
+                            midlene nyttes etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2.
+                            ledd
+                        </BekreftCheckboksPanel>
                         <VerticalSpacer rem={2} />
                         <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
                             Fullfør
