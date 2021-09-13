@@ -26,18 +26,18 @@ const RefusjonSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState(false);
-    const [ikkeBekreftetFeilmelding, seTikkeBekreftetFeilmelding] = useState('');
+    const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState('');
     const [visGodkjennModal, setVisGodkjennModal] = useState(false);
 
     const bekreftOpplysninger = () => {
         setBekrefetKorrekteOpplysninger(!bekrefetKorrekteOpplysninger);
-        seTikkeBekreftetFeilmelding('');
+        setIkkeBekreftetFeilmelding('');
     };
     const fullførRefusjon = async () => {
         if (bekrefetKorrekteOpplysninger) {
             setVisGodkjennModal(true);
         } else {
-            seTikkeBekreftetFeilmelding('Du må samtykke at opplysningene er riktig, før du kan sende inn skjemaet.');
+            setIkkeBekreftetFeilmelding('Du må samtykke at opplysningene er riktig, før du kan sende inn skjemaet.');
         }
     };
 
@@ -91,8 +91,9 @@ const RefusjonSide: FunctionComponent = () => {
                             className={cls.element('bekrefthandling')}
                             onChange={() => bekreftOpplysninger()}
                             checked={bekrefetKorrekteOpplysninger}
-                            label="Jeg bekrefter at opplysningene er korrekte."
-                            feil={ikkeBekreftetFeilmelding}
+                            label="Jeg bekrefter at opplysningene er korrekte.
+                                  NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene nyttes etter
+                                  forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd."
                         />
                         <VerticalSpacer rem={2} />
                         <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
