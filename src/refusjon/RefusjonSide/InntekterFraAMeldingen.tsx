@@ -69,7 +69,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
         refusjon.status === 'KLAR_FOR_INNSENDING' &&
         !refusjon.harInntektIAlleMåneder &&
         !!refusjon.inntektsgrunnlag &&
-        refusjon.inntektsgrunnlag.inntekter.length > 0;
+        refusjon.inntektsgrunnlag.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag);
 
     refusjonApnet(
         refusjon,
@@ -93,70 +93,71 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
             {refusjon.inntektsgrunnlag?.bruttoLønn !== undefined && refusjon.inntektsgrunnlag?.bruttoLønn !== null && (
                 <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
             )}
-            {refusjon.inntektsgrunnlag && refusjon.inntektsgrunnlag.inntekter.length > 0 && (
-                <>
-                    <VerticalSpacer rem={1} />
-                    <InntekterTabell>
-                        <thead>
-                            <tr>
-                                <th>Beskriv&shy;else</th>
-                                <th>År/mnd</th>
-                                <th>Opptjenings&shy;periode</th>
-                                <th>Beløp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {refusjon.inntektsgrunnlag.inntekter
-                                .filter((inntekt) => inntekt.erMedIInntektsgrunnlag)
-                                .sort((a, b) => {
-                                    if (a.måned === b.måned) {
-                                        if (
-                                            a.beskrivelse === b.beskrivelse ||
-                                            a.beskrivelse === undefined ||
-                                            b.beskrivelse === undefined
-                                        ) {
-                                            return a.id.localeCompare(b.id);
-                                        }
-                                        return a.beskrivelse.localeCompare(b.beskrivelse);
-                                    }
-                                    return a.måned.localeCompare(b.måned);
-                                })
-                                .map((inntekt) => (
-                                    <tr key={inntekt.id}>
-                                        <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
-                                        <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
-
-                                        <td>
-                                            {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
-                                                formatterPeriode(
-                                                    inntekt.opptjeningsperiodeFom,
-                                                    inntekt.opptjeningsperiodeTom,
-                                                    'DD.MM'
-                                                )
-                                            ) : (
-                                                <em>Ikke rapportert opptjenings&shy;periode</em>
-                                            )}
-                                        </td>
-
-                                        <td>{formatterPenger(inntekt.beløp)}</td>
-                                    </tr>
-                                ))}
-                            {refusjon.inntektsgrunnlag?.bruttoLønn && (
+            {refusjon.inntektsgrunnlag &&
+                refusjon.inntektsgrunnlag.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
+                    <>
+                        <VerticalSpacer rem={1} />
+                        <InntekterTabell>
+                            <thead>
                                 <tr>
-                                    <td colSpan={3}>
-                                        <b>Sum</b>
-                                    </td>
-                                    <td>
-                                        <b style={{ whiteSpace: 'nowrap' }}>
-                                            {formatterPenger(refusjon.inntektsgrunnlag.bruttoLønn)}
-                                        </b>
-                                    </td>
+                                    <th>Beskriv&shy;else</th>
+                                    <th>År/mnd</th>
+                                    <th>Opptjenings&shy;periode</th>
+                                    <th>Beløp</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </InntekterTabell>
-                </>
-            )}
+                            </thead>
+                            <tbody>
+                                {refusjon.inntektsgrunnlag.inntekter
+                                    .filter((inntekt) => inntekt.erMedIInntektsgrunnlag)
+                                    .sort((a, b) => {
+                                        if (a.måned === b.måned) {
+                                            if (
+                                                a.beskrivelse === b.beskrivelse ||
+                                                a.beskrivelse === undefined ||
+                                                b.beskrivelse === undefined
+                                            ) {
+                                                return a.id.localeCompare(b.id);
+                                            }
+                                            return a.beskrivelse.localeCompare(b.beskrivelse);
+                                        }
+                                        return a.måned.localeCompare(b.måned);
+                                    })
+                                    .map((inntekt) => (
+                                        <tr key={inntekt.id}>
+                                            <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
+                                            <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
+
+                                            <td>
+                                                {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
+                                                    formatterPeriode(
+                                                        inntekt.opptjeningsperiodeFom,
+                                                        inntekt.opptjeningsperiodeTom,
+                                                        'DD.MM'
+                                                    )
+                                                ) : (
+                                                    <em>Ikke rapportert opptjenings&shy;periode</em>
+                                                )}
+                                            </td>
+
+                                            <td>{formatterPenger(inntekt.beløp)}</td>
+                                        </tr>
+                                    ))}
+                                {refusjon.inntektsgrunnlag?.bruttoLønn && (
+                                    <tr>
+                                        <td colSpan={3}>
+                                            <b>Sum</b>
+                                        </td>
+                                        <td>
+                                            <b style={{ whiteSpace: 'nowrap' }}>
+                                                {formatterPenger(refusjon.inntektsgrunnlag.bruttoLønn)}
+                                            </b>
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </InntekterTabell>
+                    </>
+                )}
             {ingenInntekter && (
                 <>
                     <VerticalSpacer rem={1} />
