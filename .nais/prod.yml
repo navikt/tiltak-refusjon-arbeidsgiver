@@ -10,4 +10,4 @@ env:
   API_AUDIENCE: "prod-gcp:arbeidsgiver:tiltak-refusjon-api"
   API_URL: http://tiltak-refusjon-api
   REDIS_HOST: tiltak-refusjon-arbeidsgiver-redis
-slack_alert_channel: tiltak-alerts
+slack_alert_channel: arbeidsgiver-tiltak-alerts
