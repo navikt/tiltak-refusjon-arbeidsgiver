@@ -19,8 +19,6 @@ import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
 
-const cls = BEMHelper('refusjonside');
-
 const RefusjonSide: FunctionComponent = () => {
     const history = useHistory();
     const { refusjonId } = useParams();
