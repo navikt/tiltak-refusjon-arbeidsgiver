@@ -9,7 +9,6 @@ import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
-import BEMHelper from '../../utils/bem';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import GodkjennModal from './GodkjennModal';
