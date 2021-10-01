@@ -9,6 +9,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { lønnsbeskrivelseTekst } from '../../messages';
+import _ from 'lodash';
 
 const GråBoks = styled.div`
     background-color: #eee;
@@ -69,7 +70,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
         refusjon.status === 'KLAR_FOR_INNSENDING' &&
         !refusjon.harInntektIAlleMåneder &&
         !!refusjon.inntektsgrunnlag &&
-        refusjon.inntektsgrunnlag.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag);
+        refusjon.inntektsgrunnlag.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) !== undefined;
 
     refusjonApnet(
         refusjon,
@@ -107,41 +108,31 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {refusjon.inntektsgrunnlag.inntekter
-                                    .filter((inntekt) => inntekt.erMedIInntektsgrunnlag)
-                                    .sort((a, b) => {
-                                        if (a.måned === b.måned) {
-                                            if (
-                                                a.beskrivelse === b.beskrivelse ||
-                                                a.beskrivelse === undefined ||
-                                                b.beskrivelse === undefined
-                                            ) {
-                                                return a.id.localeCompare(b.id);
-                                            }
-                                            return a.beskrivelse.localeCompare(b.beskrivelse);
-                                        }
-                                        return a.måned.localeCompare(b.måned);
-                                    })
-                                    .map((inntekt) => (
-                                        <tr key={inntekt.id}>
-                                            <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
-                                            <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
+                                {_.sortBy(
+                                    refusjon.inntektsgrunnlag.inntekter.filter(
+                                        (inntekt) => inntekt.erMedIInntektsgrunnlag
+                                    ),
+                                    ['måned', 'opptjeningsperiodeFom', 'opptjeningsperiodeTom', 'beskrivelse', 'id']
+                                ).map((inntekt) => (
+                                    <tr key={inntekt.id}>
+                                        <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
+                                        <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
 
-                                            <td>
-                                                {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
-                                                    formatterPeriode(
-                                                        inntekt.opptjeningsperiodeFom,
-                                                        inntekt.opptjeningsperiodeTom,
-                                                        'DD.MM'
-                                                    )
-                                                ) : (
-                                                    <em>Ikke rapportert opptjenings&shy;periode</em>
-                                                )}
-                                            </td>
+                                        <td>
+                                            {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
+                                                formatterPeriode(
+                                                    inntekt.opptjeningsperiodeFom,
+                                                    inntekt.opptjeningsperiodeTom,
+                                                    'DD.MM'
+                                                )
+                                            ) : (
+                                                <em>Ikke rapportert opptjenings&shy;periode</em>
+                                            )}
+                                        </td>
 
-                                            <td>{formatterPenger(inntekt.beløp)}</td>
-                                        </tr>
-                                    ))}
+                                        <td>{formatterPenger(inntekt.beløp)}</td>
+                                    </tr>
+                                ))}
                                 {refusjon.inntektsgrunnlag?.bruttoLønn && (
                                     <tr>
                                         <td colSpan={3}>
