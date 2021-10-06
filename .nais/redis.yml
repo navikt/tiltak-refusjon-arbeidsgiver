@@ -6,7 +6,7 @@ metadata:
   name: tiltak-refusjon-arbeidsgiver-redis
   namespace: arbeidsgiver
 spec:
-  image: bitnami/redis:5.0.10
+  image: bitnami/redis:5.0.14
   port: 6379
   replicas:
     min: 1
