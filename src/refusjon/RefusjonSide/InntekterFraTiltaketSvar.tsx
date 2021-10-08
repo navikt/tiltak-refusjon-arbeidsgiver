@@ -21,11 +21,11 @@ const InntekterFraTiltaketSvar: FunctionComponent = () => {
                 tiltaket {tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]}?{' '}
             </Element>
             <Normaltekst>{refusjon.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</Normaltekst>
-            {refusjon.korrigertBruttoLønn !== null && refusjon.korrigertBruttoLønn !== undefined && (
+            {refusjon.endretBruttoLønn !== null && refusjon.endretBruttoLønn !== undefined && (
                 <>
                     <VerticalSpacer rem={1} />
                     <Element>Korrigert brutto lønn:</Element>
-                    <Normaltekst>{formatterPenger(refusjon.korrigertBruttoLønn)}</Normaltekst>
+                    <Normaltekst>{formatterPenger(refusjon.endretBruttoLønn)}</Normaltekst>
                 </>
             )}
         </div>

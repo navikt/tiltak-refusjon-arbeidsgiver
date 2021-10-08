@@ -16,7 +16,7 @@ export interface Refusjon {
     fristForGodkjenning: string;
     harInntektIAlleMåneder: boolean;
     inntekterKunFraTiltaket?: boolean;
-    korrigertBruttoLønn?: number;
+    endretBruttoLønn?: number;
 }
 
 export interface Tilskuddsgrunnlag {

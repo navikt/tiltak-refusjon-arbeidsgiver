@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import { useParams } from 'react-router';
-import { korrigerBruttolønn, useHentRefusjon } from '../../services/rest-service';
+import { endreBruttolønn, useHentRefusjon } from '../../services/rest-service';
 import { Undertittel } from 'nav-frontend-typografi';
 import { tiltakstypeTekst } from '../../messages';
 import { Input, Label, RadioPanel } from 'nav-frontend-skjema';
@@ -24,7 +24,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [inntekterKunFraTiltaket, setInntekterKunFraTiltaket] = useState(refusjon.inntekterKunFraTiltaket);
-    const [korrigertBruttoLønn, setKorrigertBruttoLønn] = useState(refusjon.korrigertBruttoLønn);
+    const [endretBruttoLønn, setEndretBruttoLønn] = useState(refusjon.endretBruttoLønn);
     if (refusjon.inntektsgrunnlag === undefined) {
         return null;
     }
@@ -33,10 +33,8 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const svarPåSpørsmål = (checked: boolean) => {
         setInntekterKunFraTiltaket(checked);
         if (checked) {
-            setKorrigertBruttoLønn(undefined);
-            korrigerBruttolønn(refusjonId, checked, undefined);
-        } else {
-            // korrigerBruttolønn(refusjonId, checked, korrigertBruttoLønn)
+            setEndretBruttoLønn(undefined);
+            endreBruttolønn(refusjonId, checked, undefined);
         }
     };
 
@@ -78,11 +76,11 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                         onChange={(event: any) => {
                             const verdi = event.currentTarget.value;
                             if (verdi.match(/^\d*$/) && verdi <= bruttoLønn) {
-                                setKorrigertBruttoLønn(verdi as number);
+                                setEndretBruttoLønn(verdi as number);
                             }
                         }}
-                        onBlur={() => korrigerBruttolønn(refusjonId, false, korrigertBruttoLønn)}
-                        value={korrigertBruttoLønn}
+                        onBlur={() => endreBruttolønn(refusjonId, false, endretBruttoLønn)}
+                        value={endretBruttoLønn}
                     />
                 </>
             )}
