@@ -1,13 +1,13 @@
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import Modal from 'nav-frontend-modal';
 import { Innholdstittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
+import LagreOgAvbrytKnapp from '../../komponenter/LagreOgAvbrytKnapp';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 
 type Props = {
     isOpen: boolean;
     lukkModal: () => void;
-    godkjenn: () => void;
+    godkjenn: () => Promise<any>;
     tittel: string;
 };
 
@@ -19,10 +19,9 @@ const GodkjennModal: FunctionComponent<Props> = (props) => {
                 <VerticalSpacer rem={2} />
                 {props.children}
                 <VerticalSpacer rem={2} />
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Hovedknapp onClick={props.godkjenn}>Send inn</Hovedknapp>
-                    <Knapp onClick={() => props.lukkModal()}>Avbryt</Knapp>
-                </div>
+                <LagreOgAvbrytKnapp lagreFunksjon={props.godkjenn} avbryt={() => props.lukkModal()}>
+                    Send inn
+                </LagreOgAvbrytKnapp>
             </div>
         </Modal>
     );

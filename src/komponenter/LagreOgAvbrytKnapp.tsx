@@ -1,15 +1,16 @@
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import KnappBase, { KnappBaseProps } from 'nav-frontend-knapper';
+import KnappBase, { Knapp, KnappBaseProps } from 'nav-frontend-knapper';
 import React, { FunctionComponent, HTMLAttributes, useEffect, useRef, useState } from 'react';
 import { Nettressurs, Status } from '../nettressurs';
 import { handterFeil } from '../utils/apiFeilUtils';
 import VerticalSpacer from './VerticalSpacer';
 
 type Props = {
-    lagreFunksjon: () => Promise<void>;
+    lagreFunksjon: () => Promise<any>;
+    avbryt: () => void;
 } & HTMLAttributes<HTMLDivElement>;
 
-const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
+const LagreOgAvbrytKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
     const [oppslag, setOppslag] = useState<Nettressurs<any>>({ status: Status.IkkeLastet });
     const [feilmelding, setFeilmelding] = useState('');
 
@@ -37,12 +38,16 @@ const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
 
     return (
         <div>
-            <KnappBase
-                spinner={oppslag.status === Status.LasterInn}
-                disabled={oppslag.status === Status.LasterInn}
-                onClick={onClick}
-                {...knappBaseProps}
-            />
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <KnappBase
+                    spinner={oppslag.status === Status.LasterInn}
+                    disabled={oppslag.status === Status.LasterInn}
+                    onClick={onClick}
+                    type="hoved"
+                    {...knappBaseProps}
+                />
+                <Knapp onClick={props.avbryt}>Avbryt</Knapp>
+            </div>
             {oppslag.status === Status.Feil && (
                 <>
                     <VerticalSpacer rem={0.5} />
@@ -57,4 +62,4 @@ const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
     );
 };
 
-export default LagreKnapp;
+export default LagreOgAvbrytKnapp;

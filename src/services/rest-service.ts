@@ -1,30 +1,20 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import useSWR, { mutate } from 'swr';
 import { InnloggetBruker } from '../bruker/BrukerContextType';
-import { feilmelding } from '../feilkodemapping';
 import { Refusjon } from '../refusjon/refusjon';
 import { Status } from '../refusjon/status';
 import { Tiltak } from '../refusjon/tiltak';
 
-export const API_URL = '/api/arbeidsgiver';
-
 export class FeilkodeError extends Error {}
+export class ApiError extends Error {}
 
 const api = axios.create({
     baseURL: '/api/arbeidsgiver',
-    timeout: 5000,
+    timeout: 30000,
     withCredentials: true,
     headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' },
     validateStatus: (status) => status < 400,
 });
-
-const håndterFeil = (error: AxiosError) => {
-    const feilkode = error.response?.headers.feilkode;
-    if (feilkode) {
-        return Promise.reject({ feilkode, feilmelding: feilmelding(feilkode) });
-    }
-    return Promise.reject(error);
-};
 
 const axiosFetcher = (url: string) => api.get(url).then((res) => res.data);
 
@@ -33,8 +23,18 @@ const swrConfig = {
     suspense: true,
 };
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 400 && error.response?.headers.feilkode) {
+            throw new FeilkodeError(error.response?.headers.feilkode);
+        }
+        throw new ApiError('Feil ved kontakt mot baksystem.');
+    }
+);
+
 export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
-    const response = await axios.get<InnloggetBruker>(`${API_URL}/innlogget-bruker`).catch((err) => {
+    const response = await api.get<InnloggetBruker>(`/innlogget-bruker`).catch((err) => {
         console.log('err.response ', err.response);
         return err;
     });
@@ -42,18 +42,16 @@ export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
 };
 
 export const endreBruttolønn = async (refusjonId: string, inntekterKunFraTiltaket: boolean, bruttoLønn?: number) => {
-    const response = await axios
-        .post(`${API_URL}/refusjon/${refusjonId}/endre-bruttolønn`, {
-            inntekterKunFraTiltaket,
-            bruttoLønn,
-        })
-        .catch(håndterFeil);
+    const response = await api.post(`/refusjon/${refusjonId}/endre-bruttolønn`, {
+        inntekterKunFraTiltaket,
+        bruttoLønn,
+    });
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
 
 export const godkjennRefusjon = async (refusjonId: string) => {
-    const response = await axios.post(`${API_URL}/refusjon/${refusjonId}/godkjenn`).catch(håndterFeil);
+    const response = await api.post(`/refusjon/${refusjonId}/godkjenn`);
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
