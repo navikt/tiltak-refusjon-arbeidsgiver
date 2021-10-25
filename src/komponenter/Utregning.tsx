@@ -1,5 +1,6 @@
 import { ReactComponent as Bygg } from '@/asset/image/bygg.svg';
 import { ReactComponent as ErlikTegn } from '@/asset/image/erlikTegn.svg';
+import { ReactComponent as MinusTegn } from '@/asset/image/minusTegn.svg';
 import { ReactComponent as Pengesekken } from '@/asset/image/pengesekkdollar.svg';
 import { ReactComponent as PlussTegn } from '@/asset/image/plussTegn.svg';
 import { ReactComponent as ProsentTegn } from '@/asset/image/prosentTegn.svg';
@@ -8,12 +9,11 @@ import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
+import styled from 'styled-components';
 import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
-import './Utregning.less';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
-import styled from 'styled-components';
 
 interface Props {
     beregning?: Beregning;
@@ -69,18 +69,33 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 verdi={props.tilskuddsgrunnlag.lønnstilskuddsprosent}
             />
             <VerticalSpacer rem={3} />
-            {props.beregning?.overTilskuddsbeløp && (
+            {props.beregning && (props.beregning.overTilskuddsbeløp || props.beregning.tidligereUtbetalt > 0) && (
                 <Utregningsrad
-                    labelTekst="Beregnet beløp"
+                    labelTekst="Beregning basert på innhentede innteker"
                     verdiOperator={<ErlikTegn />}
-                    verdi={props.beregning?.beregnetBeløp || 0}
+                    verdi={props.beregning.beregnetBeløp}
+                    border="TYKK"
+                />
+            )}
+            {props.beregning && props.beregning.overTilskuddsbeløp && props.beregning.tidligereUtbetalt > 0 && (
+                <Utregningsrad
+                    labelTekst="Tilskuddsbeløp (avtalt beløp for perioden)"
+                    verdi={props.tilskuddsgrunnlag.tilskuddsbeløp}
+                    border="TYKK"
+                />
+            )}
+            {props.beregning && props.beregning.tidligereUtbetalt > 0 && (
+                <Utregningsrad
+                    labelTekst="Tidligere utbetalt"
+                    verdiOperator={<MinusTegn />}
+                    verdi={props.beregning.tidligereUtbetalt}
                     border="TYKK"
                 />
             )}
             <Utregningsrad
                 labelTekst="Refusjonsbeløp"
                 verdiOperator={<ErlikTegn />}
-                verdi={props.beregning?.refusjonsbeløp || 'kan ikke beregne'}
+                verdi={props.beregning?.refusjonsbeløp ?? 'kan ikke beregne'}
                 ikkePenger={props.beregning === undefined}
                 border="TYKK"
             />

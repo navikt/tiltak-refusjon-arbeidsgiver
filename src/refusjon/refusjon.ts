@@ -1,4 +1,3 @@
-import React from 'react';
 import { Status } from './status';
 import { Tiltak } from './tiltak';
 
@@ -17,6 +16,8 @@ export interface Refusjon {
     harInntektIAlleMåneder: boolean;
     inntekterKunFraTiltaket?: boolean;
     endretBruttoLønn?: number;
+    korreksjonsgrunner: Korreksjonsgrunn[];
+    korreksjonAvId?: string;
 }
 
 export interface Tilskuddsgrunnlag {
@@ -71,4 +72,13 @@ export interface Beregning {
     overTilskuddsbeløp: boolean;
     sumUtgifter: number;
     tjenestepensjon: number;
+    tidligereUtbetalt: number;
+}
+
+export enum Korreksjonsgrunn {
+    // REBEREGNING = 'REBEREGNING',
+    UTBETALT_HELE_TILSKUDDSBELØP = 'UTBETALT_HELE_TILSKUDDSBELØP',
+    INNTEKTER_RAPPORTERT_ETTER_TILSKUDDSPERIODE = 'INNTEKTER_RAPPORTERT_ETTER_TILSKUDDSPERIODE',
+    HENT_INNTEKTER_PÅ_NYTT = 'HENT_INNTEKTER_PÅ_NYTT',
+    UTBETALING_RETURNERT = 'UTBETALING_RETURNERT',
 }
