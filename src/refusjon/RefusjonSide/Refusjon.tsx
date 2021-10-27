@@ -3,6 +3,9 @@ import { useParams } from 'react-router';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
 import { useHentRefusjon } from '../../services/rest-service';
 import { formatterDato } from '../../utils/datoUtils';
+import KvitteringKorreksjonEtterbetaling from '../KvitteringSide/KvitteringKorreksjonEtterbetaling';
+import KvitteringKorreksjonOppgjort from '../KvitteringSide/KvitteringKorreksjonOppgjort';
+import KvitteringKorreksjonTilbakekreving from '../KvitteringSide/KvitteringKorreksjonTilbakekreving';
 import KvitteringSide from '../KvitteringSide/KvitteringSide';
 import { Status } from '../status';
 import FeilSide from './FeilSide';
@@ -39,6 +42,12 @@ const Komponent: FunctionComponent = () => {
         case Status.SENDT_KRAV:
         case Status.UTBETALT:
             return <KvitteringSide />;
+        case Status.KORREKSJON_SENDT_TIL_UTBETALING:
+            return <KvitteringKorreksjonEtterbetaling />;
+        case Status.KORREKSJON_SKAL_TILBAKEKREVES:
+            return <KvitteringKorreksjonTilbakekreving />;
+        case Status.KORREKSJON_OPPGJORT:
+            return <KvitteringKorreksjonOppgjort />;
     }
 };
 

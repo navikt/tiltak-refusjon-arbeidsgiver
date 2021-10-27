@@ -1,3 +1,4 @@
+import { Korreksjonsgrunn } from './refusjon/refusjon';
 import { Status } from './refusjon/status';
 import { Tiltak } from './refusjon/tiltak';
 
@@ -15,7 +16,9 @@ export const statusTekst: { [key in Status]: string } = {
     KLAR_FOR_INNSENDING: 'klar for innsending',
     FOR_TIDLIG: 'for tidlig',
     ANNULLERT: 'annullert',
-    KORREKSJON_SENDT_TIL_UTBETALING: 'Korrigert',
+    KORREKSJON_SENDT_TIL_UTBETALING: 'Korreksjon sendt til utbetaling',
+    KORREKSJON_OPPGJORT: 'Korreksjon: oppgjort',
+    KORREKSJON_SKAL_TILBAKEKREVES: 'Tilbakekreving av refusjon',
 };
 
 export const inntektstypeTekst: { [key: string]: string } = {
@@ -169,4 +172,12 @@ export const lønnsbeskrivelseTekst: { [key: string]: string } = {
     ufoereytelseEtteroppgjoer: 'Uføreytelse etteroppgjør',
     underholdsbidragTilBarn: 'Underholdsbidrag til barn',
     venteloenn: 'Ventelønn',
+};
+
+export const korreksjonsgrunnTekst: { [key in Korreksjonsgrunn]: string } = {
+    // REBEREGNING: 'Beregn refusjon på nytt',
+    UTBETALT_HELE_TILSKUDDSBELØP: 'Utbetalt hele tilskuddsbeløpet',
+    INNTEKTER_RAPPORTERT_ETTER_TILSKUDDSPERIODE: 'Inntekter rapportert etter tilskuddsperioden',
+    HENT_INNTEKTER_PÅ_NYTT: 'Beregnet refusjon på mangelfullt inntektsgrunnlag',
+    UTBETALING_RETURNERT: 'Utbetaling returnert til NAV',
 };
