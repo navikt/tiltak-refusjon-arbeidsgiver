@@ -19,6 +19,10 @@ const StatusTekst: FunctionComponent<Props> = (props) => {
         return <EtikettInfo>Søk fra {formatterDato(props.tilskuddTom)}</EtikettInfo>;
     } else if (props.status === Status.UTGÅTT || props.status === Status.ANNULLERT) {
         return <EtikettAdvarsel>{storForbokstav(statusTekst[props.status])}</EtikettAdvarsel>;
+    } else if (props.status === Status.UTBETALING_FEILET) {
+        return <EtikettAdvarsel>Utbetaling feilet</EtikettAdvarsel>;
+    } else if (props.status === Status.UTBETALT) {
+        return <EtikettSuksess>Utbetalt</EtikettSuksess>;
     }
     return <EtikettInfo>{storForbokstav(statusTekst[props.status])}</EtikettInfo>;
 };

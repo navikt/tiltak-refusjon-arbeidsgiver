@@ -40,4 +40,26 @@ describe('Skal vise riktig statustekst', () => {
         );
         expect(getByText(/Klar for innsending/i)).toBeInTheDocument();
     });
+
+    test('Utbetaling feilet', () => {
+        const { getByText } = render(
+            <StatusTekst
+                status={Status.UTBETALING_FEILET}
+                tilskuddFom={datoString(moment())}
+                tilskuddTom={datoString(moment())}
+            />
+        );
+        expect(getByText(/Utbetaling feilet/i)).toBeInTheDocument();
+    });
+
+    test('Utbetaling velykket', () => {
+        const { getByText } = render(
+            <StatusTekst
+                status={Status.UTBETALT}
+                tilskuddFom={datoString(moment())}
+                tilskuddTom={datoString(moment())}
+            />
+        );
+        expect(getByText(/Utbetalt/i)).toBeInTheDocument();
+    });
 });
