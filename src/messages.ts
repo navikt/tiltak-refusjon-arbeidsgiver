@@ -13,6 +13,7 @@ export const statusTekst: { [key in Status]: string } = {
     SENDT_KRAV: 'sendt krav',
     UTBETALT: 'utbetalt',
     UTGÅTT: 'frist utgått',
+    UTBETALING_FEILET: 'Utbetaling feilet',
     KLAR_FOR_INNSENDING: 'klar for innsending',
     FOR_TIDLIG: 'for tidlig',
     ANNULLERT: 'annullert',

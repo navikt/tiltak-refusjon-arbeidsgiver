@@ -17,10 +17,12 @@ const StatusTekst: FunctionComponent<Props> = (props) => {
         return <EtikettSuksess>Klar for innsending</EtikettSuksess>;
     } else if (props.status === Status.FOR_TIDLIG) {
         return <EtikettInfo>Søk fra {formatterDato(props.tilskuddTom)}</EtikettInfo>;
-    } else if (props.status === Status.UTGÅTT || props.status === Status.ANNULLERT) {
+    } else if (
+        props.status === Status.UTGÅTT ||
+        props.status === Status.ANNULLERT ||
+        props.status === Status.UTBETALING_FEILET
+    ) {
         return <EtikettAdvarsel>{storForbokstav(statusTekst[props.status])}</EtikettAdvarsel>;
-    } else if (props.status === Status.UTBETALING_FEILET) {
-        return <EtikettAdvarsel>Utbetaling feilet</EtikettAdvarsel>;
     } else if (props.status === Status.UTBETALT) {
         return <EtikettSuksess>Utbetalt</EtikettSuksess>;
     }
