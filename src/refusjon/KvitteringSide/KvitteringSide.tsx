@@ -9,11 +9,13 @@ import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Utregning from '../../komponenter/Utregning';
 import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
+import { Status } from '../status';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import KvitteringStatusMelding from './KvitteringStatusMelding';
 
 const KvitteringSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
-
     if (!refusjon.inntektsgrunnlag) return null;
 
     return (
@@ -21,10 +23,7 @@ const KvitteringSide: FunctionComponent = () => {
             <VerticalSpacer rem={2} />
             <Innholdstittel role="heading">Kvittering for refusjon</Innholdstittel>
             <VerticalSpacer rem={1} />
-            <Normaltekst>
-                Refusjonskravet er nå sendt. Det vil ta 3–4 dager før pengene kommer på kontoen. Denne refusjonen vil
-                bli tatt vare på under “Sendt krav”.
-            </Normaltekst>
+            <KvitteringStatusMelding status={refusjon.status} />
             <VerticalSpacer rem={2} />
             <InformasjonFraAvtalen />
             <VerticalSpacer rem={2} />
