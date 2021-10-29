@@ -7,7 +7,7 @@ interface Props {
     status: Status;
 }
 
-const KvitteringStatusMelding: FunctionComponent<Props> = (props) => {
+const KvitteringSideStatusMelding: FunctionComponent<Props> = (props) => {
     switch (props.status) {
         case Status.UTBETALING_FEILET:
             return (
@@ -31,4 +31,4 @@ const KvitteringStatusMelding: FunctionComponent<Props> = (props) => {
             );
     }
 };
-export default KvitteringStatusMelding;
+export default KvitteringSideStatusMelding;

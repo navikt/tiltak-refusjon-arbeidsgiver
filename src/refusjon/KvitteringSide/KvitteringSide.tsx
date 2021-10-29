@@ -11,7 +11,7 @@ import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import { Status } from '../status';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import KvitteringStatusMelding from './KvitteringStatusMelding';
+import KvitteringSideStatusMelding from './KvitteringSideStatusMelding';
 
 const KvitteringSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -23,7 +23,7 @@ const KvitteringSide: FunctionComponent = () => {
             <VerticalSpacer rem={2} />
             <Innholdstittel role="heading">Kvittering for refusjon</Innholdstittel>
             <VerticalSpacer rem={1} />
-            <KvitteringStatusMelding status={refusjon.status} />
+            <KvitteringSideStatusMelding status={refusjon.status} />
             <VerticalSpacer rem={2} />
             <InformasjonFraAvtalen />
             <VerticalSpacer rem={2} />
