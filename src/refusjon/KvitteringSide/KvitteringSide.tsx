@@ -9,7 +9,7 @@ import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Utregning from '../../komponenter/Utregning';
 import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
-import KvitteringSideStatusMelding from './KvitteringSideStatusMelding';
+import Statusmelding from './Statusmelding';
 
 const KvitteringSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -21,7 +21,7 @@ const KvitteringSide: FunctionComponent = () => {
             <VerticalSpacer rem={2} />
             <Innholdstittel role="heading">Kvittering for refusjon</Innholdstittel>
             <VerticalSpacer rem={1} />
-            <KvitteringSideStatusMelding status={refusjon.status} />
+            <Statusmelding status={refusjon.status} />
             <VerticalSpacer rem={2} />
             <InformasjonFraAvtalen />
             <VerticalSpacer rem={2} />
