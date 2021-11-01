@@ -6,19 +6,31 @@ import { datoString, formatterDato } from '../../utils/datoUtils';
 import StatusTekst from './StatusTekst';
 
 describe('Skal vise riktig statustekst', () => {
-    test('Ny, kan ikke påbegynnes', () => {
+    test('UTGÅTT', () => {
         const tilskuddTom = datoString(moment().add(1, 'days'));
         const { getByText } = render(
             <StatusTekst
-                status={Status.KLAR_FOR_INNSENDING}
+                status={Status.UTGÅTT}
                 tilskuddFom={datoString(moment().subtract(2, 'days'))}
                 tilskuddTom={tilskuddTom}
             />
         );
-        expect(getByText('Ny - søk fra ' + formatterDato(tilskuddTom))).toBeInTheDocument();
+        expect(getByText('Frist utgått')).toBeInTheDocument();
     });
 
-    test('Ny, kan påbegynnes', () => {
+    test('for tidlig', () => {
+        const tilskuddTom = datoString(moment().add(1, 'days'));
+        const { getByText } = render(
+            <StatusTekst
+                status={Status.FOR_TIDLIG}
+                tilskuddFom={datoString(moment().subtract(2, 'days'))}
+                tilskuddTom={tilskuddTom}
+            />
+        );
+        expect(getByText('Søk fra ' + formatterDato(tilskuddTom))).toBeInTheDocument();
+    });
+
+    test('Klar for innsending', () => {
         const { getByText } = render(
             <StatusTekst
                 status={Status.KLAR_FOR_INNSENDING}
@@ -26,6 +38,28 @@ describe('Skal vise riktig statustekst', () => {
                 tilskuddTom={datoString(moment())}
             />
         );
-        expect(getByText('Ny - søk om refusjon')).toBeInTheDocument();
+        expect(getByText(/Klar for innsending/i)).toBeInTheDocument();
+    });
+
+    test('Utbetaling feilet', () => {
+        const { getByText } = render(
+            <StatusTekst
+                status={Status.UTBETALING_FEILET}
+                tilskuddFom={datoString(moment())}
+                tilskuddTom={datoString(moment())}
+            />
+        );
+        expect(getByText(/Utbetaling feilet/i)).toBeInTheDocument();
+    });
+
+    test('Utbetaling velykket', () => {
+        const { getByText } = render(
+            <StatusTekst
+                status={Status.UTBETALT}
+                tilskuddFom={datoString(moment())}
+                tilskuddTom={datoString(moment())}
+            />
+        );
+        expect(getByText(/Utbetalt/i)).toBeInTheDocument();
     });
 });
