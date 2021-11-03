@@ -85,6 +85,13 @@ const Filtermeny: FunctionComponent = () => {
                         name={'status'}
                         onChange={() => oppdaterFilter({ status: Status.UTGÅTT })}
                     />
+                    <Radio
+                        role="radio"
+                        label={storForbokstav(statusTekst[Status.UTBETALING_FEILET])}
+                        checked={filter.status === Status.UTBETALING_FEILET}
+                        name={'status'}
+                        onChange={() => oppdaterFilter({ status: Status.UTBETALING_FEILET })}
+                    />
                 </RadioGruppe>
             </EkspanderbartpanelBase>
             <div style={{ marginTop: '1.25rem' }} />
