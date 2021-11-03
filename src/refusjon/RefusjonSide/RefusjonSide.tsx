@@ -17,6 +17,11 @@ import InntekterFraAMeldingen from './InntekterFraAMeldingen';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
+import { storForbokstav } from '../../utils/stringUtils';
+import { statusTekst } from '../../messages';
+import { formatterDato } from '../../utils/datoUtils';
+import { NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
+import { EtikettInfo } from 'nav-frontend-etiketter';
 
 const RefusjonSide: FunctionComponent = () => {
     const history = useHistory();
@@ -53,8 +58,14 @@ const RefusjonSide: FunctionComponent = () => {
     return (
         <>
             <HvitBoks>
-                <VerticalSpacer rem={2} />
-                <Innholdstittel role="heading">Beregning av refusjon</Innholdstittel>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Innholdstittel role="heading">Beregning av refusjon</Innholdstittel>
+                    <EtikettInfo>
+                        {storForbokstav(statusTekst[refusjon.status])}{' '}
+                        {refusjon.godkjentAvArbeidsgiver &&
+                            formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
+                    </EtikettInfo>
+                </div>
                 <VerticalSpacer rem={1} />
                 <Normaltekst>
                     Vi henter inntektsopplysninger for deltakeren fra a-meldingen automatisk. A-meldingen er en månedlig
