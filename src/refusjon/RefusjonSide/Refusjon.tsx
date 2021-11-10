@@ -42,6 +42,7 @@ const Komponent: FunctionComponent = () => {
         case Status.SENDT_KRAV:
         case Status.UTBETALT:
         case Status.UTBETALING_FEILET:
+        case Status.KORRIGERT:
             return <KvitteringSide />;
         case Status.KORREKSJON_SENDT_TIL_UTBETALING:
             return <KvitteringKorreksjonEtterbetaling />;
