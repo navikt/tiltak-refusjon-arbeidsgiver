@@ -1,12 +1,15 @@
+import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import './index.css';
 import * as serviceWorker from './serviceWorker';
-import * as Sentry from '@sentry/browser';
 
 // sentry init
-Sentry.init({ dsn: 'https://6e57e48b384e45d797d8278d9e963916@sentry.gc.nav.no/87' });
+Sentry.init({
+    dsn: 'https://6e57e48b384e45d797d8278d9e963916@sentry.gc.nav.no/87',
+    environment: window.location.hostname,
+});
 
 ReactDOM.render(
     <React.StrictMode>
