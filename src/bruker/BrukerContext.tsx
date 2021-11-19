@@ -47,10 +47,6 @@ export const BrukerProvider: FunctionComponent = (props) => {
                                 pathname: '/refusjon',
                                 search: 'bedrift=' + org.OrganizationNumber,
                             });
-                            // history.push({
-                            //     pathname: '/refusjon',
-                            //     search: 'bedrift=' + org.OrganizationNumber,
-                            // });
                         }
                         setValgtBedrift(org.OrganizationNumber);
                     }}

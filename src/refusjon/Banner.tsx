@@ -1,8 +1,9 @@
-import Bedriftsmeny from '@navikt/bedriftsmeny';
-import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
-import { History, Listener } from 'history';
-import React, { FunctionComponent, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import Bedriftsmeny from "@navikt/bedriftsmeny";
+import { Organisasjon } from "@navikt/bedriftsmeny/lib/organisasjon";
+import { Action, History, Listener } from "history";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { To } from "react-router-dom";
 
 type Props = {
     organisasjoner: Organisasjon[];
@@ -10,24 +11,29 @@ type Props = {
 };
 
 const Banner: FunctionComponent<Props> = (props) => {
+    const location = useLocation();
+    const [listener, setListener] = useState<Listener>();
 
-    const location = useLocation()
     useEffect(() => {
-        
-    }, [location])
+        if (listener) {
+            listener({ action: Action.Replace, location });
+        }
+    }, [location, listener]);
 
     const navigate = useNavigate();
 
     const fakeHistory: Pick<History, 'listen' | 'replace'> = {
-        replace: (url: string) =>  navigate(url, {replace: true}),
-        listen: (listener: Listener) => () => {
-            console.log('hehe');
-            
+        replace: (to: To) => {
+            navigate(to, { replace: true })
+        },
+        listen: nyListener => {
+            return () => {
+                setListener(() => nyListener)
+            }
         },
     };
 
     return (
-
         <Bedriftsmeny
             history={fakeHistory as any}
             organisasjoner={props.organisasjoner}

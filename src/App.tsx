@@ -20,9 +20,7 @@ function App() {
             <ScrollToTop />
             <AdvarselBannerTestversjon />
             <Routes>
-                <Route path="/" element={<Landingsside />}>
-                    {/* <Landingsside /> */}
-                </Route>
+                <Route path="/" element={<Landingsside />} />
             </Routes>
 
             <BrukerProvider>
@@ -35,14 +33,15 @@ function App() {
                                     <OversiktSide />
                                 </ErrorOgSuspenseHandler>
                             }
-                        ></Route>
-                        <Route path="/refusjon/:refusjonId/*" element={
-                            <ErrorOgSuspenseHandler>
-                                <Refusjon />
-                            </ErrorOgSuspenseHandler>
-
-                        }>
-                        </Route>
+                        />
+                        <Route
+                            path="/refusjon/:refusjonId/*"
+                            element={
+                                <ErrorOgSuspenseHandler>
+                                    <Refusjon />
+                                </ErrorOgSuspenseHandler>
+                            }
+                        />
                     </Routes>
                 </div>
             </BrukerProvider>
