@@ -3,11 +3,11 @@ import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { statusTekst } from '../../messages';
+import { brukerflate } from '../../utils/amplitude-utils';
 import { storForbokstav } from '../../utils/stringUtils';
 import { Status } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
-import { brukerflate } from '../../utils/amplitude-utils';
 
 const Filtermeny: FunctionComponent = () => {
     const { filter, oppdaterFilter } = useFilter();
@@ -28,7 +28,7 @@ const Filtermeny: FunctionComponent = () => {
                 role="radiogroup"
                 apen={statusPanelOpen}
                 collapseProps={{
-                    isOpened: statusPanelOpen,
+                    open: statusPanelOpen,
                 }}
                 onClick={(event) => {
                     setStatusPanelOpen(!statusPanelOpen);
@@ -99,7 +99,7 @@ const Filtermeny: FunctionComponent = () => {
                 tittel="Tiltakstype"
                 role="radiogroup"
                 apen={tiltaksPanelOpen}
-                collapseProps={{ isOpened: tiltaksPanelOpen }}
+                collapseProps={{ open: tiltaksPanelOpen }}
                 onClick={() => setTiltaksPanelOpen(!tiltaksPanelOpen)}
                 style={{ minWidth: '14.375rem' }}
             >

@@ -1,16 +1,16 @@
+import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import React, { FunctionComponent } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useInnloggetBruker } from '../../bruker/BrukerContext';
+import StatusTekst from '../../komponenter/StatusTekst/StatusTekst';
 import { useHentRefusjoner } from '../../services/rest-service';
+import { antallRefusjoner } from '../../utils/amplitude-utils';
 import BEMHelper from '../../utils/bem';
 import { formatterDato, formatterPeriode } from '../../utils/datoUtils';
 import { useFilter } from './FilterContext';
+import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
 import LabelRad from './LabelRad';
 import './oversikt.less';
-import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
-import { LenkepanelBase } from 'nav-frontend-lenkepanel';
-import StatusTekst from '../../komponenter/StatusTekst/StatusTekst';
-import { antallRefusjoner } from '../../utils/amplitude-utils';
 
 const cls = BEMHelper('oversikt');
 
@@ -20,8 +20,10 @@ const Oversikt: FunctionComponent = () => {
     const brukerContext = useInnloggetBruker();
     const { filter } = useFilter();
     const refusjoner = useHentRefusjoner(brukerContext.valgtBedrift, filter.status, filter.tiltakstype);
-    const history = useHistory();
+    const navigate = useNavigate();
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);
+
+    
 
     return (
         <nav className={cls.className} aria-label="Main">
@@ -35,10 +37,14 @@ const Oversikt: FunctionComponent = () => {
                             key={refusjon.id}
                             onClick={(event) => {
                                 event.preventDefault();
-                                history.push({
+                                navigate({
                                     pathname: `/refusjon/${refusjon.id}`,
                                     search: window.location.search,
                                 });
+                                // history.puish({
+                                //     pathname: `/refusjon/${refusjon.id}`,
+                                //     search: window.location.search,
+                                // });
                             }}
                             href={`/refusjon/${refusjon.id}`}
                         >

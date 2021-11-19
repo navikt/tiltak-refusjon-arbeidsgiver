@@ -1,11 +1,11 @@
+import { Input, Label, RadioPanel } from 'nav-frontend-skjema';
+import { Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, useState } from 'react';
 import { useParams } from 'react-router';
-import { endreBruttolønn, useHentRefusjon } from '../../services/rest-service';
-import { Undertittel } from 'nav-frontend-typografi';
-import { tiltakstypeTekst } from '../../messages';
-import { Input, Label, RadioPanel } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import { tiltakstypeTekst } from '../../messages';
+import { endreBruttolønn, useHentRefusjon } from '../../services/rest-service';
 import { formatterPenger } from '../../utils/PengeUtils';
 
 const RadioPakning = styled.div`
@@ -34,7 +34,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
         setInntekterKunFraTiltaket(checked);
         if (checked) {
             setEndretBruttoLønn(undefined);
-            endreBruttolønn(refusjonId, checked, undefined);
+            endreBruttolønn(refusjonId!, checked, undefined);
         }
     };
 
@@ -79,7 +79,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                                 setEndretBruttoLønn(verdi as number);
                             }
                         }}
-                        onBlur={() => endreBruttolønn(refusjonId, false, endretBruttoLønn)}
+                        onBlur={() => endreBruttolønn(refusjonId!, false, endretBruttoLønn)}
                         value={endretBruttoLønn}
                     />
                 </>

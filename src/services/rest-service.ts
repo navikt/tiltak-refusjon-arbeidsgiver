@@ -64,8 +64,9 @@ export const useHentRefusjoner = (bedriftnummer: string, status?: Status, tiltak
     return data!;
 };
 
-export const useHentRefusjon = (refusjonId: string) => {
-    const { data } = useSWR<Refusjon>(`/refusjon/${refusjonId}`, swrConfig);
+export const useHentRefusjon = (refusjonId?: string) => {
+    const parameter = refusjonId ? `/refusjon/${refusjonId}` : null;
+    const { data } = useSWR<Refusjon>(parameter, swrConfig);
     return data!;
 };
 

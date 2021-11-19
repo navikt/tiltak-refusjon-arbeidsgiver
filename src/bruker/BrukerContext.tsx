@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import ManglerRettigheter from '../komponenter/ManglerRettigheter';
 import LokalLogin from '../LokalLogin';
 import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
-import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
-import ManglerRettigheter from '../komponenter/ManglerRettigheter';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
+import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -21,7 +21,7 @@ export const useInnloggetBruker = () => {
 
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
-    const [valgtBedrift, setValgtBedrift] = useState<string | undefined>(undefined);
+    const [valgtBedrift, setValgtBedrift] = useState<string | undefined>();
     const [xmlHttpReq, setXmlHttpReq] = useState<boolean>(false);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
             .catch((err) => console.log('err', err));
     }, [xmlHttpReq]);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     return (
         <>
@@ -43,10 +43,14 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     organisasjoner={innloggetBruker.organisasjoner}
                     setValgtBedrift={(org) => {
                         if (valgtBedrift !== undefined) {
-                            history.push({
+                            navigate({
                                 pathname: '/refusjon',
                                 search: 'bedrift=' + org.OrganizationNumber,
                             });
+                            // history.push({
+                            //     pathname: '/refusjon',
+                            //     search: 'bedrift=' + org.OrganizationNumber,
+                            // });
                         }
                         setValgtBedrift(org.OrganizationNumber);
                     }}
