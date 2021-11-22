@@ -1,30 +1,28 @@
+import { EtikettInfo } from 'nav-frontend-etiketter';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import EksternLenke from '../../komponenter/EksternLenke/EksternLenke';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import LagreKnapp from '../../komponenter/LagreKnapp';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import { statusTekst } from '../../messages';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
-import { formatterPeriode } from '../../utils/datoUtils';
+import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
+import { storForbokstav } from '../../utils/stringUtils';
 import GodkjennModal from './GodkjennModal';
 import InformasjonFraAvtalen from './InformasjonFraAvtalen';
 import InntekterFraAMeldingen from './InntekterFraAMeldingen';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
-import { storForbokstav } from '../../utils/stringUtils';
-import { statusTekst } from '../../messages';
-import { formatterDato } from '../../utils/datoUtils';
-import { NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
-import { EtikettInfo } from 'nav-frontend-etiketter';
 
 const RefusjonSide: FunctionComponent = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState(false);
@@ -45,10 +43,10 @@ const RefusjonSide: FunctionComponent = () => {
 
     const godkjennRefusjonen = async () => {
         try {
-            await godkjennRefusjon(refusjonId);
-            history.push({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
+            await godkjennRefusjon(refusjonId!);
+            navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
             innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
-        } catch (error) {
+        } catch (error: any) {
             console.log('feil ved innsending:', error);
             innSendingRefusjon(UtbetaltStatus.FEILET, refusjon, error);
             throw error;

@@ -14,7 +14,7 @@ const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
     const [feilmelding, setFeilmelding] = useState('');
 
     const knappBaseProps = Object.assign({}, props);
-    delete knappBaseProps.lagreFunksjon;
+    //delete knappBaseProps.lagreFunksjon;
 
     const feilRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +23,7 @@ const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
             setOppslag({ status: Status.LasterInn });
             await props.lagreFunksjon();
             setOppslag({ status: Status.Sendt });
-        } catch (error) {
+        } catch (error: any) {
             setOppslag({ status: Status.Feil, error: error.feilmelding ?? 'Uventet feil' });
             handterFeil(error, setFeilmelding);
         }

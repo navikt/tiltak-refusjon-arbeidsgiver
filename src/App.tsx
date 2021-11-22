@@ -1,6 +1,6 @@
 import '@navikt/bedriftsmeny/lib/bedriftsmeny.css';
 import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AdvarselBannerTestversjon from './AdvarselBannerTestversjon/AdvarselBannerTestversjon';
 import './App.less';
 import { BrukerProvider } from './bruker/BrukerContext';
@@ -19,25 +19,36 @@ function App() {
         <BrowserRouter>
             <ScrollToTop />
             <AdvarselBannerTestversjon />
-            <Switch>
-                <Route exact path="/">
-                    <Landingsside />
-                </Route>
-                <BrukerProvider>
-                    <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
-                        <Route exact path="/refusjon">
-                            <ErrorOgSuspenseHandler>
-                                <OversiktSide />
-                            </ErrorOgSuspenseHandler>
-                        </Route>
-                        <Route path="/refusjon/:refusjonId">
-                            <ErrorOgSuspenseHandler>
-                                <Refusjon />
-                            </ErrorOgSuspenseHandler>
-                        </Route>
-                    </div>
-                </BrukerProvider>
-            </Switch>
+            <Routes>
+                <Route path="/" element={<Landingsside />} />
+                <Route
+                    path="*"
+                    element={
+                        <BrukerProvider>
+                            <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
+                                <Routes>
+                                    <Route
+                                        path="/refusjon"
+                                        element={
+                                            <ErrorOgSuspenseHandler>
+                                                <OversiktSide />
+                                            </ErrorOgSuspenseHandler>
+                                        }
+                                    />
+                                    <Route
+                                        path="/refusjon/:refusjonId/*"
+                                        element={
+                                            <ErrorOgSuspenseHandler>
+                                                <Refusjon />
+                                            </ErrorOgSuspenseHandler>
+                                        }
+                                    />
+                                </Routes>
+                            </div>
+                        </BrukerProvider>
+                    }
+                />
+            </Routes>
         </BrowserRouter>
     );
 }
