@@ -44,8 +44,7 @@ const RefusjonSide: FunctionComponent = () => {
     const godkjennRefusjonen = async () => {
         try {
             await godkjennRefusjon(refusjonId!);
-            //history.push({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
-            navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search })
+            navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
             innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
         } catch (error: any) {
             console.log('feil ved innsending:', error);

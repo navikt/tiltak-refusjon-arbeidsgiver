@@ -23,8 +23,6 @@ const Oversikt: FunctionComponent = () => {
     const navigate = useNavigate();
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);
 
-    
-
     return (
         <nav className={cls.className} aria-label="Main">
             <div role="list">
@@ -41,10 +39,6 @@ const Oversikt: FunctionComponent = () => {
                                     pathname: `/refusjon/${refusjon.id}`,
                                     search: window.location.search,
                                 });
-                                // history.puish({
-                                //     pathname: `/refusjon/${refusjon.id}`,
-                                //     search: window.location.search,
-                                // });
                             }}
                             href={`/refusjon/${refusjon.id}`}
                         >
