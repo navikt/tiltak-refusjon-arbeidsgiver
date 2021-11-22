@@ -69,8 +69,7 @@
         "nav-frontend-veileder-style": "^3.0.1",
         "nav-frontend-veilederpanel": "^2.0.2",
         "nav-frontend-veilederpanel-style": "^2.0.1",
-        "prettier": "^2.1.2",
-        "pretty-quick": "^3.1.0",
+        "prettier": "^2.4.1",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",
         "react-collapse": "^5.0.1",
@@ -89,7 +88,8 @@
         "build": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') craco build",
         "release": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') node sentry.js",
         "test": "craco test",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "pretty-svg": "pretty-quick --staged --pattern \"**/*.*(js|json|jsx|ts|tsx|css|scss|less)\" && sh ./svgo.sh"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -111,6 +111,7 @@
         "@types/react-router-dom": "^5.1.6",
         "cross-env": "^7.0.3",
         "husky": "^7.0.0",
+        "pretty-quick": "^3.1.2",
         "svgo": "^2.8.0"
     }
 }
