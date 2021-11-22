@@ -21,30 +21,34 @@ function App() {
             <AdvarselBannerTestversjon />
             <Routes>
                 <Route path="/" element={<Landingsside />} />
+                <Route
+                    path="*"
+                    element={
+                        <BrukerProvider>
+                            <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
+                                <Routes>
+                                    <Route
+                                        path="/refusjon"
+                                        element={
+                                            <ErrorOgSuspenseHandler>
+                                                <OversiktSide />
+                                            </ErrorOgSuspenseHandler>
+                                        }
+                                    />
+                                    <Route
+                                        path="/refusjon/:refusjonId/*"
+                                        element={
+                                            <ErrorOgSuspenseHandler>
+                                                <Refusjon />
+                                            </ErrorOgSuspenseHandler>
+                                        }
+                                    />
+                                </Routes>
+                            </div>
+                        </BrukerProvider>
+                    }
+                />
             </Routes>
-
-            <BrukerProvider>
-                <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
-                    <Routes>
-                        <Route
-                            path="/refusjon"
-                            element={
-                                <ErrorOgSuspenseHandler>
-                                    <OversiktSide />
-                                </ErrorOgSuspenseHandler>
-                            }
-                        />
-                        <Route
-                            path="/refusjon/:refusjonId/*"
-                            element={
-                                <ErrorOgSuspenseHandler>
-                                    <Refusjon />
-                                </ErrorOgSuspenseHandler>
-                            }
-                        />
-                    </Routes>
-                </div>
-            </BrukerProvider>
         </BrowserRouter>
     );
 }
