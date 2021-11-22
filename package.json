@@ -88,7 +88,8 @@
         "start": "craco start",
         "build": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') craco build",
         "release": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') node sentry.js",
-        "test": "craco test"
+        "test": "craco test",
+        "prepare": "husky install"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -109,7 +110,7 @@
         "@sentry/cli": "^1.68.0",
         "@types/react-router-dom": "^5.1.6",
         "cross-env": "^7.0.3",
-        "husky": "^7.0.4",
+        "husky": "^7.0.0",
         "svgo": "^2.8.0"
     }
 }
