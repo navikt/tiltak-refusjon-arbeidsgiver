@@ -1,7 +1,7 @@
-import amplitude from './amplitudeInstance';
 import { LogReturn } from 'amplitude-js';
 import { Refusjon } from '../refusjon/refusjon';
 import { Tiltak } from '../refusjon/tiltak';
+import amplitude from './amplitudeInstance';
 
 type Tiltaktype = Tiltak | 'UNDEFINED';
 
@@ -68,9 +68,9 @@ export const innSendingRefusjon = (status: UtbetaltStatus, refusjon: Refusjon, e
         utbetaltStatus: status,
         error: err,
         antallDagerTilTidsfrist: regnUtDifferanseMellomDato(refusjon.fristForGodkjenning),
-        refusjonsbelop: refusjon.beregning?.refusjonsbeløp ?? 0,
-        beregnetbelop: refusjon.beregning?.beregnetBeløp ?? 0,
-        tiltak: refusjon?.tilskuddsgrunnlag?.tiltakstype ?? 'UNDEFINED',
+        refusjonsbelop: refusjon.refusjonsgrunnlag.beregning?.refusjonsbeløp ?? 0,
+        beregnetbelop: refusjon.refusjonsgrunnlag.beregning?.beregnetBeløp ?? 0,
+        tiltak: refusjon?.refusjonsgrunnlag.tilskuddsgrunnlag?.tiltakstype ?? 'UNDEFINED',
     };
     return amplitude.logEvent(appkey.concat('innsendt-refusjon'), { ...data });
 };
@@ -84,8 +84,8 @@ export const refusjonApnet = (
 ): LogReturn => {
     const data: ApnetRefusjon = {
         id: refusjon.id,
-        refusjonsbelop: refusjon.beregning?.refusjonsbeløp ?? 0,
-        beregnetbelop: refusjon.beregning?.beregnetBeløp ?? 0,
+        refusjonsbelop: refusjon.refusjonsgrunnlag.beregning?.refusjonsbeløp ?? 0,
+        beregnetbelop: refusjon.refusjonsgrunnlag.beregning?.beregnetBeløp ?? 0,
         antallDagerTilTidsfrist: regnUtDifferanseMellomDato(refusjon.fristForGodkjenning),
         antallInntekterSomErMedIGrunnlag: antallInntekterSomErMedIGrunnlag,
         ingenInntekter: ingenInntekter,

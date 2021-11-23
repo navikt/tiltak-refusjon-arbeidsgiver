@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 import { statusTekst } from '../../messages';
 import { brukerflate } from '../../utils/amplitude-utils';
 import { storForbokstav } from '../../utils/stringUtils';
-import { Status } from '../status';
+import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
 
@@ -45,52 +45,52 @@ const Filtermeny: FunctionComponent = () => {
                     />
                     <Radio
                         role="radio"
-                        label={storForbokstav(statusTekst[Status.FOR_TIDLIG])}
-                        checked={filter.status === Status.FOR_TIDLIG}
+                        label={storForbokstav(statusTekst[RefusjonStatus.FOR_TIDLIG])}
+                        checked={filter.status === RefusjonStatus.FOR_TIDLIG}
                         name={'status'}
-                        onChange={() => oppdaterFilter({ status: Status.FOR_TIDLIG })}
+                        onChange={() => oppdaterFilter({ status: RefusjonStatus.FOR_TIDLIG })}
                     />
                     <Radio
                         role="radio"
-                        label={storForbokstav(statusTekst[Status.KLAR_FOR_INNSENDING])}
-                        checked={filter.status === Status.KLAR_FOR_INNSENDING}
+                        label={storForbokstav(statusTekst[RefusjonStatus.KLAR_FOR_INNSENDING])}
+                        checked={filter.status === RefusjonStatus.KLAR_FOR_INNSENDING}
                         name={'status'}
-                        onChange={() => oppdaterFilter({ status: Status.KLAR_FOR_INNSENDING })}
+                        onChange={() => oppdaterFilter({ status: RefusjonStatus.KLAR_FOR_INNSENDING })}
                     />
                     <Radio
                         role="radio"
-                        label={storForbokstav(statusTekst[Status.ANNULLERT])}
-                        checked={filter.status === Status.ANNULLERT}
+                        label={storForbokstav(statusTekst[RefusjonStatus.ANNULLERT])}
+                        checked={filter.status === RefusjonStatus.ANNULLERT}
                         name={'status'}
-                        onChange={() => oppdaterFilter({ status: Status.ANNULLERT })}
+                        onChange={() => oppdaterFilter({ status: RefusjonStatus.ANNULLERT })}
                     />
                     <Radio
                         role="radio"
-                        label={storForbokstav(statusTekst[Status.SENDT_KRAV])}
-                        checked={filter.status === Status.SENDT_KRAV}
+                        label={storForbokstav(statusTekst[RefusjonStatus.SENDT_KRAV])}
+                        checked={filter.status === RefusjonStatus.SENDT_KRAV}
                         name={'status'}
-                        onChange={() => oppdaterFilter({ status: Status.SENDT_KRAV })}
+                        onChange={() => oppdaterFilter({ status: RefusjonStatus.SENDT_KRAV })}
                     />
                     <Radio
                         role="radio"
-                        label={storForbokstav(statusTekst[Status.UTBETALT])}
-                        checked={filter.status === Status.UTBETALT}
+                        label={storForbokstav(statusTekst[RefusjonStatus.UTBETALT])}
+                        checked={filter.status === RefusjonStatus.UTBETALT}
                         name={'status'}
-                        onChange={() => oppdaterFilter({ status: Status.UTBETALT })}
+                        onChange={() => oppdaterFilter({ status: RefusjonStatus.UTBETALT })}
                     />
                     <Radio
                         role="radio"
-                        label={storForbokstav(statusTekst[Status.UTGÅTT])}
-                        checked={filter.status === Status.UTGÅTT}
+                        label={storForbokstav(statusTekst[RefusjonStatus.UTGÅTT])}
+                        checked={filter.status === RefusjonStatus.UTGÅTT}
                         name={'status'}
-                        onChange={() => oppdaterFilter({ status: Status.UTGÅTT })}
+                        onChange={() => oppdaterFilter({ status: RefusjonStatus.UTGÅTT })}
                     />
                     <Radio
                         role="radio"
-                        label={storForbokstav(statusTekst[Status.UTBETALING_FEILET])}
-                        checked={filter.status === Status.UTBETALING_FEILET}
+                        label={storForbokstav(statusTekst[RefusjonStatus.UTBETALING_FEILET])}
+                        checked={filter.status === RefusjonStatus.UTBETALING_FEILET}
                         name={'status'}
-                        onChange={() => oppdaterFilter({ status: Status.UTBETALING_FEILET })}
+                        onChange={() => oppdaterFilter({ status: RefusjonStatus.UTBETALING_FEILET })}
                     />
                 </RadioGruppe>
             </EkspanderbartpanelBase>

@@ -1,33 +1,38 @@
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { formatterPenger } from '../../utils/PengeUtils';
-import { tiltakstypeTekst } from '../../messages';
-import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import React, { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
-import { useHentRefusjon } from '../../services/rest-service';
+import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import { tiltakstypeTekst } from '../../messages';
+import { formatterPenger } from '../../utils/PengeUtils';
+import { Refusjonsgrunnlag } from '../refusjon';
 
-const InntekterFraTiltaketSvar: FunctionComponent = () => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
+type Props = {
+    refusjonsgrunnlag: Refusjonsgrunnlag;
+};
 
-    if (refusjon.inntekterKunFraTiltaket === null || refusjon.inntekterKunFraTiltaket === undefined) {
+const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
+    if (
+        props.refusjonsgrunnlag.inntekterKunFraTiltaket === null ||
+        props.refusjonsgrunnlag.inntekterKunFraTiltaket === undefined
+    ) {
         return null;
     }
 
     return (
         <div>
             <Element>
-                Er inntektene som vi har hentet ({formatterPenger(refusjon.inntektsgrunnlag!!.bruttoLønn)}) kun fra
-                tiltaket {tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]}?{' '}
+                Er inntektene som vi har hentet (
+                {formatterPenger(props.refusjonsgrunnlag.inntektsgrunnlag!!.bruttoLønn)}) kun fra tiltaket{' '}
+                {tiltakstypeTekst[props.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?{' '}
             </Element>
-            <Normaltekst>{refusjon.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</Normaltekst>
-            {refusjon.endretBruttoLønn !== null && refusjon.endretBruttoLønn !== undefined && (
-                <>
-                    <VerticalSpacer rem={1} />
-                    <Element>Korrigert brutto lønn:</Element>
-                    <Normaltekst>{formatterPenger(refusjon.endretBruttoLønn)}</Normaltekst>
-                </>
-            )}
+            <Normaltekst>{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</Normaltekst>
+            {props.refusjonsgrunnlag.endretBruttoLønn !== null &&
+                props.refusjonsgrunnlag.endretBruttoLønn !== undefined && (
+                    <>
+                        <VerticalSpacer rem={1} />
+                        <Element>Korrigert brutto lønn:</Element>
+                        <Normaltekst>{formatterPenger(props.refusjonsgrunnlag.endretBruttoLønn)}</Normaltekst>
+                    </>
+                )}
         </div>
     );
 };

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
 import { InnloggetBruker } from '../bruker/BrukerContextType';
-import { Refusjon } from '../refusjon/refusjon';
-import { Status } from '../refusjon/status';
+import { Korreksjon, Refusjon } from '../refusjon/refusjon';
+import { RefusjonStatus } from '../refusjon/status';
 import { Tiltak } from '../refusjon/tiltak';
 
 export class FeilkodeError extends Error {}
@@ -56,7 +56,7 @@ export const godkjennRefusjon = async (refusjonId: string) => {
     return response.data;
 };
 
-export const useHentRefusjoner = (bedriftnummer: string, status?: Status, tiltakstype?: Tiltak) => {
+export const useHentRefusjoner = (bedriftnummer: string, status?: RefusjonStatus, tiltakstype?: Tiltak) => {
     const { data } = useSWR<Refusjon[]>(
         `/refusjon?bedriftNr=${bedriftnummer}&status=${status || ''}&tiltakstype=${tiltakstype || ''}`,
         swrConfig
@@ -72,5 +72,10 @@ export const useHentRefusjon = (refusjonId?: string) => {
 
 export const useHentTidligereRefusjoner = (refusjonId: string) => {
     const { data } = useSWR<Refusjon[]>(`/refusjon/${refusjonId}/tidligere-refusjoner`, swrConfig);
+    return data!;
+};
+
+export const useHentKorreksjon = (korreksjonId: string) => {
+    const { data } = useSWR<Korreksjon>(`/korreksjon/${korreksjonId}`, swrConfig);
     return data!;
 };

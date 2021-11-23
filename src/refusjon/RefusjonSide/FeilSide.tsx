@@ -22,18 +22,25 @@ const FeilSide: FunctionComponent<Props> = (props) => {
         <HvitBoks>
             <AlertStripe type={props.advarselType}>{props.feiltekst}</AlertStripe>
             <VerticalSpacer rem={2} />
-            <Innholdstittel>Refusjon av {tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]}</Innholdstittel>
+            <Innholdstittel>
+                Refusjon av {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
+            </Innholdstittel>
             <VerticalSpacer rem={1} />
             <Element>Periode:</Element>
             <Normaltekst>
-                {formatterPeriode(refusjon.tilskuddsgrunnlag.tilskuddFom, refusjon.tilskuddsgrunnlag.tilskuddTom)}
+                {formatterPeriode(
+                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                )}
             </Normaltekst>
             <VerticalSpacer rem={1} />
             <Element>Beløp i perioden:</Element>
-            <Normaltekst>Inntil {formatterPenger(refusjon.tilskuddsgrunnlag.tilskuddsbeløp)}</Normaltekst>
+            <Normaltekst>
+                Inntil {formatterPenger(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp)}
+            </Normaltekst>
             <VerticalSpacer rem={1} />
             <Element>Deltaker:</Element>
-            <Normaltekst>{`${refusjon.tilskuddsgrunnlag.deltakerFornavn} ${refusjon.tilskuddsgrunnlag.deltakerEtternavn}`}</Normaltekst>
+            <Normaltekst>{`${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn} ${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerEtternavn}`}</Normaltekst>
         </HvitBoks>
     );
 };

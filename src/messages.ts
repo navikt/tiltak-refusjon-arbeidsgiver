@@ -1,5 +1,5 @@
 import { Korreksjonsgrunn } from './refusjon/refusjon';
-import { Status } from './refusjon/status';
+import { KorreksjonStatus, RefusjonStatus } from './refusjon/status';
 import { Tiltak } from './refusjon/tiltak';
 
 export const tiltakstypeTekst: { [key in Tiltak]: string } = {
@@ -9,7 +9,7 @@ export const tiltakstypeTekst: { [key in Tiltak]: string } = {
     SOMMERJOBB: 'sommerjobb',
 };
 
-export const statusTekst: { [key in Status]: string } = {
+export const statusTekst: { [key in RefusjonStatus]: string } = {
     SENDT_KRAV: 'sendt krav',
     UTBETALT: 'utbetalt',
     UTGÅTT: 'frist utgått',
@@ -17,10 +17,14 @@ export const statusTekst: { [key in Status]: string } = {
     KLAR_FOR_INNSENDING: 'klar for innsending',
     FOR_TIDLIG: 'for tidlig',
     ANNULLERT: 'annullert',
-    KORREKSJON_SENDT_TIL_UTBETALING: 'Korreksjon sendt til utbetaling',
-    KORREKSJON_OPPGJORT: 'Korreksjon: oppgjort',
-    KORREKSJON_SKAL_TILBAKEKREVES: 'Tilbakekreving av refusjon',
     KORRIGERT: 'Korrigert',
+};
+
+export const korreksjonStatusTekst: { [key in KorreksjonStatus]: string } = {
+    UTKAST: 'korreksjonsutkast',
+    TILLEGSUTBETALING: 'korreksjon sendt til utbetaling',
+    OPPGJORT: 'korreksjon oppgjort',
+    TILBAKEKREVING: 'korreksjon skal tilbakekreves',
 };
 
 export const inntektstypeTekst: { [key: string]: string } = {
@@ -181,5 +185,4 @@ export const korreksjonsgrunnTekst: { [key in Korreksjonsgrunn]: string } = {
     UTBETALT_HELE_TILSKUDDSBELØP: 'Utbetalt hele tilskuddsbeløpet',
     INNTEKTER_RAPPORTERT_ETTER_TILSKUDDSPERIODE: 'Inntekter rapportert etter tilskuddsperioden',
     HENT_INNTEKTER_PÅ_NYTT: 'Beregnet refusjon på mangelfullt inntektsgrunnlag',
-    UTBETALING_RETURNERT: 'Utbetaling returnert til NAV',
 };

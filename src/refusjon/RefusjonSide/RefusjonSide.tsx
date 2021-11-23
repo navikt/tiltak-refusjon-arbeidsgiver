@@ -81,18 +81,20 @@ const RefusjonSide: FunctionComponent = () => {
                 <VerticalSpacer rem={2} />
                 <InntekterFraAMeldingen />
                 <VerticalSpacer rem={2} />
-                {refusjon.inntektsgrunnlag?.inntekter?.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
-                    <InntekterFraTiltaketSpørsmål />
-                )}
+                {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter?.find(
+                    (inntekt) => inntekt.erMedIInntektsgrunnlag
+                ) && <InntekterFraTiltaketSpørsmål />}
                 <VerticalSpacer rem={2} />
-                {refusjon.beregning &&
-                    refusjon.beregning.refusjonsbeløp > 0 &&
-                    refusjon.inntekterKunFraTiltaket !== null && (
+                {refusjon.refusjonsgrunnlag.beregning &&
+                    refusjon.refusjonsgrunnlag.beregning.refusjonsbeløp > 0 &&
+                    refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== null && (
                         <>
-                            <Utregning beregning={refusjon.beregning} tilskuddsgrunnlag={refusjon.tilskuddsgrunnlag} />
+                            <Utregning
+                                beregning={refusjon.refusjonsgrunnlag.beregning}
+                                tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                            />
                             <VerticalSpacer rem={4} />
-                            <SummeringBoks />
-
+                            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                             <VerticalSpacer rem={1} />
 
                             <BekreftCheckboksPanel
@@ -122,8 +124,8 @@ const RefusjonSide: FunctionComponent = () => {
                     Du søker nå om refusjon for hele den avtalte perioden{' '}
                     <b>
                         {formatterPeriode(
-                            refusjon.tilskuddsgrunnlag.tilskuddFom,
-                            refusjon.tilskuddsgrunnlag.tilskuddTom
+                            refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                            refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                         )}
                         . Dette kan du kun gjøre en gang.
                     </b>{' '}
@@ -132,8 +134,9 @@ const RefusjonSide: FunctionComponent = () => {
                 </Normaltekst>
                 <VerticalSpacer rem={1} />
                 <Normaltekst>
-                    Hvis refusjonsbeløpet på <b>{formatterPenger(refusjon.beregning?.refusjonsbeløp!)}</b> ikke stemmer,
-                    ta kontakt med veileder før du klikker Send inn.
+                    Hvis refusjonsbeløpet på{' '}
+                    <b>{formatterPenger(refusjon.refusjonsgrunnlag.beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta
+                    kontakt med veileder før du klikker Send inn.
                 </Normaltekst>
             </GodkjennModal>
         </>
