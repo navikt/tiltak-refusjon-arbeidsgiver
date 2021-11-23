@@ -28,9 +28,9 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
 
-    const avtaleLenke = `http://arbeidsgiver.nav.no/tiltaksgjennomforing/avtale/${refusjon.tilskuddsgrunnlag.avtaleId}`;
+    const avtaleLenke = `http://arbeidsgiver.nav.no/tiltaksgjennomforing/avtale/${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleId}`;
 
-    const refusjonsnummer = `${refusjon.tilskuddsgrunnlag.avtaleNr}-${refusjon.tilskuddsgrunnlag.løpenummer}`;
+    const refusjonsnummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;
 
     return (
         <GråBoks>
@@ -39,7 +39,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             <IkonRad>
                 <EksternLenke href={avtaleLenke}>
                     <File />
-                    Avtale om {tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]}
+                    Avtale om {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
                 </EksternLenke>
             </IkonRad>
             <VerticalSpacer rem={1} />
@@ -53,7 +53,8 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 <People />
                 <Element>Deltaker: </Element>
                 <Normaltekst>
-                    {refusjon.tilskuddsgrunnlag.deltakerFornavn} {refusjon.tilskuddsgrunnlag.deltakerEtternavn}
+                    {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn}{' '}
+                    {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerEtternavn}
                 </Normaltekst>
             </IkonRad>
             <VerticalSpacer rem={1} />
@@ -61,7 +62,10 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 <Calender />
                 <Element>Periode: </Element>
                 <Normaltekst>
-                    {formatterPeriode(refusjon.tilskuddsgrunnlag.tilskuddFom, refusjon.tilskuddsgrunnlag.tilskuddTom)}
+                    {formatterPeriode(
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                    )}
                 </Normaltekst>
             </IkonRad>
             <VerticalSpacer rem={1} />
@@ -74,15 +78,17 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             <IkonRad>
                 <FileContent />
                 <Element>Avtalt beløp for perioden:</Element>
-                <Normaltekst>Inntil {formatterPenger(refusjon.tilskuddsgrunnlag.tilskuddsbeløp)}</Normaltekst>
+                <Normaltekst>
+                    Inntil {formatterPenger(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp)}
+                </Normaltekst>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <Money />
                 <Element>Kontonummer:</Element>
-                <Normaltekst>{refusjon.bedriftKontonummer}</Normaltekst>
+                <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKontonummer}</Normaltekst>
             </IkonRad>
-            {refusjon.bedriftKontonummer === null && (
+            {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && (
                 <>
                     <VerticalSpacer rem={1} />
                     <AlertStripeFeil>

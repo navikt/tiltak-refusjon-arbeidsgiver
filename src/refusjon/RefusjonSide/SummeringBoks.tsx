@@ -1,12 +1,11 @@
 import { ReactComponent as Pengesedler } from '@/asset/image/pengesedler.svg';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
-import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
+import { Refusjonsgrunnlag } from '../refusjon';
 
 const Boks = styled.div`
     display: flex;
@@ -16,24 +15,51 @@ const Boks = styled.div`
     padding: 1.75rem;
 `;
 
-const SummeringBoks: FunctionComponent = () => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
+type Props = {
+    refusjonsgrunnlag: Refusjonsgrunnlag;
+};
+
+const SummeringBoks: FunctionComponent<Props> = (props) => {
+    if (
+        props.refusjonsgrunnlag.beregning?.refusjonsbeløp === undefined ||
+        props.refusjonsgrunnlag.beregning?.refusjonsbeløp === 0
+    ) {
+        return null;
+    }
 
     return (
         <Boks>
             <div style={{ paddingRight: '1.5rem' }}>
                 <Pengesedler />
             </div>
-            <div>
-                <Element>Dere får utbetalt</Element>
-                <VerticalSpacer rem={0.5} />
-                <Normaltekst>
-                    <b>{formatterPenger(refusjon.beregning?.refusjonsbeløp || 0)}</b> for perioden{' '}
-                    {formatterPeriode(refusjon.tilskuddsgrunnlag.tilskuddFom, refusjon.tilskuddsgrunnlag.tilskuddTom)}{' '}
-                    til kontonummer {refusjon.bedriftKontonummer}
-                </Normaltekst>
-            </div>
+            {props.refusjonsgrunnlag.beregning?.refusjonsbeløp > 0 && (
+                <div>
+                    <Element>Dere får utbetalt</Element>
+                    <VerticalSpacer rem={0.5} />
+                    <Normaltekst>
+                        <b>{formatterPenger(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0)}</b> for perioden{' '}
+                        {formatterPeriode(
+                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                        )}{' '}
+                        til kontonummer {props.refusjonsgrunnlag.bedriftKontonummer}
+                    </Normaltekst>
+                </div>
+            )}
+            {props.refusjonsgrunnlag.beregning?.refusjonsbeløp < 0 && (
+                <div>
+                    <Element>Dere skylder</Element>
+                    <VerticalSpacer rem={0.5} />
+                    <Normaltekst>
+                        <b>{formatterPenger(Math.abs(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0))}</b> for
+                        perioden{' '}
+                        {formatterPeriode(
+                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                        )}
+                    </Normaltekst>
+                </div>
+            )}
         </Boks>
     );
 };

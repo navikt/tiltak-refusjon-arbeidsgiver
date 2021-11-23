@@ -1,13 +1,12 @@
 import _ from 'lodash';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { useHentRefusjon } from '../../services/rest-service';
-import { refusjonApnet } from '../../utils/amplitude-utils';
+import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 
@@ -52,57 +51,59 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     }
 };
 
-const InntekterFraAMeldingen: FunctionComponent = () => {
+const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
     const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
-    const antallInntekterSomErMedIGrunnlag = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
+    const korreksjonId = useHentRefusjon(refusjonId).korreksjonId;
+
+    const korreksjon = useHentKorreksjon(korreksjonId!);
+
+    const antallInntekterSomErMedIGrunnlag = korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.erMedIInntektsgrunnlag
     ).length;
 
     const ingenInntekter =
-        !refusjon.refusjonsgrunnlag.inntektsgrunnlag ||
-        refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.length === 0;
+        !korreksjon.refusjonsgrunnlag.inntektsgrunnlag ||
+        korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.length === 0;
 
     const ingenRefunderbareInntekter: boolean =
-        !!refusjon.refusjonsgrunnlag.inntektsgrunnlag &&
-        refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.length > 0 &&
+        !!korreksjon.refusjonsgrunnlag.inntektsgrunnlag &&
+        korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.length > 0 &&
         antallInntekterSomErMedIGrunnlag === 0;
 
-    const harInntekterMenIkkeForHeleTilskuddsperioden =
-        refusjon.status === 'KLAR_FOR_INNSENDING' &&
-        !refusjon.harInntektIAlleMåneder &&
-        !!refusjon.refusjonsgrunnlag.inntektsgrunnlag &&
-        refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) !==
-            undefined;
+    // const harInntekterMenIkkeForHeleTilskuddsperioden =
+    //     refusjon.status === 'KLAR_FOR_INNSENDING' &&
+    //     !refusjon.harInntektIAlleMåneder &&
+    //     !!refusjon.refusjonsgrunnlag.inntektsgrunnlag &&
+    //     refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) !== undefined;
 
-    refusjonApnet(
-        refusjon,
-        antallInntekterSomErMedIGrunnlag ?? 0,
-        ingenInntekter,
-        ingenRefunderbareInntekter,
-        harInntekterMenIkkeForHeleTilskuddsperioden
-    );
+    // refusjonApnet(
+    //     refusjon,
+    //     antallInntekterSomErMedIGrunnlag ?? 0,
+    //     ingenInntekter,
+    //     ingenRefunderbareInntekter,
+    //     harInntekterMenIkkeForHeleTilskuddsperioden
+    // );
 
     return (
         <GråBoks>
             <Fleks>
                 <Undertittel style={{ marginBottom: '1rem' }}>Inntekter hentet fra a-meldingen</Undertittel>
-                {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
+                {korreksjon.refusjonsgrunnlag.inntektsgrunnlag && (
                     <Normaltekst>
                         Sist hentet:{' '}
                         {formatterDato(
-                            refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
+                            korreksjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
                             NORSK_DATO_OG_TID_FORMAT
                         )}
                     </Normaltekst>
                 )}
             </Fleks>
-            {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
-                refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
+            {korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
+                korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
                     <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
                 )}
-            {refusjon.refusjonsgrunnlag.inntektsgrunnlag &&
-                refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find(
+            {korreksjon.refusjonsgrunnlag.inntektsgrunnlag &&
+                korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find(
                     (inntekt) => inntekt.erMedIInntektsgrunnlag
                 ) && (
                     <>
@@ -118,7 +119,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                             </thead>
                             <tbody>
                                 {_.sortBy(
-                                    refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.filter(
+                                    korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.filter(
                                         (inntekt) => inntekt.erMedIInntektsgrunnlag
                                     ),
                                     ['måned', 'opptjeningsperiodeFom', 'opptjeningsperiodeTom', 'beskrivelse', 'id']
@@ -142,7 +143,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                         <td>{formatterPenger(inntekt.beløp)}</td>
                                     </tr>
                                 ))}
-                                {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn && (
+                                {korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn && (
                                     <tr>
                                         <td colSpan={3}>
                                             <b>Sum</b>
@@ -150,7 +151,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                         <td>
                                             <b style={{ whiteSpace: 'nowrap' }}>
                                                 {formatterPenger(
-                                                    refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn
+                                                    korreksjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn
                                                 )}
                                             </b>
                                         </td>
@@ -180,7 +181,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                     <VerticalSpacer rem={1} />
                 </>
             )}
-            {harInntekterMenIkkeForHeleTilskuddsperioden && (
+            {/* {harInntekterMenIkkeForHeleTilskuddsperioden && (
                 <>
                     <VerticalSpacer rem={1} />
                     <AlertStripeAdvarsel>
@@ -198,8 +199,8 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                     </AlertStripeAdvarsel>
                     <VerticalSpacer rem={1} />
                 </>
-            )}
+            )} */}
         </GråBoks>
     );
 };
-export default InntekterFraAMeldingen;
+export default InntekterFraAMeldingenKorreksjon;

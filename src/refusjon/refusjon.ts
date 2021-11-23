@@ -1,28 +1,53 @@
-import { Status } from './status';
+import { RefusjonStatus } from './status';
 import { Tiltak } from './tiltak';
+
+export enum KorreksjonStatus {
+    UTKAST = 'UTKAST',
+    TILLEGSUTBETALING = 'TILLEGSUTBETALING',
+    OPPGJORT = 'OPPGJORT',
+    TILBAKEKREVING = 'TILBAKEKREVING',
+}
 
 export interface Refusjon {
     id: string;
     bedriftNr: string;
-    bedriftKontonummer?: string;
     deltakerFnr: string;
     godkjentAvArbeidsgiver?: string;
-    godkjentAvSaksbehandler?: string;
-    status: Status;
-    tilskuddsgrunnlag: Tilskuddsgrunnlag;
-    inntektsgrunnlag?: Inntektsgrunnlag;
-    beregning?: Beregning;
+    status: RefusjonStatus;
+    forrigeFristForGodkjenning?: string;
     fristForGodkjenning: string;
     harInntektIAlleMåneder: boolean;
+    korreksjonId?: string;
+    refusjonsgrunnlag: Refusjonsgrunnlag;
+}
+
+export interface Korreksjon {
+    id: string;
+    korrigererRefusjonId: string;
+    bedriftNr: string;
+    deltakerFnr: string;
+    status: KorreksjonStatus;
+    harInntektIAlleMåneder: boolean;
+    kostnadssted?: string;
+    korreksjonsgrunner: Korreksjonsgrunn[];
+    refusjonsgrunnlag: Refusjonsgrunnlag;
+    godkjentTidspunkt?: string;
+}
+
+export interface Refusjonsgrunnlag {
+    tilskuddsgrunnlag: Tilskuddsgrunnlag;
+    inntektsgrunnlag?: Inntektsgrunnlag;
     inntekterKunFraTiltaket?: boolean;
     endretBruttoLønn?: number;
-    korreksjonsgrunner: Korreksjonsgrunn[];
-    korreksjonAvId?: string;
+    bedriftKontonummer?: string;
+    beregning?: Beregning;
 }
 
 export interface Tilskuddsgrunnlag {
     arbeidsgiveravgiftSats: number;
     avtaleId: string;
+    avtaleNr: number;
+    løpenummer: number;
     bedriftNavn: string;
     bedriftNr: string;
     deltakerEtternavn: string;
@@ -38,14 +63,13 @@ export interface Tilskuddsgrunnlag {
     tilskuddsperiodeId: string;
     tiltakstype: Tiltak;
     veilederNavIdent: string;
-    avtaleNr: number;
-    løpenummer: number;
+    enhet: string;
 }
 
 export interface Inntektsgrunnlag {
-    bruttoLønn: number;
     innhentetTidspunkt: string;
     inntekter: Inntektslinje[];
+    bruttoLønn: number;
 }
 
 export interface Inntektslinje {
@@ -56,8 +80,6 @@ export interface Inntektslinje {
     id: string;
     opptjeningsperiodeFom?: string;
     opptjeningsperiodeTom?: string;
-    inntektFordelesFom: string;
-    inntektFordelesTom: string;
     erMedIInntektsgrunnlag: boolean;
 }
 
@@ -80,5 +102,4 @@ export enum Korreksjonsgrunn {
     UTBETALT_HELE_TILSKUDDSBELØP = 'UTBETALT_HELE_TILSKUDDSBELØP',
     INNTEKTER_RAPPORTERT_ETTER_TILSKUDDSPERIODE = 'INNTEKTER_RAPPORTERT_ETTER_TILSKUDDSPERIODE',
     HENT_INNTEKTER_PÅ_NYTT = 'HENT_INNTEKTER_PÅ_NYTT',
-    UTBETALING_RETURNERT = 'UTBETALING_RETURNERT',
 }

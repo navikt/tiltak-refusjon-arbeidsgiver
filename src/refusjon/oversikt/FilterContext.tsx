@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
-import { Status } from '../status';
-import { Tiltak } from '../tiltak';
 import { registrerMenyValg } from '../../utils/amplitude-utils';
+import { RefusjonStatus } from '../status';
+import { Tiltak } from '../tiltak';
 
 export interface Filter {
-    status: Status | undefined;
+    status: RefusjonStatus | undefined;
     tiltakstype: Tiltak | undefined;
 }
 

@@ -2,28 +2,28 @@ import { EtikettAdvarsel, EtikettInfo, EtikettSuksess } from 'nav-frontend-etike
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { statusTekst } from '../../messages';
-import { Status } from '../../refusjon/status';
+import { RefusjonStatus } from '../../refusjon/status';
 import { formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 
 interface Props {
-    status: Status;
+    status: RefusjonStatus;
     tilskuddFom: string;
     tilskuddTom: string;
 }
 
 const StatusTekst: FunctionComponent<Props> = (props) => {
-    if (props.status === Status.KLAR_FOR_INNSENDING) {
+    if (props.status === RefusjonStatus.KLAR_FOR_INNSENDING) {
         return <EtikettSuksess>Klar for innsending</EtikettSuksess>;
-    } else if (props.status === Status.FOR_TIDLIG) {
+    } else if (props.status === RefusjonStatus.FOR_TIDLIG) {
         return <EtikettInfo>Søk fra {formatterDato(props.tilskuddTom)}</EtikettInfo>;
     } else if (
-        props.status === Status.UTGÅTT ||
-        props.status === Status.ANNULLERT ||
-        props.status === Status.UTBETALING_FEILET
+        props.status === RefusjonStatus.UTGÅTT ||
+        props.status === RefusjonStatus.ANNULLERT ||
+        props.status === RefusjonStatus.UTBETALING_FEILET
     ) {
         return <EtikettAdvarsel>{storForbokstav(statusTekst[props.status])}</EtikettAdvarsel>;
-    } else if (props.status === Status.UTBETALT) {
+    } else if (props.status === RefusjonStatus.UTBETALT) {
         return <EtikettSuksess>Utbetalt</EtikettSuksess>;
     }
     return <EtikettInfo>{storForbokstav(statusTekst[props.status])}</EtikettInfo>;

@@ -43,20 +43,20 @@ const Oversikt: FunctionComponent = () => {
                             href={`/refusjon/${refusjon.id}`}
                         >
                             <Kolonne aria-labelledby={cls.element('deltaker')}>
-                                {refusjon.tilskuddsgrunnlag.deltakerFornavn}{' '}
-                                {refusjon.tilskuddsgrunnlag.deltakerEtternavn}
+                                {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn}{' '}
+                                {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerEtternavn}
                             </Kolonne>
                             <Kolonne aria-labelledby={cls.element('periode')}>
                                 {formatterPeriode(
-                                    refusjon.tilskuddsgrunnlag.tilskuddFom,
-                                    refusjon.tilskuddsgrunnlag.tilskuddTom
+                                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                                 )}
                             </Kolonne>
                             <Kolonne aria-labelledby={cls.element('status')}>
                                 <StatusTekst
                                     status={refusjon.status}
-                                    tilskuddFom={refusjon.tilskuddsgrunnlag.tilskuddFom}
-                                    tilskuddTom={refusjon.tilskuddsgrunnlag.tilskuddTom}
+                                    tilskuddFom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom}
+                                    tilskuddTom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom}
                                 />
                             </Kolonne>
                             <Kolonne aria-labelledby={cls.element('frist-godkjenning')}>

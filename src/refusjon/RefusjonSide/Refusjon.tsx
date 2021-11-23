@@ -3,11 +3,9 @@ import { useParams } from 'react-router';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
 import { useHentRefusjon } from '../../services/rest-service';
 import { formatterDato } from '../../utils/datoUtils';
-import KvitteringKorreksjonEtterbetaling from '../KvitteringSide/KvitteringKorreksjonEtterbetaling';
-import KvitteringKorreksjonOppgjort from '../KvitteringSide/KvitteringKorreksjonOppgjort';
-import KvitteringKorreksjonTilbakekreving from '../KvitteringSide/KvitteringKorreksjonTilbakekreving';
+import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
 import KvitteringSide from '../KvitteringSide/KvitteringSide';
-import { Status } from '../status';
+import { RefusjonStatus } from '../status';
 import FeilSide from './FeilSide';
 import HenterInntekterBoks from './HenterInntekterBoks';
 import RefusjonSide from './RefusjonSide';
@@ -17,18 +15,18 @@ const Komponent: FunctionComponent = () => {
     const refusjon = useHentRefusjon(refusjonId);
 
     switch (refusjon.status) {
-        case Status.FOR_TIDLIG:
+        case RefusjonStatus.FOR_TIDLIG:
             return (
                 <FeilSide
                     advarselType="info"
                     feiltekst={`Du kan søke om refusjon fra ${formatterDato(
-                        refusjon.tilskuddsgrunnlag.tilskuddTom
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )} når perioden er over.`}
                 />
             );
-        case Status.KLAR_FOR_INNSENDING:
+        case RefusjonStatus.KLAR_FOR_INNSENDING:
             return <RefusjonSide />;
-        case Status.UTGÅTT:
+        case RefusjonStatus.UTGÅTT:
             return (
                 <FeilSide
                     advarselType="advarsel"
@@ -37,19 +35,14 @@ const Komponent: FunctionComponent = () => {
                     )}. Innvilget tilskudd er derfor trukket tilbake.`}
                 />
             );
-        case Status.ANNULLERT:
+        case RefusjonStatus.ANNULLERT:
             return <FeilSide advarselType="advarsel" feiltekst="Refusjonen er annullert. Avtalen ble annullert." />;
-        case Status.SENDT_KRAV:
-        case Status.UTBETALT:
-        case Status.UTBETALING_FEILET:
-        case Status.KORRIGERT:
+        case RefusjonStatus.SENDT_KRAV:
             return <KvitteringSide />;
-        case Status.KORREKSJON_SENDT_TIL_UTBETALING:
-            return <KvitteringKorreksjonEtterbetaling />;
-        case Status.KORREKSJON_SKAL_TILBAKEKREVES:
-            return <KvitteringKorreksjonTilbakekreving />;
-        case Status.KORREKSJON_OPPGJORT:
-            return <KvitteringKorreksjonOppgjort />;
+        case RefusjonStatus.UTBETALT:
+        case RefusjonStatus.UTBETALING_FEILET:
+        case RefusjonStatus.KORRIGERT:
+            return <KvitteringKorreksjon />;
     }
 };
 

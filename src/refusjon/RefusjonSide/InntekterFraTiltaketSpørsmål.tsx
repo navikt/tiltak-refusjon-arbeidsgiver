@@ -23,12 +23,12 @@ const RadioPakning = styled.div`
 const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
-    const [inntekterKunFraTiltaket, setInntekterKunFraTiltaket] = useState(refusjon.inntekterKunFraTiltaket);
-    const [endretBruttoLønn, setEndretBruttoLønn] = useState(refusjon.endretBruttoLønn);
-    if (refusjon.inntektsgrunnlag === undefined) {
+    const [inntekterKunFraTiltaket, setInntekterKunFraTiltaket] = useState(refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket);
+    const [endretBruttoLønn, setEndretBruttoLønn] = useState(refusjon.refusjonsgrunnlag.endretBruttoLønn);
+    if (refusjon.refusjonsgrunnlag.inntektsgrunnlag === undefined) {
         return null;
     }
-    const bruttoLønn = refusjon.inntektsgrunnlag.bruttoLønn;
+    const bruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn;
 
     const svarPåSpørsmål = (checked: boolean) => {
         setInntekterKunFraTiltaket(checked);
@@ -40,11 +40,17 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
 
     return (
         <div>
-            <Undertittel>Inntekter fra {tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]}</Undertittel>
+            <Undertittel>
+                Inntekter fra {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
+            </Undertittel>
             <VerticalSpacer rem={1} />
+
             <Label htmlFor={'inntekterKunFraTiltaket'}>
-                Er inntektene som vi har hentet ({formatterPenger(refusjon.inntektsgrunnlag.bruttoLønn)}) kun fra
-                tiltaket {tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]}?
+                Er inntektene som vi har hentet{' '}
+                {refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn > 0 && (
+                    <>({formatterPenger(refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn)})</>
+                )}
+                kun fra tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
             </Label>
             <p>
                 <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller lønnstilskudd</i>
@@ -71,7 +77,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     <Input
                         bredde={'S'}
                         label={`Skriv inn bruttolønn utbetalt for ${
-                            tiltakstypeTekst[refusjon.tilskuddsgrunnlag.tiltakstype]
+                            tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]
                         }`}
                         onChange={(event: any) => {
                             const verdi = event.currentTarget.value;
