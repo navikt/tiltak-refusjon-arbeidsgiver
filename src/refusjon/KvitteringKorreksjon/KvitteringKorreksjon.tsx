@@ -14,7 +14,7 @@ import InformasjonFraAvtalen from '../RefusjonSide/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
-import InntekterFraAMeldingenKorreksjon from './InntekterFRaAmeldingenKorreksjon';
+import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';
 import KorreksjonInfo from './KorreksjonInfo';
 
 const KvitteringKorreksjon: FunctionComponent = () => {
