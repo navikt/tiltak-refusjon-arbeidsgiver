@@ -49,7 +49,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 Er inntektene som vi har hentet{' '}
                 {refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn > 0 && (
                     <>({formatterPenger(refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn)})</>
-                )}
+                )}{' '}
                 kun fra tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
             </Label>
             <p>
