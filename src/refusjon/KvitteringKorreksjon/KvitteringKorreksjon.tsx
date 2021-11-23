@@ -27,7 +27,6 @@ const KvitteringKorreksjon: FunctionComponent = () => {
             <HvitBoks>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Innholdstittel role="heading">Kvittering for korrigert refusjon</Innholdstittel>
-                    {/* {etikettForRefusjonStatus(refusjon)} */}
                     <EtikettInfo>
                         {storForbokstav(korreksjonStatusTekst[korreksjon.status])}{' '}
                         {formatterDato(korreksjon.godkjentTidspunkt!, NORSK_DATO_OG_TID_FORMAT)}
