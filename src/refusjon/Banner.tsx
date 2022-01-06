@@ -1,9 +1,9 @@
-import Bedriftsmeny from "@navikt/bedriftsmeny";
-import { Organisasjon } from "@navikt/bedriftsmeny/lib/organisasjon";
-import { Action, History, Listener } from "history";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
-import { To } from "react-router-dom";
+import Bedriftsmeny from '@navikt/bedriftsmeny';
+import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
+import { Action, History, Listener } from 'history';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { To } from 'react-router-dom';
 
 type Props = {
     organisasjoner: Organisasjon[];
@@ -24,24 +24,26 @@ const Banner: FunctionComponent<Props> = (props) => {
 
     const fakeHistory: Pick<History, 'listen' | 'replace'> = {
         replace: (to: To) => {
-            navigate(to, { replace: true })
+            navigate(to, { replace: true });
         },
-        listen: nyListener => {
+        listen: (nyListener) => {
             return () => {
-                setListener(() => nyListener)
-            }
+                setListener(() => nyListener);
+            };
         },
     };
 
     return (
-        <Bedriftsmeny
-            history={fakeHistory as any}
-            organisasjoner={props.organisasjoner}
-            onOrganisasjonChange={(org) => {
-                props.setValgtBedrift(org);
-            }}
-            sidetittel="Tiltaksrefusjon"
-        />
+        <>
+            <Bedriftsmeny
+                history={fakeHistory as any}
+                organisasjoner={props.organisasjoner}
+                onOrganisasjonChange={(org) => {
+                    props.setValgtBedrift(org);
+                }}
+                sidetittel="Tiltaksrefusjon"
+            />
+        </>
     );
 };
 

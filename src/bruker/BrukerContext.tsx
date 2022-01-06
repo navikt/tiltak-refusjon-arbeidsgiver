@@ -7,6 +7,7 @@ import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
+import BedriftsmenyRefusjon from './bedriftsmenyRefusjon/BedriftsmenyRefusjon';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -22,35 +23,42 @@ export const useInnloggetBruker = () => {
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
     const [valgtBedrift, setValgtBedrift] = useState<string | undefined>();
-    const [xmlHttpReq, setXmlHttpReq] = useState<boolean>(false);
 
     useEffect(() => {
-        XMLHttpReqHandler(xmlHttpReq, setXmlHttpReq);
         hentInnloggetBruker()
             .then((response) => setInnloggetBruker(response))
             .catch((err) => console.log('err', err));
-    }, [xmlHttpReq]);
+    }, []);
 
     const navigate = useNavigate();
 
     return (
-        <>
+        <XMLHttpReqHandler>
             {(erUtviklingsmiljo() || inneholderVertsnavn('labs.nais.io')) && (
                 <LokalLogin innloggetBruker={innloggetBruker} />
             )}
             {innloggetBruker && (
-                <Banner
-                    organisasjoner={innloggetBruker.organisasjoner}
-                    setValgtBedrift={(org) => {
-                        if (valgtBedrift !== undefined) {
-                            navigate({
-                                pathname: '/refusjon',
-                                search: 'bedrift=' + org.OrganizationNumber,
-                            });
-                        }
-                        setValgtBedrift(org.OrganizationNumber);
-                    }}
-                />
+                <>
+                    {' '}
+                    <BedriftsmenyRefusjon
+                        identifikator={innloggetBruker.identifikator}
+                        organisasjoner={innloggetBruker.organisasjoner}
+                        valgtBedrift={valgtBedrift}
+                        setValgtBedrift={setValgtBedrift}
+                    />
+                    <Banner
+                        organisasjoner={innloggetBruker.organisasjoner}
+                        setValgtBedrift={(org) => {
+                            if (valgtBedrift !== undefined) {
+                                navigate({
+                                    pathname: '/refusjon',
+                                    search: 'bedrift=' + org.OrganizationNumber,
+                                });
+                            }
+                            setValgtBedrift(org.OrganizationNumber);
+                        }}
+                    />
+                </>
             )}
             {innloggetBruker && valgtBedrift && (
                 <BrukerContext.Provider
@@ -63,6 +71,6 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 </BrukerContext.Provider>
             )}
             {innloggetBruker?.organisasjoner?.length === 0 && <ManglerRettigheter />}
-        </>
+        </XMLHttpReqHandler>
     );
 };
