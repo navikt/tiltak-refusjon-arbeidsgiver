@@ -1,5 +1,5 @@
 import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Juridiskenhet } from './bedriftsmenyRefusjon/organisasjon';
 import { History } from 'history';
 
@@ -12,10 +12,12 @@ export interface BrukerContextType {
 
 export interface MenyContextType {
     valgtBedrift: Bedrift | undefined;
-    setValgtBedrift: Dispatch<string>;
+    setValgtBedrift: (org: Organisasjon) => void;
     organisasjoner: Organisasjon[];
     history: History;
     organisasjonstre: Juridiskenhet[] | undefined;
+    menyApen: boolean;
+    setMenyApen: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface InnloggetBruker {

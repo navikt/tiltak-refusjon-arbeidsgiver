@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import TypografiBase, { Element } from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
@@ -8,13 +8,14 @@ import './bedriftsmenyRefusjon.less';
 import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
 import { byggOrganisasjonstre } from './api/api';
 import { Juridiskenhet } from './organisasjon';
-import { createBrowserHistory, History } from 'history';
+import { History } from 'history';
 
 interface Props {
     identifikator: string;
     organisasjoner: Organisasjon[];
     valgtBedrift: string | undefined;
-    setValgtBedrift: Dispatch<string>;
+    setValgtBedrift: (org: Organisasjon) => void;
+    history: History;
 }
 
 export const MenyContext = React.createContext<MenyContextType>({} as MenyContextType);
@@ -22,13 +23,14 @@ export const MenyContext = React.createContext<MenyContextType>({} as MenyContex
 const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren<Props>) => {
     const cls = BEMHelper('bedriftsmeny-refusjon');
     const [organisasjonstre, setOrganisasjonstre] = useState<Juridiskenhet[] | undefined>(undefined);
-    const { valgtBedrift, setValgtBedrift, identifikator, organisasjoner } = props;
-    const history: History = createBrowserHistory();
+    const [menyApen, setMenyApen] = useState<boolean>(false);
+    const { valgtBedrift, setValgtBedrift, identifikator, organisasjoner, history } = props;
 
     useEffect(() => {
         if (organisasjoner && organisasjoner?.length > 0) {
             byggOrganisasjonstre(organisasjoner).then((orglist) => {
                 if (orglist.length > 0) {
+                    console.log('orglist', orglist);
                     setOrganisasjonstre(orglist);
                 }
             });
@@ -41,6 +43,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         organisasjoner,
         history,
         organisasjonstre,
+        menyApen,
+        setMenyApen,
     };
 
     return (
@@ -56,8 +60,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                         </TypografiBase>
                     </div>
                     <div className={cls.element('innhold')}>
-                        <div>
-                            <Element>Bruker</Element>
+                        <div className={cls.element('bruker')}>
+                            <Element>innlogget bruker</Element>
                             <Element>{identifikator}</Element>
                         </div>
                         <MenyContext.Provider value={contextData}>

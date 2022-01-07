@@ -4,15 +4,19 @@ import { Action, History, Listener } from 'history';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { To } from 'react-router-dom';
+import BedriftsmenyRefusjon from '../bruker/bedriftsmenyRefusjon/BedriftsmenyRefusjon';
 
 type Props = {
+    identifikator: string;
     organisasjoner: Organisasjon[];
+    valgtBedrift: string | undefined;
     setValgtBedrift: (org: Organisasjon) => void;
 };
 
 const Banner: FunctionComponent<Props> = (props) => {
     const location = useLocation();
     const [listener, setListener] = useState<Listener>();
+    const { identifikator, organisasjoner, valgtBedrift, setValgtBedrift } = props;
 
     useEffect(() => {
         if (listener) {
@@ -35,6 +39,13 @@ const Banner: FunctionComponent<Props> = (props) => {
 
     return (
         <>
+            <BedriftsmenyRefusjon
+                identifikator={identifikator}
+                organisasjoner={organisasjoner}
+                valgtBedrift={valgtBedrift}
+                setValgtBedrift={setValgtBedrift}
+                history={fakeHistory as any}
+            />
             <Bedriftsmeny
                 history={fakeHistory as any}
                 organisasjoner={props.organisasjoner}

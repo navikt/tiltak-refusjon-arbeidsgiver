@@ -7,7 +7,6 @@ import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
-import BedriftsmenyRefusjon from './bedriftsmenyRefusjon/BedriftsmenyRefusjon';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -40,14 +39,10 @@ export const BrukerProvider: FunctionComponent = (props) => {
             {innloggetBruker && (
                 <>
                     {' '}
-                    <BedriftsmenyRefusjon
+                    <Banner
                         identifikator={innloggetBruker.identifikator}
                         organisasjoner={innloggetBruker.organisasjoner}
                         valgtBedrift={valgtBedrift}
-                        setValgtBedrift={setValgtBedrift}
-                    />
-                    <Banner
-                        organisasjoner={innloggetBruker.organisasjoner}
                         setValgtBedrift={(org) => {
                             if (valgtBedrift !== undefined) {
                                 navigate({

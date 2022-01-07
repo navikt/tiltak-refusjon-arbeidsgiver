@@ -1,15 +1,16 @@
 @import 'node_modules/nav-frontend-core/less/_variabler';
 
 .bedriftsmeny-refusjon {
-    height: 3.5rem;
+    height: 4.5rem;
     background-color: #ffffff;
     border-bottom: 1px solid #c9c9c9;
-    padding: 0.5rem 1rem;
+    padding: 0 1rem;
     display: flex;
     justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02), 0 0 40px rgba(130, 130, 130, 0.1) inset;
 
     &__wrapper {
-        max-width: 47.1875rem;
+        max-width: 64.1875rem;
         width: 100%;
     }
 
@@ -23,6 +24,11 @@
     &__brand {
         display: flex;
         align-content: center;
+    }
+
+    &__bruker,
+    &__brand {
+        padding: 1rem 0;
     }
 
     &__tittel {
