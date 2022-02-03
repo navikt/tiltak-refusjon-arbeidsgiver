@@ -1,9 +1,10 @@
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
-import { InnloggetBruker } from '../bruker/BrukerContextType';
+import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
 import { Korreksjon, Refusjon } from '../refusjon/refusjon';
 import { RefusjonStatus } from '../refusjon/status';
 import { Tiltak } from '../refusjon/tiltak';
+import { BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 
 export class FeilkodeError extends Error {}
 export class ApiError extends Error {}
@@ -56,11 +57,64 @@ export const godkjennRefusjon = async (refusjonId: string) => {
     return response.data;
 };
 
-export const useHentRefusjoner = (bedriftnummer: string, status?: RefusjonStatus, tiltakstype?: Tiltak) => {
+export const useHentRefusjoner = (
+    brukerContext: BrukerContextType,
+    status?: RefusjonStatus,
+    tiltakstype?: Tiltak
+): Refusjon[] => {
+    const { valgtBedrift, page, pagesize } = brukerContext;
+    switch (brukerContext.valgtBedrift.type) {
+        case BedriftvalgType.ENKELBEDRIFT:
+            return HentRefusjonerForEnkeltOrganisasjon(
+                valgtBedrift.valgtOrg?.[0]?.OrganizationNumber,
+                status,
+                tiltakstype
+            );
+        case BedriftvalgType.FLEREBEDRIFTER:
+            return HentRefusjonForMangeOrganisasjoner(
+                valgtBedrift.valgtOrg.map((e) => e.OrganizationNumber).join(','),
+                page,
+                pagesize,
+                status,
+                tiltakstype
+            );
+        case BedriftvalgType.ALLEBEDRIFTER:
+            return HentRefusjonForMangeOrganisasjoner(
+                BedriftvalgType.ALLEBEDRIFTER,
+                page,
+                pagesize,
+                status,
+                tiltakstype
+            );
+    }
+};
+
+export const HentRefusjonerForEnkeltOrganisasjon = (
+    bedriftnummer: string,
+    status?: RefusjonStatus,
+    tiltakstype?: Tiltak
+): Refusjon[] => {
     const { data } = useSWR<Refusjon[]>(
         `/refusjon?bedriftNr=${bedriftnummer}&status=${status || ''}&tiltakstype=${tiltakstype || ''}`,
         swrConfig
     );
+    return data!;
+};
+
+export const HentRefusjonForMangeOrganisasjoner = (
+    bedriftlist: string,
+    page: number,
+    pagesize: number,
+    status?: RefusjonStatus,
+    tiltakstype?: Tiltak
+): Refusjon[] => {
+    const { data } = useSWR<Refusjon[]>(
+        `/refusjon/hentliste?bedriftNr=${bedriftlist}&page=${page}&size=${pagesize}&&status=${
+            status || ''
+        }&tiltakstype=${tiltakstype || ''}`,
+        swrConfig
+    );
+    console.log('data: ', data);
     return data!;
 };
 

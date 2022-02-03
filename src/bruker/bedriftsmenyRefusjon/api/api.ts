@@ -1,4 +1,4 @@
-import { initOrganisasjon, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon } from '../organisasjon';
+import { initOrganisasjon, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon } from './organisasjon';
 import {
     finnJuridiskeEnheter,
     getJuridiskeEnheterFraBedrifter,

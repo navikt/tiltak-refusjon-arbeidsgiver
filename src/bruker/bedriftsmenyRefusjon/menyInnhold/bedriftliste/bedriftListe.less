@@ -48,7 +48,7 @@
         display: grid;
         grid-template-columns: 8.5% 91.5%;
         max-width: 24.5rem;
-        border: #c9c9c9 solid;
+        // border: #c9c9c9 solid;
         margin-right: 0.5rem;
 
         &--skjule {
@@ -93,8 +93,8 @@
     &__underenhet {
         list-style-type: none;
         padding: 0 0 0 1.5rem;
-        border-left: #c9c9c9 solid;
-        border-right: #c9c9c9 solid;
+        // border-left: #c9c9c9 solid;
+        // border-right: #c9c9c9 solid;
         max-height: 0;
         overflow: hidden;
         transition: 0.3s ease-in-out;
@@ -112,6 +112,11 @@
 
     &__underenhet-checkbox {
         margin: 0 0.5rem 2rem 0;
+
+        &--skjule {
+            max-width: 0;
+            overflow: hidden;
+        }
     }
 
     &__underenhet-lenke {

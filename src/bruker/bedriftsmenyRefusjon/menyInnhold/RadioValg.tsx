@@ -1,6 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import { BedriftvalgType } from '../organisasjon';
+import { BedriftvalgType } from '../api/organisasjon';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
 

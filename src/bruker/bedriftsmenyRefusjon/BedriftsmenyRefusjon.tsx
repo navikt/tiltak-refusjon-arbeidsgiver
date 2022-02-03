@@ -2,25 +2,31 @@ import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from
 import BEMHelper from '../../utils/bem';
 import TypografiBase, { Element } from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
-import Bedriftsmeny from './Bedriftsmeny';
-import './bedriftsmenyRefusjon.less';
-import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
+import Bedriftsmeny from './bedriftsmeny/Bedriftsmeny';
 import { byggOrganisasjonstre } from './api/api';
-import { Bedriftvalg, initBedriftvalg, Juridiskenhet, MenyContextType } from './organisasjon';
+import {
+    Bedriftvalg,
+    ClsBedriftsmeny,
+    initBedriftvalg,
+    Juridiskenhet,
+    MenyContextType,
+    Organisasjon,
+} from './api/organisasjon';
 import { History } from 'history';
+import './bedriftsmenyRefusjon.less';
 
 interface Props {
     identifikator: string;
     organisasjoner: Organisasjon[];
-    valgtBedrift: string | undefined;
-    setValgtBedrift: (org: Organisasjon) => void;
+    valgtBedrift: Bedriftvalg | undefined;
+    setValgtBedrift: (org: Bedriftvalg) => void;
     history: History;
 }
 
 export const MenyContext = React.createContext<MenyContextType>({} as MenyContextType);
 
 const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren<Props>) => {
-    const cls = BEMHelper('bedriftsmeny-refusjon');
+    const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY_REFUSJON);
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
     const [menyApen, setMenyApen] = useState<boolean>(false);
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);

@@ -1,6 +1,12 @@
 import { History } from 'history';
 import { Dispatch, SetStateAction } from 'react';
-import { Bedrift } from '../BrukerContextType';
+
+export enum ClsBedriftsmeny {
+    BEDRIFTSMENY_REFUSJON = 'bedriftsmeny-refusjon',
+    BEDRIFTSMENY = 'bedriftsmenyen',
+    MENYINNHOLD = 'menyInnhold',
+    SOK_ETTER_BEDRIFTER = 'sok-etter-bedrifter',
+}
 
 export interface Organisasjon {
     Name: string;
@@ -29,8 +35,8 @@ export interface Bedriftvalg {
 }
 
 export interface MenyContextType {
-    valgtBedrift: Bedrift | undefined;
-    setValgtBedrift: (org: Organisasjon) => void;
+    valgtBedrift: Bedriftvalg | undefined;
+    setValgtBedrift: (org: Bedriftvalg) => void;
     organisasjoner: Organisasjon[];
     history: History;
     organisasjonstre: Array<Juridiskenhet> | undefined;

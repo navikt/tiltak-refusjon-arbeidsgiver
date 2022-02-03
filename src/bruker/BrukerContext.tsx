@@ -7,6 +7,7 @@ import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
+import { Bedriftvalg, BedriftvalgType } from './bedriftsmenyRefusjon/api/organisasjon';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -21,7 +22,7 @@ export const useInnloggetBruker = () => {
 
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
-    const [valgtBedrift, setValgtBedrift] = useState<string | undefined>();
+    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>();
 
     useEffect(() => {
         hentInnloggetBruker()
@@ -45,12 +46,16 @@ export const BrukerProvider: FunctionComponent = (props) => {
                         valgtBedrift={valgtBedrift}
                         setValgtBedrift={(org) => {
                             if (valgtBedrift !== undefined) {
+                                const valgtOrg =
+                                    org?.type === BedriftvalgType.ALLEBEDRIFTER
+                                        ? BedriftvalgType.ALLEBEDRIFTER
+                                        : org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
                                 navigate({
                                     pathname: '/refusjon',
-                                    search: 'bedrift=' + org.OrganizationNumber,
+                                    search: 'bedrift=' + valgtOrg,
                                 });
                             }
-                            setValgtBedrift(org.OrganizationNumber);
+                            setValgtBedrift(org);
                         }}
                     />
                 </>
@@ -60,6 +65,8 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     value={{
                         innloggetBruker,
                         valgtBedrift,
+                        page: 0,
+                        pagesize: 15,
                     }}
                 >
                     {props.children}

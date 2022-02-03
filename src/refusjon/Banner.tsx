@@ -1,19 +1,20 @@
-import Bedriftsmeny from '@navikt/bedriftsmeny';
+// import Bedriftsmeny from '@navikt/bedriftsmeny';
 import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
 import { Action, History, Listener } from 'history';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { To } from 'react-router-dom';
 import BedriftsmenyRefusjon from '../bruker/bedriftsmenyRefusjon/BedriftsmenyRefusjon';
+import { Bedriftvalg } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 
-type Props = {
+interface Properties {
     identifikator: string;
-    organisasjoner: Organisasjon[];
-    valgtBedrift: string | undefined;
-    setValgtBedrift: (org: Organisasjon) => void;
-};
+    organisasjoner: Array<Organisasjon>;
+    valgtBedrift: Bedriftvalg | undefined;
+    setValgtBedrift: (org: Bedriftvalg) => void;
+}
 
-const Banner: FunctionComponent<Props> = (props) => {
+const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properties>) => {
     const location = useLocation();
     const [listener, setListener] = useState<Listener>();
     const { identifikator, organisasjoner, valgtBedrift, setValgtBedrift } = props;
@@ -30,10 +31,8 @@ const Banner: FunctionComponent<Props> = (props) => {
         replace: (to: To) => {
             navigate(to, { replace: true });
         },
-        listen: (nyListener) => {
-            return () => {
-                setListener(() => nyListener);
-            };
+        listen: (nyListener) => () => {
+            setListener(() => nyListener);
         },
     };
 
@@ -46,14 +45,14 @@ const Banner: FunctionComponent<Props> = (props) => {
                 setValgtBedrift={setValgtBedrift}
                 history={fakeHistory as any}
             />
-            <Bedriftsmeny
+            {/*            <Bedriftsmeny
                 history={fakeHistory as any}
                 organisasjoner={props.organisasjoner}
                 onOrganisasjonChange={(org) => {
                     props.setValgtBedrift(org);
                 }}
                 sidetittel="Tiltaksrefusjon"
-            />
+            />*/}
         </>
     );
 };

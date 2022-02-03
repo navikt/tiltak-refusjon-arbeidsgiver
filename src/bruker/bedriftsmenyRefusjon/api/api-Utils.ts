@@ -1,4 +1,4 @@
-import { Organisasjon } from '../organisasjon';
+import { Organisasjon } from './organisasjon';
 import { hentAlleJuridiskeEnheter } from './api';
 
 const BRREG_URL: string = 'https://data.brreg.no/enhetsregisteret/api/enheter/?organisasjonsnummer=';

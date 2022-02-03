@@ -1,19 +1,19 @@
-import React, { FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import BEMHelper from '../../../utils/bem';
-import { MenyContext } from '../BedriftsmenyRefusjon';
+import React, { FunctionComponent, PropsWithChildren, useContext, useState } from 'react';
+import { MenyContext } from '../../BedriftsmenyRefusjon';
 import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet.svg';
 import { ReactComponent as UnderEnhet } from '@/asset/image/underenhet.svg';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { NedChevron } from 'nav-frontend-chevron';
 import './bedriftListe.less';
 import Lenke from 'nav-frontend-lenker';
-import { BedriftvalgType, Juridiskenhet, Organisasjon } from '../organisasjon';
+import { BedriftvalgType, Juridiskenhet, Organisasjon } from '../../api/organisasjon';
 import { Checkbox } from 'nav-frontend-skjema';
+import BEMHelper from '../../../../utils/bem';
 
 const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper('bedriftliste');
     const context = useContext(MenyContext);
-    const { organisasjonstre, bedriftvalg, setBedriftvalg } = context;
+    const { organisasjonstre, bedriftvalg, setBedriftvalg, setValgtBedrift } = context;
     const [apnetElement, setApnetElement] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
         organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
     );
@@ -23,10 +23,6 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
 
     const matchOrganisasjon = (org: Organisasjon) =>
         bedriftvalg.valgtOrg.find((e) => e.OrganizationNumber === org.OrganizationNumber);
-
-    useEffect(() => {
-        console.log('bedriftvalg: ', bedriftvalg);
-    }, [bedriftvalg]);
 
     return (
         <div className={cls.className}>
@@ -97,7 +93,12 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                         key={underenhetIndex}
                                     >
                                         <div className={cls.element('underenhet-container')}>
-                                            <div className={cls.element('underenhet-checkbox')}>
+                                            <div
+                                                className={cls.element(
+                                                    'underenhet-checkbox',
+                                                    bedriftvalg.type === BedriftvalgType.ENKELBEDRIFT ? 'skjule' : ''
+                                                )}
+                                            >
                                                 <Checkbox
                                                     label={''}
                                                     checked={
@@ -128,6 +129,16 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                 href="#nav.no"
                                                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                                     e.preventDefault();
+                                                    if (bedriftvalg.type === BedriftvalgType.ENKELBEDRIFT) {
+                                                        setBedriftvalg({
+                                                            type: BedriftvalgType.ENKELBEDRIFT,
+                                                            valgtOrg: [underenhet],
+                                                        });
+                                                        setValgtBedrift({
+                                                            type: BedriftvalgType.ENKELBEDRIFT,
+                                                            valgtOrg: [underenhet],
+                                                        });
+                                                    }
                                                 }}
                                             >
                                                 <div className={cls.element('underenhet-ikon')}>
