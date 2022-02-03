@@ -29,8 +29,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY_REFUSJON);
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
     const [menyApen, setMenyApen] = useState<boolean>(false);
-    const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const { valgtBedrift, setValgtBedrift, identifikator, organisasjoner, history } = props;
+    const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
 
     useEffect(() => {
         if (organisasjoner && organisasjoner?.length > 0) {

@@ -11,8 +11,8 @@ import SokEtterBedrifter from '../menyInnhold/sokEtterBedrift/SokEtterBedrifter'
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
     const context = useContext(MenyContext);
-    const { history, organisasjonstre, menyApen, valgtBedrift, setValgtBedrift } = context;
-    const { hentOrg } = useOrganisasjon(organisasjonstre, history, valgtBedrift, setValgtBedrift);
+    const { history, organisasjonstre, menyApen, valgtBedrift, setValgtBedrift, setBedriftvalg } = context;
+    const { hentOrg } = useOrganisasjon(organisasjonstre, history, valgtBedrift, setValgtBedrift, setBedriftvalg);
 
     useEffect(() => {
         hentOrg();

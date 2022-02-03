@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { Bedriftvalg, BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
 import { hentUnderenheter, settOrgnummerIgress } from './organisasjonUtils';
 import { History } from 'history';
@@ -9,7 +9,8 @@ function useOrganisasjon(
     orgtre: Juridiskenhet[] = [],
     history: History,
     valgtBedrift: Bedriftvalg | undefined,
-    setValgtBedrift: (org: Bedriftvalg) => void
+    setValgtBedrift: (org: Bedriftvalg) => void,
+    setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>
 ) {
     const hentOrg = useCallback(() => {
         function settOrganisasjon(
@@ -20,7 +21,9 @@ function useOrganisasjon(
             if (settOrgnrUrl) {
                 settOrgnummerIgress(organisasjonsliste?.[0]?.OrganizationNumber ?? '', history);
             }
-            setValgtBedrift({ type: valgtBedrift?.type ?? bedriftvalgType, valgtOrg: organisasjonsliste });
+            const valgtorg = { type: valgtBedrift?.type ?? bedriftvalgType, valgtOrg: organisasjonsliste };
+            setBedriftvalg(valgtorg);
+            setValgtBedrift(valgtorg);
         }
 
         function setFallbackOrganisasjon(): void {
@@ -75,7 +78,7 @@ function useOrganisasjon(
         }
 
         sjekkOgSettValgtOrgnrUrlparams();
-    }, [orgtre, history, setValgtBedrift, valgtBedrift]);
+    }, [orgtre, history, setValgtBedrift, valgtBedrift, setBedriftvalg]);
 
     return useMemo(() => ({ hentOrg }), [hentOrg]);
 }
