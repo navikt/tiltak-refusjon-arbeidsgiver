@@ -5,7 +5,7 @@ import { FilterProvider } from '../oversikt/FilterContext';
 import Filtermeny from '../oversikt/Filtermeny';
 import Oversikt from '../oversikt/Oversikt';
 import './OversiktSide.less';
-
+import Pagination from './pagination/Pagination';
 const cls = BEMHelper('OversiktSide');
 
 const OversiktSide: FunctionComponent = () => {
@@ -20,6 +20,7 @@ const OversiktSide: FunctionComponent = () => {
                         <Suspense fallback={<OversiktSkeleton />}>
                             <Oversikt />
                         </Suspense>
+                        <Pagination />
                     </div>
                 </FilterProvider>
             </div>

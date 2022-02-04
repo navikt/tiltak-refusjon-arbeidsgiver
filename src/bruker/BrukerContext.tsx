@@ -6,7 +6,7 @@ import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
+import { BrukerContextType, InnloggetBruker, PageData } from './BrukerContextType';
 import { Bedriftvalg, BedriftvalgType } from './bedriftsmenyRefusjon/api/organisasjon';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
@@ -23,6 +23,14 @@ export const useInnloggetBruker = () => {
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
     const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>();
+    const [pageData, setPageData] = useState<PageData>({
+        page: 0,
+        pagesize: 5,
+        currentPage: 0,
+        size: 0,
+        totalItems: 0,
+        totalPages: 0,
+    });
 
     useEffect(() => {
         hentInnloggetBruker()
@@ -65,8 +73,8 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     value={{
                         innloggetBruker,
                         valgtBedrift,
-                        page: 0,
-                        pagesize: 15,
+                        pageData,
+                        setPageData,
                     }}
                 >
                     {props.children}

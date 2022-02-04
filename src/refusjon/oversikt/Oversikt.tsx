@@ -12,6 +12,7 @@ import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
 import LabelRad from './LabelRad';
 import './oversikt.less';
 import { BrukerContextType } from '../../bruker/BrukerContextType';
+import useOppdaterPagedata from '../../bruker/bedriftsmenyRefusjon/api/useOppdaterPagedata';
 
 const cls = BEMHelper('oversikt');
 
@@ -19,8 +20,12 @@ const Kolonne: FunctionComponent = (props) => <div className={cls.element('kolon
 
 const Oversikt: FunctionComponent = () => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
+    const { setPageData, pageData } = brukerContext;
     const { filter } = useFilter();
-    const refusjoner = useHentRefusjoner(brukerContext, filter.status, filter.tiltakstype);
+    const pagable = useHentRefusjoner(brukerContext, filter.status, filter.tiltakstype);
+    const { refusjoner } = pagable;
+    useOppdaterPagedata(pagable, pageData, setPageData);
+
     const navigate = useNavigate();
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);
 

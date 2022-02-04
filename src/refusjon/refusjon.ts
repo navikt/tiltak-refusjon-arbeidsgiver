@@ -8,6 +8,14 @@ export enum KorreksjonStatus {
     TILBAKEKREVING = 'TILBAKEKREVING',
 }
 
+export interface PageableRefusjon {
+    currentPage: number;
+    refusjoner: Array<Refusjon>;
+    size: number;
+    totalItems: number;
+    totalPages: number;
+}
+
 export interface Refusjon {
     id: string;
     bedriftNr: string;
