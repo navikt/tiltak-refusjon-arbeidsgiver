@@ -1,5 +1,7 @@
 @import (reference) '~nav-frontend-core/less/_variabler';
 
+@background-color-main: #f7f7f7;
+
 .pagination-bar {
     display: flex;
     justify-content: center;
@@ -21,14 +23,34 @@
         float: left;
         padding: 0.5rem 1rem;
         text-decoration: none;
-        background-color: #f7f7f7;
+        background-color: @background-color-main;
         border: none;
         margin: 0 0.5rem;
+        cursor: pointer;
 
         &--aktivsteg {
             background-color: @navBla;
             color: white;
             border-radius: 5px;
         }
+
+        &:hover:not(&--aktivsteg) {
+            background-color: #ddd;
+        }
+    }
+
+    &__chevron-venstre,
+    &__chevron-hoyre {
+        border: none;
+        background-color: @background-color-main;
+        cursor: pointer;
+    }
+
+    &__chevron-venstre {
+        margin-right: 0.25rem;
+    }
+
+    &__chevron-hoyre {
+        margin-left: 0.25rem;
     }
 }

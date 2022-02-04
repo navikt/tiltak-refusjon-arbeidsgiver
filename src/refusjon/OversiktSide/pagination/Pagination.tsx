@@ -4,42 +4,74 @@ import { useInnloggetBruker } from '../../../bruker/BrukerContext';
 import './pagination.less';
 import BEMHelper from '../../../utils/bem';
 import { BedriftvalgType } from '../../../bruker/bedriftsmenyRefusjon/api/organisasjon';
-import KnappBase from 'nav-frontend-knapper';
-import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
+import { ReactComponent as VenstreChevron } from '@/asset/image/dobbelChevronVenstre.svg';
+import { ReactComponent as HoyreChevron } from '@/asset/image/dobbelChevronHoyre.svg';
 
 const Pagination: FunctionComponent = () => {
     const cls = BEMHelper('pagination-bar');
     const brukerContext: BrukerContextType = useInnloggetBruker();
 
-    console.log('brukerContext.pageData.totalPages', brukerContext.pageData);
     function generatePagination() {
-        const steps = [];
+        const steg = [];
         for (let i = 0; i < brukerContext.pageData.totalPages; i++) {
-            steps.push(
+            steg.push(
                 <div>
                     <button
                         className={cls.element(
                             'steg-knapp',
                             brukerContext.pageData.currentPage === i ? 'aktivsteg' : ''
                         )}
+                        onClick={() => {
+                            brukerContext.setPageData(
+                                Object.assign({}, brukerContext.pageData, {
+                                    page: i,
+                                })
+                            );
+                        }}
                     >
                         {i + 1}
                     </button>
                 </div>
             );
         }
-        return steps;
+        return steg;
     }
 
     return brukerContext.pageData.totalPages > 1 && brukerContext.valgtBedrift.type !== BedriftvalgType.ENKELBEDRIFT ? (
         <div className={cls.className}>
             <div className={cls.element('wrapper')}>
                 <div className={cls.element('container')}>
-                    <VenstreChevron />
-                    {generatePagination().map((s, i) => {
-                        return <div key={i}>{s}</div>;
+                    <button
+                        className={cls.element('chevron-venstre')}
+                        onClick={() => {
+                            if (brukerContext.pageData.currentPage !== 0) {
+                                brukerContext.setPageData(
+                                    Object.assign({}, brukerContext.pageData, {
+                                        page: brukerContext.pageData.currentPage - 1,
+                                    })
+                                );
+                            }
+                        }}
+                    >
+                        <VenstreChevron />
+                    </button>
+                    {generatePagination().map((steg, index) => {
+                        return <div key={index}>{steg}</div>;
                     })}
-                    <HoyreChevron />
+                    <button
+                        className={cls.element('chevron-hoyre')}
+                        onClick={() => {
+                            if (brukerContext.pageData.totalPages !== brukerContext.pageData.currentPage + 1) {
+                                brukerContext.setPageData(
+                                    Object.assign({}, brukerContext.pageData, {
+                                        page: brukerContext.pageData.currentPage + 1,
+                                    })
+                                );
+                            }
+                        }}
+                    >
+                        <HoyreChevron />
+                    </button>
                 </div>
             </div>
         </div>
