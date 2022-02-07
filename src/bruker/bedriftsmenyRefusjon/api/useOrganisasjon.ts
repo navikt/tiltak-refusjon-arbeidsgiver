@@ -2,8 +2,14 @@ import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { Bedriftvalg, BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
 import { hentUnderenheter, settOrgnummerIgress } from './organisasjonUtils';
 import { History } from 'history';
-
-const hentOrgnummerFraUrl = () => new URL(window.location.href).searchParams.get('bedrift');
+import {
+    altinnOrganisasjonerErInitialisertMedEnIkkeTomList,
+    definereDefaultBedriftvalgTypeUtfraOrganisasjonsMatch,
+    hentOrgnummerFraUrl,
+    organisasjonerPaContextMatcherOrgFraUrl,
+    organisasjonFraUrlMatchetMedAltinnOrganisasjonslist,
+    valgtBedriftTypePaContextErLikAlleBedrifter,
+} from './organisasjon-Utils';
 
 function useOrganisasjon(
     orgtre: Juridiskenhet[] = [],
@@ -16,9 +22,9 @@ function useOrganisasjon(
         function settOrganisasjon(
             organisasjonsliste: Array<Organisasjon>,
             bedriftvalgType: BedriftvalgType,
-            settOrgnrUrl?: boolean
+            skalsettOrgNrIngress?: boolean
         ): void {
-            if (settOrgnrUrl) {
+            if (skalsettOrgNrIngress) {
                 settOrgnummerIgress(organisasjonsliste?.[0]?.OrganizationNumber ?? '', history);
             }
             const valgtorg = { type: valgtBedrift?.type ?? bedriftvalgType, valgtOrg: organisasjonsliste };
@@ -30,51 +36,49 @@ function useOrganisasjon(
             settOrganisasjon([orgtre[0].Underenheter[0]], BedriftvalgType.ENKELBEDRIFT, true);
         }
 
-        function finnOgMatchOrganisasjoner(orgnummerFraUrl: string): void {
-            const ENKELT_BEDRIFT_URL = 1;
-            if (orgnummerFraUrl === BedriftvalgType.ALLEBEDRIFTER) {
-                return settOrganisasjon(hentUnderenheter(orgtre), BedriftvalgType.ALLEBEDRIFTER);
+        function finnOgMatchOrganisasjonerFraAdresseFelt(orgnummerFraUrl: string): void {
+            const organisasjoner = organisasjonFraUrlMatchetMedAltinnOrganisasjonslist(orgtre, orgnummerFraUrl);
+            const type = definereDefaultBedriftvalgTypeUtfraOrganisasjonsMatch(organisasjoner);
+
+            if (organisasjoner) {
+                return settOrganisasjon(organisasjoner, type);
             }
-
-            const underenheter: Organisasjon[] = hentUnderenheter(orgtre);
-            const organisasjonReferertIUrl = underenheter.filter((org) =>
-                orgnummerFraUrl.split(',').includes(org.OrganizationNumber)
-            );
-            const type =
-                organisasjonReferertIUrl.length > ENKELT_BEDRIFT_URL
-                    ? BedriftvalgType.FLEREBEDRIFTER
-                    : BedriftvalgType.ENKELBEDRIFT;
-
-            organisasjonReferertIUrl ? settOrganisasjon(organisasjonReferertIUrl, type) : setFallbackOrganisasjon();
+            return setFallbackOrganisasjon();
         }
 
-        function hentOgSettOrgnrFraUrl(): void {
-            if (orgtre.length > 0) {
+        function settOrganisasjonUtfraAlleBedriftDefinertPaContext(orgnummerFraUrl: string | null) {
+            if (BedriftvalgType.ALLEBEDRIFTER === orgnummerFraUrl) {
+                return;
+            }
+            if (valgtBedrift && valgtBedrift?.valgtOrg?.length > 0) {
+                return settOrganisasjon(valgtBedrift.valgtOrg, BedriftvalgType.ALLEBEDRIFTER);
+            }
+            return settOrganisasjon(hentUnderenheter(orgtre), BedriftvalgType.ALLEBEDRIFTER);
+        }
+
+        function hentOgSjekkOrgnrIngress(): void {
+            if (altinnOrganisasjonerErInitialisertMedEnIkkeTomList(orgtre)) {
                 const orgnummerFraUrl = hentOrgnummerFraUrl();
 
-                if (valgtBedrift?.type === BedriftvalgType.ALLEBEDRIFTER) {
-                    if (BedriftvalgType.ALLEBEDRIFTER === orgnummerFraUrl) {
-                        return;
-                    }
-                    if (valgtBedrift?.valgtOrg?.length > 0) {
-                        settOrganisasjon(valgtBedrift.valgtOrg, BedriftvalgType.ALLEBEDRIFTER);
-                    }
-                    return orgtre?.length > 0
-                        ? settOrganisasjon(hentUnderenheter(orgtre), BedriftvalgType.ALLEBEDRIFTER)
-                        : setFallbackOrganisasjon();
+                if (valgtBedriftTypePaContextErLikAlleBedrifter(valgtBedrift?.type)) {
+                    return settOrganisasjonUtfraAlleBedriftDefinertPaContext(orgnummerFraUrl);
                 }
-
-                if (valgtBedrift?.valgtOrg.map((o) => o.OrganizationNumber).join(',') === orgnummerFraUrl) {
+                if (orgnummerFraUrl === BedriftvalgType.ALLEBEDRIFTER) {
+                    return settOrganisasjon(hentUnderenheter(orgtre), BedriftvalgType.ALLEBEDRIFTER);
+                }
+                if (organisasjonerPaContextMatcherOrgFraUrl(valgtBedrift?.valgtOrg, orgnummerFraUrl)) {
                     return;
                 }
-
-                orgnummerFraUrl ? finnOgMatchOrganisasjoner(orgnummerFraUrl) : setFallbackOrganisasjon();
+                if (orgnummerFraUrl) {
+                    return finnOgMatchOrganisasjonerFraAdresseFelt(orgnummerFraUrl);
+                }
+                return setFallbackOrganisasjon();
             }
         }
 
         function sjekkOgSettValgtOrgnrUrlparams(): () => void {
-            hentOgSettOrgnrFraUrl();
-            return history.listen(hentOgSettOrgnrFraUrl);
+            hentOgSjekkOrgnrIngress();
+            return history.listen(hentOgSjekkOrgnrIngress);
         }
 
         sjekkOgSettValgtOrgnrUrlparams();
