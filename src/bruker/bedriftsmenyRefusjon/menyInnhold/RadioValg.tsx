@@ -3,6 +3,7 @@ import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { BedriftvalgType } from '../api/organisasjon';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
+import { setDefaultBedriftlisteMedApneElementer } from '../api/api-Utils';
 
 interface Properties {
     className: string;
@@ -12,7 +13,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
     const { className } = props;
     const cls = BEMHelper(className);
     const context = useContext(MenyContext);
-    const { bedriftvalg, setBedriftvalg, organisasjonstre } = context;
+    const { bedriftvalg, setBedriftvalg, organisasjonstre, setBedriftListe } = context;
 
     return (
         <div className={cls.element('radiovalg-av-bedrift')}>
@@ -25,6 +26,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                         setBedriftvalg(
                             Object.assign({}, bedriftvalg, { type: BedriftvalgType.ENKELBEDRIFT, valgtOrg: [] })
                         );
+                        setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
                 />
                 <Radio
@@ -38,6 +40,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                                 valgtOrg: [],
                             })
                         );
+                        setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
                 />
                 <Radio
@@ -51,6 +54,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                                 valgtOrg: organisasjonstre?.flatMap((e) => e.Underenheter),
                             })
                         );
+                        setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
                 />
             </RadioGruppe>

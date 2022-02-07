@@ -7,7 +7,6 @@
     justify-content: center;
 
     &__wrapper {
-        //width: 100%;
         background-color: #f8f9fa;
     }
 
@@ -44,6 +43,15 @@
         border: none;
         background-color: @background-color-main;
         cursor: pointer;
+    }
+
+    &__chevron-venstre,
+    &__chevron-hoyre {
+        padding: 0.375rem 0.25rem 0.25rem 0.25rem;
+        border-radius: 8px;
+        &:hover {
+            background-color: #ddd;
+        }
     }
 
     &__chevron-venstre {

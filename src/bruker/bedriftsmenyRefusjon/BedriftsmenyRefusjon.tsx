@@ -14,6 +14,7 @@ import {
 } from './api/organisasjon';
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
+import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
 
 interface Props {
     identifikator: string;
@@ -31,12 +32,16 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const [menyApen, setMenyApen] = useState<boolean>(false);
     const { valgtBedrift, setValgtBedrift, identifikator, organisasjoner, history } = props;
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
+    const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
+        organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
+    );
 
     useEffect(() => {
         if (organisasjoner && organisasjoner?.length > 0) {
             byggOrganisasjonstre(organisasjoner).then((orglist) => {
                 if (orglist.length > 0) {
                     setOrganisasjonstre(orglist);
+                    setDefaultBedriftlisteMedApneElementer(orglist, setBedriftListe);
                 }
             });
         }
@@ -53,6 +58,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         setMenyApen,
         bedriftvalg,
         setBedriftvalg,
+        bedriftListe,
+        setBedriftListe,
     };
 
     return (

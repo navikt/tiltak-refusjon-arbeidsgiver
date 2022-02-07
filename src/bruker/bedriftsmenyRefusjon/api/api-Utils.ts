@@ -1,5 +1,6 @@
-import { Organisasjon } from './organisasjon';
+import { BedriftListe, Juridiskenhet, Organisasjon } from './organisasjon';
 import { hentAlleJuridiskeEnheter } from './api';
+import { Dispatch, SetStateAction } from 'react';
 
 const BRREG_URL: string = 'https://data.brreg.no/enhetsregisteret/api/enheter/?organisasjonsnummer=';
 
@@ -17,18 +18,28 @@ export function getUnderEnheterFraBedrifter(organisasjoner: Organisasjon[]): Org
     );
 }
 
-export function getUnderenheterUtenJuridiskEnhet(underenheter: Organisasjon[], juridiskeEnheter: Organisasjon[]) {
+export function getUnderenheterUtenJuridiskEnhet(
+    underenheter: Organisasjon[],
+    juridiskeEnheter: Organisasjon[]
+): Organisasjon[] {
     return underenheter.filter(
         (underenhet) => !juridiskeEnheter.find((o) => o.OrganizationNumber === underenhet.ParentOrganizationNumber)
     );
 }
 
-function hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet: Organisasjon[]) {
+function hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet: Organisasjon[]): string[] {
     return underenheterUtenJuridiskEnhet
         .filter((org, index) => org.ParentOrganizationNumber && underenheterUtenJuridiskEnhet.indexOf(org) === index)
         .map((org) => org.ParentOrganizationNumber);
 }
 
-export async function finnJuridiskeEnheter(underenheterUtenJuridiskEnhet: Organisasjon[]) {
+export async function finnJuridiskeEnheter(underenheterUtenJuridiskEnhet: Organisasjon[]): Promise<Organisasjon[]> {
     return await hentAlleJuridiskeEnheter(hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet), BRREG_URL);
+}
+
+export function setDefaultBedriftlisteMedApneElementer(
+    orgtre: Juridiskenhet[] | undefined,
+    setBedriftListe: Dispatch<SetStateAction<BedriftListe>>
+): void {
+    setBedriftListe(orgtre?.map((o, i) => ({ index: i, apnet: false })));
 }

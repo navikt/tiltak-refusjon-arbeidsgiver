@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useContext, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
 import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet.svg';
 import { ReactComponent as UnderEnhet } from '@/asset/image/underenhet.svg';
@@ -13,10 +13,7 @@ import BEMHelper from '../../../../utils/bem';
 const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper('bedriftliste');
     const context = useContext(MenyContext);
-    const { organisasjonstre, bedriftvalg, setBedriftvalg, setValgtBedrift } = context;
-    const [apnetElement, setApnetElement] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
-        organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
-    );
+    const { bedriftvalg, setBedriftvalg, setValgtBedrift, bedriftListe, setBedriftListe, setMenyApen } = context;
 
     const matchParentOrganisasjon = (org: Juridiskenhet) =>
         bedriftvalg.valgtOrg.find((e) => e.ParentOrganizationNumber === org.JuridiskEnhet.OrganizationNumber);
@@ -40,17 +37,19 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                 className={cls.element('checkbox')}
                                 checked={!!matchParentOrganisasjon(org)}
                                 onChange={() => {
-                                    const element = matchParentOrganisasjon(org);
-                                    if (!!element) {
-                                        return setBedriftvalg({
-                                            type: bedriftvalg.type,
-                                            valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
+                                    if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
+                                        const element = matchParentOrganisasjon(org);
+                                        if (!!element) {
+                                            return setBedriftvalg({
+                                                type: bedriftvalg.type,
+                                                valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
+                                            });
+                                        }
+                                        setBedriftvalg({
+                                            ...bedriftvalg,
+                                            valgtOrg: [...bedriftvalg.valgtOrg, ...org.Underenheter],
                                         });
                                     }
-                                    setBedriftvalg({
-                                        ...bedriftvalg,
-                                        valgtOrg: [...bedriftvalg.valgtOrg, ...org.Underenheter],
-                                    });
                                 }}
                             />
                             <Lenke
@@ -58,10 +57,10 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                 className={cls.element('juridisk-lenke')}
                                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                     e.preventDefault();
-                                    if (apnetElement) {
-                                        setApnetElement(
-                                            Object.assign([], apnetElement, {
-                                                [index]: { index: index, apnet: !apnetElement[index].apnet },
+                                    if (bedriftListe) {
+                                        setBedriftListe(
+                                            Object.assign([], bedriftListe, {
+                                                [index]: { index: index, apnet: !bedriftListe[index].apnet },
                                             })
                                         );
                                     }
@@ -88,7 +87,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                     <li
                                         className={cls.element(
                                             'underenhet',
-                                            apnetElement && apnetElement[index].apnet ? 'open' : ''
+                                            bedriftListe && bedriftListe[index].apnet ? 'open' : ''
                                         )}
                                         key={underenhetIndex}
                                     >
@@ -108,19 +107,21 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                         )
                                                     }
                                                     onChange={() => {
-                                                        const element = matchOrganisasjon(underenhet);
-                                                        if (!!element) {
-                                                            return setBedriftvalg({
-                                                                type: bedriftvalg.type,
-                                                                valgtOrg: bedriftvalg.valgtOrg.filter(
-                                                                    (e) => e !== element
-                                                                ),
+                                                        if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
+                                                            const element = matchOrganisasjon(underenhet);
+                                                            if (!!element) {
+                                                                return setBedriftvalg({
+                                                                    type: bedriftvalg.type,
+                                                                    valgtOrg: bedriftvalg.valgtOrg.filter(
+                                                                        (e) => e !== element
+                                                                    ),
+                                                                });
+                                                            }
+                                                            setBedriftvalg({
+                                                                ...bedriftvalg,
+                                                                valgtOrg: [...bedriftvalg.valgtOrg, underenhet],
                                                             });
                                                         }
-                                                        setBedriftvalg({
-                                                            ...bedriftvalg,
-                                                            valgtOrg: [...bedriftvalg.valgtOrg, underenhet],
-                                                        });
                                                     }}
                                                 />
                                             </div>
@@ -138,6 +139,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                             type: BedriftvalgType.ENKELBEDRIFT,
                                                             valgtOrg: [underenhet],
                                                         });
+                                                        setMenyApen(false);
                                                     }
                                                 }}
                                             >

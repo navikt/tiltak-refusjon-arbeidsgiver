@@ -7,7 +7,7 @@ import { MenyContext } from '../../BedriftsmenyRefusjon';
 
 const SokEtterBedrifter: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.SOK_ETTER_BEDRIFTER);
-    const { bedriftvalg, setValgtBedrift } = useContext(MenyContext);
+    const { bedriftvalg, setValgtBedrift, setMenyApen } = useContext(MenyContext);
 
     return bedriftvalg.type !== BedriftvalgType.ENKELBEDRIFT && bedriftvalg.valgtOrg?.length > 0 ? (
         <div>
@@ -19,6 +19,7 @@ const SokEtterBedrifter: FunctionComponent = () => {
                         className={cls.element('sok-knapp')}
                         onClick={() => {
                             setValgtBedrift(bedriftvalg);
+                            setMenyApen(false);
                         }}
                     >
                         Søk

@@ -34,6 +34,8 @@ export interface Bedriftvalg {
     valgtOrg: Array<Organisasjon>;
 }
 
+export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;
+
 export interface MenyContextType {
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
@@ -45,6 +47,8 @@ export interface MenyContextType {
     setMenyApen: Dispatch<SetStateAction<boolean>>;
     bedriftvalg: Bedriftvalg;
     setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>;
+    bedriftListe: BedriftListe;
+    setBedriftListe: Dispatch<SetStateAction<BedriftListe>>;
 }
 
 export const initBedriftvalg: Bedriftvalg = {
