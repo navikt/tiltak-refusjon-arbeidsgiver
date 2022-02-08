@@ -1,23 +1,25 @@
-// import Bedriftsmeny from '@navikt/bedriftsmeny';
 import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
 import { Action, History, Listener } from 'history';
-import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
+import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { To } from 'react-router-dom';
 import BedriftsmenyRefusjon from '../bruker/bedriftsmenyRefusjon/BedriftsmenyRefusjon';
 import { Bedriftvalg } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { PageData } from '../bruker/BrukerContextType';
 
 interface Properties {
     identifikator: string;
     organisasjoner: Array<Organisasjon>;
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
+    pageData: PageData;
+    setPageData: Dispatch<SetStateAction<PageData>>;
 }
 
 const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properties>) => {
     const location = useLocation();
     const [listener, setListener] = useState<Listener>();
-    const { identifikator, organisasjoner, valgtBedrift, setValgtBedrift } = props;
+    const { identifikator, organisasjoner, valgtBedrift, setValgtBedrift, pageData, setPageData } = props;
 
     useEffect(() => {
         if (listener) {
@@ -44,15 +46,9 @@ const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properti
                 valgtBedrift={valgtBedrift}
                 setValgtBedrift={setValgtBedrift}
                 history={fakeHistory as any}
+                pageData={pageData}
+                setPageData={setPageData}
             />
-            {/*            <Bedriftsmeny
-                history={fakeHistory as any}
-                organisasjoner={props.organisasjoner}
-                onOrganisasjonChange={(org) => {
-                    props.setValgtBedrift(org);
-                }}
-                sidetittel="Tiltaksrefusjon"
-            />*/}
         </>
     );
 };

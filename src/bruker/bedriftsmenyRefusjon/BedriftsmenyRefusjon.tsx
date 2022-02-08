@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
+import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import TypografiBase, { Element } from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
@@ -15,6 +15,7 @@ import {
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
 import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
+import { PageData } from '../BrukerContextType';
 
 interface Props {
     identifikator: string;
@@ -22,6 +23,8 @@ interface Props {
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
     history: History;
+    pageData: PageData;
+    setPageData: Dispatch<SetStateAction<PageData>>;
 }
 
 export const MenyContext = React.createContext<MenyContextType>({} as MenyContextType);
@@ -30,7 +33,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY_REFUSJON);
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
     const [menyApen, setMenyApen] = useState<boolean>(false);
-    const { valgtBedrift, setValgtBedrift, identifikator, organisasjoner, history } = props;
+    const { valgtBedrift, setValgtBedrift, identifikator, organisasjoner, history, pageData, setPageData } = props;
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
         organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
@@ -60,6 +63,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         setBedriftvalg,
         bedriftListe,
         setBedriftListe,
+        pageData,
+        setPageData,
     };
 
     return (

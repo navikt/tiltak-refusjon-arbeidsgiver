@@ -48,9 +48,7 @@
         display: grid;
         grid-template-columns: 8.5% 91.5%;
         max-width: 24.5rem;
-        // border: #c9c9c9 solid;
         margin-right: 0.5rem;
-
         &--skjule {
             grid-template-columns: 0 100%;
         }
@@ -60,7 +58,6 @@
         padding: 0.875rem 0 0 0.75rem;
         max-width: 5.625rem;
     }
-
     &__juridiskenhet--skjule {
         .bedriftliste__checkbox {
             max-width: 0;
@@ -75,6 +72,15 @@
             color: black;
             box-shadow: none;
             background-color: white;
+        }
+    }
+
+    &__juridiskenhet-chevron {
+        transform: rotateX(0deg);
+        transition: ease-in-out;
+        &--open {
+            transition: ease-in-out;
+            transform: rotateX(-180deg);
         }
     }
 
@@ -93,8 +99,6 @@
     &__underenhet {
         list-style-type: none;
         padding: 0 0 0 1.5rem;
-        // border-left: #c9c9c9 solid;
-        // border-right: #c9c9c9 solid;
         max-height: 0;
         overflow: hidden;
         transition: 0.3s ease-in-out;
@@ -112,7 +116,6 @@
 
     &__underenhet-checkbox {
         margin: 0 0.5rem 2rem 0;
-
         &--skjule {
             max-width: 0;
             overflow: hidden;

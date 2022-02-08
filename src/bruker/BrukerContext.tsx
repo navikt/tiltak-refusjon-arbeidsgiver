@@ -65,6 +65,8 @@ export const BrukerProvider: FunctionComponent = (props) => {
                             }
                             setValgtBedrift(org);
                         }}
+                        pageData={pageData}
+                        setPageData={setPageData}
                     />
                 </>
             )}

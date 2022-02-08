@@ -10,13 +10,6 @@
     &__liste-innhold {
         display: flex;
         min-width: 65%;
-        //box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
-        //    rgba(255, 255, 255, 0.5) 0px 0px 0px 1px inset;
-    }
-
-    &__liste-sok-innhold {
-        //box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
-        //    rgba(255, 255, 255, 0.5) 0px 0px 0px 1px inset;
     }
 
     &__valgte-org-overskrift {
@@ -26,6 +19,17 @@
     &__valgte-bedrifter {
         min-width: 11.5rem;
         margin-right: 0.5rem;
+    }
+
+    &__sokefelt {
+        & > input {
+            background-color: #f8f9fa; // #f0f2f5;
+            border-radius: 8px;
+            color: black; // #65676b;
+            &::placeholder {
+                color: rgba(0, 0, 0, 75%);
+            }
+        }
     }
 
     &__valgte-bedrifter-innhold {
@@ -50,8 +54,7 @@
     }
 
     &__valgte-bedrifter-rad {
-        box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
-        //box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+        box-shadow: rgba(17, 17, 26, 0.05) 0 1px 0, rgba(17, 17, 26, 0.1) 0 0 8px;
         display: flex;
         align-items: center;
         padding: 0.5rem;

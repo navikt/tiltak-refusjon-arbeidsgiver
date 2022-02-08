@@ -1,5 +1,6 @@
 import { History } from 'history';
 import { Dispatch, SetStateAction } from 'react';
+import { PageData } from '../../BrukerContextType';
 
 export enum ClsBedriftsmeny {
     BEDRIFTSMENY_REFUSJON = 'bedriftsmeny-refusjon',
@@ -49,6 +50,8 @@ export interface MenyContextType {
     setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>;
     bedriftListe: BedriftListe;
     setBedriftListe: Dispatch<SetStateAction<BedriftListe>>;
+    pageData: PageData;
+    setPageData: Dispatch<SetStateAction<PageData>>;
 }
 
 export const initBedriftvalg: Bedriftvalg = {

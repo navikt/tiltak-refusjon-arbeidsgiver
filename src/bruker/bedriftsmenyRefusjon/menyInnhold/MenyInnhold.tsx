@@ -5,9 +5,10 @@ import './menyInnhold.less';
 import RadioValg from './RadioValg';
 import ValgteBedrifter from './ValgteBedrifter';
 import Sokefelt from './Sokefelt';
+import { ClsBedriftsmeny } from '../api/organisasjon';
 
 const MenyInnhold: FunctionComponent = () => {
-    const cls = BEMHelper('menyInnhold');
+    const cls = BEMHelper(ClsBedriftsmeny.MENYINNHOLD);
 
     return (
         <div className={cls.className}>

@@ -10,6 +10,7 @@
         margin: 0.5rem 0 0.5rem 3rem;
         box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;
         border: none;
+        transform: rotateX(0deg);
 
         &:focus {
             outline: #00347d 3px solid;
@@ -28,6 +29,13 @@
     }
     &__chevron {
         color: #0067c5;
+        transform: rotateX(0deg);
+        transition: ease-in-out;
+
+        &--open {
+            transition: ease-in-out;
+            transform: rotateX(-180deg);
+        }
     }
     &__container {
         position: relative;

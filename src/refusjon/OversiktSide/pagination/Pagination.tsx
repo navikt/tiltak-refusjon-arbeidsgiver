@@ -6,10 +6,12 @@ import BEMHelper from '../../../utils/bem';
 import { BedriftvalgType } from '../../../bruker/bedriftsmenyRefusjon/api/organisasjon';
 import { ReactComponent as VenstreChevron } from '@/asset/image/dobbelChevronVenstre.svg';
 import { ReactComponent as HoyreChevron } from '@/asset/image/dobbelChevronHoyre.svg';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const Pagination: FunctionComponent = () => {
     const cls = BEMHelper('pagination-bar');
     const brukerContext: BrukerContextType = useInnloggetBruker();
+    const { pageData } = brukerContext;
 
     function generatePagination() {
         const steg = [];
@@ -39,6 +41,24 @@ const Pagination: FunctionComponent = () => {
 
     return brukerContext.pageData.totalPages > 1 && brukerContext.valgtBedrift.type !== BedriftvalgType.ENKELBEDRIFT ? (
         <div className={cls.className}>
+            <div>
+                <div className={cls.element('visning-statestikk')}>
+                    <>
+                        <Normaltekst>
+                            antall refusjoner:
+                            <span className={cls.element('visning-statestikk-data')}>{pageData.totalItems}</span>
+                        </Normaltekst>
+                        <Normaltekst>
+                            nåværende sidevisning:
+                            <span className={cls.element('visning-statestikk-data')}>{pageData.currentPage + 1}</span>
+                        </Normaltekst>
+                        <Normaltekst>
+                            antall sider:
+                            <span className={cls.element('visning-statestikk-data')}>{pageData.totalPages}</span>
+                        </Normaltekst>
+                    </>
+                </div>
+            </div>
             <div className={cls.element('wrapper')}>
                 <div className={cls.element('container')}>
                     <button

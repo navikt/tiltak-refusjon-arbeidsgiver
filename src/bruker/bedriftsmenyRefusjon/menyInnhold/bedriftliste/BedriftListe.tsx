@@ -9,11 +9,20 @@ import Lenke from 'nav-frontend-lenker';
 import { BedriftvalgType, Juridiskenhet, Organisasjon } from '../../api/organisasjon';
 import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from '../../../../utils/bem';
+import { setDefaultBedriftlisteMedApneElementer } from '../../api/api-Utils';
 
 const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper('bedriftliste');
     const context = useContext(MenyContext);
-    const { bedriftvalg, setBedriftvalg, setValgtBedrift, bedriftListe, setBedriftListe, setMenyApen } = context;
+    const {
+        bedriftvalg,
+        setBedriftvalg,
+        setValgtBedrift,
+        bedriftListe,
+        setBedriftListe,
+        setMenyApen,
+        organisasjonstre,
+    } = context;
 
     const matchParentOrganisasjon = (org: Juridiskenhet) =>
         bedriftvalg.valgtOrg.find((e) => e.ParentOrganizationNumber === org.JuridiskEnhet.OrganizationNumber);
@@ -76,7 +85,12 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                         <Normaltekst>Vis 1 virksomhet</Normaltekst>
                                     </div>
                                     <div>
-                                        <NedChevron />
+                                        <NedChevron
+                                            className={cls.element(
+                                                'juridiskenhet-chevron',
+                                                bedriftListe && bedriftListe[index].apnet ? 'open' : ''
+                                            )}
+                                        />
                                     </div>
                                 </div>
                             </Lenke>
@@ -140,6 +154,10 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                             valgtOrg: [underenhet],
                                                         });
                                                         setMenyApen(false);
+                                                        setDefaultBedriftlisteMedApneElementer(
+                                                            organisasjonstre,
+                                                            setBedriftListe
+                                                        );
                                                     }
                                                 }}
                                             >

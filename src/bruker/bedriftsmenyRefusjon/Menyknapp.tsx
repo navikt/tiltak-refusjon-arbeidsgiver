@@ -9,7 +9,7 @@ import { ClsBedriftsmeny } from './api/organisasjon';
 const Menyknapp: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
     const context = useContext(MenyContext);
-    const { setMenyApen, valgtBedrift } = context;
+    const { menyApen, setMenyApen, valgtBedrift } = context;
 
     return (
         <button
@@ -24,7 +24,7 @@ const Menyknapp: FunctionComponent = () => {
                     <Element>{valgtBedrift?.valgtOrg?.[0]?.Name ?? ''}</Element>
                     <Normaltekst>{valgtBedrift?.valgtOrg?.[0]?.OrganizationNumber ?? ''}</Normaltekst>
                 </div>
-                <NedChevron className={cls.element('chevron')} />
+                <NedChevron className={cls.element('chevron', menyApen ? 'open' : '')} />
             </div>
         </button>
     );
