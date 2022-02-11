@@ -8,8 +8,10 @@ import { storForbokstav } from '../../utils/stringUtils';
 import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
+import BEMHelper from '../../utils/bem';
 
 const Filtermeny: FunctionComponent = () => {
+    const cls = BEMHelper('OversiktSide');
     const { filter, oppdaterFilter } = useFilter();
     const erDesktopStorrelse = useMediaQuery({ minWidth: 768 });
     const [statusPanelOpen, setStatusPanelOpen] = useState(erDesktopStorrelse);
@@ -26,6 +28,7 @@ const Filtermeny: FunctionComponent = () => {
             <EkspanderbartpanelBase
                 tittel="Status"
                 role="radiogroup"
+                className={cls.element('filtermeny-status')}
                 apen={statusPanelOpen}
                 collapseProps={{
                     open: statusPanelOpen,
@@ -98,6 +101,7 @@ const Filtermeny: FunctionComponent = () => {
             <EkspanderbartpanelBase
                 tittel="Tiltakstype"
                 role="radiogroup"
+                className={cls.element('filtermeny-tiltakstype')}
                 apen={tiltaksPanelOpen}
                 collapseProps={{ open: tiltaksPanelOpen }}
                 onClick={() => setTiltaksPanelOpen(!tiltaksPanelOpen)}

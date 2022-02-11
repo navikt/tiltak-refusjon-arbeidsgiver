@@ -1,22 +1,25 @@
 @import (reference) '~nav-frontend-core/less/_variabler';
 
 @background-color-main: #f7f7f7;
+@pagination-fontsize: 1rem;
 
 .pagination-bar {
     width: 100%;
     margin-left: 1rem;
 
     &__wrapper {
-        display: flex;
+        display: grid;
+        grid-template-columns: 2fr 3fr 2fr;
         justify-content: center;
         background-color: @background-color-main;
         border-radius: 8px;
-        padding: 0.125rem 0 0.125rem 0;
+        padding: 0.125rem 0.5rem;
     }
 
     &__container {
         display: flex;
         align-items: center;
+        justify-content: center;
         height: 3.375rem;
     }
 
@@ -30,7 +33,7 @@
         border: none;
         margin: 0 0.5rem;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: @pagination-fontsize;
         font-weight: 400;
 
         &--aktivsteg {
@@ -40,7 +43,23 @@
         }
 
         &:hover:not(&--aktivsteg) {
-            background-color: #ddd;
+            background-color: #dddddd;
+        }
+    }
+
+    &__sidevisning-valg-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__sidevisning-valgknapp {
+        transform: rotateX(0deg);
+        transition: ease-in-out;
+
+        &--open {
+            transition: ease-in-out;
+            transform: rotateX(-180deg);
         }
     }
 
@@ -55,6 +74,7 @@
             }
         }
     }
+
     &__visning-statestikk-data {
         margin-left: 0.5rem;
     }
@@ -64,6 +84,10 @@
         border: none;
         background-color: @background-color-main;
         cursor: pointer;
+        & > svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
     }
 
     &__chevron-venstre,
@@ -81,5 +105,9 @@
 
     &__chevron-hoyre {
         margin-left: 0.25rem;
+    }
+    &__select-page {
+        padding: 0.5rem 0 0.5rem 0.5rem;
+        margin: 0 0.75rem 0 0.5rem;
     }
 }

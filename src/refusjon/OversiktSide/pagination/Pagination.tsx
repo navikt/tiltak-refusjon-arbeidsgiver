@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useRef, useState } from 'react';
 import { BrukerContextType } from '../../../bruker/BrukerContextType';
 import { useInnloggetBruker } from '../../../bruker/BrukerContext';
 import './pagination.less';
@@ -12,6 +12,19 @@ const Pagination: FunctionComponent = () => {
     const cls = BEMHelper('pagination-bar');
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { pageData } = brukerContext;
+
+    const setPageSizeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        event.preventDefault();
+        const newSize: number = parseInt(event.target.value);
+        console.log('EVENT!');
+        if (pageData.pagesize !== newSize) {
+            brukerContext.setPageData(
+                Object.assign({}, brukerContext.pageData, {
+                    pagesize: newSize,
+                })
+            );
+        }
+    };
 
     function generatePagination() {
         const steg = [];
@@ -41,25 +54,24 @@ const Pagination: FunctionComponent = () => {
 
     return brukerContext.pageData.totalPages > 1 && brukerContext.valgtBedrift.type !== BedriftvalgType.ENKELBEDRIFT ? (
         <div className={cls.className}>
-            <div>
-                <div className={cls.element('visning-statestikk')}>
-                    <>
-                        <Normaltekst>
-                            antall refusjoner:
-                            <span className={cls.element('visning-statestikk-data')}>{pageData.totalItems}</span>
-                        </Normaltekst>
-                        <Normaltekst>
-                            nåværende sidevisning:
-                            <span className={cls.element('visning-statestikk-data')}>{pageData.currentPage + 1}</span>
-                        </Normaltekst>
-                        <Normaltekst>
-                            antall sider:
-                            <span className={cls.element('visning-statestikk-data')}>{pageData.totalPages}</span>
-                        </Normaltekst>
-                    </>
-                </div>
-            </div>
             <div className={cls.element('wrapper')}>
+                <div className={cls.element('sidevisning-valg-container')}>
+                    <Normaltekst>vis</Normaltekst>
+                    <select
+                        className={cls.element('select-page')}
+                        value={pageData.pagesize}
+                        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setPageSizeOption(event)}
+                    >
+                        <option>5</option>
+                        <option>7</option>
+                        <option>10</option>
+                    </select>
+                    <div>
+                        <Normaltekst>
+                            {pageData.pagesize} av {pageData.totalItems}
+                        </Normaltekst>
+                    </div>
+                </div>
                 <div className={cls.element('container')}>
                     <button
                         className={cls.element('chevron-venstre')}

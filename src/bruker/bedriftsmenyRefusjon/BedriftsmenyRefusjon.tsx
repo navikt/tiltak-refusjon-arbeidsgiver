@@ -80,10 +80,6 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                         </TypografiBase>
                     </div>
                     <div className={cls.element('innhold')}>
-                        <div className={cls.element('bruker')}>
-                            <Element>innlogget bruker</Element>
-                            <Element>{identifikator}</Element>
-                        </div>
                         <MenyContext.Provider value={contextData}>
                             <Bedriftsmeny />
                         </MenyContext.Provider>

@@ -9,6 +9,12 @@ export enum ClsBedriftsmeny {
     SOK_ETTER_BEDRIFTER = 'sok-etter-bedrifter',
 }
 
+export enum PageSizeOption {
+    FIVE = 5,
+    SEVEN = 7,
+    TEN = 10,
+}
+
 export interface Organisasjon {
     Name: string;
     Type: string;

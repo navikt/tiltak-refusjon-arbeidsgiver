@@ -10,9 +10,9 @@ const cls = BEMHelper('OversiktSide');
 
 const OversiktSide: FunctionComponent = () => {
     return (
-        <div className={cls.className}>
-            <div className={cls.element('wrapper')}>
-                <FilterProvider>
+        <FilterProvider>
+            <div className={cls.className}>
+                <div className={cls.element('wrapper')}>
                     <div className={cls.element('meny')}>
                         <Filtermeny />
                     </div>
@@ -22,9 +22,9 @@ const OversiktSide: FunctionComponent = () => {
                         </Suspense>
                         <Pagination />
                     </div>
-                </FilterProvider>
+                </div>
             </div>
-        </div>
+        </FilterProvider>
     );
 };
 

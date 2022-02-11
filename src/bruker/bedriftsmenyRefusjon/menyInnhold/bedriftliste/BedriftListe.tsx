@@ -1,7 +1,7 @@
 import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
-import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet.svg';
-import { ReactComponent as UnderEnhet } from '@/asset/image/underenhet.svg';
+import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.svg';
+import { ReactComponent as UnderEnhet } from '@/asset/image/childNode.svg';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { NedChevron } from 'nav-frontend-chevron';
 import './bedriftListe.less';
@@ -76,7 +76,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                 }}
                             >
                                 <div className={cls.element('juridisk-wrapper')}>
-                                    <div>
+                                    <div className={cls.element('icon-container')}>
                                         <JuridiskEnhet />
                                     </div>
                                     <div className={cls.element('juridisk-info')}>
