@@ -25,7 +25,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>();
     const [pageData, setPageData] = useState<PageData>({
         page: 0,
-        pagesize: 5,
+        pagesize: 7,
         currentPage: 0,
         size: 0,
         totalItems: 0,
@@ -49,7 +49,6 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 <>
                     {' '}
                     <Banner
-                        identifikator={innloggetBruker.identifikator}
                         organisasjoner={innloggetBruker.organisasjoner}
                         valgtBedrift={valgtBedrift}
                         setValgtBedrift={(org) => {

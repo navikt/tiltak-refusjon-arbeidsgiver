@@ -82,7 +82,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                     <div className={cls.element('juridisk-info')}>
                                         <Element>{org.JuridiskEnhet?.Name ?? ''}</Element>
                                         <Normaltekst>org.nr. {org.JuridiskEnhet?.OrganizationNumber ?? ''}</Normaltekst>
-                                        <Normaltekst>Vis 1 virksomhet</Normaltekst>
+                                        <Normaltekst>Vis {org.Underenheter.length} virksomhet</Normaltekst>
                                     </div>
                                     <div>
                                         <NedChevron

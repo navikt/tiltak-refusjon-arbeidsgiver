@@ -1,7 +1,8 @@
 @import (reference) '~nav-frontend-core/less/_variabler';
 
-@background-color-main: #f7f7f7;
+@background-color-main: #f1f1f1;
 @pagination-fontsize: 1rem;
+@pag-hover: #e6f0ff;
 
 .pagination-bar {
     width: 100%;
@@ -24,26 +25,33 @@
     }
 
     &__steg-knapp {
+        list-style: none;
         border-radius: 8px;
         color: black;
         float: left;
-        padding: 0.5rem 1rem;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         text-decoration: none;
-        background-color: @background-color-main;
+        background-color: white; // @background-color-main;
         border: none;
-        margin: 0 0.5rem;
+        margin: 0.5rem;
         cursor: pointer;
         font-size: @pagination-fontsize;
         font-weight: 400;
 
         &--aktivsteg {
-            background-color: @navBla;
+            // border: 2px solid @navBla;
             color: white;
-            border-radius: 5px;
+            background-color: @navBla;
+            border-radius: 8px;
         }
 
         &:hover:not(&--aktivsteg) {
-            background-color: #dddddd;
+            background-color: @pag-hover;
+            color: @navBla;
         }
     }
 
@@ -61,6 +69,13 @@
             transition: ease-in-out;
             transform: rotateX(-180deg);
         }
+    }
+
+    &__panination-list {
+        display: flex;
+        align-items: center;
+        padding: 0 0.5rem;
+        border-radius: 8px;
     }
 
     &__visning-statestikk {
@@ -82,23 +97,27 @@
     &__chevron-venstre,
     &__chevron-hoyre {
         border: none;
-        background-color: @background-color-main;
+        background-color: white; // @background-color-main;
         cursor: pointer;
-        & > svg {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-    }
-
-    &__chevron-venstre,
-    &__chevron-hoyre {
-        padding: 0.5rem 1rem;
+        width: 2rem;
+        height: 2rem;
         border-radius: 8px;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         &:hover {
-            background-color: #ddd;
+            & > span {
+                color: @navBla;
+            }
+            background-color: @pag-hover;
+        }
+        & > svg {
+            width: 2rem;
+            height: 2rem;
         }
     }
-
     &__chevron-venstre {
         margin-right: 0.25rem;
     }
@@ -107,7 +126,7 @@
         margin-left: 0.25rem;
     }
     &__select-page {
-        padding: 0.5rem 0 0.5rem 0.5rem;
-        margin: 0 0.75rem 0 0.5rem;
+        padding: 0.5rem 0.75rem;
+        margin: 0 1.75rem 0 0.5rem;
     }
 }

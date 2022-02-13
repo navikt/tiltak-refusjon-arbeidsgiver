@@ -1,6 +1,6 @@
 import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
-import TypografiBase, { Element } from 'nav-frontend-typografi';
+import TypografiBase from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
 import Bedriftsmeny from './bedriftsmeny/Bedriftsmeny';
 import { byggOrganisasjonstre } from './api/api';
@@ -18,7 +18,6 @@ import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
 import { PageData } from '../BrukerContextType';
 
 interface Props {
-    identifikator: string;
     organisasjoner: Organisasjon[];
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
@@ -33,7 +32,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY_REFUSJON);
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
     const [menyApen, setMenyApen] = useState<boolean>(false);
-    const { valgtBedrift, setValgtBedrift, identifikator, organisasjoner, history, pageData, setPageData } = props;
+    const { valgtBedrift, setValgtBedrift, organisasjoner, history, pageData, setPageData } = props;
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
         organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))

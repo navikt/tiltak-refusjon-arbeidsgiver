@@ -8,7 +8,6 @@ import { Bedriftvalg } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 import { PageData } from '../bruker/BrukerContextType';
 
 interface Properties {
-    identifikator: string;
     organisasjoner: Array<Organisasjon>;
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
@@ -19,7 +18,7 @@ interface Properties {
 const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properties>) => {
     const location = useLocation();
     const [listener, setListener] = useState<Listener>();
-    const { identifikator, organisasjoner, valgtBedrift, setValgtBedrift, pageData, setPageData } = props;
+    const { organisasjoner, valgtBedrift, setValgtBedrift, pageData, setPageData } = props;
 
     useEffect(() => {
         if (listener) {
@@ -41,7 +40,6 @@ const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properti
     return (
         <>
             <BedriftsmenyRefusjon
-                identifikator={identifikator}
                 organisasjoner={organisasjoner}
                 valgtBedrift={valgtBedrift}
                 setValgtBedrift={setValgtBedrift}
