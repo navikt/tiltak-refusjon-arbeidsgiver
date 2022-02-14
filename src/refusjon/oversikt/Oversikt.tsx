@@ -12,7 +12,7 @@ import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
 import LabelRad from './LabelRad';
 import './oversikt.less';
 import { BrukerContextType } from '../../bruker/BrukerContextType';
-import useOppdaterPagedata from '../../bruker/bedriftsmenyRefusjon/api/useOppdaterPagedata';
+import useOppdaterPagedata from '../../bruker/bedriftsmenyRefusjon/useOppdaterPagedata';
 
 const cls = BEMHelper('oversikt');
 

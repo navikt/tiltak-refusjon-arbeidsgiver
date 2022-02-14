@@ -2,6 +2,7 @@ import { BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
 import { History } from 'history';
 
 const ORGNUMMER_PARAMETER = 'bedrift';
+const ENKELT_BEDRIFT_URL = 1;
 
 export const settOrgnummerIgress = (orgnummer: string, history: History) => {
     const currentUrl = new URL(window.location.href);
@@ -15,8 +16,6 @@ export const hentUnderenheter = (organisasjonstre: Juridiskenhet[]) =>
         (organisasjoner: Organisasjon[], parentOrg) => [...organisasjoner, ...parentOrg.Underenheter],
         []
     );
-
-const ENKELT_BEDRIFT_URL = 1;
 
 export const hentOrgnummerFraUrl = () => new URL(window.location.href).searchParams.get('bedrift');
 

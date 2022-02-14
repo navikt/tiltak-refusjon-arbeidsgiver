@@ -3,7 +3,7 @@ import { BrukerContextType } from '../../../bruker/BrukerContextType';
 import { useInnloggetBruker } from '../../../bruker/BrukerContext';
 import './pagination.less';
 import BEMHelper from '../../../utils/bem';
-import { BedriftvalgType } from '../../../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { BedriftvalgType, PageSizeOption } from '../../../bruker/bedriftsmenyRefusjon/api/organisasjon';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
 
@@ -15,7 +15,6 @@ const Pagination: FunctionComponent = () => {
     const setPageSizeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
         event.preventDefault();
         const newSize: number = parseInt(event.target.value);
-        console.log('EVENT!');
         if (pageData.pagesize !== newSize) {
             brukerContext.setPageData(
                 Object.assign({}, brukerContext.pageData, {
@@ -57,9 +56,9 @@ const Pagination: FunctionComponent = () => {
                             value={pageData.pagesize}
                             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setPageSizeOption(event)}
                         >
-                            <option>5</option>
-                            <option>7</option>
-                            <option>10</option>
+                            <option>{PageSizeOption.FIVE}</option>
+                            <option>{PageSizeOption.SEVEN}</option>
+                            <option>{PageSizeOption.TEN}</option>
                         </select>
                         <div>
                             <Normaltekst>

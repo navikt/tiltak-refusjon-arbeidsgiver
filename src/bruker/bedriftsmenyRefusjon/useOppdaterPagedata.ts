@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { PageableRefusjon } from '../../../refusjon/refusjon';
-import { PageData, SettPageData } from '../../BrukerContextType';
+import { PageableRefusjon } from '../../refusjon/refusjon';
+import { PageData, SettPageData } from '../BrukerContextType';
 
 function useOppdaterPagedata(pagable: PageableRefusjon, pageData: PageData, setPageData: SettPageData) {
     const { currentPage, size, totalItems, totalPages } = pagable;
