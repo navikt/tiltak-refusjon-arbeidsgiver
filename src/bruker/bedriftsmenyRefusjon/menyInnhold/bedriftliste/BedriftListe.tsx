@@ -88,7 +88,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                         <NedChevron
                                             className={cls.element(
                                                 'juridiskenhet-chevron',
-                                                bedriftListe && bedriftListe[index].apnet ? 'open' : ''
+                                                bedriftListe && bedriftListe[index]?.apnet ? 'open' : ''
                                             )}
                                         />
                                     </div>
@@ -101,7 +101,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                     <li
                                         className={cls.element(
                                             'underenhet',
-                                            bedriftListe && bedriftListe[index].apnet ? 'open' : ''
+                                            bedriftListe && bedriftListe[index]?.apnet ? 'open' : ''
                                         )}
                                         key={underenhetIndex}
                                     >

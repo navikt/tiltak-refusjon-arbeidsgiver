@@ -50,20 +50,22 @@ const Pagination: FunctionComponent = () => {
         <div className={cls.className}>
             <div className={cls.element('wrapper')}>
                 <div className={cls.element('sidevisning-valg-container')}>
-                    <Normaltekst>vis</Normaltekst>
-                    <select
-                        className={cls.element('select-page')}
-                        value={pageData.pagesize}
-                        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setPageSizeOption(event)}
-                    >
-                        <option>5</option>
-                        <option>7</option>
-                        <option>10</option>
-                    </select>
-                    <div>
-                        <Normaltekst>
-                            {pageData.pagesize} av {pageData.totalItems}
-                        </Normaltekst>
+                    <div className={cls.element('sidevisning-valg-wrapper')}>
+                        <Normaltekst>vis</Normaltekst>
+                        <select
+                            className={cls.element('select-page')}
+                            value={pageData.pagesize}
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setPageSizeOption(event)}
+                        >
+                            <option>5</option>
+                            <option>7</option>
+                            <option>10</option>
+                        </select>
+                        <div>
+                            <Normaltekst>
+                                {pageData.pagesize} av {pageData.totalItems}
+                            </Normaltekst>
+                        </div>
                     </div>
                 </div>
                 <div className={cls.element('container')}>

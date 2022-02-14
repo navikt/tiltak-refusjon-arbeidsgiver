@@ -10,7 +10,7 @@
 
     &__wrapper {
         display: grid;
-        grid-template-columns: 2fr 3fr 2fr;
+        grid-template-columns: 1fr 2fr;
         justify-content: center;
         background-color: @background-color-main;
         border-radius: 8px;
@@ -20,7 +20,7 @@
     &__container {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         height: 3.375rem;
     }
 
@@ -35,7 +35,7 @@
         justify-content: center;
         align-items: center;
         text-decoration: none;
-        background-color: white; // @background-color-main;
+        background-color: white;
         border: none;
         margin: 0.5rem;
         cursor: pointer;
@@ -43,7 +43,6 @@
         font-weight: 400;
 
         &--aktivsteg {
-            // border: 2px solid @navBla;
             color: white;
             background-color: @navBla;
             border-radius: 8px;
@@ -56,6 +55,11 @@
     }
 
     &__sidevisning-valg-container {
+        height: 100%;
+    }
+
+    &__sidevisning-valg-wrapper {
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -76,6 +80,9 @@
         align-items: center;
         padding: 0 0.5rem;
         border-radius: 8px;
+        background-color: white;
+        margin: 0;
+        box-shadow: #a0a0a0 0 2px 1px 0;
     }
 
     &__visning-statestikk {
@@ -97,7 +104,7 @@
     &__chevron-venstre,
     &__chevron-hoyre {
         border: none;
-        background-color: white; // @background-color-main;
+        background-color: white;
         cursor: pointer;
         width: 2rem;
         height: 2rem;

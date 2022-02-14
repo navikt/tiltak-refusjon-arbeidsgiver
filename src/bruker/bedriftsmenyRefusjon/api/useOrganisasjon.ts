@@ -1,13 +1,14 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { Bedriftvalg, BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
-import { hentUnderenheter, settOrgnummerIgress } from './organisasjonUtils';
 import { History } from 'history';
 import {
     altinnOrganisasjonerErInitialisertMedEnIkkeTomList,
     definereDefaultBedriftvalgTypeUtfraOrganisasjonsMatch,
     hentOrgnummerFraUrl,
+    hentUnderenheter,
     organisasjonerPaContextMatcherOrgFraUrl,
     organisasjonFraUrlMatchetMedAltinnOrganisasjonslist,
+    settOrgnummerIgress,
     valgtBedriftTypePaContextErLikAlleBedrifter,
 } from './organisasjon-Utils';
 
