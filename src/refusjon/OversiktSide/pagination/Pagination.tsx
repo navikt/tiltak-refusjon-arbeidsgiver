@@ -68,7 +68,7 @@ const Pagination: FunctionComponent = () => {
                     </div>
                 </div>
                 <div className={cls.element('container')}>
-                    <ul className={cls.element('panination-list')}>
+                    <ul className={cls.element('pagination-list')}>
                         <li
                             className={cls.element('chevron-venstre')}
                             onClick={() => {

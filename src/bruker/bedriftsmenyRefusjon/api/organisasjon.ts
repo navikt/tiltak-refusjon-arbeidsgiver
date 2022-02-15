@@ -58,6 +58,7 @@ export interface MenyContextType {
     setBedriftListe: Dispatch<SetStateAction<BedriftListe>>;
     pageData: PageData;
     setPageData: Dispatch<SetStateAction<PageData>>;
+    desktopview: boolean;
 }
 
 export const initBedriftvalg: Bedriftvalg = {

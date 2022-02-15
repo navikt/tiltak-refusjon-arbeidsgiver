@@ -8,7 +8,7 @@ import { Element } from 'nav-frontend-typografi';
 
 const SokEtterBedrifter: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.SOK_ETTER_BEDRIFTER);
-    const { bedriftvalg, setValgtBedrift, setMenyApen, pageData, valgtBedrift } = useContext(MenyContext);
+    const { bedriftvalg, setValgtBedrift, setMenyApen, pageData, valgtBedrift, desktopview } = useContext(MenyContext);
     const visSokeknapp: boolean = bedriftvalg.type !== BedriftvalgType.ENKELBEDRIFT && bedriftvalg.valgtOrg?.length > 0;
     const [visningStatestikk, setVisningStatestikk] = useState<boolean>(false);
 
@@ -28,7 +28,7 @@ const SokEtterBedrifter: FunctionComponent = () => {
                         {visSokeknapp && (
                             <div className={cls.element('info-og-knapp-wrapper')}>
                                 <div className={cls.element('visning-statestikk')}>
-                                    {visningStatestikk && (
+                                    {visningStatestikk && desktopview && (
                                         <>
                                             <Element>
                                                 antall refusjoner:

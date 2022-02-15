@@ -6,15 +6,14 @@
 
 .pagination-bar {
     width: 100%;
-    margin-left: 1rem;
 
     &__wrapper {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        justify-content: center;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
         background-color: @background-color-main;
         border-radius: 8px;
-        padding: 0.125rem 0.5rem;
+        padding: 0.125rem 0.25rem;
     }
 
     &__container {
@@ -41,13 +40,11 @@
         cursor: pointer;
         font-size: @pagination-fontsize;
         font-weight: 400;
-
         &--aktivsteg {
             color: white;
             background-color: @navBla;
             border-radius: 8px;
         }
-
         &:hover:not(&--aktivsteg) {
             background-color: @pag-hover;
             color: @navBla;
@@ -57,31 +54,28 @@
     &__sidevisning-valg-container {
         height: 100%;
     }
-
     &__sidevisning-valg-wrapper {
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
     }
-
     &__sidevisning-valgknapp {
         transform: rotateX(0deg);
         transition: ease-in-out;
-
         &--open {
             transition: ease-in-out;
             transform: rotateX(-180deg);
         }
     }
 
-    &__panination-list {
+    &__pagination-list {
         display: flex;
         align-items: center;
         padding: 0 0.5rem;
         border-radius: 8px;
         background-color: white;
-        margin: 0;
+        margin: 0 0 1.25rem 0;
         box-shadow: #a0a0a0 0 2px 1px 0;
     }
 
@@ -96,7 +90,6 @@
             }
         }
     }
-
     &__visning-statestikk-data {
         margin-left: 0.5rem;
     }
@@ -128,12 +121,25 @@
     &__chevron-venstre {
         margin-right: 0.25rem;
     }
-
     &__chevron-hoyre {
         margin-left: 0.25rem;
     }
     &__select-page {
         padding: 0.5rem 0.75rem;
         margin: 0 1.75rem 0 0.5rem;
+    }
+
+    @media (min-width: @screen-md) {
+        margin-left: 1rem;
+
+        &__wrapper {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            justify-content: center;
+            padding: 0.125rem 0.5rem;
+        }
+        &__pagination-list {
+            margin: 0;
+        }
     }
 }

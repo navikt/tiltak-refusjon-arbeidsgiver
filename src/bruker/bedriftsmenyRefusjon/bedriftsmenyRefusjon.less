@@ -1,4 +1,5 @@
 @import 'node_modules/nav-frontend-core/less/_variabler';
+@mobile-sm: 370px;
 
 .bedriftsmeny-refusjon {
     height: 4.5rem;
@@ -18,12 +19,11 @@
         display: flex;
         width: 100%;
         align-content: center;
-        justify-content: space-between;
+        justify-content: flex-end;
     }
 
     &__brand {
-        display: flex;
-        align-content: center;
+        display: none;
     }
 
     &__bruker,
@@ -37,5 +37,15 @@
 
     &__innhold {
         display: flex;
+    }
+
+    @media (min-width: @mobile-sm) {
+        &__container {
+            justify-content: space-between;
+        }
+        &__brand {
+            display: flex;
+            align-content: center;
+        }
     }
 }

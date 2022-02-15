@@ -16,6 +16,7 @@ import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
 import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
 import { PageData } from '../BrukerContextType';
+import useSize from './api/useSize';
 
 interface Props {
     organisasjoner: Organisasjon[];
@@ -31,6 +32,7 @@ export const MenyContext = React.createContext<MenyContextType>({} as MenyContex
 const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren<Props>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY_REFUSJON);
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
+    const [desktopview, setDesktopview] = useState<boolean>(window.innerWidth > 768);
     const [menyApen, setMenyApen] = useState<boolean>(false);
     const { valgtBedrift, setValgtBedrift, organisasjoner, history, pageData, setPageData } = props;
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
@@ -49,6 +51,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         }
     }, [organisasjoner]);
 
+    useSize({ desktopview, setDesktopview });
+
     const contextData: MenyContextType = {
         valgtBedrift,
         setValgtBedrift,
@@ -64,6 +68,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         setBedriftListe,
         pageData,
         setPageData,
+        desktopview,
     };
 
     return (
@@ -74,9 +79,11 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                         <div>
                             <NavIkon />
                         </div>
-                        <TypografiBase className={cls.element('tittel')} type="systemtittel">
-                            Tiltaksrefusjon
-                        </TypografiBase>
+                        {desktopview && (
+                            <TypografiBase className={cls.element('tittel')} type="systemtittel">
+                                Tiltaksrefusjon
+                            </TypografiBase>
+                        )}
                     </div>
                     <div className={cls.element('innhold')}>
                         <MenyContext.Provider value={contextData}>
