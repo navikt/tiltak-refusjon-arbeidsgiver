@@ -12,33 +12,13 @@ const Pagination: FunctionComponent = () => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { valgtBedrift, setValgtBedrift } = brukerContext;
 
-    const setPageSizeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const setNewPage = (newPageNr: number, newPageSize: number) => {
         const { currentPage, size, totalItems, totalPages } = valgtBedrift.pageData;
-        event.preventDefault();
-        const newSize: number = parseInt(event.target.value);
-        if (valgtBedrift?.pageData?.pagesize !== newSize) {
-            setValgtBedrift(
-                Object.assign({}, valgtBedrift, {
-                    pageData: {
-                        page: 0,
-                        pagesize: newSize,
-                        currentPage: currentPage,
-                        size: size,
-                        totalItems: totalItems,
-                        totalPages: totalPages,
-                    },
-                })
-            );
-        }
-    };
-
-    const setNewPage = (newPageNr: number) => {
-        const { pagesize, currentPage, size, totalItems, totalPages } = valgtBedrift.pageData;
         setValgtBedrift(
             Object.assign({}, valgtBedrift, {
                 pageData: {
                     page: newPageNr,
-                    pagesize: pagesize,
+                    pagesize: newPageSize,
                     currentPage: currentPage,
                     size: size,
                     totalItems: totalItems,
@@ -48,13 +28,21 @@ const Pagination: FunctionComponent = () => {
         );
     };
 
+    const setPageSizeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        event.preventDefault();
+        const newSize: number = parseInt(event.target.value);
+        if (valgtBedrift?.pageData?.pagesize !== newSize) {
+            setNewPage(0, newSize);
+        }
+    };
+
     function generatePagination() {
         const steg = [];
         for (let i = 0; i < valgtBedrift?.pageData?.totalPages; i++) {
             steg.push(
                 <li
                     className={cls.element('steg-knapp', valgtBedrift?.pageData?.currentPage === i ? 'aktivsteg' : '')}
-                    onClick={() => setNewPage(i)}
+                    onClick={() => setNewPage(i, valgtBedrift.pageData.pagesize)}
                 >
                     {i + 1}
                 </li>
@@ -93,7 +81,7 @@ const Pagination: FunctionComponent = () => {
                             className={cls.element('chevron-venstre')}
                             onClick={() => {
                                 if (valgtBedrift.pageData.currentPage !== 0) {
-                                    setNewPage(valgtBedrift.pageData.currentPage - 1);
+                                    setNewPage(valgtBedrift.pageData.currentPage - 1, valgtBedrift.pageData.pagesize);
                                 }
                             }}
                         >
@@ -106,7 +94,7 @@ const Pagination: FunctionComponent = () => {
                             className={cls.element('chevron-hoyre')}
                             onClick={() => {
                                 if (valgtBedrift.pageData.totalPages !== valgtBedrift.pageData.currentPage + 1) {
-                                    setNewPage(valgtBedrift.pageData.currentPage + 1);
+                                    setNewPage(valgtBedrift.pageData.currentPage + 1, valgtBedrift.pageData.pagesize);
                                 }
                             }}
                         >
