@@ -77,10 +77,10 @@ export const initBedriftvalg: Bedriftvalg = {
 export interface PageData {
     page: number;
     pagesize: number;
-    currentPage: number; // ok
-    size: number; // ok
-    totalItems: number; // ok
-    totalPages: number; // ok
+    currentPage: number;
+    size: number;
+    totalItems: number;
+    totalPages: number;
 }
 export const initOrganisasjon: Organisasjon = {
     Name: '',

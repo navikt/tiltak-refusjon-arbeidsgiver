@@ -13,14 +13,14 @@ const Pagination: FunctionComponent = () => {
     const { valgtBedrift, setValgtBedrift } = brukerContext;
 
     const setPageSizeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const { page, currentPage, size, totalItems, totalPages } = valgtBedrift.pageData;
+        const { currentPage, size, totalItems, totalPages } = valgtBedrift.pageData;
         event.preventDefault();
         const newSize: number = parseInt(event.target.value);
         if (valgtBedrift?.pageData?.pagesize !== newSize) {
             setValgtBedrift(
                 Object.assign({}, valgtBedrift, {
                     pageData: {
-                        page: page,
+                        page: 0,
                         pagesize: newSize,
                         currentPage: currentPage,
                         size: size,

@@ -24,6 +24,20 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
     const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg | undefined>();
 
+    const setValgtBedriftOgNavigere = (org: Bedriftvalg) => {
+        if (valgtBedrift !== undefined) {
+            const valgtOrg =
+                org?.type === BedriftvalgType.ALLEBEDRIFTER
+                    ? BedriftvalgType.ALLEBEDRIFTER
+                    : org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
+            navigate({
+                pathname: '/refusjon',
+                search: 'bedrift=' + valgtOrg,
+            });
+        }
+        setValgtBedrift(org);
+    };
+
     useEffect(() => {
         hentInnloggetBruker()
             .then((response) => setInnloggetBruker(response))
@@ -41,19 +55,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 <Banner
                     organisasjoner={innloggetBruker.organisasjoner}
                     valgtBedrift={valgtBedrift}
-                    setValgtBedrift={(org) => {
-                        if (valgtBedrift !== undefined) {
-                            const valgtOrg =
-                                org?.type === BedriftvalgType.ALLEBEDRIFTER
-                                    ? BedriftvalgType.ALLEBEDRIFTER
-                                    : org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
-                            navigate({
-                                pathname: '/refusjon',
-                                search: 'bedrift=' + valgtOrg,
-                            });
-                        }
-                        setValgtBedrift(org);
-                    }}
+                    setValgtBedrift={(org) => setValgtBedriftOgNavigere(org)}
                 />
             )}
             {innloggetBruker && valgtBedrift && (
