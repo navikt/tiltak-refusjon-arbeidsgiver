@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import { Bedriftvalg, BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
+import { Bedriftvalg, BedriftvalgType, initPageData, Juridiskenhet, Organisasjon } from './organisasjon';
 import { History } from 'history';
 import {
     altinnOrganisasjonerErInitialisertMedEnIkkeTomList,
@@ -28,7 +28,11 @@ function useOrganisasjon(
             if (skalsettOrgNrIngress) {
                 settOrgnummerIgress(organisasjonsliste?.[0]?.OrganizationNumber ?? '', history);
             }
-            const valgtorg = { type: valgtBedrift?.type ?? bedriftvalgType, valgtOrg: organisasjonsliste };
+            const valgtorg = {
+                type: valgtBedrift?.type ?? bedriftvalgType,
+                valgtOrg: organisasjonsliste,
+                pageData: valgtBedrift?.pageData ?? initPageData,
+            };
             setBedriftvalg(valgtorg);
             setValgtBedrift(valgtorg);
         }

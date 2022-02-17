@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import TypografiBase from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
@@ -15,7 +15,7 @@ import {
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
 import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
-import { PageData } from '../BrukerContextType';
+
 import useSize from './api/useSize';
 
 interface Props {
@@ -23,8 +23,6 @@ interface Props {
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
     history: History;
-    pageData: PageData;
-    setPageData: Dispatch<SetStateAction<PageData>>;
 }
 
 export const MenyContext = React.createContext<MenyContextType>({} as MenyContextType);
@@ -34,7 +32,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
     const [desktopview, setDesktopview] = useState<boolean>(window.innerWidth > 768);
     const [menyApen, setMenyApen] = useState<boolean>(false);
-    const { valgtBedrift, setValgtBedrift, organisasjoner, history, pageData, setPageData } = props;
+    const { valgtBedrift, setValgtBedrift, organisasjoner, history } = props;
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
         organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
@@ -66,8 +64,6 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         setBedriftvalg,
         bedriftListe,
         setBedriftListe,
-        pageData,
-        setPageData,
         desktopview,
     };
 

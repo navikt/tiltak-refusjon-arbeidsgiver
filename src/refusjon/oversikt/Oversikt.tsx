@@ -20,11 +20,11 @@ const Kolonne: FunctionComponent = (props) => <div className={cls.element('kolon
 
 const Oversikt: FunctionComponent = () => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
-    const { setPageData, pageData } = brukerContext;
+    const { setValgtBedrift, valgtBedrift } = brukerContext;
     const { filter } = useFilter();
     const pagable = useHentRefusjoner(brukerContext, filter.status, filter.tiltakstype);
     const { refusjoner } = pagable;
-    useOppdaterPagedata(pagable, pageData, setPageData);
+    useOppdaterPagedata(pagable, valgtBedrift, setValgtBedrift);
 
     const navigate = useNavigate();
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);

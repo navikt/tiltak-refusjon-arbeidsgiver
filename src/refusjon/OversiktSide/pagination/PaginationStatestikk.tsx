@@ -7,7 +7,7 @@ import { useInnloggetBruker } from '../../../bruker/BrukerContext';
 const PaginationStatestikk: FunctionComponent = () => {
     const cls = BEMHelper('pagination-bar');
     const brukerContext: BrukerContextType = useInnloggetBruker();
-    const { pageData } = brukerContext;
+    const { valgtBedrift } = brukerContext;
 
     return (
         <div>
@@ -15,15 +15,21 @@ const PaginationStatestikk: FunctionComponent = () => {
                 <>
                     <Normaltekst>
                         antall refusjoner:
-                        <span className={cls.element('visning-statestikk-data')}>{pageData.totalItems}</span>
+                        <span className={cls.element('visning-statestikk-data')}>
+                            {valgtBedrift?.pageData.totalItems}
+                        </span>
                     </Normaltekst>
                     <Normaltekst>
                         nåværende sidevisning:
-                        <span className={cls.element('visning-statestikk-data')}>{pageData.currentPage + 1}</span>
+                        <span className={cls.element('visning-statestikk-data')}>
+                            {valgtBedrift?.pageData.currentPage + 1}
+                        </span>
                     </Normaltekst>
                     <Normaltekst>
                         antall sider:
-                        <span className={cls.element('visning-statestikk-data')}>{pageData.totalPages}</span>
+                        <span className={cls.element('visning-statestikk-data')}>
+                            {valgtBedrift?.pageData.totalPages}
+                        </span>
                     </Normaltekst>
                 </>
             </div>

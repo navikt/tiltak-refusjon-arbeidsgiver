@@ -1,6 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import { BedriftvalgType } from '../api/organisasjon';
+import { BedriftvalgType, initPageData } from '../api/organisasjon';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
 import { setDefaultBedriftlisteMedApneElementer } from '../api/api-Utils';
@@ -24,7 +24,11 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     checked={bedriftvalg.type === BedriftvalgType.ENKELBEDRIFT}
                     onChange={() => {
                         setBedriftvalg(
-                            Object.assign({}, bedriftvalg, { type: BedriftvalgType.ENKELBEDRIFT, valgtOrg: [] })
+                            Object.assign({}, bedriftvalg, {
+                                type: BedriftvalgType.ENKELBEDRIFT,
+                                valgtOrg: [],
+                                pageData: initPageData,
+                            })
                         );
                         setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
@@ -38,6 +42,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                             Object.assign({}, bedriftvalg, {
                                 type: BedriftvalgType.FLEREBEDRIFTER,
                                 valgtOrg: [],
+                                pageData: initPageData,
                             })
                         );
                         setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
@@ -52,6 +57,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                             Object.assign({}, bedriftvalg, {
                                 type: BedriftvalgType.ALLEBEDRIFTER,
                                 valgtOrg: organisasjonstre?.flatMap((e) => e.Underenheter),
+                                pageData: initPageData,
                             })
                         );
                         setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);

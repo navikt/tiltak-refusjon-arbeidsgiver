@@ -1,10 +1,10 @@
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
-import { BrukerContextType, InnloggetBruker, PageData, SettPageData } from '../bruker/BrukerContextType';
+import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
 import { Korreksjon, PageableRefusjon, Refusjon } from '../refusjon/refusjon';
 import { RefusjonStatus } from '../refusjon/status';
 import { Tiltak } from '../refusjon/tiltak';
-import { BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 
 export class FeilkodeError extends Error {}
 export class ApiError extends Error {}
@@ -62,26 +62,19 @@ export const useHentRefusjoner = (
     status?: RefusjonStatus,
     tiltakstype?: Tiltak
 ): PageableRefusjon => {
-    const { valgtBedrift, pageData, setPageData } = brukerContext;
+    const { valgtBedrift } = brukerContext;
     switch (brukerContext.valgtBedrift.type) {
         case BedriftvalgType.ENKELBEDRIFT:
             return HentRefusjonerForEnkeltOrganisasjon(brukerContext, status, tiltakstype);
         case BedriftvalgType.FLEREBEDRIFTER:
             return HentRefusjonForMangeOrganisasjoner(
                 valgtBedrift.valgtOrg.map((e) => e.OrganizationNumber).join(','),
-                pageData,
-                setPageData,
+                valgtBedrift,
                 status,
                 tiltakstype
             );
         case BedriftvalgType.ALLEBEDRIFTER:
-            return HentRefusjonForMangeOrganisasjoner(
-                BedriftvalgType.ALLEBEDRIFTER,
-                pageData,
-                setPageData,
-                status,
-                tiltakstype
-            );
+            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, valgtBedrift, status, tiltakstype);
     }
 };
 
@@ -90,7 +83,7 @@ export const HentRefusjonerForEnkeltOrganisasjon = (
     status?: RefusjonStatus,
     tiltakstype?: Tiltak
 ): PageableRefusjon => {
-    const { currentPage, totalPages, totalItems, size } = brukerContext.pageData;
+    const { currentPage, totalPages, totalItems, size } = brukerContext.valgtBedrift.pageData;
     const bedriftnummer = brukerContext.valgtBedrift.valgtOrg[0].OrganizationNumber;
     const { data } = useSWR<Refusjon[]>(
         `/refusjon?bedriftNr=${bedriftnummer}&status=${status || ''}&tiltakstype=${tiltakstype || ''}`,
@@ -107,12 +100,11 @@ export const HentRefusjonerForEnkeltOrganisasjon = (
 
 export const HentRefusjonForMangeOrganisasjoner = (
     bedriftlist: string,
-    pageData: PageData,
-    setPageData: SettPageData,
+    valgtBedrift: Bedriftvalg,
     status?: RefusjonStatus,
     tiltakstype?: Tiltak
 ): PageableRefusjon => {
-    const { page, pagesize } = pageData;
+    const { page, pagesize } = valgtBedrift.pageData;
     const { data } = useSWR<PageableRefusjon>(
         `/refusjon/hentliste?bedriftNr=${bedriftlist}&page=${page}&size=${pagesize}&&status=${
             status || ''

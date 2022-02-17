@@ -6,22 +6,10 @@ export type Bedrift = string;
 
 export type Bedriftliste = Array<Bedrift> | undefined;
 
-export type SettPageData = Dispatch<SetStateAction<PageData>>;
-
 export interface BrukerContextType {
     innloggetBruker: InnloggetBruker;
     valgtBedrift: Bedriftvalg;
-    pageData: PageData;
-    setPageData: SettPageData;
-}
-
-export interface PageData {
-    page: number;
-    pagesize: number;
-    currentPage: number;
-    size: number;
-    totalItems: number;
-    totalPages: number;
+    setValgtBedrift: Dispatch<SetStateAction<Bedriftvalg | undefined>>;
 }
 
 export interface InnloggetBruker {

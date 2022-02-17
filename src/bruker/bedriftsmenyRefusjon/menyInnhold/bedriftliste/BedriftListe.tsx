@@ -6,7 +6,7 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { NedChevron } from 'nav-frontend-chevron';
 import './bedriftListe.less';
 import Lenke from 'nav-frontend-lenker';
-import { BedriftvalgType, Juridiskenhet, Organisasjon } from '../../api/organisasjon';
+import { BedriftvalgType, initPageData, Juridiskenhet, Organisasjon } from '../../api/organisasjon';
 import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from '../../../../utils/bem';
 import { setDefaultBedriftlisteMedApneElementer } from '../../api/api-Utils';
@@ -52,11 +52,13 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                             return setBedriftvalg({
                                                 type: bedriftvalg.type,
                                                 valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
+                                                pageData: initPageData,
                                             });
                                         }
                                         setBedriftvalg({
                                             ...bedriftvalg,
                                             valgtOrg: [...bedriftvalg.valgtOrg, ...org.Underenheter],
+                                            pageData: initPageData,
                                         });
                                     }
                                 }}
@@ -129,11 +131,13 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                                     valgtOrg: bedriftvalg.valgtOrg.filter(
                                                                         (e) => e !== element
                                                                     ),
+                                                                    pageData: initPageData,
                                                                 });
                                                             }
                                                             setBedriftvalg({
                                                                 ...bedriftvalg,
                                                                 valgtOrg: [...bedriftvalg.valgtOrg, underenhet],
+                                                                pageData: initPageData,
                                                             });
                                                         }
                                                     }}
@@ -148,10 +152,12 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                         setBedriftvalg({
                                                             type: BedriftvalgType.ENKELBEDRIFT,
                                                             valgtOrg: [underenhet],
+                                                            pageData: initPageData,
                                                         });
                                                         setValgtBedrift({
                                                             type: BedriftvalgType.ENKELBEDRIFT,
                                                             valgtOrg: [underenhet],
+                                                            pageData: initPageData,
                                                         });
                                                         setMenyApen(false);
                                                         setDefaultBedriftlisteMedApneElementer(

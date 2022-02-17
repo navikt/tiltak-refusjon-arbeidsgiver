@@ -8,7 +8,7 @@ import { Element } from 'nav-frontend-typografi';
 
 const SokEtterBedrifter: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.SOK_ETTER_BEDRIFTER);
-    const { bedriftvalg, setValgtBedrift, setMenyApen, pageData, valgtBedrift, desktopview } = useContext(MenyContext);
+    const { bedriftvalg, setValgtBedrift, setMenyApen, valgtBedrift, desktopview } = useContext(MenyContext);
     const visSokeknapp: boolean = bedriftvalg.type !== BedriftvalgType.ENKELBEDRIFT && bedriftvalg.valgtOrg?.length > 0;
     const [visningStatestikk, setVisningStatestikk] = useState<boolean>(false);
 
@@ -28,24 +28,24 @@ const SokEtterBedrifter: FunctionComponent = () => {
                         {visSokeknapp && (
                             <div className={cls.element('info-og-knapp-wrapper')}>
                                 <div className={cls.element('visning-statestikk')}>
-                                    {visningStatestikk && desktopview && (
+                                    {visningStatestikk && valgtBedrift && desktopview && (
                                         <>
                                             <Element>
                                                 antall refusjoner:
                                                 <span className={cls.element('visning-statestikk-data')}>
-                                                    {pageData.totalItems}
+                                                    {valgtBedrift.pageData.totalItems}
                                                 </span>
                                             </Element>
                                             <Element>
                                                 nåværende sidevisning:
                                                 <span className={cls.element('visning-statestikk-data')}>
-                                                    {pageData.currentPage + 1}
+                                                    {valgtBedrift.pageData.currentPage + 1}
                                                 </span>
                                             </Element>
                                             <Element>
                                                 antall sider:
                                                 <span className={cls.element('visning-statestikk-data')}>
-                                                    {pageData.totalPages}
+                                                    {valgtBedrift.pageData.totalPages}
                                                 </span>
                                             </Element>
                                         </>

@@ -6,7 +6,7 @@ import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { BrukerContextType, InnloggetBruker, PageData } from './BrukerContextType';
+import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { Bedriftvalg, BedriftvalgType } from './bedriftsmenyRefusjon/api/organisasjon';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
@@ -22,15 +22,7 @@ export const useInnloggetBruker = () => {
 
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
-    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>();
-    const [pageData, setPageData] = useState<PageData>({
-        page: 0,
-        pagesize: 7,
-        currentPage: 0,
-        size: 0,
-        totalItems: 0,
-        totalPages: 0,
-    });
+    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg | undefined>();
 
     useEffect(() => {
         hentInnloggetBruker()
@@ -46,36 +38,30 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 <LokalLogin innloggetBruker={innloggetBruker} />
             )}
             {innloggetBruker && (
-                <>
-                    {' '}
-                    <Banner
-                        organisasjoner={innloggetBruker.organisasjoner}
-                        valgtBedrift={valgtBedrift}
-                        setValgtBedrift={(org) => {
-                            if (valgtBedrift !== undefined) {
-                                const valgtOrg =
-                                    org?.type === BedriftvalgType.ALLEBEDRIFTER
-                                        ? BedriftvalgType.ALLEBEDRIFTER
-                                        : org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
-                                navigate({
-                                    pathname: '/refusjon',
-                                    search: 'bedrift=' + valgtOrg,
-                                });
-                            }
-                            setValgtBedrift(org);
-                        }}
-                        pageData={pageData}
-                        setPageData={setPageData}
-                    />
-                </>
+                <Banner
+                    organisasjoner={innloggetBruker.organisasjoner}
+                    valgtBedrift={valgtBedrift}
+                    setValgtBedrift={(org) => {
+                        if (valgtBedrift !== undefined) {
+                            const valgtOrg =
+                                org?.type === BedriftvalgType.ALLEBEDRIFTER
+                                    ? BedriftvalgType.ALLEBEDRIFTER
+                                    : org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
+                            navigate({
+                                pathname: '/refusjon',
+                                search: 'bedrift=' + valgtOrg,
+                            });
+                        }
+                        setValgtBedrift(org);
+                    }}
+                />
             )}
             {innloggetBruker && valgtBedrift && (
                 <BrukerContext.Provider
                     value={{
                         innloggetBruker,
                         valgtBedrift,
-                        pageData,
-                        setPageData,
+                        setValgtBedrift,
                     }}
                 >
                     {props.children}

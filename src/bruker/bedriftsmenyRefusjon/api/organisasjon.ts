@@ -1,6 +1,5 @@
 import { History } from 'history';
 import { Dispatch, SetStateAction } from 'react';
-import { PageData } from '../../BrukerContextType';
 
 export enum ClsBedriftsmeny {
     BEDRIFTSMENY_REFUSJON = 'bedriftsmeny-refusjon',
@@ -39,6 +38,7 @@ export enum BedriftvalgType {
 export interface Bedriftvalg {
     type: BedriftvalgType;
     valgtOrg: Array<Organisasjon>;
+    pageData: PageData;
 }
 
 export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;
@@ -56,16 +56,32 @@ export interface MenyContextType {
     setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>;
     bedriftListe: BedriftListe;
     setBedriftListe: Dispatch<SetStateAction<BedriftListe>>;
-    pageData: PageData;
-    setPageData: Dispatch<SetStateAction<PageData>>;
     desktopview: boolean;
 }
+
+export const initPageData: PageData = {
+    page: 0,
+    pagesize: 7,
+    currentPage: 0,
+    size: 0,
+    totalItems: 0,
+    totalPages: 0,
+};
 
 export const initBedriftvalg: Bedriftvalg = {
     type: BedriftvalgType.ENKELBEDRIFT,
     valgtOrg: [] as Array<Organisasjon>,
+    pageData: initPageData,
 };
 
+export interface PageData {
+    page: number;
+    pagesize: number;
+    currentPage: number; // ok
+    size: number; // ok
+    totalItems: number; // ok
+    totalPages: number; // ok
+}
 export const initOrganisasjon: Organisasjon = {
     Name: '',
     Type: '',
