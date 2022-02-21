@@ -6,6 +6,7 @@ import BEMHelper from '../../../utils/bem';
 import { BedriftvalgType, PageSizeOption } from '../../../bruker/bedriftsmenyRefusjon/api/organisasjon';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
+import PaginationBar from './PaginationBar';
 
 const Pagination: FunctionComponent = () => {
     const cls = BEMHelper('pagination-bar');
@@ -35,21 +36,6 @@ const Pagination: FunctionComponent = () => {
             setNewPage(0, newSize);
         }
     };
-
-    function generatePagination() {
-        const steg = [];
-        for (let i = 0; i < valgtBedrift?.pageData?.totalPages; i++) {
-            steg.push(
-                <li
-                    className={cls.element('steg-knapp', valgtBedrift?.pageData?.currentPage === i ? 'aktivsteg' : '')}
-                    onClick={() => setNewPage(i, valgtBedrift.pageData.pagesize)}
-                >
-                    {i + 1}
-                </li>
-            );
-        }
-        return steg;
-    }
 
     return valgtBedrift &&
         valgtBedrift?.pageData?.totalPages > 1 &&
@@ -87,9 +73,7 @@ const Pagination: FunctionComponent = () => {
                         >
                             <VenstreChevron />
                         </li>
-                        {generatePagination().map((steg, index) => {
-                            return <React.Fragment key={index}>{steg}</React.Fragment>;
-                        })}
+                        <PaginationBar />
                         <li
                             className={cls.element('chevron-hoyre')}
                             onClick={() => {
