@@ -11,15 +11,21 @@ import { useFilter } from './FilterContext';
 import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
 import LabelRad from './LabelRad';
 import './oversikt.less';
+import { BrukerContextType } from '../../bruker/BrukerContextType';
+import useOppdaterPagedata from '../../bruker/bedriftsmenyRefusjon/useOppdaterPagedata';
 
 const cls = BEMHelper('oversikt');
 
 const Kolonne: FunctionComponent = (props) => <div className={cls.element('kolonne')}>{props.children}</div>;
 
 const Oversikt: FunctionComponent = () => {
-    const brukerContext = useInnloggetBruker();
+    const brukerContext: BrukerContextType = useInnloggetBruker();
+    const { setValgtBedrift, valgtBedrift } = brukerContext;
     const { filter } = useFilter();
-    const refusjoner = useHentRefusjoner(brukerContext.valgtBedrift, filter.status, filter.tiltakstype);
+    const pagable = useHentRefusjoner(brukerContext, filter.status, filter.tiltakstype);
+    const { refusjoner } = pagable;
+    useOppdaterPagedata(pagable, valgtBedrift, setValgtBedrift);
+
     const navigate = useNavigate();
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);
 
@@ -65,7 +71,7 @@ const Oversikt: FunctionComponent = () => {
                         </LenkepanelBase>
                     ))
                 ) : (
-                    <FinnerIngenRefusjoner orgnr={brukerContext.valgtBedrift} />
+                    <FinnerIngenRefusjoner orgnr={brukerContext.valgtBedrift.valgtOrg?.[0].OrganizationNumber} />
                 )}
             </div>
         </nav>

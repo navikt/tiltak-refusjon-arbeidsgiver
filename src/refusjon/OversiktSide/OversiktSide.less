@@ -1,3 +1,4 @@
+@import '~nav-frontend-core/less/_variabler';
 .OversiktSide {
     padding: 1.5rem;
     display: flex;
@@ -5,22 +6,26 @@
     justify-content: center;
 
     &__wrapper {
-        margin-top: 2rem;
         width: 100%;
-        //  max-width: 1024px;
         display: flex;
         flex-direction: column;
-        margin-bottom: 2rem;
         justify-content: center;
     }
 
     &__container {
-        width: 55rem;
-        //width: 100%;
-        //   max-width: 740px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 55rem;
     }
 
-    @media (min-width: 768px) {
+    &__filtermeny-status,
+    &__filtermeny-tiltakstype {
+        border: none !important;
+    }
+
+    @media (min-width: @screen-sm) {
         padding: 0.75rem;
 
         &__wrapper {

@@ -5,14 +5,14 @@ import { FilterProvider } from '../oversikt/FilterContext';
 import Filtermeny from '../oversikt/Filtermeny';
 import Oversikt from '../oversikt/Oversikt';
 import './OversiktSide.less';
-
+import Pagination from './pagination/Pagination';
 const cls = BEMHelper('OversiktSide');
 
 const OversiktSide: FunctionComponent = () => {
     return (
-        <div className={cls.className}>
-            <div className={cls.element('wrapper')}>
-                <FilterProvider>
+        <FilterProvider>
+            <div className={cls.className}>
+                <div className={cls.element('wrapper')}>
                     <div className={cls.element('meny')}>
                         <Filtermeny />
                     </div>
@@ -20,10 +20,11 @@ const OversiktSide: FunctionComponent = () => {
                         <Suspense fallback={<OversiktSkeleton />}>
                             <Oversikt />
                         </Suspense>
+                        <Pagination />
                     </div>
-                </FilterProvider>
+                </div>
             </div>
-        </div>
+        </FilterProvider>
     );
 };
 

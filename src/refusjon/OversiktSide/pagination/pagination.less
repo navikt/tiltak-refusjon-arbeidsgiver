@@ -1,0 +1,151 @@
+@import (reference) '~nav-frontend-core/less/_variabler';
+
+@background-color-main: #f1f1f1;
+@pagination-fontsize: 1rem;
+@pag-hover: #e6f0ff;
+
+.pagination-bar {
+    width: 100%;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        background-color: @background-color-main;
+        border-radius: 8px;
+        padding: 0.125rem 0.25rem;
+    }
+
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 3.375rem;
+    }
+
+    &__steg-knapp {
+        list-style: none;
+        border-radius: 8px;
+        color: black;
+        float: left;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        background-color: white;
+        border: none;
+        margin: 0.5rem;
+        cursor: pointer;
+        font-size: @pagination-fontsize;
+        font-weight: 400;
+        &--aktivsteg {
+            color: white;
+            background-color: @navBla;
+            border-radius: 8px;
+        }
+        &:hover:not(&--aktivsteg) {
+            background-color: @pag-hover;
+            color: @navBla;
+        }
+    }
+
+    &__steg-skillelinje {
+        list-style: none;
+        text-decoration: none;
+        margin: 0 -0.25rem 0 -0.25rem;
+    }
+
+    &__sidevisning-valg-container {
+        height: 100%;
+    }
+    &__sidevisning-valg-wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__sidevisning-valgknapp {
+        transform: rotateX(0deg);
+        transition: ease-in-out;
+        &--open {
+            transition: ease-in-out;
+            transform: rotateX(-180deg);
+        }
+    }
+
+    &__pagination-list {
+        display: flex;
+        align-items: center;
+        padding: 0 0.5rem;
+        border-radius: 8px;
+        background-color: white;
+        margin: 0 0 1.25rem 0;
+        box-shadow: #a0a0a0 0 2px 1px 0;
+    }
+
+    &__visning-statestikk {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0.25rem;
+        & > p {
+            &:nth-child(1),
+            &:nth-child(2) {
+                margin-right: 1.25rem;
+            }
+        }
+    }
+    &__visning-statestikk-data {
+        margin-left: 0.5rem;
+    }
+
+    &__chevron-venstre,
+    &__chevron-hoyre {
+        border: none;
+        background-color: white;
+        cursor: pointer;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 8px;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            & > span {
+                color: @navBla;
+            }
+            background-color: @pag-hover;
+        }
+        & > svg {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+    &__chevron-venstre {
+        margin-right: 0.25rem;
+    }
+    &__chevron-hoyre {
+        margin-left: 0.25rem;
+    }
+    &__select-page {
+        padding: 0.5rem 0.75rem;
+        margin: 0 1.75rem 0 0.5rem;
+    }
+
+    @media (min-width: @screen-md) {
+        margin-left: 1rem;
+
+        &__wrapper {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            justify-content: center;
+            padding: 0.125rem 0.5rem;
+        }
+        &__pagination-list {
+            margin: 0;
+        }
+    }
+}

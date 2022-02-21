@@ -23,7 +23,9 @@ const RadioPakning = styled.div`
 const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
-    const [inntekterKunFraTiltaket, setInntekterKunFraTiltaket] = useState(refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket);
+    const [inntekterKunFraTiltaket, setInntekterKunFraTiltaket] = useState(
+        refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket
+    );
     const [endretBruttoLønn, setEndretBruttoLønn] = useState(refusjon.refusjonsgrunnlag.endretBruttoLønn);
     if (refusjon.refusjonsgrunnlag.inntektsgrunnlag === undefined) {
         return null;

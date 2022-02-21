@@ -1,0 +1,51 @@
+@import 'node_modules/nav-frontend-core/less/_variabler';
+
+@sok-bar-height: 3.375rem;
+@sok-bar-height-closed: @sok-bar-height - 2rem;
+
+.sok-etter-bedrifter {
+    &__container {
+        height: @sok-bar-height;
+        background-color: #f8f9fa;
+        margin: -0.75rem 1.75rem 0.75rem 1.75rem;
+        border-radius: 8px;
+        &--closed {
+            height: @sok-bar-height-closed;
+        }
+    }
+    &__sok-knapp {
+        border-radius: 8px;
+    }
+
+    &__info-og-knapp-wrapper {
+        height: @sok-bar-height;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__visning-statestikk {
+        display: flex;
+        align-items: center;
+        margin-left: 0.75rem;
+        height: @sok-bar-height;
+        & > p {
+            &:nth-child(1),
+            &:nth-child(2) {
+                margin-right: 1.25rem;
+            }
+        }
+    }
+    &__visning-statestikk-data {
+        margin-left: 0.5rem;
+    }
+    &__knapp-container {
+        margin-right: 1.5rem;
+    }
+
+    @media (min-width: @screen-md) {
+        &__container {
+            margin: -0.75rem 3.5rem 0.75rem 3.5rem;
+        }
+    }
+}
