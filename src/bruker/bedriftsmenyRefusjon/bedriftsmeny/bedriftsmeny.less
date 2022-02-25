@@ -68,6 +68,10 @@
             opacity: 1;
             pointer-events: auto;
             flex-direction: row;
+
+            @supports (-webkit-hyphens: none) {
+                height: 39.375rem;
+            }
         }
     }
 
@@ -104,6 +108,10 @@
             &--open {
                 width: 47rem;
                 max-height: @menu-content + 5rem;
+
+                @supports (-webkit-hyphens: none) {
+                    height: 25.375rem;
+                }
             }
         }
         &__meny-wrapper {
