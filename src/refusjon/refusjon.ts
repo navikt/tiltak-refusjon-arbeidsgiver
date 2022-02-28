@@ -103,6 +103,8 @@ export interface Beregning {
     sumUtgifter: number;
     tjenestepensjon: number;
     tidligereUtbetalt: number;
+    fratrekkLonnFerie: number;
+    lønnFratrukketFerie: number;
 }
 
 export enum Korreksjonsgrunn {
