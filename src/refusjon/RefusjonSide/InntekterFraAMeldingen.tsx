@@ -10,6 +10,14 @@ import { useHentRefusjon } from '../../services/rest-service';
 import { refusjonApnet } from '../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
+import { Radio, RadioGruppe } from 'nav-frontend-skjema';
+import { BedriftvalgType } from '../../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { initPageData } from '../../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { setDefaultBedriftlisteMedApneElementer } from '../../bruker/bedriftsmenyRefusjon/api/api-Utils';
+import { HTMLAttributes } from 'react';
+import { Dispatch } from 'react';
+import { SetStateAction } from 'react';
+import { elementType } from 'prop-types';
 
 const GråBoks = styled.div`
     background-color: #eee;
@@ -52,7 +60,14 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     }
 };
 
-const InntekterFraAMeldingen: FunctionComponent = () => {
+export interface Props {
+    valgtOpptjentPeriode: string[] | undefined;
+    setValgtOpptjentPeriode: Dispatch<SetStateAction<string[]>> | undefined;
+}
+const InntekterFraAMeldingen: FunctionComponent<Props | undefined> = ({
+    setValgtOpptjentPeriode,
+    valgtOpptjentPeriode,
+}) => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const antallInntekterSomErMedIGrunnlag = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
@@ -113,6 +128,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                     <th>Beskriv&shy;else</th>
                                     <th>År/mnd</th>
                                     <th>Opptjenings&shy;periode</th>
+                                    <th>Har opptjent i periode?</th>
                                     <th>Beløp</th>
                                 </tr>
                             </thead>
@@ -121,7 +137,14 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                     refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.filter(
                                         (inntekt) => inntekt.erMedIInntektsgrunnlag
                                     ),
-                                    ['måned', 'opptjeningsperiodeFom', 'opptjeningsperiodeTom', 'beskrivelse', 'id']
+                                    [
+                                        'måned',
+                                        'opptjeningsperiodeFom',
+                                        'opptjeningsperiodeTom',
+                                        'opptjent',
+                                        'beskrivelse',
+                                        'id',
+                                    ]
                                 ).map((inntekt) => (
                                     <tr key={inntekt.id}>
                                         <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
@@ -139,12 +162,40 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                             )}
                                         </td>
 
+                                        {setValgtOpptjentPeriode && valgtOpptjentPeriode && (
+                                            <td>
+                                                <div style={{ display: 'flex', columnGap: '3em' }}>
+                                                    <Radio
+                                                        label={'Ja'}
+                                                        onClick={() => {
+                                                            if (!valgtOpptjentPeriode?.includes(inntekt.id))
+                                                                setValgtOpptjentPeriode([
+                                                                    ...valgtOpptjentPeriode,
+                                                                    inntekt.id,
+                                                                ]);
+                                                        }}
+                                                        name={inntekt.id}
+                                                    />
+                                                    <Radio
+                                                        label={'Nei'}
+                                                        onClick={(e) =>
+                                                            setValgtOpptjentPeriode(
+                                                                valgtOpptjentPeriode?.filter(
+                                                                    (element) => element !== e.currentTarget.name
+                                                                )
+                                                            )
+                                                        }
+                                                        name={inntekt.id}
+                                                    />
+                                                </div>
+                                            </td>
+                                        )}
                                         <td>{formatterPenger(inntekt.beløp)}</td>
                                     </tr>
                                 ))}
                                 {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn && (
                                     <tr>
-                                        <td colSpan={3}>
+                                        <td colSpan={4}>
                                             <b>Sum</b>
                                         </td>
                                         <td>

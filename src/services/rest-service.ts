@@ -42,7 +42,11 @@ export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
     return response.data;
 };
 
-export const endreBruttolønn = async (refusjonId: string, inntekterKunFraTiltaket: boolean, bruttoLønn?: number) => {
+export const endreBruttolønn = async (
+    refusjonId: string,
+    inntekterKunFraTiltaket: boolean | null,
+    bruttoLønn?: number | null
+) => {
     const response = await api.post(`/refusjon/${refusjonId}/endre-bruttolønn`, {
         inntekterKunFraTiltaket,
         bruttoLønn,

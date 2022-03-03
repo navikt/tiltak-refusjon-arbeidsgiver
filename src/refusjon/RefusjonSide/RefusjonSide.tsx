@@ -20,6 +20,8 @@ import InntekterFraAMeldingen from './InntekterFraAMeldingen';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
+import { useEffect } from 'react';
+import { endreBruttolønn } from '../../services/rest-service';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -28,7 +30,11 @@ const RefusjonSide: FunctionComponent = () => {
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState(false);
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState('');
     const [visGodkjennModal, setVisGodkjennModal] = useState(false);
+    const [valgtOpptjentPeriode, setValgtOpptjentPeriode] = useState<string[]>([]);
 
+    useEffect(() => {
+        endreBruttolønn(refusjonId!, null, 0);
+    }, []);
     const bekreftOpplysninger = () => {
         setBekrefetKorrekteOpplysninger(!bekrefetKorrekteOpplysninger);
         setIkkeBekreftetFeilmelding('');
@@ -79,15 +85,18 @@ const RefusjonSide: FunctionComponent = () => {
                 <VerticalSpacer rem={2} />
                 <InformasjonFraAvtalen />
                 <VerticalSpacer rem={2} />
-                <InntekterFraAMeldingen />
+                <InntekterFraAMeldingen
+                    setValgtOpptjentPeriode={setValgtOpptjentPeriode}
+                    valgtOpptjentPeriode={valgtOpptjentPeriode}
+                />
                 <VerticalSpacer rem={2} />
                 {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter?.find(
                     (inntekt) => inntekt.erMedIInntektsgrunnlag
-                ) && <InntekterFraTiltaketSpørsmål />}
+                ) && <InntekterFraTiltaketSpørsmål valgtOpptjentPeriode={valgtOpptjentPeriode} />}
                 <VerticalSpacer rem={2} />
                 {refusjon.refusjonsgrunnlag.beregning &&
                     refusjon.refusjonsgrunnlag.beregning.refusjonsbeløp > 0 &&
-                    refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== null && (
+                    refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== undefined && (
                         <>
                             <Utregning
                                 beregning={refusjon.refusjonsgrunnlag.beregning}
