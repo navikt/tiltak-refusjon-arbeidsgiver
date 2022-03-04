@@ -53,12 +53,8 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
         .map((el) => el.beløp)
         .reduce((el, el2) => el + el2, 0);
 
-    //TODO: Ikke gå over bruttolønn sum på nei (checked false) valget
-    //TODO: når man velger nei skal man ikke miste beløpet/inntekt man har sagt ja til
-
     const svarPåSpørsmål = (checked: boolean) => {
         setInntekterKunFraTiltaket(checked);
-        //TODO bør settes til valgtBruttoLønn når checked er true men det er en backend sperre på det
         if (checked) {
             setEndretBruttoLønn(undefined);
             endreBruttolønn(refusjonId!, checked, undefined);
