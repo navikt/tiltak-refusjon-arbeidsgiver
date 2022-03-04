@@ -32,10 +32,8 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
         return lønnsbeskrivelseTekst[beskrivelse] ?? 'Inntekt: ' + beskrivelse;
     }
 };
-export interface Props{
-    valgtOpptjentPeriode:string[] | undefined
-}
-const InntekterFraTiltaketSpørsmål: FunctionComponent<Props> = ({ valgtOpptjentPeriode }) => {
+
+const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [inntekterKunFraTiltaket, setInntekterKunFraTiltaket] = useState(
@@ -47,53 +45,63 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent<Props> = ({ valgtOpptjen
     }
     const bruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn;
 
-    const valgtBruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter((inntekt) => valgtOpptjentPeriode?.includes(inntekt.id))
-    .map((el) => el.beløp)
-    .reduce((el, el2) => el + el2, 0)
+    const refunderbarInntekter = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
+        (inntekt) => inntekt.skalRefunderes
+    );
+    const valgtBruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
+        .filter((inntekt) => inntekt.skalRefunderes)
+        .map((el) => el.beløp)
+        .reduce((el, el2) => el + el2, 0);
+
+    //TODO: Ikke gå over bruttolønn sum på nei (checked false) valget
+    //TODO: når man velger nei skal man ikke miste beløpet/inntekt man har sagt ja til
 
     const svarPåSpørsmål = (checked: boolean) => {
         setInntekterKunFraTiltaket(checked);
+        //TODO bør settes til valgtBruttoLønn når checked er true men det er en backend sperre på det
         if (checked) {
-            //setEndretBruttoLønn(undefined);
-            endreBruttolønn(refusjonId!, false, valgtBruttoLønn);
+            setEndretBruttoLønn(undefined);
+            endreBruttolønn(refusjonId!, checked, undefined);
         }
     };
 
     return (
         <div>
-
-            {valgtOpptjentPeriode && valgtOpptjentPeriode.length >= 1 &&
-                <div style={{ "display": "grid", "backgroundColor": "#CCF1D6", "padding": "1em", "border": "4px solid #99DEAD" }}>
+            {refunderbarInntekter.length >= 1 && (
+                <div
+                    style={{ display: 'grid', backgroundColor: '#CCF1D6', padding: '1em', border: '4px solid #99DEAD' }}
+                >
                     <Undertittel>
-                        Inntekter som skal refunderes for {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom} til  {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom}
+                        Inntekter som skal refunderes for {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom} til{' '}
+                        {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom}
                     </Undertittel>
                     <VerticalSpacer rem={1} />
                     <Normaltekst>
-                        Dette er inntekter som er opptjent i perioden. Det vil gjøres en utregning under med sum bruttolønn som grunnlag.
+                        Dette er inntekter som er opptjent i perioden. Det vil gjøres en utregning under med sum
+                        bruttolønn som grunnlag.
                     </Normaltekst>
                     <VerticalSpacer rem={1} />
-                    <div style={{ "display": "flex", "fontWeight": "bold" }}>
-                        <div style={{ "width": "50%" }}>Beskrivelse</div>
-                        <div style={{ "width": "50%" }}>År/mnd</div>
+                    <div style={{ display: 'flex', fontWeight: 'bold' }}>
+                        <div style={{ width: '50%' }}>Beskrivelse</div>
+                        <div style={{ width: '50%' }}>År/mnd</div>
                         <div>Beløp</div>
                     </div>
-                    {valgtOpptjentPeriode?.map((el) => {
-                        const inntekt = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.id === el)
-                        if (inntekt) return <div style={{ "display": "flex" }}>
-                            <div style={{ "width": "50%" }}>{inntektBeskrivelse(inntekt.beskrivelse)}</div>
-                            <div style={{ "width": "50%" }}>{inntekt.måned}</div>
-                            <div style={{ "width": "5%" }}>{inntekt.beløp}</div>
-                        </div>
+                    {refunderbarInntekter?.map((currInntekt) => {
+                        if (currInntekt)
+                            return (
+                                <div style={{ display: 'flex' }}>
+                                    <div style={{ width: '50%' }}>{inntektBeskrivelse(currInntekt.beskrivelse)}</div>
+                                    <div style={{ width: '50%' }}>{currInntekt.måned}</div>
+                                    <div style={{ width: '5%' }}>{currInntekt.beløp}</div>
+                                </div>
+                            );
                     })}
 
                     <br />
-                    <div style={{ "display": "flex", "fontWeight": "bold" }}>
-                        <div style={{ "width": "50%" }}>Sum bruttolønn</div>
-                        <div style={{ "width": "50%" }}></div>
-                        <div>
-                            {valgtOpptjentPeriode && valgtOpptjentPeriode.length >= 1 &&
-                                valgtBruttoLønn
-                            }</div>
+                    <div style={{ display: 'flex', fontWeight: 'bold' }}>
+                        <div style={{ width: '50%' }}>Sum bruttolønn</div>
+                        <div style={{ width: '50%' }}></div>
+                        <div>{refunderbarInntekter.length >= 1 && valgtBruttoLønn}</div>
                     </div>
 
                     <VerticalSpacer rem={1} />
@@ -105,7 +113,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent<Props> = ({ valgtOpptjen
                         kun fra tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
                     </Label>
                     <p>
-                        <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller lønnstilskudd</i>
+                        <i>
+                            Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller lønnstilskudd
+                        </i>
                     </p>
                     <RadioPakning>
                         <RadioPanel
@@ -114,8 +124,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent<Props> = ({ valgtOpptjen
                             value={'ja'}
                             checked={inntekterKunFraTiltaket === true}
                             onChange={() => {
-                              //  endreBruttolønn(refusjonId!, false, valgtBruttoLønn)
-                                svarPåSpørsmål(true)
+                                svarPåSpørsmål(true);
                             }}
                         />
                         <RadioPanel
@@ -124,8 +133,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent<Props> = ({ valgtOpptjen
                             value={'nei'}
                             checked={inntekterKunFraTiltaket === false}
                             onChange={() => {
-                              //  endreBruttolønn(refusjonId!, false, 0)
-                                svarPåSpørsmål(false)
+                                svarPåSpørsmål(false);
                             }}
                         />
                     </RadioPakning>
@@ -150,7 +158,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent<Props> = ({ valgtOpptjen
                         </>
                     )}
                 </div>
-            }
+            )}
         </div>
     );
 };

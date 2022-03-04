@@ -63,7 +63,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                     {/* <VerticalSpacer rem={2} /> */}
                     {/* <InformasjonFraAvtalen /> */}
                     <VerticalSpacer rem={2} />
-                    <InntekterFraAMeldingen setValgtOpptjentPeriode={undefined} valgtOpptjentPeriode={undefined} />
+                    <InntekterFraAMeldingen />
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                     <VerticalSpacer rem={2} />

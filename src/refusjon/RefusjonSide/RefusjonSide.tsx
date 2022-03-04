@@ -85,14 +85,11 @@ const RefusjonSide: FunctionComponent = () => {
                 <VerticalSpacer rem={2} />
                 <InformasjonFraAvtalen />
                 <VerticalSpacer rem={2} />
-                <InntekterFraAMeldingen
-                    setValgtOpptjentPeriode={setValgtOpptjentPeriode}
-                    valgtOpptjentPeriode={valgtOpptjentPeriode}
-                />
+                <InntekterFraAMeldingen />
                 <VerticalSpacer rem={2} />
                 {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter?.find(
                     (inntekt) => inntekt.erMedIInntektsgrunnlag
-                ) && <InntekterFraTiltaketSpørsmål valgtOpptjentPeriode={valgtOpptjentPeriode} />}
+                ) && <InntekterFraTiltaketSpørsmål />}
                 <VerticalSpacer rem={2} />
                 {refusjon.refusjonsgrunnlag.beregning &&
                     refusjon.refusjonsgrunnlag.beregning.refusjonsbeløp > 0 &&

@@ -17,11 +17,15 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
         return null;
     }
 
+    const valgtBruttoLønn = props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
+        .filter((inntekt) => inntekt.skalRefunderes)
+        .map((el) => el.beløp)
+        .reduce((el, el2) => el + el2, 0);
+
     return (
         <div>
             <Element>
-                Er inntektene som vi har hentet (
-                {formatterPenger(props.refusjonsgrunnlag.inntektsgrunnlag!!.bruttoLønn)}) kun fra tiltaket{' '}
+                Er inntektene du har valgt ({formatterPenger(valgtBruttoLønn as number)}) kun fra tiltaket{' '}
                 {tiltakstypeTekst[props.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?{' '}
             </Element>
             <Normaltekst>{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</Normaltekst>

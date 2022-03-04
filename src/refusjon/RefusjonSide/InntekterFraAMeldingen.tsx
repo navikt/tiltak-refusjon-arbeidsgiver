@@ -10,14 +10,9 @@ import { useHentRefusjon } from '../../services/rest-service';
 import { refusjonApnet } from '../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import { BedriftvalgType } from '../../bruker/bedriftsmenyRefusjon/api/organisasjon';
-import { initPageData } from '../../bruker/bedriftsmenyRefusjon/api/organisasjon';
-import { setDefaultBedriftlisteMedApneElementer } from '../../bruker/bedriftsmenyRefusjon/api/api-Utils';
-import { HTMLAttributes } from 'react';
-import { Dispatch } from 'react';
-import { SetStateAction } from 'react';
-import { elementType } from 'prop-types';
+import { Radio } from 'nav-frontend-skjema';
+import { toggleRefundertInntektslinje } from '../../services/rest-service';
+import { endreBruttolønn } from '../../services/rest-service';
 
 const GråBoks = styled.div`
     background-color: #eee;
@@ -61,13 +56,10 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 };
 
 export interface Props {
-    valgtOpptjentPeriode: string[] | undefined;
-    setValgtOpptjentPeriode: Dispatch<SetStateAction<string[]>> | undefined;
+    kvitteringVisning?: boolean | undefined;
 }
-const InntekterFraAMeldingen: FunctionComponent<Props | undefined> = ({
-    setValgtOpptjentPeriode,
-    valgtOpptjentPeriode,
-}) => {
+
+const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning }) => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const antallInntekterSomErMedIGrunnlag = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
@@ -162,32 +154,36 @@ const InntekterFraAMeldingen: FunctionComponent<Props | undefined> = ({
                                             )}
                                         </td>
 
-                                        {setValgtOpptjentPeriode && valgtOpptjentPeriode && (
+                                        {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
+                                            (currInntekt) => currInntekt.skalRefunderes
+                                        ) && (
                                             <td>
-                                                <div style={{ display: 'flex', columnGap: '3em' }}>
-                                                    <Radio
-                                                        label={'Ja'}
-                                                        onClick={() => {
-                                                            if (!valgtOpptjentPeriode?.includes(inntekt.id))
-                                                                setValgtOpptjentPeriode([
-                                                                    ...valgtOpptjentPeriode,
-                                                                    inntekt.id,
-                                                                ]);
-                                                        }}
-                                                        name={inntekt.id}
-                                                    />
-                                                    <Radio
-                                                        label={'Nei'}
-                                                        onClick={(e) =>
-                                                            setValgtOpptjentPeriode(
-                                                                valgtOpptjentPeriode?.filter(
-                                                                    (element) => element !== e.currentTarget.name
-                                                                )
-                                                            )
-                                                        }
-                                                        name={inntekt.id}
-                                                    />
-                                                </div>
+                                                {!kvitteringVisning && (
+                                                    <div style={{ display: 'flex', columnGap: '3em' }}>
+                                                        <Radio
+                                                            label={'Ja'}
+                                                            checked={inntekt.skalRefunderes}
+                                                            onClick={(e) => {
+                                                                toggleRefundertInntektslinje(refusjonId!, inntekt.id);
+                                                            }}
+                                                            name={inntekt.id}
+                                                        />
+                                                        <Radio
+                                                            label={'Nei'}
+                                                            checked={!inntekt.skalRefunderes}
+                                                            onClick={(e) => {
+                                                                toggleRefundertInntektslinje(refusjonId!, inntekt.id);
+                                                            }}
+                                                            name={inntekt.id}
+                                                        />
+                                                    </div>
+                                                )}
+                                                {kvitteringVisning && (
+                                                    <div style={{ display: 'flex', columnGap: '3em' }}>
+                                                        {inntekt.skalRefunderes && <label>{'Ja'}</label>}
+                                                        {!inntekt.skalRefunderes && <label>{'Nei'}</label>}
+                                                    </div>
+                                                )}
                                             </td>
                                         )}
                                         <td>{formatterPenger(inntekt.beløp)}</td>

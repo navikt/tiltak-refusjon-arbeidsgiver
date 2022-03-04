@@ -55,6 +55,14 @@ export const endreBruttolønn = async (
     return response.data;
 };
 
+export const toggleRefundertInntektslinje = async (refusjonId: string, inntektslinjeId: string) => {
+    const response = await api.post(`/refusjon/${refusjonId}/toggle-refundert-inntektslinje`, {
+        inntektslinjeId,
+    });
+    await mutate(`/refusjon/${refusjonId}`);
+    return response.data;
+};
+
 export const godkjennRefusjon = async (refusjonId: string) => {
     const response = await api.post(`/refusjon/${refusjonId}/godkjenn`);
     await mutate(`/refusjon/${refusjonId}`);
