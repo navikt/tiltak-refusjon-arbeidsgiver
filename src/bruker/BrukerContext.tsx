@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import ManglerRettigheter from '../komponenter/ManglerRettigheter';
+import ManglerRettigheter from '../komponenter/manglerRettigheter/ManglerRettigheter';
 import LokalLogin from '../LokalLogin';
 import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
@@ -25,8 +25,8 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg | undefined>();
 
     const setValgtBedriftOgNavigere = (org: Bedriftvalg) => {
-        if (valgtBedrift !== undefined) {
-            const valgtOrg =
+        if (valgtBedrift && valgtBedrift?.valgtOrg) {
+            const valgtOrg: string =
                 org?.type === BedriftvalgType.ALLEBEDRIFTER
                     ? BedriftvalgType.ALLEBEDRIFTER
                     : org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
@@ -58,7 +58,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     setValgtBedrift={(org) => setValgtBedriftOgNavigere(org)}
                 />
             )}
-            {innloggetBruker && valgtBedrift && (
+            {innloggetBruker && valgtBedrift?.valgtOrg && (
                 <BrukerContext.Provider
                     value={{
                         innloggetBruker,
@@ -69,7 +69,10 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     {props.children}
                 </BrukerContext.Provider>
             )}
-            {innloggetBruker?.organisasjoner?.length === 0 && <ManglerRettigheter />}
+            {innloggetBruker?.organisasjoner?.length === 0 ||
+                (valgtBedrift?.feilstatus && (
+                    <ManglerRettigheter feilstatus={valgtBedrift?.feilstatus} innloggetBruker={innloggetBruker} />
+                ))}
         </XMLHttpReqHandler>
     );
 };

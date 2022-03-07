@@ -32,6 +32,7 @@ function useOrganisasjon(
                 type: valgtBedrift?.type ?? bedriftvalgType,
                 valgtOrg: organisasjonsliste,
                 pageData: valgtBedrift?.pageData ?? initPageData,
+                feilstatus: valgtBedrift?.feilstatus ?? undefined,
             };
             setBedriftvalg(valgtorg);
             setValgtBedrift(valgtorg);

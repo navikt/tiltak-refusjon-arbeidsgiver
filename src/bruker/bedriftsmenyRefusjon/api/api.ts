@@ -1,4 +1,4 @@
-import { initOrganisasjon, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon } from './organisasjon';
+import { Feilstatus, initOrganisasjon, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon } from './organisasjon';
 import {
     finnJuridiskeEnheter,
     getJuridiskeEnheterFraBedrifter,
@@ -6,7 +6,12 @@ import {
     getUnderenheterUtenJuridiskEnhet,
 } from './api-Utils';
 
-export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Promise<Juridiskenhet[]> {
+interface ByggOrganisasjonstreProps {
+    juridisk: Juridiskenhet[];
+    feilstatus: Feilstatus | undefined;
+}
+
+export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Promise<ByggOrganisasjonstreProps> {
     const juridiskeEnheter = getJuridiskeEnheterFraBedrifter(organisasjoner);
     const underenheter = getUnderEnheterFraBedrifter(organisasjoner);
     const underenheterUtenJuridiskEnhet = getUnderenheterUtenJuridiskEnhet(underenheter, juridiskeEnheter);
@@ -17,27 +22,43 @@ export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Prom
         });
     }
 
-    return settSammenJuridiskEnhetMedUnderenheter(juridiskeEnheter, underenheter).sort((a, b) =>
-        a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)
-    );
+    const juridiskMedUnderenheter = settSammenJuridiskEnhetMedUnderenheter(juridiskeEnheter, underenheter);
+    return {
+        juridisk: juridiskMedUnderenheter.JuridiskMedUnderenheter.sort((a, b) =>
+            a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)
+        ),
+        feilstatus: juridiskMedUnderenheter.feilstatus,
+    };
 }
+
+/**
+ *      Juridiks enhet uten underenheter
+ *      Underenhet som ikke greier kobles mot juridisk
+ *      mangler tilganger på refusjon
+ *
+ * */
 
 const settSammenJuridiskEnhetMedUnderenheter = (
     enheter: Organisasjon[],
     underenheter: Organisasjon[]
-): Juridiskenhet[] => {
-    return enheter
-        .map((enhet) => {
-            const tilhorendeUnderenheter = underenheter.filter(
-                (underenhet) => underenhet.ParentOrganizationNumber === enhet.OrganizationNumber
-            );
-            return {
-                JuridiskEnhet: enhet,
-                Underenheter: tilhorendeUnderenheter,
-                SokeresultatKunUnderenhet: false,
-            };
-        })
-        .filter((orgtre) => orgtre.Underenheter.length > 0);
+): { JuridiskMedUnderenheter: Juridiskenhet[]; feilstatus: Feilstatus | undefined } => {
+    const juridiskenheter = enheter.map((enhet) => {
+        const tilhorendeUnderenheter = underenheter.filter(
+            (underenhet) => underenhet.ParentOrganizationNumber === enhet.OrganizationNumber
+        );
+        return {
+            JuridiskEnhet: enhet,
+            Underenheter: tilhorendeUnderenheter,
+            SokeresultatKunUnderenhet: false,
+        };
+    });
+
+    return {
+        JuridiskMedUnderenheter: juridiskenheter.filter((orgtre) => orgtre.Underenheter.length > 0),
+        feilstatus: juridiskenheter.some((juridiskenhet) => juridiskenhet.Underenheter.length === 0)
+            ? Feilstatus.JURIDISK_MANGLER_UNDERENHET
+            : undefined,
+    };
 };
 
 export async function hentAlleJuridiskeEnheter(

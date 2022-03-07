@@ -53,6 +53,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                 type: bedriftvalg.type,
                                                 valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
                                                 pageData: initPageData,
+                                                feilstatus: undefined,
                                             });
                                         }
                                         setBedriftvalg({
@@ -132,6 +133,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                                         (e) => e !== element
                                                                     ),
                                                                     pageData: initPageData,
+                                                                    feilstatus: undefined,
                                                                 });
                                                             }
                                                             setBedriftvalg({
@@ -153,11 +155,13 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                             type: BedriftvalgType.ENKELBEDRIFT,
                                                             valgtOrg: [underenhet],
                                                             pageData: initPageData,
+                                                            feilstatus: undefined,
                                                         });
                                                         setValgtBedrift({
                                                             type: BedriftvalgType.ENKELBEDRIFT,
                                                             valgtOrg: [underenhet],
                                                             pageData: initPageData,
+                                                            feilstatus: undefined,
                                                         });
                                                         setMenyApen(false);
                                                         setDefaultBedriftlisteMedApneElementer(

@@ -29,6 +29,11 @@ export interface Juridiskenhet {
     SokeresultatKunUnderenhet?: boolean;
 }
 
+export enum Feilstatus {
+    JURIDISK_MANGLER_UNDERENHET = 'JURIDISK_MANGLER_UNDERENHET',
+    UNDERENHET_MANGLET_JURIDISK = '',
+}
+
 export enum BedriftvalgType {
     ENKELBEDRIFT = 'ENKELBEDRIFT',
     FLEREBEDRIFTER = 'FLEREBEDRIFTER',
@@ -39,6 +44,7 @@ export interface Bedriftvalg {
     type: BedriftvalgType;
     valgtOrg: Array<Organisasjon>;
     pageData: PageData;
+    feilstatus: Feilstatus | undefined;
 }
 
 export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;
@@ -72,6 +78,7 @@ export const initBedriftvalg: Bedriftvalg = {
     type: BedriftvalgType.ENKELBEDRIFT,
     valgtOrg: [] as Array<Organisasjon>,
     pageData: initPageData,
+    feilstatus: undefined,
 };
 
 export interface PageData {

@@ -41,13 +41,23 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     useEffect(() => {
         if (organisasjoner && organisasjoner?.length > 0) {
             byggOrganisasjonstre(organisasjoner).then((orglist) => {
-                if (orglist.length > 0) {
-                    setOrganisasjonstre(orglist);
-                    setDefaultBedriftlisteMedApneElementer(orglist, setBedriftListe);
+                if (orglist.juridisk.length > 0) {
+                    setOrganisasjonstre(orglist.juridisk);
+                    setDefaultBedriftlisteMedApneElementer(orglist.juridisk, setBedriftListe);
+                }
+                if (
+                    orglist.feilstatus &&
+                    (!valgtBedrift || (valgtBedrift && orglist.feilstatus !== valgtBedrift.feilstatus))
+                ) {
+                    setValgtBedrift(
+                        Object.assign({}, valgtBedrift, {
+                            feilstatus: orglist.feilstatus,
+                        })
+                    );
                 }
             });
         }
-    }, [organisasjoner]);
+    }, [organisasjoner, valgtBedrift, setValgtBedrift]);
 
     useSize({ desktopview, setDesktopview });
 
