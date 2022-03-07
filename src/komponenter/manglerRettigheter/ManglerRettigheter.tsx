@@ -9,6 +9,7 @@ import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.sv
 import { ReactComponent as Notes } from '@/asset/image/notes.svg';
 import BEMHelper from '../../utils/bem';
 import './manglerRettigheter.less';
+import Lenke from 'nav-frontend-lenker';
 
 interface Props {
     feilstatus: Feilstatus | undefined;
@@ -101,6 +102,11 @@ const ManglerRettigheter: FunctionComponent<Props> = ({ feilstatus, innloggetBru
                         ))}
                     </div>
                     <GenerellTilgangsInnhold />
+                    <div className={cls.element('altinn-lenke')}>
+                        <Lenke href="https://www.altinn.no/hjelp/profil/roller-og-rettigheter/">
+                            Les mer om roller og rettigheter på altinn.no
+                        </Lenke>
+                    </div>
                 </HvitBoks>
             );
         default:
