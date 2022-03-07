@@ -1,14 +1,16 @@
-import React, { FunctionComponent, HTMLAttributes } from 'react';
+import React, { CSSProperties, DetailedHTMLProps, FunctionComponent, HTMLAttributes, PropsWithChildren } from 'react';
 import './hvitboks.less';
 
-type Props = HTMLAttributes<HTMLDivElement>;
+type Props = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
-const HvitBoks: FunctionComponent<Props> = (props) => {
-    const styling = {
+const HvitBoks: FunctionComponent<Props> = (props: PropsWithChildren<Props>) => {
+    const styling: CSSProperties = {
         ...props.style,
     };
-
-    return <div className="hvitboks" style={styling} {...props} />;
+    return (
+        <div style={styling} {...props} className={`hvitboks ${props.className}`}>
+            {props.children}
+        </div>
+    );
 };
-
 export default HvitBoks;
