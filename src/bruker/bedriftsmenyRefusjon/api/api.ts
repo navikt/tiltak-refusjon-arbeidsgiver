@@ -1,4 +1,4 @@
-import { Feilstatus, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon } from './organisasjon';
+import { Feilstatus, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon, StatusFeil } from './organisasjon';
 import {
     finnJuridiskeEnheter,
     getJuridiskeEnheterFraBedrifter,
@@ -8,7 +8,7 @@ import {
 
 interface ByggOrganisasjonstreProps {
     juridisk: Juridiskenhet[];
-    feilstatus: Feilstatus | undefined;
+    feilstatus: StatusFeil | undefined;
 }
 
 export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Promise<ByggOrganisasjonstreProps> {
@@ -34,7 +34,7 @@ export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Prom
 const settSammenJuridiskEnhetMedUnderenheter = (
     enheter: Organisasjon[],
     underenheter: Organisasjon[]
-): { JuridiskMedUnderenheter: Juridiskenhet[]; feilstatus: Feilstatus | undefined } => {
+): { JuridiskMedUnderenheter: Juridiskenhet[]; feilstatus: StatusFeil | undefined } => {
     const juridiskenheter = enheter.map((enhet) => {
         const tilhorendeUnderenheter = underenheter.filter(
             (underenhet) => underenhet.ParentOrganizationNumber === enhet.OrganizationNumber
@@ -46,10 +46,14 @@ const settSammenJuridiskEnhetMedUnderenheter = (
         };
     });
 
+    const JuridiskUtenUnderenheter = juridiskenheter
+        .filter((juridiskenhet) => juridiskenhet.Underenheter?.length === 0)
+        .map((o) => o.JuridiskEnhet);
+
     return {
         JuridiskMedUnderenheter: juridiskenheter.filter((orgtre) => orgtre.Underenheter.length > 0),
-        feilstatus: juridiskenheter.some((juridiskenhet) => juridiskenhet.Underenheter.length === 0)
-            ? Feilstatus.JURIDISK_MANGLER_UNDERENHET
+        feilstatus: !!JuridiskUtenUnderenheter
+            ? { status: Feilstatus.JURIDISK_MANGLER_UNDERENHET, gjeldeneOrg: JuridiskUtenUnderenheter }
             : undefined,
     };
 };

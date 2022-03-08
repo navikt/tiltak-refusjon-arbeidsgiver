@@ -1,13 +1,14 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import ManglerRettigheter from '../komponenter/manglerRettigheter/ManglerRettigheter';
+import RefusjonFeilet from '../komponenter/refusjonFeilet/RefusjonFeilet';
 import LokalLogin from '../LokalLogin';
 import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { Bedriftvalg, BedriftvalgType } from './bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, initBedriftvalg } from './bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
+import { NavigateFunction } from 'react-router-dom';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -22,14 +23,25 @@ export const useInnloggetBruker = () => {
 
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
-    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg | undefined>();
+    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>(initBedriftvalg);
+
+    const navigate: NavigateFunction = useNavigate();
+    const detErValgtBedrift: boolean = valgtBedrift?.valgtOrg?.length !== 0;
+    const innloggetBrukerHarAltinnTilgangerBedrifter: boolean = innloggetBruker?.organisasjoner?.length === 0;
+    const detFinnesFeilStatusFraMeny: boolean = !!valgtBedrift?.feilstatus;
+    const skalRendreRefusjonFeilet: boolean =
+        innloggetBrukerHarAltinnTilgangerBedrifter || (detFinnesFeilStatusFraMeny && !detErValgtBedrift);
+
+    const getBedriftSearchkey = (org: Bedriftvalg): string => {
+        if (org?.type === BedriftvalgType.ALLEBEDRIFTER) {
+            return BedriftvalgType.ALLEBEDRIFTER;
+        }
+        return org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
+    };
 
     const setValgtBedriftOgNavigere = (org: Bedriftvalg) => {
-        if (valgtBedrift && valgtBedrift?.valgtOrg) {
-            const valgtOrg: string =
-                org?.type === BedriftvalgType.ALLEBEDRIFTER
-                    ? BedriftvalgType.ALLEBEDRIFTER
-                    : org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
+        if (valgtBedrift?.valgtOrg) {
+            const valgtOrg: string = getBedriftSearchkey(org);
             navigate({
                 pathname: '/refusjon',
                 search: 'bedrift=' + valgtOrg,
@@ -44,8 +56,6 @@ export const BrukerProvider: FunctionComponent = (props) => {
             .catch((err) => console.log('err', err));
     }, []);
 
-    const navigate = useNavigate();
-
     return (
         <XMLHttpReqHandler>
             {(erUtviklingsmiljo() || inneholderVertsnavn('labs.nais.io')) && (
@@ -58,7 +68,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     setValgtBedrift={(org) => setValgtBedriftOgNavigere(org)}
                 />
             )}
-            {innloggetBruker && valgtBedrift?.valgtOrg && (
+            {innloggetBruker && detErValgtBedrift && (
                 <BrukerContext.Provider
                     value={{
                         innloggetBruker,
@@ -69,10 +79,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     {props.children}
                 </BrukerContext.Provider>
             )}
-            {innloggetBruker?.organisasjoner?.length === 0 ||
-                (valgtBedrift?.feilstatus && valgtBedrift?.valgtOrg?.length === 0 && (
-                    <ManglerRettigheter feilstatus={valgtBedrift?.feilstatus} innloggetBruker={innloggetBruker} />
-                ))}
+            {skalRendreRefusjonFeilet && <RefusjonFeilet feilstatus={valgtBedrift?.feilstatus} />}
         </XMLHttpReqHandler>
     );
 };

@@ -34,6 +34,11 @@ export enum Feilstatus {
     UNDERENHET_MANGLET_JURIDISK = '',
 }
 
+export interface StatusFeil {
+    status: Feilstatus;
+    gjeldeneOrg: Array<Organisasjon>;
+}
+
 export enum BedriftvalgType {
     ENKELBEDRIFT = 'ENKELBEDRIFT',
     FLEREBEDRIFTER = 'FLEREBEDRIFTER',
@@ -44,7 +49,7 @@ export interface Bedriftvalg {
     type: BedriftvalgType;
     valgtOrg: Array<Organisasjon>;
     pageData: PageData;
-    feilstatus: Feilstatus | undefined;
+    feilstatus: StatusFeil | undefined;
 }
 
 export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;
@@ -162,19 +167,19 @@ export const initEnhetsregOrg: OrganisasjonEnhetsregisteret = {
         beskrivelse: 'Kommune',
         _links: {
             self: {
-                href: 'https://data.brreg.no/enhetsregisteret/api/organisasjonsformer/KOMM',
+                href: '',
             },
         },
     },
-    hjemmeside: 'www.gjovik.kommune.no/',
+    hjemmeside: '',
     postadresse: {
         land: 'Norge',
         landkode: 'NO',
-        postnummer: '2810',
-        poststed: 'GJØVIK',
-        adresse: ['Postboks 630'],
-        kommune: 'GJØVIK',
-        kommunenummer: '3407',
+        postnummer: '',
+        poststed: '',
+        adresse: [''],
+        kommune: '',
+        kommunenummer: '',
     },
     registreringsdatoEnhetsregisteret: '1995-06-07',
     registrertIMvaregisteret: true,
@@ -186,15 +191,15 @@ export const initEnhetsregOrg: OrganisasjonEnhetsregisteret = {
     forretningsadresse: {
         land: 'Norge',
         landkode: 'NO',
-        postnummer: '2815',
-        poststed: 'GJØVIK',
-        adresse: ['Kauffeldts plass 1'],
-        kommune: 'GJØVIK',
-        kommunenummer: '3407',
+        postnummer: '',
+        poststed: '',
+        adresse: [''],
+        kommune: '',
+        kommunenummer: '',
     },
     institusjonellSektorkode: {
         kode: '6500',
-        beskrivelse: 'Kommuneforvaltningen',
+        beskrivelse: '',
     },
     registrertIForetaksregisteret: false,
     registrertIStiftelsesregisteret: false,
@@ -205,7 +210,7 @@ export const initEnhetsregOrg: OrganisasjonEnhetsregisteret = {
     maalform: 'Bokmål',
     _links: {
         self: {
-            href: 'https://data.brreg.no/enhetsregisteret/api/enheter/940155223',
+            href: '',
         },
     },
 };

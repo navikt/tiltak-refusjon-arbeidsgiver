@@ -47,10 +47,14 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                 }
                 if (
                     orglist.feilstatus &&
-                    (!valgtBedrift || (valgtBedrift && orglist.feilstatus !== valgtBedrift.feilstatus))
+                    (!valgtBedrift ||
+                        (valgtBedrift && orglist?.feilstatus?.status !== valgtBedrift?.feilstatus?.status))
                 ) {
                     setValgtBedrift(
                         Object.assign({}, valgtBedrift, {
+                            type: valgtBedrift?.type ?? initBedriftvalg.type,
+                            valgtOrg: valgtBedrift?.valgtOrg ?? initBedriftvalg.valgtOrg,
+                            pageData: valgtBedrift?.pageData ?? initBedriftvalg.pageData,
                             feilstatus: orglist.feilstatus,
                         })
                     );

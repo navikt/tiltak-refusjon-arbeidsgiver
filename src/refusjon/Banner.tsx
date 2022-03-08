@@ -25,7 +25,7 @@ const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properti
 
     const navigate = useNavigate();
 
-    const fakeHistory: Pick<History, 'listen' | 'replace'> = {
+    const customHistory: Pick<History, 'listen' | 'replace'> = {
         replace: (to: To) => {
             navigate(to, { replace: true });
         },
@@ -40,7 +40,7 @@ const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properti
                 organisasjoner={organisasjoner}
                 valgtBedrift={valgtBedrift}
                 setValgtBedrift={setValgtBedrift}
-                history={fakeHistory as any}
+                history={customHistory as any}
             />
         </>
     );

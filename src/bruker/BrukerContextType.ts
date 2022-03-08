@@ -9,7 +9,7 @@ export type Bedriftliste = Array<Bedrift> | undefined;
 export interface BrukerContextType {
     innloggetBruker: InnloggetBruker;
     valgtBedrift: Bedriftvalg;
-    setValgtBedrift: Dispatch<SetStateAction<Bedriftvalg | undefined>>;
+    setValgtBedrift: Dispatch<SetStateAction<Bedriftvalg>>;
 }
 
 export interface InnloggetBruker {
