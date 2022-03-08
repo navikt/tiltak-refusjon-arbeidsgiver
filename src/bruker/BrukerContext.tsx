@@ -6,8 +6,8 @@ import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { Bedriftvalg, BedriftvalgType } from './bedriftsmenyRefusjon/api/organisasjon';
+import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -70,7 +70,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 </BrukerContext.Provider>
             )}
             {innloggetBruker?.organisasjoner?.length === 0 ||
-                (valgtBedrift?.feilstatus && valgtBedrift?.valgtOrg.length === 0 && (
+                (valgtBedrift?.feilstatus && valgtBedrift?.valgtOrg?.length === 0 && (
                     <ManglerRettigheter feilstatus={valgtBedrift?.feilstatus} innloggetBruker={innloggetBruker} />
                 ))}
         </XMLHttpReqHandler>
