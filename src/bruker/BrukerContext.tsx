@@ -70,7 +70,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 </BrukerContext.Provider>
             )}
             {innloggetBruker?.organisasjoner?.length === 0 ||
-                (valgtBedrift?.feilstatus && (
+                (valgtBedrift?.feilstatus && valgtBedrift?.valgtOrg.length === 0 && (
                     <ManglerRettigheter feilstatus={valgtBedrift?.feilstatus} innloggetBruker={innloggetBruker} />
                 ))}
         </XMLHttpReqHandler>
