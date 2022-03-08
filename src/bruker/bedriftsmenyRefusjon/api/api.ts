@@ -1,4 +1,4 @@
-import { Feilstatus, initOrganisasjon, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon } from './organisasjon';
+import { Feilstatus, Juridiskenhet, ListeJuridiskeEnheter, Organisasjon } from './organisasjon';
 import {
     finnJuridiskeEnheter,
     getJuridiskeEnheterFraBedrifter,
@@ -31,13 +31,6 @@ export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Prom
     };
 }
 
-/**
- *      Juridiks enhet uten underenheter
- *      Underenhet som ikke greier kobles mot juridisk
- *      mangler tilganger på refusjon
- *
- * */
-
 const settSammenJuridiskEnhetMedUnderenheter = (
     enheter: Organisasjon[],
     underenheter: Organisasjon[]
@@ -62,15 +55,11 @@ const settSammenJuridiskEnhetMedUnderenheter = (
 };
 
 export async function hentAlleJuridiskeEnheter(
-    listeMedJuridiskeOrgnr: string[],
+    listeMedJuridiskeOrgnr: string,
     brregUrl: string
 ): Promise<Organisasjon[]> {
-    listeMedJuridiskeOrgnr.forEach((orgnr) => {
-        listeMedJuridiskeOrgnr.indexOf(orgnr) === 0 ? (brregUrl += orgnr) : (brregUrl += ',' + orgnr);
-    });
-
-    if (!window.location.href.includes('localhost')) {
-        let respons = await fetch(brregUrl);
+    try {
+        const respons = await fetch(brregUrl + listeMedJuridiskeOrgnr);
         if (respons.ok && listeMedJuridiskeOrgnr.length > 0) {
             const distinkteJuridiskeEnheterFraEreg: ListeJuridiskeEnheter = await respons.json();
             if (
@@ -79,28 +68,31 @@ export async function hentAlleJuridiskeEnheter(
             ) {
                 return distinkteJuridiskeEnheterFraEreg._embedded.enheter.map((orgFraEereg) => {
                     return {
-                        ...initOrganisasjon,
                         Name: orgFraEereg.navn,
+                        Type: 'Enterprise',
                         OrganizationNumber: orgFraEereg.organisasjonsnummer,
-                        Type: 'Business',
+                        OrganizationForm: orgFraEereg.organisasjonsform?.kode ?? 'AS',
+                        Status: 'Active',
+                        ParentOrganizationNumber: '',
                     };
                 });
             }
         }
-    } else {
-        return lagListeMedMockedeJuridiskeEnheter(listeMedJuridiskeOrgnr);
+    } catch (e) {
+        console.warn('kall til brreg.no feilet: ', e);
     }
-    return [];
+    return lagBackupListeMedJuridiskeEnheter(listeMedJuridiskeOrgnr.split(','));
 }
 
-function lagListeMedMockedeJuridiskeEnheter(listeMedJuridiskeOrgnr: string[]) {
-    return listeMedJuridiskeOrgnr.map((orgNr) => {
-        const jurOrg: Organisasjon = {
-            ...initOrganisasjon,
-            Name: 'MOCK ORGANISASJON',
-            OrganizationNumber: orgNr,
-            Type: 'Business',
+function lagBackupListeMedJuridiskeEnheter(listeMedJuridiskeOrgnr: string[]) {
+    return listeMedJuridiskeOrgnr.map((orgnr) => {
+        return {
+            Name: `${orgnr} (Juridisk enhet) `,
+            Type: 'Enterprise',
+            OrganizationNumber: orgnr,
+            OrganizationForm: 'AS',
+            Status: 'Active',
+            ParentOrganizationNumber: '',
         };
-        return jurOrg;
     });
 }

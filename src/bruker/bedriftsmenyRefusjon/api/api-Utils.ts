@@ -27,10 +27,13 @@ export function getUnderenheterUtenJuridiskEnhet(
     );
 }
 
-function hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet: Organisasjon[]): string[] {
-    return underenheterUtenJuridiskEnhet
+function hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet: Organisasjon[]): string {
+    const listeMedJuridiskenhetsNr = underenheterUtenJuridiskEnhet
         .filter((org, index) => org.ParentOrganizationNumber && underenheterUtenJuridiskEnhet.indexOf(org) === index)
         .map((org) => org.ParentOrganizationNumber);
+    return listeMedJuridiskenhetsNr
+        .filter((orgnr, index) => listeMedJuridiskenhetsNr.indexOf(orgnr) === index)
+        .join(',');
 }
 
 export async function finnJuridiskeEnheter(underenheterUtenJuridiskEnhet: Organisasjon[]): Promise<Organisasjon[]> {

@@ -104,18 +104,110 @@ export interface OrganisasjonEnhetsregisteret {
     organisasjonsform: {
         kode: string;
         beskrivelse: string;
+        _links: {
+            self: {
+                href: string;
+            };
+        };
     };
-    overordnetEnhet: string;
+    hjemmeside: string;
+    postadresse: {
+        land: string;
+        landkode: string;
+        postnummer: string;
+        poststed: string;
+        adresse: string[];
+        kommune: string;
+        kommunenummer: string;
+    };
+    registreringsdatoEnhetsregisteret: string;
+    registrertIMvaregisteret: boolean;
+    naeringskode1: {
+        beskrivelse: string;
+        kode: string;
+    };
+    antallAnsatte: number;
+    forretningsadresse: {
+        land: string;
+        landkode: string;
+        postnummer: string;
+        poststed: string;
+        adresse: string[];
+        kommune: string;
+        kommunenummer: string;
+    };
+    institusjonellSektorkode: {
+        kode: string;
+        beskrivelse: string;
+    };
+    registrertIForetaksregisteret: boolean;
+    registrertIStiftelsesregisteret: boolean;
+    registrertIFrivillighetsregisteret: boolean;
+    konkurs: boolean;
+    underAvvikling: boolean;
+    underTvangsavviklingEllerTvangsopplosning: boolean;
+    maalform: string;
+    _links: {
+        self: {
+            href: string;
+        };
+    };
 }
 
 export const initEnhetsregOrg: OrganisasjonEnhetsregisteret = {
     organisasjonsnummer: '',
     navn: '',
     organisasjonsform: {
-        kode: '',
-        beskrivelse: '',
+        kode: 'KOMM',
+        beskrivelse: 'Kommune',
+        _links: {
+            self: {
+                href: 'https://data.brreg.no/enhetsregisteret/api/organisasjonsformer/KOMM',
+            },
+        },
     },
-    overordnetEnhet: '',
+    hjemmeside: 'www.gjovik.kommune.no/',
+    postadresse: {
+        land: 'Norge',
+        landkode: 'NO',
+        postnummer: '2810',
+        poststed: 'GJØVIK',
+        adresse: ['Postboks 630'],
+        kommune: 'GJØVIK',
+        kommunenummer: '3407',
+    },
+    registreringsdatoEnhetsregisteret: '1995-06-07',
+    registrertIMvaregisteret: true,
+    naeringskode1: {
+        beskrivelse: 'Generell offentlig administrasjon',
+        kode: '84.110',
+    },
+    antallAnsatte: 4571,
+    forretningsadresse: {
+        land: 'Norge',
+        landkode: 'NO',
+        postnummer: '2815',
+        poststed: 'GJØVIK',
+        adresse: ['Kauffeldts plass 1'],
+        kommune: 'GJØVIK',
+        kommunenummer: '3407',
+    },
+    institusjonellSektorkode: {
+        kode: '6500',
+        beskrivelse: 'Kommuneforvaltningen',
+    },
+    registrertIForetaksregisteret: false,
+    registrertIStiftelsesregisteret: false,
+    registrertIFrivillighetsregisteret: false,
+    konkurs: false,
+    underAvvikling: false,
+    underTvangsavviklingEllerTvangsopplosning: false,
+    maalform: 'Bokmål',
+    _links: {
+        self: {
+            href: 'https://data.brreg.no/enhetsregisteret/api/enheter/940155223',
+        },
+    },
 };
 
 export interface ListeJuridiskeEnheter {
