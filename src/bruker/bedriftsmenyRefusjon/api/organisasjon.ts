@@ -31,7 +31,7 @@ export interface Juridiskenhet {
 
 export enum Feilstatus {
     JURIDISK_MANGLER_UNDERENHET = 'JURIDISK_MANGLER_UNDERENHET',
-    UNDERENHET_MANGLET_JURIDISK = '',
+    UNDERENHET_MANGLET_JURIDISK = 'UNDERENHET_MANGLET_JURIDISK',
 }
 
 export interface StatusFeil {
