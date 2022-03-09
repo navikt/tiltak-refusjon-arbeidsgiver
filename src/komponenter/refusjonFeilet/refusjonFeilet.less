@@ -1,0 +1,72 @@
+.refusjonFeilet {
+    margin: 1rem auto 2rem auto;
+    box-shadow: rgb(0 0 0 / 10%) 0 4px 12px;
+    border-radius: 8px;
+
+    &__mangler-underenhet-wrapper {
+        margin-bottom: 1rem;
+    }
+    &__header {
+        display: flex;
+        align-items: center;
+        margin: 0 0 1rem 0;
+    }
+    &__ikon {
+        margin-left: 0.75rem;
+    }
+    &__tittel {
+        margin-bottom: 1rem;
+    }
+
+    &__rad {
+        display: flex;
+        flex-direction: column;
+        padding: 0.75rem 0;
+        &:nth-child(1) {
+            padding-top: 0;
+        }
+        & > div {
+            display: flex;
+            align-items: center;
+            & > svg {
+                margin-right: 0.75rem;
+            }
+        }
+        & > div:nth-child(2) {
+            margin-top: 0.75rem;
+        }
+    }
+    &__verdi-icon {
+        display: inline-block;
+    }
+
+    &__panel {
+        margin-top: 1rem;
+    }
+
+    &__liste {
+        margin-bottom: 1rem;
+        & > li {
+            margin-bottom: 0.375rem;
+        }
+    }
+    &__altinn-lenke {
+        margin-top: 0.75rem;
+    }
+
+    @media (min-width: 768px) {
+        &__rad {
+            align-items: center;
+            flex-direction: row;
+            & > div:nth-child(1) {
+                margin-top: 0.5rem;
+            }
+            & > div:nth-child(2) {
+                margin: 0.5rem 0 0 0.5rem;
+            }
+        }
+        &__verdi-icon {
+            display: none;
+        }
+    }
+}

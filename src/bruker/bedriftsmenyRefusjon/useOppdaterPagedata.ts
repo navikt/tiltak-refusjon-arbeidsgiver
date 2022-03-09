@@ -5,7 +5,7 @@ import { Bedriftvalg } from './api/organisasjon';
 function useOppdaterPagedata(
     pagable: PageableRefusjon,
     valgtBedrift: Bedriftvalg,
-    setValgtBedrift: Dispatch<SetStateAction<Bedriftvalg | undefined>>
+    setValgtBedrift: Dispatch<SetStateAction<Bedriftvalg>>
 ) {
     const { currentPage, size, totalItems, totalPages } = pagable;
     useEffect(() => {
