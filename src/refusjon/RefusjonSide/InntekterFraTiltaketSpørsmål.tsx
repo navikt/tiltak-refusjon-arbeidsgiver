@@ -37,9 +37,9 @@ const InntekterTabell = styled.table`
     }
 `;
 const GrønnBoks = styled.div`
-    background-color: #CCF1D6;
+    background-color: #ccf1d6;
     padding: 1em;
-    border: 4px solid #99DEAD;
+    border: 4px solid #99dead;
 `;
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
