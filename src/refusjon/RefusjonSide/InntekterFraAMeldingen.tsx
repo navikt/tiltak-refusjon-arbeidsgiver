@@ -1,18 +1,16 @@
 import _ from 'lodash';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { Radio } from 'nav-frontend-skjema';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { useHentRefusjon } from '../../services/rest-service';
+import { toggleRefundertInntektslinje, useHentRefusjon } from '../../services/rest-service';
 import { refusjonApnet } from '../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Radio } from 'nav-frontend-skjema';
-import { toggleRefundertInntektslinje } from '../../services/rest-service';
-import { endreBruttolønn } from '../../services/rest-service';
 
 const GråBoks = styled.div`
     background-color: #eee;

@@ -20,8 +20,6 @@ import InntekterFraAMeldingen from './InntekterFraAMeldingen';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import './RefusjonSide.less';
 import SummeringBoks from './SummeringBoks';
-import { useEffect } from 'react';
-import { endreBruttolønn } from '../../services/rest-service';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -32,9 +30,6 @@ const RefusjonSide: FunctionComponent = () => {
     const [visGodkjennModal, setVisGodkjennModal] = useState(false);
     const [valgtOpptjentPeriode, setValgtOpptjentPeriode] = useState<string[]>([]);
 
-    useEffect(() => {
-        endreBruttolønn(refusjonId!, null, 0);
-    }, []);
     const bekreftOpplysninger = () => {
         setBekrefetKorrekteOpplysninger(!bekrefetKorrekteOpplysninger);
         setIkkeBekreftetFeilmelding('');
