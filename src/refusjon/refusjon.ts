@@ -104,7 +104,7 @@ export interface Beregning {
     sumUtgifter: number;
     tjenestepensjon: number;
     tidligereUtbetalt: number;
-    fratrekkLonnFerie: number;
+    fratrekkLønnFerie: number;
     lønnFratrukketFerie: number;
 }
 

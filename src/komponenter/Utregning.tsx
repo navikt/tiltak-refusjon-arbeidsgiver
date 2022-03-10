@@ -36,12 +36,12 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelTekst={'Brutto lønn i perioden'}
                 verdi={props.beregning?.lønn || 0}
             />
-            {props.beregning && props.beregning.fratrekkLonnFerie > 0 && (
+            {props.beregning && props.beregning.fratrekkLønnFerie > 0 && (
                 <>
                     <Utregningsrad
                         labelTekst="fratrekk for ferie"
                         verdiOperator={<MinusTegn />}
-                        verdi={props.beregning.fratrekkLonnFerie}
+                        verdi={props.beregning.fratrekkLønnFerie}
                     />
                     <Utregningsrad
                         labelTekst="Lønn trukket fra ferie"

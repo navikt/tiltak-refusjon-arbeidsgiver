@@ -7,14 +7,15 @@ import VerticalSpacer from './VerticalSpacer';
 
 type Props = {
     lagreFunksjon: () => Promise<void>;
-} & HTMLAttributes<HTMLDivElement>;
+    attributes?: KnappBaseProps & HTMLAttributes<HTMLDivElement>;
+};
 
 const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
     const [oppslag, setOppslag] = useState<Nettressurs<any>>({ status: Status.IkkeLastet });
     const [feilmelding, setFeilmelding] = useState('');
 
     const knappBaseProps = Object.assign({}, props);
-    //delete knappBaseProps.lagreFunksjon;
+    //delete knappBaseProps['lagreFunksjon'];
 
     const feilRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +42,7 @@ const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
                 spinner={oppslag.status === Status.LasterInn}
                 disabled={oppslag.status === Status.LasterInn}
                 onClick={onClick}
-                {...knappBaseProps}
+                {...knappBaseProps.attributes}
             />
             {oppslag.status === Status.Feil && (
                 <>

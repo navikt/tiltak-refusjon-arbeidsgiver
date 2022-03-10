@@ -28,7 +28,6 @@ const RefusjonSide: FunctionComponent = () => {
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState(false);
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState('');
     const [visGodkjennModal, setVisGodkjennModal] = useState(false);
-    const [valgtOpptjentPeriode, setValgtOpptjentPeriode] = useState<string[]>([]);
 
     const bekreftOpplysninger = () => {
         setBekrefetKorrekteOpplysninger(!bekrefetKorrekteOpplysninger);
@@ -87,7 +86,6 @@ const RefusjonSide: FunctionComponent = () => {
                 ) && <InntekterFraTiltaketSpørsmål />}
                 <VerticalSpacer rem={2} />
                 {refusjon.refusjonsgrunnlag.beregning &&
-                    refusjon.refusjonsgrunnlag.beregning.refusjonsbeløp > 0 &&
                     refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== undefined && (
                         <>
                             <Utregning

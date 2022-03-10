@@ -62,7 +62,6 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     if (refusjon.refusjonsgrunnlag.inntektsgrunnlag === undefined) {
         return null;
     }
-    const bruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn;
 
     const refunderbarInntekter = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.skalRefunderes
@@ -71,14 +70,6 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
         .filter((inntekt) => inntekt.skalRefunderes)
         .map((el) => el.beløp)
         .reduce((el, el2) => el + el2, 0);
-
-    const svarPåSpørsmål = (checked: boolean) => {
-        setInntekterKunFraTiltaket(checked);
-        if (checked) {
-            setEndretBruttoLønn(undefined);
-            endreBruttolønn(refusjonId!, checked, undefined);
-        }
-    };
 
     return (
         <div>
@@ -135,20 +126,20 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                         <RadioPanel
                             name="inntekterKunFraTiltaket"
                             label="Ja"
-                            value={'ja'}
+                            //value={'ja'}
                             checked={inntekterKunFraTiltaket === true}
-                            onChange={() => {
-                                svarPåSpørsmål(true);
+                            onChange={(e) => {
+                                setInntekterKunFraTiltaket(e.currentTarget.checked);
+                                setEndretBruttoLønn(undefined);
+                                endreBruttolønn(refusjonId!, true, undefined);
                             }}
                         />
                         <RadioPanel
                             name="inntekterKunFraTiltaket"
                             label="Nei"
-                            value={'nei'}
+                            //value={'nei'}
                             checked={inntekterKunFraTiltaket === false}
-                            onChange={() => {
-                                svarPåSpørsmål(false);
-                            }}
+                            onChange={(e) => setInntekterKunFraTiltaket(!e.currentTarget.checked)}
                         />
                     </RadioPakning>
 
@@ -162,7 +153,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                                 } perioden`}
                                 onChange={(event: any) => {
                                     const verdi = event.currentTarget.value;
-                                    if (verdi.match(/^\d*$/) && verdi <= bruttoLønn) {
+                                    if (verdi.match(/^\d*$/) && verdi <= valgtBruttoLønn) {
                                         setEndretBruttoLønn(verdi as number);
                                     }
                                 }}

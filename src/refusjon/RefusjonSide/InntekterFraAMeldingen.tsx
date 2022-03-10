@@ -161,7 +161,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                         <Radio
                                                             label={'Ja'}
                                                             checked={inntekt.skalRefunderes}
-                                                            onClick={(e) => {
+                                                            onChange={(e) => {
                                                                 toggleRefundertInntektslinje(refusjonId!, inntekt.id);
                                                             }}
                                                             name={inntekt.id}
@@ -169,7 +169,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                         <Radio
                                                             label={'Nei'}
                                                             checked={!inntekt.skalRefunderes}
-                                                            onClick={(e) => {
+                                                            onChange={(e) => {
                                                                 toggleRefundertInntektslinje(refusjonId!, inntekt.id);
                                                             }}
                                                             name={inntekt.id}
