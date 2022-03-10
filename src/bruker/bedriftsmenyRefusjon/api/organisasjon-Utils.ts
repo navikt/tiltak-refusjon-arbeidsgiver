@@ -33,4 +33,7 @@ export const valgtBedriftTypePaContextErLikAlleBedrifter = (type: BedriftvalgTyp
 export const organisasjonerPaContextMatcherOrgFraUrl = (
     valgtOrg: Organisasjon[] | undefined,
     orgnummerFraUrl: string | null
-) => valgtOrg?.map((o) => o.OrganizationNumber).join(',') === orgnummerFraUrl;
+) => {
+    const valgtOrganisasjoner: string | undefined = valgtOrg?.map((o) => o.OrganizationNumber).join(',');
+    return valgtOrganisasjoner === orgnummerFraUrl || valgtOrganisasjoner === BedriftvalgType.ALLEBEDRIFTER;
+};

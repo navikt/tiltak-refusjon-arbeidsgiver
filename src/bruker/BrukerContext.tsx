@@ -43,7 +43,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
         if (valgtBedrift?.valgtOrg) {
             const valgtOrg: string = getBedriftSearchkey(org);
             navigate({
-                pathname: '/refusjon',
+                pathname: window.location.pathname,
                 search: 'bedrift=' + valgtOrg,
             });
         }

@@ -29,7 +29,7 @@ function useOrganisasjon(
                 settOrgnummerIgress(organisasjonsliste?.[0]?.OrganizationNumber ?? '', history);
             }
             const valgtorg = {
-                type: valgtBedrift?.type ?? bedriftvalgType,
+                type: bedriftvalgType,
                 valgtOrg: organisasjonsliste,
                 pageData: valgtBedrift?.pageData ?? initPageData,
                 feilstatus: valgtBedrift?.feilstatus ?? undefined,
