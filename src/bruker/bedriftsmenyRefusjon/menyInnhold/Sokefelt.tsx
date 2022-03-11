@@ -6,7 +6,7 @@ import { MenyContext } from '../BedriftsmenyRefusjon';
 
 const Sokefelt: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.MENYINNHOLD);
-    const { organisasjonstre, setOrganisasjonstre } = useContext(MenyContext);
+    const { organisasjonstre, setOrganisasjonstre, setSokefelt } = useContext(MenyContext);
     const [fultOrganisasjonstre, setFultOrganisasjonstre] = useState<Juridiskenhet[] | undefined>();
 
     const getSearchResult = (findMe: string) => {
@@ -15,7 +15,8 @@ const Sokefelt: FunctionComponent = () => {
                 setFultOrganisasjonstre(organisasjonstre);
             }
             const regex = new RegExp(findMe, 'i');
-            const filter = organisasjonstre?.filter(
+            const sokeliste = fultOrganisasjonstre ?? organisasjonstre;
+            const filter: Juridiskenhet[] | undefined = sokeliste?.filter(
                 (org) =>
                     org.Underenheter.some(
                         (enhet) => enhet.Name.search(regex) > -1 || enhet.OrganizationNumber.search(regex) > -1
@@ -23,10 +24,12 @@ const Sokefelt: FunctionComponent = () => {
                     org.JuridiskEnhet.Name.search(regex) > -1 ||
                     org.JuridiskEnhet.OrganizationNumber.search(regex) > -1
             );
+            setSokefelt({ aktivt: true, antallTreff: filter?.length ?? 0 });
             setOrganisasjonstre(filter);
         } else {
             if (fultOrganisasjonstre) {
                 setOrganisasjonstre(fultOrganisasjonstre);
+                setSokefelt({ aktivt: false, antallTreff: 0 });
                 setFultOrganisasjonstre(undefined);
             }
         }

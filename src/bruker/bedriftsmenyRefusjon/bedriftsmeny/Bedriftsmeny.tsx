@@ -11,7 +11,7 @@ import SokEtterBedrifter from '../menyInnhold/sokEtterBedrift/SokEtterBedrifter'
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
     const context = useContext(MenyContext);
-    const { history, organisasjonstre, menyApen, valgtBedrift, setValgtBedrift, setBedriftvalg } = context;
+    const { history, organisasjonstre, menyApen, valgtBedrift, setValgtBedrift, setBedriftvalg, sokefelt } = context;
     const { hentOrg } = useOrganisasjon(organisasjonstre, history, valgtBedrift, setValgtBedrift, setBedriftvalg);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
 
     return (
         <div className={cls.className}>
-            {organisasjonstre && organisasjonstre.length > 0 && (
+            {((organisasjonstre && organisasjonstre.length > 0) || sokefelt.aktivt) && (
                 <nav>
                     <div className={cls.element('container')}>
                         <Menyknapp />

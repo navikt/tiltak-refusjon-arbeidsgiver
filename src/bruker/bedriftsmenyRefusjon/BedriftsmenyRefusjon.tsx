@@ -11,6 +11,7 @@ import {
     Juridiskenhet,
     MenyContextType,
     Organisasjon,
+    Sokefelt,
 } from './api/organisasjon';
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
@@ -32,6 +33,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
     const [desktopview, setDesktopview] = useState<boolean>(window.innerWidth > 768);
     const [menyApen, setMenyApen] = useState<boolean>(false);
+    const [sokefelt, setSokefelt] = useState<Sokefelt>({ aktivt: false, antallTreff: 0 });
     const { valgtBedrift, setValgtBedrift, organisasjoner, history } = props;
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
@@ -79,6 +81,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         bedriftListe,
         setBedriftListe,
         desktopview,
+        sokefelt,
+        setSokefelt,
     };
 
     return (

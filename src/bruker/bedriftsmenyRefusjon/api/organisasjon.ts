@@ -52,6 +52,11 @@ export interface Bedriftvalg {
     feilstatus: StatusFeil | undefined;
 }
 
+export interface Sokefelt {
+    aktivt: boolean;
+    antallTreff: number;
+}
+
 export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;
 
 export interface MenyContextType {
@@ -68,6 +73,8 @@ export interface MenyContextType {
     bedriftListe: BedriftListe;
     setBedriftListe: Dispatch<SetStateAction<BedriftListe>>;
     desktopview: boolean;
+    sokefelt: Sokefelt;
+    setSokefelt: Dispatch<SetStateAction<Sokefelt>>;
 }
 
 export const initPageData: PageData = {
