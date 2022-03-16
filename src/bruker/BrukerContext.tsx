@@ -6,7 +6,7 @@ import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { Bedriftvalg, BedriftvalgType, initBedriftvalg } from './bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, Feilstatus, initBedriftvalg } from './bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { NavigateFunction } from 'react-router-dom';
 
@@ -28,9 +28,10 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const navigate: NavigateFunction = useNavigate();
     const detErValgtBedrift: boolean = valgtBedrift?.valgtOrg?.length !== 0;
     const innloggetBrukerHarAltinnTilgangerBedrifter: boolean = innloggetBruker?.organisasjoner?.length === 0;
-    const detFinnesFeilStatusFraMeny: boolean = !!valgtBedrift?.feilstatus;
-    const skalRendreRefusjonFeilet: boolean =
-        innloggetBrukerHarAltinnTilgangerBedrifter || (detFinnesFeilStatusFraMeny && !detErValgtBedrift);
+    const greideIkkeByggeOrgtre: boolean = !!valgtBedrift?.feilstatus?.find(
+        (feil) => feil.status === Feilstatus.GREIDE_IKKE_BYGGE_ORGTRE
+    );
+    const skalRendreRefusjonFeilet: boolean = innloggetBrukerHarAltinnTilgangerBedrifter || greideIkkeByggeOrgtre;
 
     const getBedriftSearchkey = (org: Bedriftvalg): string => {
         if (org?.type === BedriftvalgType.ALLEBEDRIFTER) {

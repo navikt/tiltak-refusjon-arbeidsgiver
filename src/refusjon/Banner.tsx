@@ -41,6 +41,7 @@ const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properti
                 valgtBedrift={valgtBedrift}
                 setValgtBedrift={setValgtBedrift}
                 history={customHistory as any}
+                sendCallbackAlleClick={true}
             />
         </>
     );

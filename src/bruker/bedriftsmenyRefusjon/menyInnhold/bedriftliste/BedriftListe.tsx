@@ -10,7 +10,7 @@ import { BedriftvalgType, initPageData, Juridiskenhet, Organisasjon } from '../.
 import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from '../../../../utils/bem';
 import { setDefaultBedriftlisteMedApneElementer } from '../../api/api-Utils';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import TomtSok from './TomtSok';
 
 const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper('bedriftliste');
@@ -23,7 +23,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
         setBedriftListe,
         setMenyApen,
         organisasjonstre,
-        sokefelt,
+        callbackAlleClick,
     } = context;
 
     const matchParentOrganisasjon = (org: Juridiskenhet) =>
@@ -32,19 +32,9 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const matchOrganisasjon = (org: Organisasjon) =>
         bedriftvalg.valgtOrg.find((e) => e.OrganizationNumber === org.OrganizationNumber);
 
-    const ingenSoketreff = sokefelt.aktivt && sokefelt.antallTreff === 0;
-
     return (
         <div className={cls.className}>
-            {ingenSoketreff && (
-                <div className={cls.element('tomt-sok')}>
-                    <AlertStripeInfo>
-                        <>
-                            <Normaltekst>Søket returnerte ingen treff.</Normaltekst>
-                        </>
-                    </AlertStripeInfo>
-                </div>
-            )}
+            <TomtSok />
             <ul className={cls.element('organisasjonlist')}>
                 {context.organisasjonstre?.map((org: Juridiskenhet, index: number) => (
                     <li className={cls.element('juridisk-container')} key={index}>
@@ -62,18 +52,26 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                     if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
                                         const element = matchParentOrganisasjon(org);
                                         if (!!element) {
-                                            return setBedriftvalg({
+                                            const valg = {
                                                 type: bedriftvalg.type,
                                                 valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
                                                 pageData: initPageData,
                                                 feilstatus: undefined,
-                                            });
+                                            };
+                                            setBedriftvalg(valg);
+                                            if (callbackAlleClick) {
+                                                setValgtBedrift(valg);
+                                            }
+                                        } else {
+                                            const valg = {
+                                                ...bedriftvalg,
+                                                valgtOrg: [...bedriftvalg.valgtOrg, ...org.Underenheter],
+                                            };
+                                            setBedriftvalg(valg);
+                                            if (callbackAlleClick) {
+                                                setValgtBedrift(valg);
+                                            }
                                         }
-                                        setBedriftvalg({
-                                            ...bedriftvalg,
-                                            valgtOrg: [...bedriftvalg.valgtOrg, ...org.Underenheter],
-                                            pageData: initPageData,
-                                        });
                                     }
                                 }}
                             />
@@ -140,20 +138,28 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                         if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
                                                             const element = matchOrganisasjon(underenhet);
                                                             if (!!element) {
-                                                                return setBedriftvalg({
+                                                                const valg = {
                                                                     type: bedriftvalg.type,
                                                                     valgtOrg: bedriftvalg.valgtOrg.filter(
                                                                         (e) => e !== element
                                                                     ),
                                                                     pageData: initPageData,
                                                                     feilstatus: undefined,
-                                                                });
+                                                                };
+                                                                setBedriftvalg(valg);
+                                                                if (callbackAlleClick) {
+                                                                    setValgtBedrift(valg);
+                                                                }
+                                                            } else {
+                                                                const valg = {
+                                                                    ...bedriftvalg,
+                                                                    valgtOrg: [...bedriftvalg.valgtOrg, underenhet],
+                                                                };
+                                                                setBedriftvalg(valg);
+                                                                if (callbackAlleClick) {
+                                                                    setValgtBedrift(valg);
+                                                                }
                                                             }
-                                                            setBedriftvalg({
-                                                                ...bedriftvalg,
-                                                                valgtOrg: [...bedriftvalg.valgtOrg, underenhet],
-                                                                pageData: initPageData,
-                                                            });
                                                         }
                                                     }}
                                                 />

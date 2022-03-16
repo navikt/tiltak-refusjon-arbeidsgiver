@@ -39,7 +39,11 @@ function useOrganisasjon(
         }
 
         function setFallbackOrganisasjon(): void {
-            settOrganisasjon([orgtre[0].Underenheter[0]], BedriftvalgType.ENKELBEDRIFT, true);
+            settOrganisasjon(
+                orgtre.flatMap((org) => org.Underenheter),
+                BedriftvalgType.ALLEBEDRIFTER,
+                true
+            );
         }
 
         function finnOgMatchOrganisasjonerFraAdresseFelt(orgnummerFraUrl: string): void {
@@ -52,7 +56,7 @@ function useOrganisasjon(
             return setFallbackOrganisasjon();
         }
 
-        function settOrganisasjonUtfraAlleBedriftDefinertPaContext(orgnummerFraUrl: string | null) {
+        function settOrganisasjonUtfraAlleBedriftDefinertPaContext(orgnummerFraUrl: string | null): void {
             if (BedriftvalgType.ALLEBEDRIFTER === orgnummerFraUrl) {
                 return;
             }
@@ -64,7 +68,7 @@ function useOrganisasjon(
 
         function hentOgSjekkOrgnrIngress(): void {
             if (altinnOrganisasjonerErInitialisertMedEnIkkeTomList(orgtre)) {
-                const orgnummerFraUrl = hentOrgnummerFraUrl();
+                const orgnummerFraUrl: string | null = hentOrgnummerFraUrl();
 
                 if (valgtBedriftTypePaContextErLikAlleBedrifter(valgtBedrift?.type)) {
                     return settOrganisasjonUtfraAlleBedriftDefinertPaContext(orgnummerFraUrl);

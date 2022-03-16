@@ -4,12 +4,39 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { NedChevron } from 'nav-frontend-chevron';
 import BEMHelper from '../../utils/bem';
 import { MenyContext } from './BedriftsmenyRefusjon';
-import { ClsBedriftsmeny } from './api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, ClsBedriftsmeny } from './api/organisasjon';
 
 const Menyknapp: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
     const context = useContext(MenyContext);
     const { menyApen, setMenyApen, valgtBedrift } = context;
+
+    const setKnappVisning = (bedrift: Bedriftvalg | undefined): React.ReactNode => {
+        switch (bedrift?.type) {
+            case BedriftvalgType.ALLEBEDRIFTER:
+                return (
+                    <>
+                        <Element>AlleBedrifter</Element>
+                        <Normaltekst>antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
+                    </>
+                );
+            case BedriftvalgType.FLEREBEDRIFTER:
+                return (
+                    <>
+                        <Element>FlereBedrifter</Element>
+                        <Normaltekst>antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
+                    </>
+                );
+            case BedriftvalgType.ENKELBEDRIFT:
+            default:
+                return (
+                    <>
+                        <Element>{bedrift?.valgtOrg?.[0]?.Name ?? ''}</Element>
+                        <Normaltekst>{bedrift?.valgtOrg?.[0]?.OrganizationNumber ?? ''}</Normaltekst>
+                    </>
+                );
+        }
+    };
 
     return (
         <button
@@ -20,10 +47,7 @@ const Menyknapp: FunctionComponent = () => {
         >
             <div className={cls.element('menyknapp-innhold')}>
                 <Underenhet />
-                <div className={cls.element('knapp-info')}>
-                    <Element>{valgtBedrift?.valgtOrg?.[0]?.Name ?? ''}</Element>
-                    <Normaltekst>{valgtBedrift?.valgtOrg?.[0]?.OrganizationNumber ?? ''}</Normaltekst>
-                </div>
+                <div className={cls.element('knapp-info')}>{setKnappVisning(valgtBedrift)}</div>
                 <NedChevron className={cls.element('chevron', menyApen ? 'open' : '')} />
             </div>
         </button>

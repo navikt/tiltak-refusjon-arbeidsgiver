@@ -8,7 +8,7 @@ import {
 
 interface ByggOrganisasjonstreProps {
     juridisk: Juridiskenhet[];
-    feilstatus: StatusFeil | undefined;
+    feilstatus: Array<StatusFeil> | undefined;
 }
 
 export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Promise<ByggOrganisasjonstreProps> {
@@ -22,19 +22,28 @@ export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Prom
         });
     }
 
-    const juridiskMedUnderenheter = settSammenJuridiskEnhetMedUnderenheter(juridiskeEnheter, underenheter);
+    const bedriftliste = settSammenJuridiskEnhetMedUnderenheter(juridiskeEnheter, underenheter);
+
     return {
-        juridisk: juridiskMedUnderenheter.JuridiskMedUnderenheter.sort((a, b) =>
-            a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)
-        ),
-        feilstatus: juridiskMedUnderenheter.feilstatus,
+        juridisk: bedriftliste.juridisk.sort((a, b) => a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)),
+        feilstatus: OppdatertFeilstatus(bedriftliste),
     };
+}
+
+function OppdatertFeilstatus(bedriftliste: ByggOrganisasjonstreProps): Array<StatusFeil> | undefined {
+    if (bedriftliste?.juridisk?.length === 0) {
+        bedriftliste.feilstatus?.push({
+            status: Feilstatus.GREIDE_IKKE_BYGGE_ORGTRE,
+            gjeldeneOrg: undefined,
+        });
+    }
+    return bedriftliste.feilstatus;
 }
 
 const settSammenJuridiskEnhetMedUnderenheter = (
     enheter: Organisasjon[],
     underenheter: Organisasjon[]
-): { JuridiskMedUnderenheter: Juridiskenhet[]; feilstatus: StatusFeil | undefined } => {
+): ByggOrganisasjonstreProps => {
     const juridiskenheter = enheter.map((enhet) => {
         const tilhorendeUnderenheter = underenheter.filter(
             (underenhet) => underenhet.ParentOrganizationNumber === enhet.OrganizationNumber
@@ -51,9 +60,9 @@ const settSammenJuridiskEnhetMedUnderenheter = (
         .map((o) => o.JuridiskEnhet);
 
     return {
-        JuridiskMedUnderenheter: juridiskenheter.filter((orgtre) => orgtre.Underenheter.length > 0),
+        juridisk: juridiskenheter.filter((orgtre) => orgtre.Underenheter.length > 0),
         feilstatus: !!JuridiskUtenUnderenheter
-            ? { status: Feilstatus.JURIDISK_MANGLER_UNDERENHET, gjeldeneOrg: JuridiskUtenUnderenheter }
+            ? [{ status: Feilstatus.JURIDISK_MANGLER_UNDERENHET, gjeldeneOrg: JuridiskUtenUnderenheter }]
             : undefined,
     };
 };

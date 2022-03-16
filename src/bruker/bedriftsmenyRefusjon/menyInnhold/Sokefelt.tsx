@@ -24,12 +24,12 @@ const Sokefelt: FunctionComponent = () => {
                     org.JuridiskEnhet.Name.search(regex) > -1 ||
                     org.JuridiskEnhet.OrganizationNumber.search(regex) > -1
             );
-            setSokefelt({ aktivt: true, antallTreff: filter?.length ?? 0 });
+            setSokefelt({ aktivt: true, antallTreff: filter?.length ?? 0, organisasjonstreTreff: filter });
             setOrganisasjonstre(filter);
         } else {
             if (fultOrganisasjonstre) {
                 setOrganisasjonstre(fultOrganisasjonstre);
-                setSokefelt({ aktivt: false, antallTreff: 0 });
+                setSokefelt({ aktivt: false, antallTreff: 0, organisasjonstreTreff: undefined });
                 setFultOrganisasjonstre(undefined);
             }
         }

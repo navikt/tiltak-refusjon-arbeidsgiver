@@ -24,6 +24,7 @@ interface Props {
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
     history: History;
+    sendCallbackAlleClick: boolean;
 }
 
 export const MenyContext = React.createContext<MenyContextType>({} as MenyContextType);
@@ -33,8 +34,13 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
     const [desktopview, setDesktopview] = useState<boolean>(window.innerWidth > 768);
     const [menyApen, setMenyApen] = useState<boolean>(false);
-    const [sokefelt, setSokefelt] = useState<Sokefelt>({ aktivt: false, antallTreff: 0 });
-    const { valgtBedrift, setValgtBedrift, organisasjoner, history } = props;
+    const [sokefelt, setSokefelt] = useState<Sokefelt>({
+        aktivt: false,
+        antallTreff: 0,
+        organisasjonstreTreff: undefined,
+    });
+    const { valgtBedrift, setValgtBedrift, organisasjoner, history, sendCallbackAlleClick } = props;
+    const [callbackAlleClick] = useState<boolean>(sendCallbackAlleClick);
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
         organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
@@ -50,7 +56,10 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                 if (
                     orglist.feilstatus &&
                     (!valgtBedrift ||
-                        (valgtBedrift && orglist?.feilstatus?.status !== valgtBedrift?.feilstatus?.status))
+                        (valgtBedrift &&
+                            orglist?.feilstatus?.filter((feil) =>
+                                orglist?.feilstatus?.find((f) => f.status !== feil.status)
+                            )?.length < 0))
                 ) {
                     setValgtBedrift(
                         Object.assign({}, valgtBedrift, {
@@ -83,6 +92,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         desktopview,
         sokefelt,
         setSokefelt,
+        callbackAlleClick,
     };
 
     return (

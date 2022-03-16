@@ -12,7 +12,7 @@ import Lenke from 'nav-frontend-lenker';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 
 interface Props {
-    feilstatus: StatusFeil | undefined;
+    feilstatus: Array<StatusFeil> | undefined;
 }
 
 interface LagNyRadProps {
@@ -24,13 +24,16 @@ interface LagNyRadProps {
 
 const RefusjonFeilet: FunctionComponent<Props> = ({ feilstatus }: PropsWithChildren<Props>) => {
     const cls = BEMHelper('refusjonFeilet');
+    const orgMedFeilstatusJuridiskEnhetMangler: Organisasjon[] | undefined = feilstatus
+        ?.find((feil) => feil.status === Feilstatus.JURIDISK_MANGLER_UNDERENHET)
+        ?.gjeldeneOrg?.map((feil) => feil);
     const [panel, setPanel] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
-        feilstatus?.gjeldeneOrg?.map((_, i) => ({ index: i, apnet: false }))
+        orgMedFeilstatusJuridiskEnhetMangler?.map((_, i) => ({ index: i, apnet: false }))
     );
 
     useEffect(() => {
-        setPanel(feilstatus?.gjeldeneOrg?.map((_, i) => ({ index: i, apnet: false })));
-    }, [feilstatus?.gjeldeneOrg]);
+        setPanel(orgMedFeilstatusJuridiskEnhetMangler?.map((_, i) => ({ index: i, apnet: false })));
+    }, [orgMedFeilstatusJuridiskEnhetMangler]);
 
     const LagNyRad: FunctionComponent<LagNyRadProps> = ({ navn, verdi, navnIcon, verdiIcon }: LagNyRadProps) => (
         <div className={cls.element('rad')}>
@@ -65,83 +68,86 @@ const RefusjonFeilet: FunctionComponent<Props> = ({ feilstatus }: PropsWithChild
         </>
     );
 
-    switch (feilstatus?.status) {
-        case Feilstatus.JURIDISK_MANGLER_UNDERENHET:
-            return (
-                <HvitBoks className={cls.className}>
-                    <div className={cls.element('mangler-underenhet-wrapper')}>
-                        <div className={cls.element('header')}>
-                            <Undertittel>
-                                Du har tilganger til en eller flere bedrifter, men kun på juridisk nivå.
-                            </Undertittel>
-                            <div className={cls.element('ikon')}>
-                                <SystemError width={24} height={24} />
+    const feilMelding = (status: StatusFeil | undefined) => {
+        switch (status?.status) {
+            case Feilstatus.JURIDISK_MANGLER_UNDERENHET:
+                return (
+                    <HvitBoks className={cls.className}>
+                        <div className={cls.element('mangler-underenhet-wrapper')}>
+                            <div className={cls.element('header')}>
+                                <Undertittel>
+                                    Du har tilganger til en eller flere bedrifter, men kun på juridisk nivå.
+                                </Undertittel>
+                                <div className={cls.element('ikon')}>
+                                    <SystemError width={24} height={24} />
+                                </div>
                             </div>
+                            {orgMedFeilstatusJuridiskEnhetMangler?.map((org: Organisasjon, index: number) => {
+                                return (
+                                    <EkspanderbartpanelBase
+                                        className={cls.element('panel')}
+                                        tittel={<Element>{org.Name ?? ''}</Element>}
+                                        apen={panel?.[index].apnet}
+                                        onClick={() => {
+                                            if (panel) {
+                                                setPanel(
+                                                    Object.assign([], panel, {
+                                                        [index]: { index: index, apnet: !panel[index].apnet },
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                        key={index}
+                                    >
+                                        <>
+                                            <LagNyRad
+                                                navn="Bedriftnavn:"
+                                                verdi={org.Name ?? ''}
+                                                navnIcon={<JuridiskEnhet width={20} height={20} />}
+                                                verdiIcon={<ChevronRight width={20} height={20} />}
+                                            />
+                                            <LagNyRad
+                                                navn="Type bedrift:"
+                                                verdi={org.Type === 'Enterprise' ? 'Juridisk overenhet' : 'Underenhet'}
+                                                navnIcon={<Notes width={20} height={20} />}
+                                                verdiIcon={<ChevronRight width={20} height={20} />}
+                                            />
+                                            <LagNyRad
+                                                navn="Organisasjonsnummer:"
+                                                verdi={org.OrganizationNumber ?? ''}
+                                                navnIcon={<Notes width={20} height={20} />}
+                                                verdiIcon={<ChevronRight width={20} height={20} />}
+                                            />
+                                            <LagNyRad
+                                                navn="Juridisk underenheter:"
+                                                verdi={'mangler'}
+                                                navnIcon={<Notes width={20} height={20} />}
+                                                verdiIcon={<ChevronRight width={20} height={20} />}
+                                            />
+                                        </>
+                                    </EkspanderbartpanelBase>
+                                );
+                            })}
                         </div>
-                        {feilstatus?.gjeldeneOrg?.map((org: Organisasjon, index: number) => {
-                            return (
-                                <EkspanderbartpanelBase
-                                    className={cls.element('panel')}
-                                    tittel={<Element>{org.Name ?? ''}</Element>}
-                                    apen={panel?.[index].apnet}
-                                    onClick={() => {
-                                        if (panel) {
-                                            setPanel(
-                                                Object.assign([], panel, {
-                                                    [index]: { index: index, apnet: !panel[index].apnet },
-                                                })
-                                            );
-                                        }
-                                    }}
-                                    key={index}
-                                >
-                                    <>
-                                        <LagNyRad
-                                            navn="Bedriftnavn:"
-                                            verdi={org.Name ?? ''}
-                                            navnIcon={<JuridiskEnhet width={20} height={20} />}
-                                            verdiIcon={<ChevronRight width={20} height={20} />}
-                                        />
-                                        <LagNyRad
-                                            navn="Type bedrift:"
-                                            verdi={org.Type === 'Enterprise' ? 'Juridisk overenhet' : 'Underenhet'}
-                                            navnIcon={<Notes width={20} height={20} />}
-                                            verdiIcon={<ChevronRight width={20} height={20} />}
-                                        />
-                                        <LagNyRad
-                                            navn="Organisasjonsnummer:"
-                                            verdi={org.OrganizationNumber ?? ''}
-                                            navnIcon={<Notes width={20} height={20} />}
-                                            verdiIcon={<ChevronRight width={20} height={20} />}
-                                        />
-                                        <LagNyRad
-                                            navn="Juridisk underenheter:"
-                                            verdi={'mangler'}
-                                            navnIcon={<Notes width={20} height={20} />}
-                                            verdiIcon={<ChevronRight width={20} height={20} />}
-                                        />
-                                    </>
-                                </EkspanderbartpanelBase>
-                            );
-                        })}
-                    </div>
-                    <GenerellTilgangsInnhold />
-                    <div className={cls.element('altinn-lenke')}>
-                        <Lenke href="https://www.altinn.no/hjelp/profil/roller-og-rettigheter/">
-                            Les mer om roller og rettigheter på altinn.no
-                        </Lenke>
-                    </div>
-                </HvitBoks>
-            );
-        default:
-            return (
-                <HvitBoks className={cls.className}>
-                    <Systemtittel className={cls.element('tittel')}>
-                        Ikke tilgang til noen virksomheter i Altinn
-                    </Systemtittel>
-                    <GenerellTilgangsInnhold />
-                </HvitBoks>
-            );
-    }
+                        <GenerellTilgangsInnhold />
+                        <div className={cls.element('altinn-lenke')}>
+                            <Lenke href="https://www.altinn.no/hjelp/profil/roller-og-rettigheter/">
+                                Les mer om roller og rettigheter på altinn.no
+                            </Lenke>
+                        </div>
+                    </HvitBoks>
+                );
+            default:
+                return (
+                    <HvitBoks className={cls.className}>
+                        <Systemtittel className={cls.element('tittel')}>
+                            Ikke tilgang til noen virksomheter i Altinn
+                        </Systemtittel>
+                        <GenerellTilgangsInnhold />
+                    </HvitBoks>
+                );
+        }
+    };
+    return null;
 };
 export default RefusjonFeilet;

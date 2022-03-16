@@ -13,14 +13,15 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
     const { className } = props;
     const cls = BEMHelper(className);
     const context = useContext(MenyContext);
-    const { bedriftvalg, setBedriftvalg, organisasjonstre, setBedriftListe } = context;
+    const { bedriftvalg, setBedriftvalg, organisasjonstre, setBedriftListe, setValgtBedrift, callbackAlleClick } =
+        context;
 
     return (
         <div className={cls.element('radiovalg-av-bedrift')}>
             <RadioGruppe legend="Bedriftvalg">
                 <Radio
-                    label={'Velg en bedrift'}
-                    name={'Velg en bedrift'}
+                    label="Velg en bedrift"
+                    name="Velg en bedrift"
                     checked={bedriftvalg.type === BedriftvalgType.ENKELBEDRIFT}
                     onChange={() => {
                         setBedriftvalg(
@@ -34,8 +35,8 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     }}
                 />
                 <Radio
-                    label={'Velg flere bedrifter'}
-                    name={'Velg flere bedrifter'}
+                    label="Velg flere bedrifter"
+                    name="Velg flere bedrifter"
                     checked={bedriftvalg.type === BedriftvalgType.FLEREBEDRIFTER}
                     onChange={() => {
                         setBedriftvalg(
@@ -49,17 +50,19 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     }}
                 />
                 <Radio
-                    label={'Velg alle bedrifter'}
-                    name={'Velg alle bedrifter'}
+                    label="Velg alle bedrifter"
+                    name="Velg alle bedrifter"
                     checked={bedriftvalg.type === BedriftvalgType.ALLEBEDRIFTER}
                     onChange={() => {
-                        setBedriftvalg(
-                            Object.assign({}, bedriftvalg, {
-                                type: BedriftvalgType.ALLEBEDRIFTER,
-                                valgtOrg: organisasjonstre?.flatMap((e) => e.Underenheter),
-                                pageData: initPageData,
-                            })
-                        );
+                        const valg = Object.assign({}, bedriftvalg, {
+                            type: BedriftvalgType.ALLEBEDRIFTER,
+                            valgtOrg: organisasjonstre?.flatMap((e) => e.Underenheter),
+                            pageData: initPageData,
+                        });
+                        setBedriftvalg(valg);
+                        if (callbackAlleClick) {
+                            setValgtBedrift(valg);
+                        }
                         setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
                 />

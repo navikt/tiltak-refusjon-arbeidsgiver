@@ -30,13 +30,14 @@ export interface Juridiskenhet {
 }
 
 export enum Feilstatus {
+    GREIDE_IKKE_BYGGE_ORGTRE = 'GREIDE_IKKE_BYGGE_ORGTRE',
     JURIDISK_MANGLER_UNDERENHET = 'JURIDISK_MANGLER_UNDERENHET',
     UNDERENHET_MANGLET_JURIDISK = 'UNDERENHET_MANGLET_JURIDISK',
 }
 
 export interface StatusFeil {
     status: Feilstatus;
-    gjeldeneOrg: Array<Organisasjon>;
+    gjeldeneOrg: Array<Organisasjon> | undefined;
 }
 
 export enum BedriftvalgType {
@@ -49,12 +50,13 @@ export interface Bedriftvalg {
     type: BedriftvalgType;
     valgtOrg: Array<Organisasjon>;
     pageData: PageData;
-    feilstatus: StatusFeil | undefined;
+    feilstatus: Array<StatusFeil> | undefined;
 }
 
 export interface Sokefelt {
     aktivt: boolean;
     antallTreff: number;
+    organisasjonstreTreff: Array<Juridiskenhet> | undefined;
 }
 
 export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;
@@ -75,6 +77,7 @@ export interface MenyContextType {
     desktopview: boolean;
     sokefelt: Sokefelt;
     setSokefelt: Dispatch<SetStateAction<Sokefelt>>;
+    callbackAlleClick: boolean;
 }
 
 export const initPageData: PageData = {
