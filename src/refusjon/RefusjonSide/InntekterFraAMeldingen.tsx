@@ -162,7 +162,11 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                             label={'Ja'}
                                                             checked={inntekt.skalRefunderes}
                                                             onChange={(e) => {
-                                                                toggleRefundertInntektslinje(refusjonId!, inntekt.id);
+                                                                toggleRefundertInntektslinje(
+                                                                    refusjon.id,
+                                                                    inntekt.id,
+                                                                    true
+                                                                );
                                                             }}
                                                             name={inntekt.id}
                                                         />
@@ -170,7 +174,11 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                             label={'Nei'}
                                                             checked={!inntekt.skalRefunderes}
                                                             onChange={(e) => {
-                                                                toggleRefundertInntektslinje(refusjonId!, inntekt.id);
+                                                                toggleRefundertInntektslinje(
+                                                                    refusjon.id,
+                                                                    inntekt.id,
+                                                                    false
+                                                                );
                                                             }}
                                                             name={inntekt.id}
                                                         />

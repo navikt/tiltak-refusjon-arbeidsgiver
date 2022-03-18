@@ -1,10 +1,10 @@
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
+import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
 import { Korreksjon, PageableRefusjon, Refusjon } from '../refusjon/refusjon';
 import { RefusjonStatus } from '../refusjon/status';
 import { Tiltak } from '../refusjon/tiltak';
-import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 
 export class FeilkodeError extends Error {}
 export class ApiError extends Error {}
@@ -55,9 +55,14 @@ export const endreBruttolønn = async (
     return response.data;
 };
 
-export const toggleRefundertInntektslinje = async (refusjonId: string, inntektslinjeId: string) => {
-    const response = await api.post(`/refusjon/${refusjonId}/toggle-refundert-inntektslinje`, {
+export const toggleRefundertInntektslinje = async (
+    refusjonId: string,
+    inntektslinjeId: string,
+    erOpptjentIPeriode: boolean
+) => {
+    const response = await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
         inntektslinjeId,
+        erOpptjentIPeriode,
     });
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
