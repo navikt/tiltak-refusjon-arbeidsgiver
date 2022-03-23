@@ -90,7 +90,7 @@ export interface Inntektslinje {
     opptjeningsperiodeFom?: string;
     opptjeningsperiodeTom?: string;
     erMedIInntektsgrunnlag: boolean;
-    skalRefunderes: boolean;
+    erOpptjentIPeriode: boolean;
 }
 
 export interface Beregning {

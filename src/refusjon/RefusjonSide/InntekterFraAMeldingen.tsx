@@ -153,14 +153,14 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                         </td>
 
                                         {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
-                                            (currInntekt) => currInntekt.skalRefunderes
+                                            (currInntekt) => currInntekt.erOpptjentIPeriode
                                         ) && (
                                             <td>
                                                 {!kvitteringVisning && (
                                                     <div style={{ display: 'flex', columnGap: '3em' }}>
                                                         <Radio
                                                             label={'Ja'}
-                                                            checked={inntekt.skalRefunderes === true}
+                                                            checked={inntekt.erOpptjentIPeriode === true}
                                                             onChange={(e) => {
                                                                 toggleRefundertInntektslinje(
                                                                     refusjon.id,
@@ -172,7 +172,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                         />
                                                         <Radio
                                                             label={'Nei'}
-                                                            checked={inntekt.skalRefunderes === false}
+                                                            checked={inntekt.erOpptjentIPeriode === false}
                                                             onChange={(e) => {
                                                                 toggleRefundertInntektslinje(
                                                                     refusjon.id,
@@ -186,8 +186,8 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                 )}
                                                 {kvitteringVisning && (
                                                     <div style={{ display: 'flex', columnGap: '3em' }}>
-                                                        {inntekt.skalRefunderes && <label>{'Ja'}</label>}
-                                                        {!inntekt.skalRefunderes && <label>{'Nei'}</label>}
+                                                        {inntekt.erOpptjentIPeriode && <label>{'Ja'}</label>}
+                                                        {!inntekt.erOpptjentIPeriode && <label>{'Nei'}</label>}
                                                     </div>
                                                 )}
                                             </td>

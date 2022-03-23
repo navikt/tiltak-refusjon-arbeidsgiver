@@ -64,10 +64,10 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     }
 
     const refunderbarInntekter = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
-        (inntekt) => inntekt.skalRefunderes
+        (inntekt) => inntekt.erOpptjentIPeriode
     );
     const valgtBruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
-        .filter((inntekt) => inntekt.skalRefunderes)
+        .filter((inntekt) => inntekt.erOpptjentIPeriode)
         .map((el) => el.beløp)
         .reduce((el, el2) => el + el2, 0);
 

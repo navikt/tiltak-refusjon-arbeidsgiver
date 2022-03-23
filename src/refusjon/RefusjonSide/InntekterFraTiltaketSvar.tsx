@@ -18,7 +18,7 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
     }
 
     const valgtBruttoLønn = props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
-        .filter((inntekt) => inntekt.skalRefunderes)
+        .filter((inntekt) => inntekt.erOpptjentIPeriode)
         .map((el) => el.beløp)
         .reduce((el, el2) => el + el2, 0);
 
