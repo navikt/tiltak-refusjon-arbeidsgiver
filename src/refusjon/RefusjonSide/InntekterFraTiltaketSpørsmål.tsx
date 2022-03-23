@@ -1,12 +1,14 @@
 import { Input, Label, RadioPanel } from 'nav-frontend-skjema';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
-import { lønnsbeskrivelseTekst, tiltakstypeTekst } from '../../messages';
+import { tiltakstypeTekst } from '../../messages';
 import { endreBruttolønn, useHentRefusjon } from '../../services/rest-service';
+import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
+import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 
 const RadioPakning = styled.div`
     display: flex;
@@ -19,38 +21,12 @@ const RadioPakning = styled.div`
         }
     }
 `;
-const InntekterTabell = styled.table`
-    width: 100%;
-    th,
-    td {
-        text-align: left;
-        padding: 0.35rem 0.5rem;
-    }
-    th:first-child,
-    td:first-child {
-        padding: 0.35rem 0;
-    }
-    th:last-child,
-    td:last-child {
-        text-align: right;
-        padding: 0.35rem 0;
-    }
-`;
-const GrønnBoks = styled.div`
+
+export const GrønnBoks = styled.div`
     background-color: #ccf1d6;
     padding: 1em;
     border: 4px solid #99dead;
 `;
-
-const inntektBeskrivelse = (beskrivelse: string | undefined) => {
-    if (beskrivelse === undefined) {
-        return '';
-    } else if (beskrivelse === '') {
-        return 'Inntekt';
-    } else {
-        return lønnsbeskrivelseTekst[beskrivelse] ?? 'Inntekt: ' + beskrivelse;
-    }
-};
 
 const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -63,21 +39,24 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
         return null;
     }
 
-    const refunderbarInntekter = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
+    const inntekterHuketAvForOpptjentIPeriode = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.erOpptjentIPeriode
     );
-    const valgtBruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
+    const sumInntekterOpptjentIPeriode = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
         .filter((inntekt) => inntekt.erOpptjentIPeriode)
         .map((el) => el.beløp)
         .reduce((el, el2) => el + el2, 0);
 
     return (
         <div>
-            {refunderbarInntekter.length >= 1 && (
+            {inntekterHuketAvForOpptjentIPeriode.length >= 1 && (
                 <GrønnBoks>
                     <Undertittel>
-                        Inntekter som skal refunderes for {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom} til{' '}
-                        {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom}
+                        Inntekter som skal refunderes for{' '}
+                        {formatterPeriode(
+                            refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                            refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                        )}
                     </Undertittel>
                     <VerticalSpacer rem={1} />
                     <Normaltekst>
@@ -85,35 +64,14 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                         bruttolønn som grunnlag.
                     </Normaltekst>
                     <VerticalSpacer rem={1} />
-                    <InntekterTabell>
-                        <thead>
-                            <tr>
-                                <th>Beskriv&shy;else</th>
-                                <th>År/mnd</th>
-                                <th>Beløp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {refunderbarInntekter.map((inntekt) => (
-                                <tr key={inntekt.id}>
-                                    <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
-                                    <td>{inntekt.måned}</td>
-                                    <td>{inntekt.beløp}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </InntekterTabell>
-                    <br />
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Element>Sum bruttolønn</Element>
-                        <Element>{refunderbarInntekter.length >= 1 && valgtBruttoLønn}</Element>
-                    </div>
-
+                    <InntekterOpptjentIPeriodeTabell
+                        inntekter={refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter}
+                    />
                     <VerticalSpacer rem={1} />
                     <Label htmlFor={'inntekterKunFraTiltaket'}>
                         Er inntektene som vi har hentet{' '}
                         {refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn > 0 && (
-                            <>({formatterPenger(valgtBruttoLønn)})</>
+                            <>({formatterPenger(sumInntekterOpptjentIPeriode)})</>
                         )}{' '}
                         kun fra tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
                     </Label>
@@ -153,7 +111,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                                 } perioden`}
                                 onChange={(event: any) => {
                                     const verdi = event.currentTarget.value;
-                                    if (verdi.match(/^\d*$/) && verdi <= valgtBruttoLønn) {
+                                    if (verdi.match(/^\d*$/) && verdi <= sumInntekterOpptjentIPeriode) {
                                         setEndretBruttoLønn(verdi as number);
                                     }
                                 }}

@@ -43,7 +43,7 @@ const InntekterTabell = styled.table`
     }
 `;
 
-const inntektBeskrivelse = (beskrivelse: string | undefined) => {
+export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
         return '';
     } else if (beskrivelse === '') {
