@@ -25,6 +25,7 @@ export interface Refusjon {
     forrigeFristForGodkjenning?: string;
     fristForGodkjenning: string;
     harInntektIAlleMåneder: boolean;
+    harTattStillingTilAlleInntektslinjer: boolean;
     korreksjonId?: string;
     refusjonsgrunnlag: Refusjonsgrunnlag;
 }

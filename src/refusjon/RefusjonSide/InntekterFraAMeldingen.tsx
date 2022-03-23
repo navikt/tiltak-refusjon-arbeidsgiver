@@ -118,7 +118,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                     <th>Beskriv&shy;else</th>
                                     <th>År/mnd</th>
                                     <th>Opptjenings&shy;periode</th>
-                                    <th>Har opptjent i periode?</th>
+                                    <th>Opptjent i perioden?</th>
                                     <th>Beløp</th>
                                 </tr>
                             </thead>
@@ -160,7 +160,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                     <div style={{ display: 'flex', columnGap: '3em' }}>
                                                         <Radio
                                                             label={'Ja'}
-                                                            checked={inntekt.skalRefunderes}
+                                                            checked={inntekt.skalRefunderes === true}
                                                             onChange={(e) => {
                                                                 toggleRefundertInntektslinje(
                                                                     refusjon.id,
@@ -172,7 +172,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                         />
                                                         <Radio
                                                             label={'Nei'}
-                                                            checked={!inntekt.skalRefunderes}
+                                                            checked={inntekt.skalRefunderes === false}
                                                             onChange={(e) => {
                                                                 toggleRefundertInntektslinje(
                                                                     refusjon.id,

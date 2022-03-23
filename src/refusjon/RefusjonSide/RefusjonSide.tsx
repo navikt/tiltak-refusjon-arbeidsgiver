@@ -81,63 +81,71 @@ const RefusjonSide: FunctionComponent = () => {
                 <VerticalSpacer rem={2} />
                 <InntekterFraAMeldingen />
                 <VerticalSpacer rem={2} />
-                {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter?.find(
-                    (inntekt) => inntekt.erMedIInntektsgrunnlag
-                ) && <InntekterFraTiltaketSpørsmål />}
-                <VerticalSpacer rem={2} />
-                {refusjon.refusjonsgrunnlag.beregning &&
-                    refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== undefined && (
-                        <>
-                            <Utregning
-                                beregning={refusjon.refusjonsgrunnlag.beregning}
-                                tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
-                            />
-                            <VerticalSpacer rem={4} />
-                            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
-                            <VerticalSpacer rem={1} />
+                {refusjon.harTattStillingTilAlleInntektslinjer && (
+                    <>
+                        {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter?.find(
+                            (inntekt) => inntekt.erMedIInntektsgrunnlag
+                        ) && <InntekterFraTiltaketSpørsmål />}
+                        <VerticalSpacer rem={2} />
+                        {refusjon.refusjonsgrunnlag.beregning &&
+                            refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== undefined && (
+                                <>
+                                    <Utregning
+                                        beregning={refusjon.refusjonsgrunnlag.beregning}
+                                        tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                                    />
+                                    <VerticalSpacer rem={4} />
+                                    <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                                    <VerticalSpacer rem={1} />
 
-                            <BekreftCheckboksPanel
-                                onChange={() => bekreftOpplysninger()}
-                                checked={bekrefetKorrekteOpplysninger}
-                                label="Jeg bekrefter at opplysningene er korrekte."
-                                feil={ikkeBekreftetFeilmelding}
-                            >
-                                NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at
-                                midlene nyttes etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2.
-                                ledd
-                            </BekreftCheckboksPanel>
-                            <VerticalSpacer rem={2} />
-                            <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
-                                Fullfør
-                            </LagreKnapp>
-                        </>
-                    )}
+                                    <BekreftCheckboksPanel
+                                        onChange={() => bekreftOpplysninger()}
+                                        checked={bekrefetKorrekteOpplysninger}
+                                        label="Jeg bekrefter at opplysningene er korrekte."
+                                        feil={ikkeBekreftetFeilmelding}
+                                    >
+                                        NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll)
+                                        med at midlene nyttes etter forutsetningene, jfr. Bevilgningsreglementet av
+                                        26.05.2005 § 10, 2. ledd
+                                    </BekreftCheckboksPanel>
+                                    <VerticalSpacer rem={2} />
+                                    <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+                                        Fullfør
+                                    </LagreKnapp>
+                                </>
+                            )}
+                    </>
+                )}
             </HvitBoks>
-            <GodkjennModal
-                isOpen={visGodkjennModal}
-                lukkModal={() => setVisGodkjennModal(false)}
-                godkjenn={godkjennRefusjonen}
-                tittel="Send inn refusjon"
-            >
-                <Normaltekst>
-                    Du søker nå om refusjon for hele den avtalte perioden{' '}
-                    <b>
-                        {formatterPeriode(
-                            refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-                            refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
-                        )}
-                        . Dette kan du kun gjøre en gang.
-                    </b>{' '}
-                    Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at refusjonsbeløpet
-                    stemmer.
-                </Normaltekst>
-                <VerticalSpacer rem={1} />
-                <Normaltekst>
-                    Hvis refusjonsbeløpet på{' '}
-                    <b>{formatterPenger(refusjon.refusjonsgrunnlag.beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta
-                    kontakt med veileder før du klikker Send inn.
-                </Normaltekst>
-            </GodkjennModal>
+            {refusjon.harTattStillingTilAlleInntektslinjer && (
+                <>
+                    <GodkjennModal
+                        isOpen={visGodkjennModal}
+                        lukkModal={() => setVisGodkjennModal(false)}
+                        godkjenn={godkjennRefusjonen}
+                        tittel="Send inn refusjon"
+                    >
+                        <Normaltekst>
+                            Du søker nå om refusjon for hele den avtalte perioden{' '}
+                            <b>
+                                {formatterPeriode(
+                                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                                )}
+                                . Dette kan du kun gjøre en gang.
+                            </b>{' '}
+                            Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at
+                            refusjonsbeløpet stemmer.
+                        </Normaltekst>
+                        <VerticalSpacer rem={1} />
+                        <Normaltekst>
+                            Hvis refusjonsbeløpet på{' '}
+                            <b>{formatterPenger(refusjon.refusjonsgrunnlag.beregning?.refusjonsbeløp!)}</b> ikke
+                            stemmer, ta kontakt med veileder før du klikker Send inn.
+                        </Normaltekst>
+                    </GodkjennModal>
+                </>
+            )}
         </>
     );
 };
