@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { toggleRefundertInntektslinje, useHentRefusjon } from '../../services/rest-service';
+import { setInntektslinjeOpptjentIPeriode, useHentRefusjon } from '../../services/rest-service';
 import { refusjonApnet } from '../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
@@ -162,7 +162,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                             label={'Ja'}
                                                             checked={inntekt.erOpptjentIPeriode === true}
                                                             onChange={(e) => {
-                                                                toggleRefundertInntektslinje(
+                                                                setInntektslinjeOpptjentIPeriode(
                                                                     refusjon.id,
                                                                     inntekt.id,
                                                                     true
@@ -174,7 +174,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                                             label={'Nei'}
                                                             checked={inntekt.erOpptjentIPeriode === false}
                                                             onChange={(e) => {
-                                                                toggleRefundertInntektslinje(
+                                                                setInntektslinjeOpptjentIPeriode(
                                                                     refusjon.id,
                                                                     inntekt.id,
                                                                     false

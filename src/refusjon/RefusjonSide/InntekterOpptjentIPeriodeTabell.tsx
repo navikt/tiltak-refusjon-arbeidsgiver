@@ -1,6 +1,7 @@
 import { Element } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import { formatterPeriode } from '../../utils/datoUtils';
 import { Inntektslinje } from '../refusjon';
 import { inntektBeskrivelse } from './InntekterFraAMeldingen';
 
@@ -40,6 +41,8 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                     <tr>
                         <th>Beskriv&shy;else</th>
                         <th>År/mnd</th>
+                        <th>Opptjeningsperiode</th>
+                        <th>Opptjent i perioden?</th>
                         <th>Beløp</th>
                     </tr>
                 </thead>
@@ -48,6 +51,18 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                         <tr key={inntekt.id}>
                             <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
                             <td>{inntekt.måned}</td>
+                            <td>
+                                {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
+                                    formatterPeriode(
+                                        inntekt.opptjeningsperiodeFom,
+                                        inntekt.opptjeningsperiodeTom,
+                                        'DD.MM'
+                                    )
+                                ) : (
+                                    <em>Ikke rapportert opptjenings&shy;periode</em>
+                                )}
+                            </td>
+                            <td>{inntekt.erOpptjentIPeriode ? 'Ja' : 'Nei'}</td>
                             <td>{inntekt.beløp}</td>
                         </tr>
                     ))}

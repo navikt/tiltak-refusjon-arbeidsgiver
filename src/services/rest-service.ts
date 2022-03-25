@@ -55,7 +55,7 @@ export const endreBruttolønn = async (
     return response.data;
 };
 
-export const toggleRefundertInntektslinje = async (
+export const setInntektslinjeOpptjentIPeriode = async (
     refusjonId: string,
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
