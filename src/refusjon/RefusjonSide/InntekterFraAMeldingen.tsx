@@ -195,20 +195,6 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                         <td>{formatterPenger(inntekt.beløp)}</td>
                                     </tr>
                                 ))}
-                                {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn && (
-                                    <tr>
-                                        <td colSpan={4}>
-                                            <b>Sum</b>
-                                        </td>
-                                        <td>
-                                            <b style={{ whiteSpace: 'nowrap' }}>
-                                                {formatterPenger(
-                                                    refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn
-                                                )}
-                                            </b>
-                                        </td>
-                                    </tr>
-                                )}
                             </tbody>
                         </InntekterTabell>
                     </>
