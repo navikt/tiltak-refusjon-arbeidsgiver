@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Element } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
@@ -29,10 +30,17 @@ const InntekterTabell = styled.table`
 
 const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
     const inntekterHuketAvForOpptjentIPeriode = props.inntekter.filter((inntekt) => inntekt.erOpptjentIPeriode);
-    const sumInntekterOpptjentIPeriode = props.inntekter
-        .filter((inntekt) => inntekt.erOpptjentIPeriode)
-        .map((el) => el.beløp)
-        .reduce((el, el2) => el + el2, 0);
+    const sumInntekterOpptjentIPeriode = _.sumBy(inntekterHuketAvForOpptjentIPeriode, 'beløp');
+
+    const sorterInntektslinjer = (inntektslinjer: Inntektslinje[]) =>
+        _.sortBy(inntektslinjer, [
+            'måned',
+            'opptjeningsperiodeFom',
+            'opptjeningsperiodeTom',
+            'opptjent',
+            'beskrivelse',
+            'id',
+        ]);
 
     return (
         <div>
@@ -47,7 +55,7 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {inntekterHuketAvForOpptjentIPeriode.map((inntekt) => (
+                    {sorterInntektslinjer(inntekterHuketAvForOpptjentIPeriode).map((inntekt) => (
                         <tr key={inntekt.id}>
                             <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
                             <td>{inntekt.måned}</td>

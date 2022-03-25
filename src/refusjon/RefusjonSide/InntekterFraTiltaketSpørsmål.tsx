@@ -69,11 +69,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     />
                     <VerticalSpacer rem={1} />
                     <Label htmlFor={'inntekterKunFraTiltaket'}>
-                        Er inntektene som vi har hentet{' '}
-                        {refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn > 0 && (
-                            <>({formatterPenger(sumInntekterOpptjentIPeriode)})</>
-                        )}{' '}
-                        kun fra tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
+                        Er inntektene som du har huket av for{' '}
+                        {sumInntekterOpptjentIPeriode > 0 && <>({formatterPenger(sumInntekterOpptjentIPeriode)})</>} kun
+                        fra tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
                     </Label>
                     <p>
                         <i>

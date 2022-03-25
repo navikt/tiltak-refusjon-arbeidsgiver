@@ -79,7 +79,7 @@ const RefusjonSide: FunctionComponent = () => {
                 <VerticalSpacer rem={2} />
                 <InformasjonFraAvtalen />
                 <VerticalSpacer rem={2} />
-                <InntekterFraAMeldingen />
+                <InntekterFraAMeldingen kvitteringVisning={false} />
                 <VerticalSpacer rem={2} />
                 {refusjon.harTattStillingTilAlleInntektslinjer && (
                     <>

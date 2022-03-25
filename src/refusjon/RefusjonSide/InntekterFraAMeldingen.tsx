@@ -54,7 +54,7 @@ export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 };
 
 export interface Props {
-    kvitteringVisning?: boolean | undefined;
+    kvitteringVisning: boolean;
 }
 
 const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning }) => {
