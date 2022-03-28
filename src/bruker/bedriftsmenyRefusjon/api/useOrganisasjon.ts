@@ -5,7 +5,7 @@ import {
     altinnOrganisasjonerErInitialisertMedEnIkkeTomList,
     filtrerOrgMatchUrl,
     hentOrgnummerFraUrl,
-    settOrgnummerIgress,
+    appendUrl,
     bedriftContextInitialisert,
     definerDefaultBedriftvalgType,
 } from './organisasjon-Utils';
@@ -36,7 +36,7 @@ function useOrganisasjon(
             skalsettOrgNrIngress?: boolean
         ): void {
             if (skalsettOrgNrIngress) {
-                settOrgnummerIgress(organisasjonsliste?.[0]?.OrganizationNumber ?? '', history);
+                appendUrl(organisasjonsliste.map((o) => o.OrganizationNumber).join(',') ?? '', history);
             }
             const valgtorg = {
                 type: bedriftvalgType,

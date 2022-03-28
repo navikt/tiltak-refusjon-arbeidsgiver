@@ -4,24 +4,26 @@ import { History } from 'history';
 const ORGNUMMER_PARAMETER = 'bedrift';
 const ENKELT_BEDRIFT_URL = 1;
 
-export const settOrgnummerIgress = (orgnummer: string, history: History) => {
+export const appendUrl = (orgnummer: string, history: History): void => {
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set(ORGNUMMER_PARAMETER, orgnummer);
     const { search } = currentUrl;
     (history as any).replace({ search });
 };
 
-export const hentUnderenheter = (organisasjonstre: Juridiskenhet[]) =>
+export const hentUnderenheter = (organisasjonstre: Juridiskenhet[]): Organisasjon[] =>
     organisasjonstre.reduce(
         (organisasjoner: Organisasjon[], parentOrg) => [...organisasjoner, ...parentOrg.Underenheter],
         []
     );
 
-export const hentOrgnummerFraUrl = () => new URL(window.location.href).searchParams.get(ORGNUMMER_PARAMETER);
+export const hentOrgnummerFraUrl = (): string | null =>
+    new URL(window.location.href).searchParams.get(ORGNUMMER_PARAMETER);
 
-export const altinnOrganisasjonerErInitialisertMedEnIkkeTomList = (orgtre: Juridiskenhet[]) => orgtre.length > 0;
+export const altinnOrganisasjonerErInitialisertMedEnIkkeTomList = (orgtre: Juridiskenhet[]): boolean =>
+    orgtre.length > 0;
 
-export const filtrerOrgMatchUrl = (orgtre: Juridiskenhet[], orgnummerFraUrl: string | null) =>
+export const filtrerOrgMatchUrl = (orgtre: Juridiskenhet[], orgnummerFraUrl: string | null): Organisasjon[] =>
     hentUnderenheter(orgtre).filter((org) => orgnummerFraUrl?.split(',').includes(org.OrganizationNumber));
 
 export const definerDefaultBedriftvalgType = (
@@ -44,7 +46,7 @@ export const definerDefaultBedriftvalgType = (
 export const organisasjonerPaContextMatcherOrgFraUrl = (
     valgtOrg: Organisasjon[] | undefined,
     orgnummerFraUrl: string | null
-) => {
+): boolean => {
     const valgtOrganisasjoner: string | undefined = valgtOrg?.map((o) => o.OrganizationNumber).join(',');
     return valgtOrganisasjoner === orgnummerFraUrl || valgtOrganisasjoner === BedriftvalgType.ALLEBEDRIFTER;
 };
@@ -61,7 +63,11 @@ export const bedriftContextInitialisert = (
     return valgtOrganisasjoner === serializeOrgNr(bedriftvalg?.valgtOrg) || valgtOrganisasjoner === orgnummerFraUrl;
 };
 
-export function compareBedriftvalg(valgtorg: Bedriftvalg, valgtBedrift: Bedriftvalg | undefined, keys?: string[]) {
+export function compareBedriftvalg(
+    valgtorg: Bedriftvalg,
+    valgtBedrift: Bedriftvalg | undefined,
+    keys?: string[]
+): boolean {
     let erLik: boolean = !!valgtBedrift;
     if (valgtBedrift) {
         const objectKeys = keys ?? Object.keys(valgtorg);
