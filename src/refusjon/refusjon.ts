@@ -46,7 +46,7 @@ export interface Korreksjon {
 export interface Refusjonsgrunnlag {
     tilskuddsgrunnlag: Tilskuddsgrunnlag;
     inntektsgrunnlag?: Inntektsgrunnlag;
-    inntekterKunFraTiltaket?: boolean | undefined;
+    inntekterKunFraTiltaket?: boolean;
     endretBruttoLønn?: number;
     bedriftKontonummer?: string;
     beregning?: Beregning;
