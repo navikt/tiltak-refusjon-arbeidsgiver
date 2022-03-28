@@ -3,7 +3,6 @@ import BedriftListe from './bedriftliste/BedriftListe';
 import BEMHelper from '../../../utils/bem';
 import './menyInnhold.less';
 import RadioValg from './RadioValg';
-
 import Sokefelt from './Sokefelt';
 import { ClsBedriftsmeny } from '../api/organisasjon';
 

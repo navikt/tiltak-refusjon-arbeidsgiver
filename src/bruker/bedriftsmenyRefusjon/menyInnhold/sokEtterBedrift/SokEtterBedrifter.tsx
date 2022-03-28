@@ -8,7 +8,8 @@ import { Element } from 'nav-frontend-typografi';
 
 const SokEtterBedrifter: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.SOK_ETTER_BEDRIFTER);
-    const { bedriftvalg, setValgtBedrift, setMenyApen, valgtBedrift, desktopview } = useContext(MenyContext);
+    const { bedriftvalg, setValgtBedrift, setMenyApen, valgtBedrift, desktopview, setSokefelt } =
+        useContext(MenyContext);
     const visSokeknapp: boolean = bedriftvalg.type !== BedriftvalgType.ENKELBEDRIFT && bedriftvalg.valgtOrg?.length > 0;
     const [visningStatestikk, setVisningStatestikk] = useState<boolean>(false);
 
@@ -56,6 +57,7 @@ const SokEtterBedrifter: FunctionComponent = () => {
                                     type="hoved"
                                     className={cls.element('sok-knapp')}
                                     onClick={() => {
+                                        setSokefelt({ aktivt: false, antallTreff: 0 });
                                         setValgtBedrift(bedriftvalg);
                                         setMenyApen(false);
                                     }}
