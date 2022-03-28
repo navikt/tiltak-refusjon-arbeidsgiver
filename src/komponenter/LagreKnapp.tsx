@@ -7,43 +7,44 @@ import VerticalSpacer from './VerticalSpacer';
 
 type Props = {
     lagreFunksjon: () => Promise<void>;
-} & HTMLAttributes<HTMLDivElement>;
+    attributes?: KnappBaseProps & HTMLAttributes<HTMLDivElement>;
+};
 
 const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
-    const [oppslag, setOppslag] = useState<Nettressurs<any>>({ status: Status.IkkeLastet });
+    const [netverkStatus, setNetverkStatus] = useState<Nettressurs<any>>({ status: Status.IkkeLastet });
     const [feilmelding, setFeilmelding] = useState('');
 
     const knappBaseProps = Object.assign({}, props);
-    //delete knappBaseProps.lagreFunksjon;
-
     const feilRef = useRef<HTMLDivElement>(null);
 
     const onClick = async () => {
         try {
-            setOppslag({ status: Status.LasterInn });
+            setNetverkStatus({ status: Status.LasterInn });
             await props.lagreFunksjon();
-            setOppslag({ status: Status.Sendt });
+            setNetverkStatus({ status: Status.Sendt });
         } catch (error: any) {
-            setOppslag({ status: Status.Feil, error: error.feilmelding ?? 'Uventet feil' });
+            setNetverkStatus({ status: Status.Feil, error: error.feilmelding ?? 'Uventet feil' });
             handterFeil(error, setFeilmelding);
         }
     };
 
     useEffect(() => {
-        if (oppslag.status === Status.Feil) {
+        if (netverkStatus.status === Status.Feil) {
             feilRef.current?.focus();
         }
-    }, [oppslag.status]);
+    }, [netverkStatus.status]);
 
     return (
         <div>
             <KnappBase
-                spinner={oppslag.status === Status.LasterInn}
-                disabled={oppslag.status === Status.LasterInn}
+                spinner={netverkStatus.status === Status.LasterInn}
+                disabled={netverkStatus.status === Status.LasterInn}
                 onClick={onClick}
-                {...knappBaseProps}
-            />
-            {oppslag.status === Status.Feil && (
+                {...knappBaseProps.attributes}
+            >
+                {props.children}
+            </KnappBase>
+            {netverkStatus.status === Status.Feil && (
                 <>
                     <VerticalSpacer rem={0.5} />
                     <AlertStripeAdvarsel>
