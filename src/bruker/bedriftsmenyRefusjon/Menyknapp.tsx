@@ -17,14 +17,14 @@ const Menyknapp: FunctionComponent = () => {
                 return (
                     <>
                         <Element>AlleBedrifter</Element>
-                        <Normaltekst>antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
+                        <Normaltekst>Antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
                     </>
                 );
             case BedriftvalgType.FLEREBEDRIFTER:
                 return (
                     <>
-                        <Element>FlereBedrifter</Element>
-                        <Normaltekst>antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
+                        <Element>Flervalg Bedrift</Element>
+                        <Normaltekst>Antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
                     </>
                 );
             case BedriftvalgType.ENKELBEDRIFT:

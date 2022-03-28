@@ -6,12 +6,12 @@ import {
     getUnderenheterUtenJuridiskEnhet,
 } from './api-Utils';
 
-interface ByggOrganisasjonstreProps {
-    juridisk: Juridiskenhet[];
+export interface ByggOrganisasjonstre {
+    juridisk: Array<Juridiskenhet>;
     feilstatus: Array<StatusFeil> | undefined;
 }
 
-export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Promise<ByggOrganisasjonstreProps> {
+export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Promise<ByggOrganisasjonstre> {
     const juridiskeEnheter = getJuridiskeEnheterFraBedrifter(organisasjoner);
     const underenheter = getUnderEnheterFraBedrifter(organisasjoner);
     const underenheterUtenJuridiskEnhet = getUnderenheterUtenJuridiskEnhet(underenheter, juridiskeEnheter);
@@ -30,7 +30,7 @@ export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Prom
     };
 }
 
-function OppdatertFeilstatus(bedriftliste: ByggOrganisasjonstreProps): Array<StatusFeil> | undefined {
+function OppdatertFeilstatus(bedriftliste: ByggOrganisasjonstre): Array<StatusFeil> | undefined {
     if (bedriftliste?.juridisk?.length === 0) {
         bedriftliste.feilstatus?.push({
             status: Feilstatus.GREIDE_IKKE_BYGGE_ORGTRE,
@@ -43,7 +43,7 @@ function OppdatertFeilstatus(bedriftliste: ByggOrganisasjonstreProps): Array<Sta
 const settSammenJuridiskEnhetMedUnderenheter = (
     enheter: Organisasjon[],
     underenheter: Organisasjon[]
-): ByggOrganisasjonstreProps => {
+): ByggOrganisasjonstre => {
     const juridiskenheter = enheter.map((enhet) => {
         const tilhorendeUnderenheter = underenheter.filter(
             (underenhet) => underenhet.ParentOrganizationNumber === enhet.OrganizationNumber

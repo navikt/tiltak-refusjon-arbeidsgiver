@@ -6,7 +6,7 @@ import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { Bedriftvalg, BedriftvalgType, Feilstatus, initBedriftvalg } from './bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, Feilstatus, initvalgtBedrift } from './bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { NavigateFunction } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ export const useInnloggetBruker = () => {
 
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
-    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>(initBedriftvalg);
+    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>(initvalgtBedrift);
 
     const navigate: NavigateFunction = useNavigate();
     const detErValgtBedrift: boolean = valgtBedrift?.valgtOrg?.length !== 0;

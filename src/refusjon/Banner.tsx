@@ -35,15 +35,13 @@ const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properti
     };
 
     return (
-        <>
-            <BedriftsmenyRefusjon
-                organisasjoner={organisasjoner}
-                valgtBedrift={valgtBedrift}
-                setValgtBedrift={setValgtBedrift}
-                history={customHistory as any}
-                sendCallbackAlleClick={true}
-            />
-        </>
+        <BedriftsmenyRefusjon
+            organisasjoner={organisasjoner}
+            valgtBedrift={valgtBedrift}
+            setValgtBedrift={setValgtBedrift}
+            history={customHistory as any}
+            sendCallbackAlleClick={true}
+        />
     );
 };
 

@@ -17,18 +17,29 @@ export const hentUnderenheter = (organisasjonstre: Juridiskenhet[]) =>
         []
     );
 
-export const hentOrgnummerFraUrl = () => new URL(window.location.href).searchParams.get('bedrift');
+export const hentOrgnummerFraUrl = () => new URL(window.location.href).searchParams.get(ORGNUMMER_PARAMETER);
 
 export const altinnOrganisasjonerErInitialisertMedEnIkkeTomList = (orgtre: Juridiskenhet[]) => orgtre.length > 0;
 
-export const organisasjonFraUrlMatchetMedAltinnOrganisasjonslist = (orgtre: Juridiskenhet[], orgnummerFraUrl: string) =>
-    hentUnderenheter(orgtre).filter((org) => orgnummerFraUrl.split(',').includes(org.OrganizationNumber));
+export const filtrerOrgMatchUrl = (orgtre: Juridiskenhet[], orgnummerFraUrl: string | null) =>
+    hentUnderenheter(orgtre).filter((org) => orgnummerFraUrl?.split(',').includes(org.OrganizationNumber));
 
-export const definereDefaultBedriftvalgTypeUtfraOrganisasjonsMatch = (organisasjoner: Organisasjon[]) =>
-    organisasjoner.length > ENKELT_BEDRIFT_URL ? BedriftvalgType.FLEREBEDRIFTER : BedriftvalgType.ENKELBEDRIFT;
-
-export const valgtBedriftTypePaContextErLikAlleBedrifter = (type: BedriftvalgType | undefined) =>
-    type === BedriftvalgType.ALLEBEDRIFTER;
+export const definerDefaultBedriftvalgType = (
+    orgnummerFraUrl: string | null,
+    valgtBedrift: Bedriftvalg | undefined
+): BedriftvalgType => {
+    if (orgnummerFraUrl) {
+        switch (true) {
+            case orgnummerFraUrl === BedriftvalgType.ALLEBEDRIFTER:
+                return BedriftvalgType.ALLEBEDRIFTER;
+            case orgnummerFraUrl.split(',').length > ENKELT_BEDRIFT_URL:
+                return BedriftvalgType.FLEREBEDRIFTER;
+            default:
+                return BedriftvalgType.ENKELBEDRIFT;
+        }
+    }
+    return valgtBedrift?.type ?? BedriftvalgType.ALLEBEDRIFTER;
+};
 
 export const organisasjonerPaContextMatcherOrgFraUrl = (
     valgtOrg: Organisasjon[] | undefined,
@@ -38,7 +49,17 @@ export const organisasjonerPaContextMatcherOrgFraUrl = (
     return valgtOrganisasjoner === orgnummerFraUrl || valgtOrganisasjoner === BedriftvalgType.ALLEBEDRIFTER;
 };
 
-export const organisasjonerContextMatcherBedriftvalg = (valgtBedrift: Bedriftvalg) => {};
+const serializeOrgNr = (valgtOrg: Array<Organisasjon> | undefined): string | undefined =>
+    valgtOrg?.map((o) => o.OrganizationNumber).join(',');
+
+export const bedriftContextInitialisert = (
+    valgtBedrift: Bedriftvalg | undefined,
+    bedriftvalg: Bedriftvalg | undefined,
+    orgnummerFraUrl: string | null
+): boolean => {
+    const valgtOrganisasjoner: string | undefined = serializeOrgNr(valgtBedrift?.valgtOrg);
+    return valgtOrganisasjoner === serializeOrgNr(bedriftvalg?.valgtOrg) || valgtOrganisasjoner === orgnummerFraUrl;
+};
 
 export function compareBedriftvalg(valgtorg: Bedriftvalg, valgtBedrift: Bedriftvalg | undefined, keys?: string[]) {
     let erLik: boolean = !!valgtBedrift;

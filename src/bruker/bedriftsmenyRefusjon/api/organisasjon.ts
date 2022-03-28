@@ -93,7 +93,7 @@ export const initPageData: PageData = {
     totalPages: 0,
 };
 
-export const initBedriftvalg: Bedriftvalg = {
+export const initvalgtBedrift: Bedriftvalg = {
     type: BedriftvalgType.ALLEBEDRIFTER,
     valgtOrg: [] as Array<Organisasjon>,
     pageData: initPageData,
@@ -108,6 +108,7 @@ export interface PageData {
     totalItems: number;
     totalPages: number;
 }
+
 export const initOrganisasjon: Organisasjon = {
     Name: '',
     Type: '',
@@ -115,6 +116,11 @@ export const initOrganisasjon: Organisasjon = {
     OrganizationForm: '',
     Status: '',
     ParentOrganizationNumber: '',
+};
+
+export const initBedriftvalg: Bedriftvalg = {
+    ...initvalgtBedrift,
+    valgtOrg: [{ ...initOrganisasjon, OrganizationNumber: '999999999' }],
 };
 
 export interface OrganisasjonEnhetsregisteret {

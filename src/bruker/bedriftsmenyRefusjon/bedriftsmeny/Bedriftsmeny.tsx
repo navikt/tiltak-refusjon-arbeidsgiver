@@ -7,21 +7,33 @@ import MenyInnhold from '../menyInnhold/MenyInnhold';
 import Menyknapp from '../Menyknapp';
 import { ClsBedriftsmeny } from '../api/organisasjon';
 import SokEtterBedrifter from '../menyInnhold/sokEtterBedrift/SokEtterBedrifter';
-import useNavigation from '../api/useNavigation';
 
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
     const context = useContext(MenyContext);
-    const { history, organisasjonstre, menyApen, valgtBedrift, setValgtBedrift, setBedriftvalg, sokefelt } = context;
-    const { hentOrg } = useOrganisasjon(organisasjonstre, history, valgtBedrift, setValgtBedrift, setBedriftvalg);
+    const {
+        history,
+        organisasjonstre,
+        menyApen,
+        valgtBedrift,
+        setValgtBedrift,
+        bedriftvalg,
+        setBedriftvalg,
+        sokefelt,
+    } = context;
+
+    const { initBedriftmenyContext } = useOrganisasjon(
+        organisasjonstre,
+        history,
+        valgtBedrift,
+        setValgtBedrift,
+        bedriftvalg,
+        setBedriftvalg
+    );
 
     useEffect(() => {
-        hentOrg();
-    }, [hentOrg]);
-
-    /*useEffect(() => {
-        useNavigation(valgtBedrift)
-    },[valgtBedrift])*/
+        initBedriftmenyContext();
+    }, [initBedriftmenyContext]);
 
     return (
         <div className={cls.className}>

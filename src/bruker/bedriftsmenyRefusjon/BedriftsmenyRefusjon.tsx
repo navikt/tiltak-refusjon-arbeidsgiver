@@ -3,20 +3,20 @@ import BEMHelper from '../../utils/bem';
 import TypografiBase from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
 import Bedriftsmeny from './bedriftsmeny/Bedriftsmeny';
-import { byggOrganisasjonstre } from './api/api';
+import { ByggOrganisasjonstre, byggOrganisasjonstre } from './api/api';
 import {
     Bedriftvalg,
     ClsBedriftsmeny,
-    initBedriftvalg,
+    initvalgtBedrift,
     Juridiskenhet,
     MenyContextType,
     Organisasjon,
     Sokefelt,
+    initBedriftvalg,
 } from './api/organisasjon';
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
 import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
-
 import useSize from './api/useSize';
 
 interface Props {
@@ -48,7 +48,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
 
     useEffect(() => {
         if (organisasjoner && organisasjoner?.length > 0) {
-            byggOrganisasjonstre(organisasjoner).then((orglist) => {
+            byggOrganisasjonstre(organisasjoner).then((orglist: ByggOrganisasjonstre) => {
                 if (orglist.juridisk.length > 0) {
                     setOrganisasjonstre(orglist.juridisk);
                     setDefaultBedriftlisteMedApneElementer(orglist.juridisk, setBedriftListe);
@@ -63,9 +63,9 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                 ) {
                     setValgtBedrift(
                         Object.assign({}, valgtBedrift, {
-                            type: valgtBedrift?.type ?? initBedriftvalg.type,
-                            valgtOrg: valgtBedrift?.valgtOrg ?? initBedriftvalg.valgtOrg,
-                            pageData: valgtBedrift?.pageData ?? initBedriftvalg.pageData,
+                            type: valgtBedrift?.type ?? initvalgtBedrift.type,
+                            valgtOrg: valgtBedrift?.valgtOrg ?? initvalgtBedrift.valgtOrg,
+                            pageData: valgtBedrift?.pageData ?? initvalgtBedrift.pageData,
                             feilstatus: orglist.feilstatus,
                         })
                     );

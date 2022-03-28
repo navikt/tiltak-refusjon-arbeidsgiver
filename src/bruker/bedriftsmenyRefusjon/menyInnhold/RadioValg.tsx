@@ -24,13 +24,13 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     name="Velg en bedrift"
                     checked={bedriftvalg.type === BedriftvalgType.ENKELBEDRIFT}
                     onChange={() => {
-                        setBedriftvalg(
-                            Object.assign({}, bedriftvalg, {
-                                type: BedriftvalgType.ENKELBEDRIFT,
-                                valgtOrg: [],
-                                pageData: initPageData,
-                            })
-                        );
+                        const valg = Object.assign({}, bedriftvalg, {
+                            type: BedriftvalgType.ENKELBEDRIFT,
+                            valgtOrg: [organisasjonstre?.at(0)?.Underenheter?.at(0)],
+                            pageData: initPageData,
+                        });
+                        setBedriftvalg(valg);
+                        if (callbackAlleClick) setValgtBedrift(valg);
                         setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
                 />
@@ -39,13 +39,13 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     name="Velg flere bedrifter"
                     checked={bedriftvalg.type === BedriftvalgType.FLEREBEDRIFTER}
                     onChange={() => {
-                        setBedriftvalg(
-                            Object.assign({}, bedriftvalg, {
-                                type: BedriftvalgType.FLEREBEDRIFTER,
-                                valgtOrg: [],
-                                pageData: initPageData,
-                            })
-                        );
+                        const valg = Object.assign({}, bedriftvalg, {
+                            type: BedriftvalgType.FLEREBEDRIFTER,
+                            valgtOrg: [organisasjonstre?.at(0)?.Underenheter?.at(0)],
+                            pageData: initPageData,
+                        });
+                        setBedriftvalg(valg);
+                        if (callbackAlleClick) setValgtBedrift(valg);
                         setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
                 />
@@ -60,9 +60,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                             pageData: initPageData,
                         });
                         setBedriftvalg(valg);
-                        if (callbackAlleClick) {
-                            setValgtBedrift(valg);
-                        }
+                        if (callbackAlleClick) setValgtBedrift(valg);
                         setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
                     }}
                 />
