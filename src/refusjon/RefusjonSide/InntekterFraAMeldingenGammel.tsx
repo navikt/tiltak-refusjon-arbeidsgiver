@@ -1,13 +1,13 @@
+// DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
 import _ from 'lodash';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import { Radio } from 'nav-frontend-skjema';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { setInntektslinjeOpptjentIPeriode, useHentRefusjon } from '../../services/rest-service';
+import { useHentRefusjon } from '../../services/rest-service';
 import { refusjonApnet } from '../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
@@ -43,7 +43,7 @@ const InntekterTabell = styled.table`
     }
 `;
 
-export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
+const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
         return '';
     } else if (beskrivelse === '') {
@@ -53,11 +53,8 @@ export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     }
 };
 
-export interface Props {
-    kvitteringVisning: boolean;
-}
-
-const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning }) => {
+// DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
+const InntekterFraAMeldingen: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const antallInntekterSomErMedIGrunnlag = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
@@ -118,7 +115,6 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                     <th>Beskriv&shy;else</th>
                                     <th>År/mnd</th>
                                     <th>Opptjenings&shy;periode</th>
-                                    <th>Opptjent i perioden?</th>
                                     <th>Beløp</th>
                                 </tr>
                             </thead>
@@ -127,14 +123,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                     refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.filter(
                                         (inntekt) => inntekt.erMedIInntektsgrunnlag
                                     ),
-                                    [
-                                        'måned',
-                                        'opptjeningsperiodeFom',
-                                        'opptjeningsperiodeTom',
-                                        'opptjent',
-                                        'beskrivelse',
-                                        'id',
-                                    ]
+                                    ['måned', 'opptjeningsperiodeFom', 'opptjeningsperiodeTom', 'beskrivelse', 'id']
                                 ).map((inntekt) => (
                                     <tr key={inntekt.id}>
                                         <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
@@ -152,49 +141,23 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                             )}
                                         </td>
 
-                                        {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
-                                            (currInntekt) => currInntekt.erOpptjentIPeriode
-                                        ) && (
-                                            <td>
-                                                {!kvitteringVisning && (
-                                                    <div style={{ display: 'flex', columnGap: '3em' }}>
-                                                        <Radio
-                                                            label={'Ja'}
-                                                            checked={inntekt.erOpptjentIPeriode === true}
-                                                            onChange={(e) => {
-                                                                setInntektslinjeOpptjentIPeriode(
-                                                                    refusjon.id,
-                                                                    inntekt.id,
-                                                                    true
-                                                                );
-                                                            }}
-                                                            name={inntekt.id}
-                                                        />
-                                                        <Radio
-                                                            label={'Nei'}
-                                                            checked={inntekt.erOpptjentIPeriode === false}
-                                                            onChange={(e) => {
-                                                                setInntektslinjeOpptjentIPeriode(
-                                                                    refusjon.id,
-                                                                    inntekt.id,
-                                                                    false
-                                                                );
-                                                            }}
-                                                            name={inntekt.id}
-                                                        />
-                                                    </div>
-                                                )}
-                                                {kvitteringVisning && (
-                                                    <div style={{ display: 'flex', columnGap: '3em' }}>
-                                                        {inntekt.erOpptjentIPeriode && <label>{'Ja'}</label>}
-                                                        {!inntekt.erOpptjentIPeriode && <label>{'Nei'}</label>}
-                                                    </div>
-                                                )}
-                                            </td>
-                                        )}
                                         <td>{formatterPenger(inntekt.beløp)}</td>
                                     </tr>
                                 ))}
+                                {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn && (
+                                    <tr>
+                                        <td colSpan={3}>
+                                            <b>Sum</b>
+                                        </td>
+                                        <td>
+                                            <b style={{ whiteSpace: 'nowrap' }}>
+                                                {formatterPenger(
+                                                    refusjon.refusjonsgrunnlag.inntektsgrunnlag.bruttoLønn
+                                                )}
+                                            </b>
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </InntekterTabell>
                     </>

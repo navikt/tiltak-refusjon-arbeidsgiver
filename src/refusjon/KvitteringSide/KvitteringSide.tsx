@@ -13,7 +13,9 @@ import { storForbokstav } from '../../utils/stringUtils';
 import { Refusjon } from '../refusjon';
 import InformasjonFraAvtalen from '../RefusjonSide/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
+import InntekterFraAMeldingenGammel from '../RefusjonSide/InntekterFraAMeldingenGammel';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
+import InntekterFraTiltaketSvarGammel from '../RefusjonSide/InntekterFraTiltaketSvarGammel';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Statusmelding from './Statusmelding';
 
@@ -45,9 +47,19 @@ const KvitteringSide: FunctionComponent = () => {
             <VerticalSpacer rem={2} />
             <InformasjonFraAvtalen />
             <VerticalSpacer rem={2} />
-            <InntekterFraAMeldingen />
-            <VerticalSpacer rem={2} />
-            <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+            {refusjon.harTattStillingTilAlleInntektslinjer ? (
+                <>
+                    <InntekterFraAMeldingen kvitteringVisning={true} />
+                    <VerticalSpacer rem={2} />
+                    <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                </>
+            ) : (
+                <>
+                    <InntekterFraAMeldingenGammel />
+                    <VerticalSpacer rem={2} />
+                    <InntekterFraTiltaketSvarGammel refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                </>
+            )}
             <VerticalSpacer rem={2} />
             <Utregning
                 beregning={refusjon.refusjonsgrunnlag.beregning}

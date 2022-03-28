@@ -25,6 +25,7 @@ export interface Refusjon {
     forrigeFristForGodkjenning?: string;
     fristForGodkjenning: string;
     harInntektIAlleMåneder: boolean;
+    harTattStillingTilAlleInntektslinjer: boolean;
     korreksjonId?: string;
     refusjonsgrunnlag: Refusjonsgrunnlag;
 }
@@ -89,6 +90,7 @@ export interface Inntektslinje {
     opptjeningsperiodeFom?: string;
     opptjeningsperiodeTom?: string;
     erMedIInntektsgrunnlag: boolean;
+    erOpptjentIPeriode: boolean;
 }
 
 export interface Beregning {
@@ -103,7 +105,7 @@ export interface Beregning {
     sumUtgifter: number;
     tjenestepensjon: number;
     tidligereUtbetalt: number;
-    fratrekkLonnFerie: number;
+    fratrekkLønnFerie: number;
     lønnFratrukketFerie: number;
 }
 
