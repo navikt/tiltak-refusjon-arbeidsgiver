@@ -46,7 +46,11 @@ export enum BedriftvalgType {
     ALLEBEDRIFTER = 'ALLEBEDRIFTER',
 }
 
-export interface Bedriftvalg {
+interface IObjectsBedriftvalg {
+    [key: string]: any;
+}
+
+export interface Bedriftvalg extends IObjectsBedriftvalg {
     type: BedriftvalgType;
     valgtOrg: Array<Organisasjon>;
     pageData: PageData;
@@ -90,7 +94,7 @@ export const initPageData: PageData = {
 };
 
 export const initBedriftvalg: Bedriftvalg = {
-    type: BedriftvalgType.ENKELBEDRIFT,
+    type: BedriftvalgType.ALLEBEDRIFTER,
     valgtOrg: [] as Array<Organisasjon>,
     pageData: initPageData,
     feilstatus: undefined,

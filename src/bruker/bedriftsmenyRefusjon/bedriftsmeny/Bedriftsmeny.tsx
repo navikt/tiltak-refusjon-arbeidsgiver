@@ -7,6 +7,7 @@ import MenyInnhold from '../menyInnhold/MenyInnhold';
 import Menyknapp from '../Menyknapp';
 import { ClsBedriftsmeny } from '../api/organisasjon';
 import SokEtterBedrifter from '../menyInnhold/sokEtterBedrift/SokEtterBedrifter';
+import useNavigation from '../api/useNavigation';
 
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
@@ -17,6 +18,10 @@ const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     useEffect(() => {
         hentOrg();
     }, [hentOrg]);
+
+    /*useEffect(() => {
+        useNavigation(valgtBedrift)
+    },[valgtBedrift])*/
 
     return (
         <div className={cls.className}>

@@ -3,6 +3,7 @@ import { Bedriftvalg, BedriftvalgType, initPageData, Juridiskenhet, Organisasjon
 import { History } from 'history';
 import {
     altinnOrganisasjonerErInitialisertMedEnIkkeTomList,
+    compareBedriftvalg,
     definereDefaultBedriftvalgTypeUtfraOrganisasjonsMatch,
     hentOrgnummerFraUrl,
     hentUnderenheter,
@@ -11,6 +12,8 @@ import {
     settOrgnummerIgress,
     valgtBedriftTypePaContextErLikAlleBedrifter,
 } from './organisasjon-Utils';
+import { NavigateFunction } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 function useOrganisasjon(
     orgtre: Juridiskenhet[] = [],
@@ -19,6 +22,15 @@ function useOrganisasjon(
     setValgtBedrift: (org: Bedriftvalg) => void,
     setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>
 ) {
+    const navigate: NavigateFunction = useNavigate();
+
+    const getBedriftSearchkey = (org: Bedriftvalg): string => {
+        if (org?.type === BedriftvalgType.ALLEBEDRIFTER) {
+            return BedriftvalgType.ALLEBEDRIFTER;
+        }
+        return org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
+    };
+
     const hentOrg = useCallback(() => {
         function settOrganisasjon(
             organisasjonsliste: Array<Organisasjon>,
@@ -28,14 +40,18 @@ function useOrganisasjon(
             if (skalsettOrgNrIngress) {
                 settOrgnummerIgress(organisasjonsliste?.[0]?.OrganizationNumber ?? '', history);
             }
+
             const valgtorg = {
                 type: bedriftvalgType,
                 valgtOrg: organisasjonsliste,
                 pageData: valgtBedrift?.pageData ?? initPageData,
                 feilstatus: valgtBedrift?.feilstatus ?? undefined,
             };
-            setBedriftvalg(valgtorg);
-            setValgtBedrift(valgtorg);
+
+            if (!compareBedriftvalg(valgtorg, valgtBedrift)) {
+                setBedriftvalg(valgtorg);
+                setValgtBedrift(valgtorg);
+            }
         }
 
         function setFallbackOrganisasjon(): void {
@@ -83,6 +99,12 @@ function useOrganisasjon(
                     return finnOgMatchOrganisasjonerFraAdresseFelt(orgnummerFraUrl);
                 }
                 return setFallbackOrganisasjon();
+            }
+        }
+
+        function hentOgSjekkOrgnrIngress2(): void {
+            if (altinnOrganisasjonerErInitialisertMedEnIkkeTomList(orgtre)) {
+                const orgnummerFraUrl: string | null = hentOrgnummerFraUrl();
             }
         }
 

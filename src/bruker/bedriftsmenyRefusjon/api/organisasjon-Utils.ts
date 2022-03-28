@@ -1,4 +1,4 @@
-import { BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
+import { Bedriftvalg, BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
 import { History } from 'history';
 
 const ORGNUMMER_PARAMETER = 'bedrift';
@@ -37,3 +37,25 @@ export const organisasjonerPaContextMatcherOrgFraUrl = (
     const valgtOrganisasjoner: string | undefined = valgtOrg?.map((o) => o.OrganizationNumber).join(',');
     return valgtOrganisasjoner === orgnummerFraUrl || valgtOrganisasjoner === BedriftvalgType.ALLEBEDRIFTER;
 };
+
+export const organisasjonerContextMatcherBedriftvalg = (valgtBedrift: Bedriftvalg) => {};
+
+export function compareBedriftvalg(valgtorg: Bedriftvalg, valgtBedrift: Bedriftvalg | undefined, keys?: string[]) {
+    let erLik: boolean = !!valgtBedrift;
+    if (valgtBedrift) {
+        const objectKeys = keys ?? Object.keys(valgtorg);
+        for (const key of objectKeys) {
+            if (typeof valgtorg[key] === 'object') {
+                const subkeys = Object.keys(valgtorg[key]);
+                for (const subkey of subkeys) {
+                    if (valgtorg[key][subkey] !== valgtBedrift[key][subkey]) {
+                        erLik = false;
+                    }
+                }
+            } else if (valgtorg[key] !== valgtBedrift[key]) {
+                erLik = false;
+            }
+        }
+    }
+    return erLik;
+}
