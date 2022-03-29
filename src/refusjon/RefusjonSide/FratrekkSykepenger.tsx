@@ -21,7 +21,6 @@ const FratrekkSykepenger: FunctionComponent<Properties> = ({ refusjon }: PropsWi
     const [belop, setBelop] = useState<number | undefined>();
 
     useEffect(() => {
-        console.log('fratrekkSykepenger', fratrekkSykepenger);
         setFratrekk(fratrekkSykepenger);
     }, [fratrekkSykepenger]);
     if (

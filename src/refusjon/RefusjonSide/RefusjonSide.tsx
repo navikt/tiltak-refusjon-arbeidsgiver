@@ -21,7 +21,6 @@ const RefusjonSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
-    console.log('ref ', refusjon);
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
