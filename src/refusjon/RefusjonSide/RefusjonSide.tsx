@@ -13,12 +13,15 @@ import InntekterFraAMeldingen from './InntekterFraAMeldingen';
 import './RefusjonSide.less';
 import RefusjonIngress from './RefusjonIngress';
 import RefusjonInnsending from './RefusjonInnsending';
+import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
+import FratrekkSykepenger from './FratrekkSykepenger';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
+    console.log('ref ', refusjon);
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
@@ -39,7 +42,8 @@ const RefusjonSide: FunctionComponent = () => {
                 <InformasjonFraAvtalen />
                 <VerticalSpacer rem={2} />
                 <InntekterFraAMeldingen kvitteringVisning={false} />
-                <VerticalSpacer rem={2} />
+                <InntekterFraTiltaketSpørsmål />
+                <FratrekkSykepenger refusjon={refusjon} />
                 <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
             </HvitBoks>
             {refusjon.harTattStillingTilAlleInntektslinjer && (

@@ -1,5 +1,4 @@
 import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
-import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import Utregning from '../../komponenter/Utregning';
 import SummeringBoks from './SummeringBoks';
@@ -19,7 +18,12 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState<boolean>(false);
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState<string>('');
 
-    if (!refusjon.harTattStillingTilAlleInntektslinjer) {
+    if (
+        !refusjon.harTattStillingTilAlleInntektslinjer ||
+        !refusjon.refusjonsgrunnlag.beregning ||
+        typeof refusjon.refusjonsgrunnlag.fratrekkSykepenger !== 'boolean' ||
+        typeof refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== 'boolean'
+    ) {
         return null;
     }
     const bekreftOpplysninger = () => {
@@ -36,35 +40,30 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
 
     return (
         <>
-            {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter?.find(
-                (inntekt) => inntekt.erMedIInntektsgrunnlag
-            ) && <InntekterFraTiltaketSpørsmål />}
             <VerticalSpacer rem={2} />
-            {refusjon.refusjonsgrunnlag.beregning && refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== undefined && (
-                <>
-                    <Utregning
-                        beregning={refusjon.refusjonsgrunnlag.beregning}
-                        tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
-                    />
-                    <VerticalSpacer rem={4} />
-                    <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
-                    <VerticalSpacer rem={1} />
+            <>
+                <Utregning
+                    beregning={refusjon.refusjonsgrunnlag.beregning}
+                    tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                />
+                <VerticalSpacer rem={4} />
+                <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                <VerticalSpacer rem={1} />
 
-                    <BekreftCheckboksPanel
-                        onChange={() => bekreftOpplysninger()}
-                        checked={bekrefetKorrekteOpplysninger}
-                        label="Jeg bekrefter at opplysningene er korrekte."
-                        feil={ikkeBekreftetFeilmelding}
-                    >
-                        NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene
-                        nyttes etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
-                    </BekreftCheckboksPanel>
-                    <VerticalSpacer rem={2} />
-                    <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
-                        Fullfør
-                    </LagreKnapp>
-                </>
-            )}
+                <BekreftCheckboksPanel
+                    onChange={() => bekreftOpplysninger()}
+                    checked={bekrefetKorrekteOpplysninger}
+                    label="Jeg bekrefter at opplysningene er korrekte."
+                    feil={ikkeBekreftetFeilmelding}
+                >
+                    NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene
+                    nyttes etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
+                </BekreftCheckboksPanel>
+                <VerticalSpacer rem={2} />
+                <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+                    Fullfør
+                </LagreKnapp>
+            </>
         </>
     );
 };
