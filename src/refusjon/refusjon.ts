@@ -109,6 +109,7 @@ export interface Beregning {
     fratrekkLønnFerie: number;
     lønnFratrukketFerie: number;
     fratrekkLonnSykepenger: number;
+    lønnFratrukketSykepenger: number;
 }
 
 export enum Korreksjonsgrunn {
