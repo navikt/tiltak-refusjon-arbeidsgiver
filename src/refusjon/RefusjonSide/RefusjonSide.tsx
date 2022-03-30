@@ -7,7 +7,7 @@ import InformasjonFraAvtalen from './InformasjonFraAvtalen';
 import InntekterFraAMeldingen from './InntekterFraAMeldingen';
 import './RefusjonSide.less';
 import RefusjonIngress from './RefusjonIngress';
-import RefusjonInnsending from './RefusjonInnsending';
+import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import FratrekkSykepenger from './FratrekkSykepenger';
 import RefusjonGodjennModal from './RefusjonGodjennModal';

@@ -28,6 +28,7 @@ const GråRamme = styled.div`
     border: 4px solid #eee;
     border-radius: 4px;
     padding: 1.5rem;
+    margin-bottom: 4rem;
 `;
 
 const Utregning: FunctionComponent<Props> = (props) => {
