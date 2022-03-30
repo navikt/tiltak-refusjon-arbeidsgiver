@@ -15,10 +15,10 @@ interface Properties {
 
 const FratrekkSykepenger: FunctionComponent<Properties> = ({ refusjon }: PropsWithChildren<Properties>) => {
     const { refusjonId } = useParams();
-    const { tilskuddsgrunnlag, inntektsgrunnlag, inntekterKunFraTiltaket, fratrekkSykepenger } =
+    const { tilskuddsgrunnlag, inntektsgrunnlag, inntekterKunFraTiltaket, fratrekkSykepenger, beregning } =
         refusjon.refusjonsgrunnlag;
     const [fratrekk, setFratrekk] = useState<boolean | undefined>(fratrekkSykepenger);
-    const [belop, setBelop] = useState<number | undefined>();
+    const [belop, setBelop] = useState<string>(beregning?.fratrekkLonnSykepenger?.toString() ?? '');
 
     useEffect(() => {
         setFratrekk(fratrekkSykepenger);
@@ -69,7 +69,7 @@ const FratrekkSykepenger: FunctionComponent<Properties> = ({ refusjon }: PropsWi
                     checked={fratrekk === false}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(!event.currentTarget.checked);
-                        setBelop(undefined);
+                        setBelop('');
                         settFratrekkSykepenger(refusjonId!, false, undefined);
                     }}
                 />
@@ -81,11 +81,10 @@ const FratrekkSykepenger: FunctionComponent<Properties> = ({ refusjon }: PropsWi
                         tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
                     } perioden`}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                        const verdi = event.currentTarget.value;
-                        if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent)
-                            setBelop(parseInt(verdi, 10));
+                        const verdi: string = event.currentTarget.value;
+                        if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) setBelop(verdi);
                     }}
-                    onBlur={() => settFratrekkSykepenger(refusjonId!, true, belop)}
+                    onBlur={() => settFratrekkSykepenger(refusjonId!, true, parseInt(belop, 10))}
                     value={belop}
                 />
             )}

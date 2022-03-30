@@ -26,7 +26,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const { inntektsgrunnlag, tilskuddsgrunnlag, inntekterKunFraTiltaket, endretBruttoLønn } =
         refusjon.refusjonsgrunnlag;
     const [inntekterKunTiltaket, setInntekterKunTiltaket] = useState<boolean | undefined>(inntekterKunFraTiltaket);
-    const [endringBruttoLønn, setEndringBruttoLønn] = useState<number | undefined>(endretBruttoLønn);
+    const [endringBruttoLønn, setEndringBruttoLønn] = useState<string>(endretBruttoLønn?.toString() ?? '');
 
     useEffect(() => {
         setInntekterKunTiltaket(inntekterKunFraTiltaket);
@@ -72,7 +72,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     checked={inntekterKunTiltaket === true}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setInntekterKunTiltaket(event.currentTarget.checked);
-                        setEndringBruttoLønn(undefined);
+                        setEndringBruttoLønn('');
                         endreBruttolønn(refusjonId!, true, undefined);
                     }}
                 />
@@ -92,13 +92,13 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                         label={`Skriv inn bruttolønn utbetalt for ${
                             tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
                         } perioden`}
-                        onChange={(event: any) => {
-                            const verdi = event.currentTarget.value;
-                            if (verdi.match(/^\d*$/) && verdi <= sumInntekterOpptjent) {
-                                setEndringBruttoLønn(parseInt(verdi, 10));
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                            const verdi: string = event.currentTarget.value;
+                            if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {
+                                setEndringBruttoLønn(verdi);
                             }
                         }}
-                        onBlur={() => endreBruttolønn(refusjonId!, false, endringBruttoLønn)}
+                        onBlur={() => endreBruttolønn(refusjonId!, false, parseInt(endringBruttoLønn, 10))}
                         value={endringBruttoLønn}
                     />
                 </>
