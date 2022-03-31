@@ -69,7 +69,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelSats={props.tilskuddsgrunnlag.arbeidsgiveravgiftSats}
                 verdiOperator={<PlussTegn />}
                 verdi={beregning?.arbeidsgiveravgift || 0}
-                border="TYKK"
+                border={beregning && beregning?.tidligereRefundertBeløp > 0 ? 'TYKK' : undefined}
             />
             {beregning && beregning?.tidligereRefundertBeløp > 0 ? (
                 <>
