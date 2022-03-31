@@ -9,7 +9,7 @@ import './RefusjonSide.less';
 import RefusjonIngress from './RefusjonIngress';
 import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
-import FratrekkSykepenger from './FratrekkSykepenger';
+import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
 import RefusjonGodjennModal from './RefusjonGodjennModal';
 
 const RefusjonSide: FunctionComponent = () => {
@@ -17,6 +17,7 @@ const RefusjonSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
+    console.log('ref', refusjon);
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
@@ -37,7 +38,7 @@ const RefusjonSide: FunctionComponent = () => {
                 <InformasjonFraAvtalen />
                 <InntekterFraAMeldingen kvitteringVisning={false} />
                 <InntekterFraTiltaketSpørsmål />
-                <FratrekkSykepenger refusjon={refusjon} />
+                <TidligereRefunderbarBeløp refusjon={refusjon} />
                 <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
             </HvitBoks>
             <RefusjonGodjennModal

@@ -6,23 +6,23 @@ import { Input, RadioPanel } from 'nav-frontend-skjema';
 import { tiltakstypeTekst } from '../../messages';
 import { Refusjon } from '../refusjon';
 import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
-import { settFratrekkSykepenger } from '../../services/rest-service';
+import { settTidligereRefunderbarBeløp } from '../../services/rest-service';
 import { useParams } from 'react-router';
 
 interface Properties {
     refusjon: Refusjon;
 }
 
-const FratrekkSykepenger: FunctionComponent<Properties> = ({ refusjon }: PropsWithChildren<Properties>) => {
+const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }: PropsWithChildren<Properties>) => {
     const { refusjonId } = useParams();
-    const { tilskuddsgrunnlag, inntektsgrunnlag, inntekterKunFraTiltaket, fratrekkSykepenger, beregning } =
+    const { tilskuddsgrunnlag, inntektsgrunnlag, inntekterKunFraTiltaket, fratrekkRefunderbarBeløp, beregning } =
         refusjon.refusjonsgrunnlag;
-    const [fratrekk, setFratrekk] = useState<boolean | undefined>(fratrekkSykepenger);
-    const [belop, setBelop] = useState<string>(beregning?.fratrekkLonnSykepenger?.toString() ?? '');
+    const [fratrekk, setFratrekk] = useState<boolean | undefined>(fratrekkRefunderbarBeløp);
+    const [belop, setBelop] = useState<string>(beregning?.tidligereRefundertBeløp?.toString() ?? '');
 
     useEffect(() => {
-        setFratrekk(fratrekkSykepenger);
-    }, [fratrekkSykepenger]);
+        setFratrekk(fratrekkRefunderbarBeløp);
+    }, [fratrekkRefunderbarBeløp]);
     if (
         inntektsgrunnlag === undefined ||
         !refusjon.harTattStillingTilAlleInntektslinjer ||
@@ -70,7 +70,7 @@ const FratrekkSykepenger: FunctionComponent<Properties> = ({ refusjon }: PropsWi
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(!event.currentTarget.checked);
                         setBelop('');
-                        settFratrekkSykepenger(refusjonId!, false, undefined);
+                        settTidligereRefunderbarBeløp(refusjonId!, false, undefined);
                     }}
                 />
             </div>
@@ -84,11 +84,11 @@ const FratrekkSykepenger: FunctionComponent<Properties> = ({ refusjon }: PropsWi
                         const verdi: string = event.currentTarget.value;
                         if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) setBelop(verdi);
                     }}
-                    onBlur={() => settFratrekkSykepenger(refusjonId!, true, parseInt(belop, 10))}
+                    onBlur={() => settTidligereRefunderbarBeløp(refusjonId!, true, parseInt(belop, 10))}
                     value={belop}
                 />
             )}
         </div>
     );
 };
-export default FratrekkSykepenger;
+export default TidligereRefunderbarBeløp;

@@ -1,10 +1,10 @@
-import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
 import Utregning from '../../../komponenter/Utregning';
 import SummeringBoks from '../SummeringBoks';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import LagreKnapp from '../../../komponenter/LagreKnapp';
 import { Refusjon } from '../../refusjon';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import BEMHelper from '../../../utils/bem';
 import './refusjonInnsending.less';
 
@@ -19,19 +19,13 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
 }: PropsWithChildren<Properties>) => {
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState<boolean>(false);
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState<string>('');
-    const [sluttsumForLiten, setSluttsumForLiten] = useState<boolean>(false);
     const cls = BEMHelper('refusjonInnsending');
-    const { harTattStillingTilAlleInntektslinjer } = refusjon;
     const sluttsummen: number | undefined = refusjon.refusjonsgrunnlag?.beregning?.refusjonsbeløp;
-
-    useEffect(() => {
-        setSluttsumForLiten(false);
-    }, [harTattStillingTilAlleInntektslinjer]);
 
     if (
         !refusjon.harTattStillingTilAlleInntektslinjer ||
         !refusjon.refusjonsgrunnlag.beregning ||
-        typeof refusjon.refusjonsgrunnlag.fratrekkSykepenger !== 'boolean' ||
+        typeof refusjon.refusjonsgrunnlag.fratrekkRefunderbarBeløp !== 'boolean' ||
         typeof refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== 'boolean'
     ) {
         return null;
@@ -42,7 +36,6 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     };
 
     const fullførRefusjon = async (): Promise<void> => {
-        if (sluttsummen && sluttsummen < 1) return setSluttsumForLiten(true);
         if (bekrefetKorrekteOpplysninger) {
             return setVisGodkjennModal(true);
         }
@@ -66,12 +59,17 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene nyttes
                 etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
             </BekreftCheckboksPanel>
-            <div className={cls.element('sluttsumForLiten', sluttsumForLiten ? 'vis-melding' : '')}>
-                <AlertStripeFeil>Kan ikke sende inn refusjonskrav hvor summen ikke overstiger 0 kr</AlertStripeFeil>
-            </div>
-            <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
-                Fullfør
-            </LagreKnapp>
+            {sluttsummen && sluttsummen < 1 ? (
+                <div className={cls.element('sluttsumForLiten')}>
+                    <AlertStripeAdvarsel>
+                        Kan ikke sende inn refusjonskrav hvor summen ikke overstiger 0 kr
+                    </AlertStripeAdvarsel>
+                </div>
+            ) : (
+                <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+                    Fullfør
+                </LagreKnapp>
+            )}
         </div>
     );
 };

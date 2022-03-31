@@ -47,7 +47,7 @@ export interface Refusjonsgrunnlag {
     tilskuddsgrunnlag: Tilskuddsgrunnlag;
     inntektsgrunnlag?: Inntektsgrunnlag;
     inntekterKunFraTiltaket?: boolean;
-    fratrekkSykepenger?: boolean;
+    fratrekkRefunderbarBeløp?: boolean;
     endretBruttoLønn?: number;
     bedriftKontonummer?: string;
     beregning?: Beregning;
@@ -108,8 +108,8 @@ export interface Beregning {
     tidligereUtbetalt: number;
     fratrekkLønnFerie: number;
     lønnFratrukketFerie: number;
-    fratrekkLonnSykepenger: number;
-    lønnFratrukketSykepenger: number;
+    tidligereRefundertBeløp: number;
+    sumUtgifterFratrukketRefundertBeløp: number;
 }
 
 export enum Korreksjonsgrunn {

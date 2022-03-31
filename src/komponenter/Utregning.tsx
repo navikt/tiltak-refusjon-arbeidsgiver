@@ -6,7 +6,6 @@ import { ReactComponent as PlussTegn } from '@/asset/image/plussTegn.svg';
 import { ReactComponent as ProsentTegn } from '@/asset/image/prosentTegn.svg';
 import { ReactComponent as Sparegris } from '@/asset/image/sparegris.svg';
 import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
-import { ReactComponent as Sykepenger } from '@/asset/image/sykepenger.svg';
 import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprosent.svg';
 import { ReactComponent as RefusjonAvLønn } from '@/asset/image/refusjonAvLønn.svg';
 import { ReactComponent as Endret } from '@/asset/image/endret.svg';
@@ -42,14 +41,6 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelTekst={'Brutto lønn i perioden'}
                 verdi={beregning?.lønn || 0}
             />
-            {beregning && beregning?.fratrekkLonnSykepenger > 0 && (
-                <Utregningsrad
-                    labelIkon={<Sykepenger />}
-                    labelTekst="fratrekk for sykepenger"
-                    verdiOperator={<MinusTegn />}
-                    verdi={beregning?.fratrekkLonnSykepenger}
-                />
-            )}
             {beregning && beregning.fratrekkLønnFerie > 0 && (
                 <Utregningsrad
                     labelIkon={<Endret />}
@@ -78,13 +69,39 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelSats={props.tilskuddsgrunnlag.arbeidsgiveravgiftSats}
                 verdiOperator={<PlussTegn />}
                 verdi={beregning?.arbeidsgiveravgift || 0}
+                border="TYKK"
             />
-            <Utregningsrad
-                labelIkon={<Pengesekken />}
-                labelTekst="Refusjonsgrunnlag"
-                verdiOperator={<ErlikTegn />}
-                verdi={beregning?.sumUtgifter || 0}
-            />
+            {beregning && beregning?.tidligereRefundertBeløp > 0 ? (
+                <>
+                    <Utregningsrad
+                        labelIkon={<Pengesekken />}
+                        labelTekst="Sum brutto lønnsutgifter"
+                        verdiOperator={<ErlikTegn />}
+                        verdi={beregning?.sumUtgifter || 0}
+                    />
+                    <Utregningsrad
+                        labelIkon={<Endret />}
+                        labelTekst="Refunderbar lønn"
+                        verdiOperator={<MinusTegn />}
+                        verdi={beregning?.tidligereRefundertBeløp}
+                    />
+                    <Utregningsrad
+                        labelIkon={<Pengesekken />}
+                        labelTekst="Refusjonsgrunnlag"
+                        verdiOperator={<ErlikTegn />}
+                        verdi={beregning?.sumUtgifterFratrukketRefundertBeløp}
+                        border="TYKK"
+                    />
+                </>
+            ) : (
+                <Utregningsrad
+                    labelIkon={<Pengesekken />}
+                    labelTekst="Refusjonsgrunnlag"
+                    verdiOperator={<ErlikTegn />}
+                    verdi={beregning?.sumUtgifter || 0}
+                    border="TYKK"
+                />
+            )}
             <Utregningsrad
                 labelIkon={<Stillingsprosent />}
                 labelTekst="Tilskuddsprosent"
@@ -92,6 +109,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 ikkePenger
                 verdi={tilskuddsgrunnlag.lønnstilskuddsprosent}
             />
+
             <VerticalSpacer rem={3} />
             {beregning && (beregning.overTilskuddsbeløp || beregning.tidligereUtbetalt > 0) && (
                 <Utregningsrad
