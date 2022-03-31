@@ -1,6 +1,6 @@
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import KnappBase, { Knapp, KnappBaseProps } from 'nav-frontend-knapper';
-import React, { FunctionComponent, HTMLAttributes, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, HTMLAttributes, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Nettressurs, Status } from '../nettressurs';
 import { handterFeil } from '../utils/apiFeilUtils';
 import VerticalSpacer from './VerticalSpacer';
@@ -8,22 +8,22 @@ import VerticalSpacer from './VerticalSpacer';
 type Props = {
     lagreFunksjon: () => Promise<any>;
     avbryt: () => void;
-} & HTMLAttributes<HTMLDivElement>;
+    attributes?: KnappBaseProps & HTMLAttributes<HTMLDivElement>;
+};
 
-const LagreOgAvbrytKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
+const LagreOgAvbrytKnapp: FunctionComponent<Props & KnappBaseProps> = (
+    props: PropsWithChildren<Props & KnappBaseProps>
+) => {
     const [oppslag, setOppslag] = useState<Nettressurs<any>>({ status: Status.IkkeLastet });
     const [feilmelding, setFeilmelding] = useState('');
 
-    const knappBaseProps = Object.assign({}, props);
-    //delete knappBaseProps.lagreFunksjon;
-
+    const knappBaseProps = Object.assign({}, props.attributes);
     const feilRef = useRef<HTMLDivElement>(null);
 
     const onClick = async () => {
         try {
             setOppslag({ status: Status.LasterInn });
-            await props.lagreFunksjon();
-            setOppslag({ status: Status.Sendt });
+            await props.lagreFunksjon().then(() => setOppslag({ status: Status.Sendt }));
         } catch (error: any) {
             setOppslag({ status: Status.Feil, error: error.feilmelding ?? 'Uventet feil' });
             handterFeil(error, setFeilmelding);
@@ -45,7 +45,9 @@ const LagreOgAvbrytKnapp: FunctionComponent<Props & KnappBaseProps> = (props) =>
                     onClick={onClick}
                     type="hoved"
                     {...knappBaseProps}
-                />
+                >
+                    {props.children ?? ''}
+                </KnappBase>
                 <Knapp onClick={props.avbryt}>Avbryt</Knapp>
             </div>
             {oppslag.status === Status.Feil && (

@@ -19,7 +19,7 @@ const IkonRad = styled.div`
 `;
 
 const GråBoks = styled.div`
-    background-color: #eee;
+    background-color: #f7f7f7;
     border-radius: 4px;
     padding: 1.5rem;
 `;

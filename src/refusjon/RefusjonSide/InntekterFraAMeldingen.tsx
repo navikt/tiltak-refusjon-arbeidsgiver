@@ -13,9 +13,10 @@ import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNED
 import { formatterPenger } from '../../utils/PengeUtils';
 
 const GråBoks = styled.div`
-    background-color: #eee;
+    background-color: #f7f7f7;
     border-radius: 4px;
     padding: 1.5rem min(1.5rem, 2%);
+    margin-top: 2rem;
 `;
 
 const Fleks = styled.div`
@@ -48,9 +49,8 @@ export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
         return '';
     } else if (beskrivelse === '') {
         return 'Inntekt';
-    } else {
-        return lønnsbeskrivelseTekst[beskrivelse] ?? 'Inntekt: ' + beskrivelse;
     }
+    return lønnsbeskrivelseTekst[beskrivelse] ?? 'Inntekt: ' + beskrivelse;
 };
 
 export interface Props {

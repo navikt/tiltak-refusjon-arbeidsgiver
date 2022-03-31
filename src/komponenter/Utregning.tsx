@@ -6,6 +6,9 @@ import { ReactComponent as PlussTegn } from '@/asset/image/plussTegn.svg';
 import { ReactComponent as ProsentTegn } from '@/asset/image/prosentTegn.svg';
 import { ReactComponent as Sparegris } from '@/asset/image/sparegris.svg';
 import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
+import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprosent.svg';
+import { ReactComponent as RefusjonAvLønn } from '@/asset/image/refusjonAvLønn.svg';
+import { ReactComponent as Endret } from '@/asset/image/endret.svg';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
@@ -24,9 +27,11 @@ const GråRamme = styled.div`
     border: 4px solid #eee;
     border-radius: 4px;
     padding: 1.5rem;
+    margin-bottom: 4rem;
 `;
 
 const Utregning: FunctionComponent<Props> = (props) => {
+    const { beregning, tilskuddsgrunnlag } = props;
     return (
         <GråRamme>
             <Systemtittel>Utregningen</Systemtittel>
@@ -34,91 +39,118 @@ const Utregning: FunctionComponent<Props> = (props) => {
             <Utregningsrad
                 labelIkon={<Pengesekken />}
                 labelTekst={'Brutto lønn i perioden'}
-                verdi={props.beregning?.lønn || 0}
+                verdi={beregning?.lønn || 0}
             />
-            {props.beregning && props.beregning.fratrekkLønnFerie > 0 && (
-                <>
-                    <Utregningsrad
-                        labelTekst="fratrekk for ferie"
-                        verdiOperator={<MinusTegn />}
-                        verdi={props.beregning.fratrekkLønnFerie}
-                    />
-                    <Utregningsrad
-                        labelTekst="Lønn trukket fra ferie"
-                        verdiOperator={<ErlikTegn />}
-                        verdi={props.beregning.lønnFratrukketFerie}
-                    />
-                </>
+            {beregning && beregning.fratrekkLønnFerie > 0 && (
+                <Utregningsrad
+                    labelIkon={<Endret />}
+                    labelTekst="fratrekk for ferie"
+                    verdiOperator={<MinusTegn />}
+                    verdi={beregning.fratrekkLønnFerie}
+                />
             )}
             <Utregningsrad
                 labelIkon={<Stranden />}
                 labelTekst="Feriepenger"
                 labelSats={props.tilskuddsgrunnlag.feriepengerSats}
                 verdiOperator={<PlussTegn />}
-                verdi={props.beregning?.feriepenger || 0}
+                verdi={beregning?.feriepenger || 0}
             />
             <Utregningsrad
                 labelIkon={<Sparegris />}
                 labelTekst="Innskudd obligatorisk tjenestepensjon"
                 labelSats={props.tilskuddsgrunnlag.otpSats}
                 verdiOperator={<PlussTegn />}
-                verdi={props.beregning?.tjenestepensjon || 0}
+                verdi={beregning?.tjenestepensjon || 0}
             />
             <Utregningsrad
                 labelIkon={<Bygg />}
                 labelTekst="Arbeidsgiveravgift"
                 labelSats={props.tilskuddsgrunnlag.arbeidsgiveravgiftSats}
                 verdiOperator={<PlussTegn />}
-                verdi={props.beregning?.arbeidsgiveravgift || 0}
+                verdi={beregning?.arbeidsgiveravgift || 0}
+                border={beregning && beregning?.tidligereRefundertBeløp > 0 ? 'TYKK' : undefined}
             />
-            <Utregningsrad
-                labelTekst="Refusjonsgrunnlag"
-                verdiOperator={<ErlikTegn />}
-                verdi={props.beregning?.sumUtgifter || 0}
-            />
-            <Utregningsrad
-                labelTekst="Tilskuddsprosent"
-                verdiOperator={<ProsentTegn />}
-                ikkePenger
-                verdi={props.tilskuddsgrunnlag.lønnstilskuddsprosent}
-            />
-            <VerticalSpacer rem={3} />
-            {props.beregning && (props.beregning.overTilskuddsbeløp || props.beregning.tidligereUtbetalt > 0) && (
+            {beregning && beregning?.tidligereRefundertBeløp > 0 ? (
+                <>
+                    <Utregningsrad
+                        labelIkon={<Pengesekken />}
+                        labelTekst="Sum brutto lønnsutgifter"
+                        verdiOperator={<ErlikTegn />}
+                        verdi={beregning?.sumUtgifter || 0}
+                    />
+                    <Utregningsrad
+                        labelIkon={<Endret />}
+                        labelTekst="Refunderbar lønn"
+                        verdiOperator={<MinusTegn />}
+                        verdi={beregning?.tidligereRefundertBeløp}
+                    />
+                    <Utregningsrad
+                        labelIkon={<Pengesekken />}
+                        labelTekst="Refusjonsgrunnlag"
+                        verdiOperator={<ErlikTegn />}
+                        verdi={beregning?.sumUtgifterFratrukketRefundertBeløp}
+                        border="TYKK"
+                    />
+                </>
+            ) : (
                 <Utregningsrad
-                    labelTekst="Beregning basert på innhentede innteker"
+                    labelIkon={<Pengesekken />}
+                    labelTekst="Refusjonsgrunnlag"
                     verdiOperator={<ErlikTegn />}
-                    verdi={props.beregning.beregnetBeløp}
+                    verdi={beregning?.sumUtgifter || 0}
                     border="TYKK"
                 />
             )}
-            {props.beregning && props.beregning.overTilskuddsbeløp && props.beregning.tidligereUtbetalt > 0 && (
+            <Utregningsrad
+                labelIkon={<Stillingsprosent />}
+                labelTekst="Tilskuddsprosent"
+                verdiOperator={<ProsentTegn />}
+                ikkePenger
+                verdi={tilskuddsgrunnlag.lønnstilskuddsprosent}
+            />
+
+            <VerticalSpacer rem={3} />
+            {beregning && (beregning.overTilskuddsbeløp || beregning.tidligereUtbetalt > 0) && (
                 <Utregningsrad
+                    labelIkon={<Pengesekken />}
+                    labelTekst="Beregning basert på innhentede innteker"
+                    verdiOperator={<ErlikTegn />}
+                    verdi={beregning.beregnetBeløp}
+                    border="TYKK"
+                />
+            )}
+            {beregning && beregning.overTilskuddsbeløp && beregning.tidligereUtbetalt > 0 && (
+                <Utregningsrad
+                    labelIkon={<Pengesekken />}
                     labelTekst="Tilskuddsbeløp (avtalt beløp for perioden)"
                     verdi={props.tilskuddsgrunnlag.tilskuddsbeløp}
                     border="TYKK"
                 />
             )}
-            {props.beregning && props.beregning.tidligereUtbetalt > 0 && (
+            {beregning && beregning.tidligereUtbetalt > 0 && (
                 <Utregningsrad
+                    labelIkon={<Endret />}
                     labelTekst="Tidligere utbetalt"
                     verdiOperator={<MinusTegn />}
-                    verdi={props.beregning.tidligereUtbetalt}
+                    verdi={beregning.tidligereUtbetalt}
                     border="TYKK"
                 />
             )}
 
             <Utregningsrad
+                labelIkon={<RefusjonAvLønn />}
                 labelTekst="Refusjonsbeløp"
                 verdiOperator={<ErlikTegn />}
-                verdi={props.beregning?.refusjonsbeløp ?? 'kan ikke beregne'}
-                ikkePenger={props.beregning === undefined}
+                verdi={beregning?.refusjonsbeløp ?? 'kan ikke beregne'}
+                ikkePenger={beregning === undefined}
                 border="TYKK"
             />
             <VerticalSpacer rem={1} />
-            {props.beregning?.overTilskuddsbeløp && (
+            {beregning?.overTilskuddsbeløp && (
                 <AlertStripeAdvarsel>
                     Beregnet beløp er høyere enn refusjonsbeløpet. Avtalt beløp er inntil{' '}
-                    {formatterPenger(props.tilskuddsgrunnlag.tilskuddsbeløp)} for denne perioden. Lønn i denne
+                    {formatterPenger(tilskuddsgrunnlag.tilskuddsbeløp)} for denne perioden. Lønn i denne
                     refusjonsperioden kan ikke endres og dere vil få utbetalt maks av avtalt beløp.
                 </AlertStripeAdvarsel>
             )}
