@@ -5,7 +5,8 @@ export type Feilkode =
     | 'EREGOPPSLAG_LITE_INFO'
     | 'TEKNISK_FEIL_EREGOPPSLAG_FANT_IKKE_BEDRIFT'
     | 'TEKNISK_FEIL_EREGOPPSLAG'
-    | 'INGEN_BEDRIFTKONTONUMMER';
+    | 'INGEN_BEDRIFTKONTONUMMER'
+    | 'REFUSJON_BELOP_NEGATIVT_TALL';
 
 export const Feilmeldinger: { [key in Feilkode]: string } = {
     INGEN_BEDRIFTKONTONUMMER: 'Mangler kontonummer for bedriften',
@@ -17,4 +18,5 @@ export const Feilmeldinger: { [key in Feilkode]: string } = {
     TEKNISK_FEIL_EREGOPPSLAG:
         'Feil ved henting av bedriftens adresse. Vennligst se om du har riktig opplysninger på https://brreg.no',
     UGYLDIG_STATUS: 'Handlingen kan ikke utføres fordi refusjonen har ugyldig status.',
+    REFUSJON_BELOP_NEGATIVT_TALL: 'Refusjonsbeløpet kan ikke være et negativt tall',
 };

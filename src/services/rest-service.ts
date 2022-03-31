@@ -55,6 +55,19 @@ export const endreBruttolønn = async (
     return response.data;
 };
 
+export const settTidligereRefunderbarBeløp = async (
+    refusjonId: string,
+    fratrekkRefunderbarBeløp: boolean | null,
+    refunderbarBeløp?: number | null
+) => {
+    const response = await api.post(`/refusjon/${refusjonId}/fratrekk-sykepenger`, {
+        fratrekkRefunderbarBeløp,
+        refunderbarBeløp,
+    });
+    await mutate(`/refusjon/${refusjonId}`);
+    return response.data;
+};
+
 export const setInntektslinjeOpptjentIPeriode = async (
     refusjonId: string,
     inntektslinjeId: string,

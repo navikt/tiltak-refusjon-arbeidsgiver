@@ -13,6 +13,7 @@ const Boks = styled.div`
     border: 3px solid #cce1f3;
     border-radius: 4px;
     padding: 1.75rem;
+    margin-bottom: 1rem;
 `;
 
 type Props = {
