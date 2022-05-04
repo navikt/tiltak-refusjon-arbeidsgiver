@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Radio } from 'nav-frontend-skjema';
 import { setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
 import { Inntektslinje } from '../../../refusjon';
@@ -11,13 +11,19 @@ interface Props {
 
 const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, refusjonId }: Props) => {
     const { erOpptjentIPeriode } = inntekt;
+    const [checked, setChecked] = useState<boolean | undefined>(erOpptjentIPeriode);
+
+    useEffect(() => {
+        if (erOpptjentIPeriode !== checked) setChecked(erOpptjentIPeriode);
+    }, [erOpptjentIPeriode, checked]);
+
     return (
         <td>
             {!kvitteringVisning && (
                 <div className="inntektsmelding__inntektsvalg">
                     <Radio
                         label="Ja"
-                        checked={erOpptjentIPeriode}
+                        checked={checked === true}
                         onChange={(e) => {
                             setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, true);
                         }}
@@ -25,7 +31,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                     />
                     <Radio
                         label="Nei"
-                        checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
+                        checked={checked === false}
                         onChange={(e) => {
                             setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, false);
                         }}
