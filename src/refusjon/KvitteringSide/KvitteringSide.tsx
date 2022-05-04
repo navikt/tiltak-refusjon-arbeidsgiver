@@ -12,7 +12,7 @@ import { formatterDato, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import { Refusjon } from '../refusjon';
 import InformasjonFraAvtalen from '../RefusjonSide/InformasjonFraAvtalen';
-import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
+import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import InntekterFraAMeldingenGammel from '../RefusjonSide/InntekterFraAMeldingenGammel';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import InntekterFraTiltaketSvarGammel from '../RefusjonSide/InntekterFraTiltaketSvarGammel';

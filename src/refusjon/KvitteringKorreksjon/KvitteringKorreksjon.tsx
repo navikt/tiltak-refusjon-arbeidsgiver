@@ -11,7 +11,7 @@ import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service'
 import { formatterDato, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import InformasjonFraAvtalen from '../RefusjonSide/InformasjonFraAvtalen';
-import InntekterFraAMeldingen from '../RefusjonSide/InntekterFraAMeldingen';
+import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';

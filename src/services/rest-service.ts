@@ -73,12 +73,11 @@ export const setInntektslinjeOpptjentIPeriode = async (
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
 ) => {
-    const response = await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
         inntektslinjeId,
         erOpptjentIPeriode,
     });
     await mutate(`/refusjon/${refusjonId}`);
-    return response.data;
 };
 
 export const godkjennRefusjon = async (refusjonId: string) => {

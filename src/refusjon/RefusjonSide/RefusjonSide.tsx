@@ -4,7 +4,7 @@ import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 import InformasjonFraAvtalen from './InformasjonFraAvtalen';
-import InntekterFraAMeldingen from './InntekterFraAMeldingen';
+import InntekterFraAMeldingen from './inntektsmelding/InntekterFraAMeldingen';
 import './RefusjonSide.less';
 import RefusjonIngress from './RefusjonIngress';
 import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';

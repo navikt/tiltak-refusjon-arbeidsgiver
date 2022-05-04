@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { Inntektslinje } from '../refusjon';
-import { inntektBeskrivelse } from './InntekterFraAMeldingen';
+import { inntektBeskrivelse } from './inntektsmelding/InntekterFraAMeldingen';
 
 type Props = {
     inntekter: Inntektslinje[];
