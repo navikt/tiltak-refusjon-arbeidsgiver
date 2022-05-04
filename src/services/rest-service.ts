@@ -11,7 +11,7 @@ export class ApiError extends Error {}
 
 const api = axios.create({
     baseURL: '/api/arbeidsgiver',
-    timeout: 30000,
+    timeout: 35000,
     withCredentials: true,
     headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' },
     validateStatus: (status) => status < 400,
@@ -73,11 +73,15 @@ export const setInntektslinjeOpptjentIPeriode = async (
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
 ) => {
-    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
-        inntektslinjeId,
-        erOpptjentIPeriode,
-    });
-    await mutate(`/refusjon/${refusjonId}`);
+    try {
+        await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+            inntektslinjeId,
+            erOpptjentIPeriode,
+        });
+        await mutate(`/refusjon/ ${refusjonId}`);
+    } catch (e) {
+        console.log('oppdatere inntektslinje feilet. Feilmelding: ', e);
+    }
 };
 
 export const godkjennRefusjon = async (refusjonId: string) => {
