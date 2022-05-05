@@ -49,7 +49,7 @@ const KvitteringSide: FunctionComponent = () => {
             <VerticalSpacer rem={2} />
             {refusjon.harTattStillingTilAlleInntektslinjer ? (
                 <>
-                    <InntekterFraAMeldingen kvitteringVisning={true} refusjon={refusjon} />
+                    <InntekterFraAMeldingen kvitteringVisning={true} />
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                 </>

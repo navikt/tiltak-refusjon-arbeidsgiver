@@ -8,6 +8,9 @@ import KvitteringSide from '../KvitteringSide/KvitteringSide';
 import { RefusjonStatus } from '../status';
 import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
+import { Refusjon as RefusjonType } from '../refusjon';
+
+export const RefusjonContext = React.createContext<RefusjonType>({} as RefusjonType);
 
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -24,7 +27,11 @@ const Komponent: FunctionComponent = () => {
                 />
             );
         case RefusjonStatus.KLAR_FOR_INNSENDING:
-            return <RefusjonSide />;
+            return (
+                <RefusjonContext.Provider value={refusjon}>
+                    <RefusjonSide />
+                </RefusjonContext.Provider>
+            );
         case RefusjonStatus.UTGÅTT:
             return (
                 <FeilSide

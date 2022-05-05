@@ -1,7 +1,7 @@
-import React, { FunctionComponent, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import React, { FunctionComponent, useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
-import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
+import { godkjennRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 import InformasjonFraAvtalen from './informasjonAvtalen/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from './inntektsmelding/InntekterFraAMeldingen';
@@ -11,16 +11,16 @@ import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
 import RefusjonGodjennModal from './RefusjonGodjennModal';
+import { RefusjonContext } from './Refusjon';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
+    const refusjon = useContext(RefusjonContext);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
-            await godkjennRefusjon(refusjonId!).then(() => {
+            await godkjennRefusjon(refusjon.id).then(() => {
                 navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
                 innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
             });
@@ -36,7 +36,7 @@ const RefusjonSide: FunctionComponent = () => {
             <HvitBoks>
                 <RefusjonIngress refusjon={refusjon} />
                 <InformasjonFraAvtalen />
-                <InntekterFraAMeldingen kvitteringVisning={false} refusjon={refusjon} />
+                <InntekterFraAMeldingen kvitteringVisning={false} />
                 <InntekterFraTiltaketSpørsmål />
                 <TidligereRefunderbarBeløp refusjon={refusjon} />
                 <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
