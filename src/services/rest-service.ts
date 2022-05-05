@@ -89,6 +89,7 @@ export const setInntektslinjeOpptjentIPeriode = async (
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
 ): Promise<void> => {
+    console.log('sender postkall til: ', `/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`);
     const response = await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
         inntektslinjeId,
         erOpptjentIPeriode,
