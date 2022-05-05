@@ -17,7 +17,7 @@ const api = axios.create({
     validateStatus: (status) => status < 400,
 });
 
-const getAxiosRequestMethod = (url: string, method: string, data?: Object) => {
+/*const getAxiosRequestMethod = (url: string, method: string, data?: Object) => {
     switch (method) {
         case 'post':
             return api
@@ -31,7 +31,7 @@ const getAxiosRequestMethod = (url: string, method: string, data?: Object) => {
                 .then((res: AxiosResponse<any>) => res.data)
                 .catch((err) => console.log('operasjon feilet. response: ', err));
     }
-};
+};*/
 
 const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res: AxiosResponse<any>) => res.data);
 
