@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import React, { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
-import { useHentRefusjon } from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_MÅNEDÅR_FORMAT } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
@@ -16,6 +14,7 @@ import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
 import HarInntekterMenIkkeForHeleTilskuddsperioden from './inntektsmeldingVarsel/HarInntekterMenIkkeForHeleTilskuddsperioden';
 import InntektValg from './inntektsmeldingTabell/InntektValg';
+import { Refusjon } from '../../refusjon';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -25,12 +24,11 @@ export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 
 export interface Props {
     kvitteringVisning: boolean;
+    refusjon: Refusjon;
 }
 
-const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning }) => {
+const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning, refusjon }: Props) => {
     const cls = BEMHelper('inntektsmelding');
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
     const { inntektsgrunnlag } = refusjon.refusjonsgrunnlag;
 
     const {

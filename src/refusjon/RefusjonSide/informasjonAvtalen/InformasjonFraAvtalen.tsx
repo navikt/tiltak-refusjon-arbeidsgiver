@@ -4,12 +4,12 @@ import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
-import EksternLenke from '../../komponenter/EksternLenke/EksternLenke';
-import VerticalSpacer from '../../komponenter/VerticalSpacer';
-import { tiltakstypeTekst } from '../../messages';
-import { useHentRefusjon } from '../../services/rest-service';
-import { formatterDato, formatterPeriode } from '../../utils/datoUtils';
-import { formatterPenger } from '../../utils/PengeUtils';
+import EksternLenke from '../../../komponenter/EksternLenke/EksternLenke';
+import VerticalSpacer from '../../../komponenter/VerticalSpacer';
+import { tiltakstypeTekst } from '../../../messages';
+import { useHentRefusjon } from '../../../services/rest-service';
+import { formatterDato, formatterPeriode } from '../../../utils/datoUtils';
+import { formatterPenger } from '../../../utils/PengeUtils';
 
 const IkonRad = styled.div`
     display: flex;

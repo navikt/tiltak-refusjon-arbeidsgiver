@@ -11,7 +11,7 @@ import { useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import { Refusjon } from '../refusjon';
-import InformasjonFraAvtalen from '../RefusjonSide/InformasjonFraAvtalen';
+import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import InntekterFraAMeldingenGammel from '../RefusjonSide/InntekterFraAMeldingenGammel';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
@@ -49,7 +49,7 @@ const KvitteringSide: FunctionComponent = () => {
             <VerticalSpacer rem={2} />
             {refusjon.harTattStillingTilAlleInntektslinjer ? (
                 <>
-                    <InntekterFraAMeldingen kvitteringVisning={true} />
+                    <InntekterFraAMeldingen kvitteringVisning={true} refusjon={refusjon} />
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                 </>

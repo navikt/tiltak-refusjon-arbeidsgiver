@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
-import InformasjonFraAvtalen from './InformasjonFraAvtalen';
+import InformasjonFraAvtalen from './informasjonAvtalen/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from './inntektsmelding/InntekterFraAMeldingen';
 import './RefusjonSide.less';
 import RefusjonIngress from './RefusjonIngress';
@@ -36,7 +36,7 @@ const RefusjonSide: FunctionComponent = () => {
             <HvitBoks>
                 <RefusjonIngress refusjon={refusjon} />
                 <InformasjonFraAvtalen />
-                <InntekterFraAMeldingen kvitteringVisning={false} />
+                <InntekterFraAMeldingen kvitteringVisning={false} refusjon={refusjon} />
                 <InntekterFraTiltaketSpørsmål />
                 <TidligereRefunderbarBeløp refusjon={refusjon} />
                 <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
