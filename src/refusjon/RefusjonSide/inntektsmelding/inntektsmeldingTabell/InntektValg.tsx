@@ -18,14 +18,18 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                 <div className="inntektsmelding__inntektsvalg">
                     <Radio
                         label="Ja"
-                        checked={erOpptjentIPeriode === true}
-                        onChange={() => setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, true)}
+                        checked={erOpptjentIPeriode}
+                        onChange={(e) => {
+                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, true);
+                        }}
                         name={inntekt.id}
                     />
                     <Radio
                         label="Nei"
-                        checked={erOpptjentIPeriode === false}
-                        onChange={() => setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, false)}
+                        checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
+                        onChange={(e) => {
+                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, false);
+                        }}
                         name={inntekt.id}
                     />
                 </div>

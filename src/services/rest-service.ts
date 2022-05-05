@@ -73,15 +73,11 @@ export const setInntektslinjeOpptjentIPeriode = async (
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
 ) => {
-    try {
-        await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
-            inntektslinjeId,
-            erOpptjentIPeriode,
-        });
-        await mutate(`/refusjon/ ${refusjonId}`);
-    } catch (e) {
-        console.log('oppdatere inntektslinje feilet. Feilmelding: ', e);
-    }
+    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+        inntektslinjeId,
+        erOpptjentIPeriode,
+    });
+    await mutate(`/refusjon/${refusjonId}`);
 };
 
 export const godkjennRefusjon = async (refusjonId: string) => {

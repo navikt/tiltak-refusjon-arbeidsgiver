@@ -17,13 +17,13 @@ const RefusjonSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
-    console.log('ref', refusjon);
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
-            await godkjennRefusjon(refusjonId!);
-            navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
-            innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
+            await godkjennRefusjon(refusjonId!).then(() => {
+                navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
+                innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
+            });
         } catch (error: any) {
             console.log('feil ved innsending:', error);
             innSendingRefusjon(UtbetaltStatus.FEILET, refusjon, error);
