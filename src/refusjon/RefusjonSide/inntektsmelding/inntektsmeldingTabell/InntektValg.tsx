@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { ChangeEvent, FunctionComponent } from 'react';
 import { Radio } from 'nav-frontend-skjema';
 import { setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
 import { Inntektslinje } from '../../../refusjon';
@@ -19,7 +19,8 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                     <Radio
                         label="Ja"
                         checked={erOpptjentIPeriode}
-                        onChange={(e) => {
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                            event.preventDefault();
                             setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, true);
                         }}
                         name={inntekt.id}
@@ -27,7 +28,8 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                     <Radio
                         label="Nei"
                         checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
-                        onChange={(e) => {
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                            event.preventDefault();
                             setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, false);
                         }}
                         name={inntekt.id}
