@@ -90,29 +90,24 @@ export const setInntektslinjeOpptjentIPeriode = async (
     erOpptjentIPeriode: boolean
 ): Promise<void> => {
     console.log('sender postkall til: ', `/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`);
-    const response = await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+
+    /* const response = await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
         inntektslinjeId,
         erOpptjentIPeriode,
-    });
+    });*/
 
-    let formData = new FormData();
-    formData.append('inntektslinjeId', inntektslinjeId);
-    formData.append('erOpptjentIPeriode', erOpptjentIPeriode.toString());
-
-    fetch(`/api/arbeidsgiver/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+    const res = await fetch(`/api/arbeidsgiver/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
         method: 'POST',
         body: JSON.stringify({
             inntektslinjeId: inntektslinjeId,
             erOpptjentIPeriode: erOpptjentIPeriode,
         }),
         headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache', 'content-type': 'application/json' },
-    })
-        .then((response) => response.body)
-        .then((res) => console.log('res'));
+    });
+
+    console.log('test', res);
 
     await mutate(`/refusjon/${refusjonId}`);
-    console.log('response: ', response);
-    return response.data;
 };
 
 export const godkjennRefusjon = async (refusjonId: string): Promise<any> => {
