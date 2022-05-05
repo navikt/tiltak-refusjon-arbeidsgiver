@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import useSWR, { mutate } from 'swr';
 import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
@@ -17,7 +17,23 @@ const api = axios.create({
     validateStatus: (status) => status < 400,
 });
 
-const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res) => res.data);
+const getAxiosRequestMethod = (url: string, method: string, data?: Object) => {
+    switch (method) {
+        case 'post':
+            return api
+                .post(url, { ...data })
+                .then((res: AxiosResponse<any>) => res.data)
+                .catch((err) => console.log('operasjon feilet. response: ', err));
+        case 'get':
+        default:
+            return api
+                .get(url)
+                .then((res: AxiosResponse<any>) => res.data)
+                .catch((err) => console.log('operasjon feilet. response: ', err));
+    }
+};
+
+const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res: AxiosResponse<any>) => res.data);
 
 const swrConfig = {
     fetcher: axiosFetcher,
@@ -77,6 +93,22 @@ export const setInntektslinjeOpptjentIPeriode = async (
         inntektslinjeId,
         erOpptjentIPeriode,
     });
+
+    let formData = new FormData();
+    formData.append('inntektslinjeId', inntektslinjeId);
+    formData.append('erOpptjentIPeriode', erOpptjentIPeriode.toString());
+
+    fetch(`/api/arbeidsgiver/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+        method: 'POST',
+        body: JSON.stringify({
+            inntektslinjeId: inntektslinjeId,
+            erOpptjentIPeriode: erOpptjentIPeriode,
+        }),
+        headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache', 'content-type': 'application/json' },
+    })
+        .then((response) => response.body)
+        .then((res) => console.log('res'));
+
     await mutate(`/refusjon/${refusjonId}`);
     console.log('response: ', response);
     return response.data;
