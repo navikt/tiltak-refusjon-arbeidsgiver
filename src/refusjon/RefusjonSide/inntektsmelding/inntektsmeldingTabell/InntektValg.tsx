@@ -21,7 +21,9 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         checked={erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
-                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, true);
+                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, true).then((res) =>
+                                console.log('res ', res)
+                            );
                         }}
                         name={inntekt.id}
                     />
@@ -30,7 +32,9 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
-                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, false);
+                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, false).then((res) =>
+                                console.log('res ', res)
+                            );
                         }}
                         name={inntekt.id}
                     />
