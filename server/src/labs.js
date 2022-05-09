@@ -18,7 +18,15 @@ async function startLabs(server) {
 
         // setup sane defaults for CORS and HTTP headers
         // server.use(helmet());
-        server.use(cors);
+        server.use(
+            cors({
+                allowedHeaders: ['sessionId', 'Content-Type'],
+                exposedHeaders: ['sessionId'],
+                origin: '*',
+                methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+                preflightContinue: false,
+            })
+        );
 
         // setup routes
         server.get('/isAlive', (req, res) => res.send('Alive'));
