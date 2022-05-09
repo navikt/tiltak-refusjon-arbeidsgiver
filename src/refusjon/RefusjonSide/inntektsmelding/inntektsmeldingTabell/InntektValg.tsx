@@ -12,6 +12,15 @@ interface Props {
 const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, refusjonId }: Props) => {
     const { erOpptjentIPeriode } = inntekt;
 
+    const setInntektslinje = (
+        refusjonId: string,
+        inntektslinjeId: string,
+        erOpptjentIPeriode: boolean
+    ): Promise<void> =>
+        setInntektslinjeOpptjentIPeriode(refusjonId, inntektslinjeId, erOpptjentIPeriode).catch((err) =>
+            console.error('err ', err)
+        );
+
     return (
         <td>
             {!kvitteringVisning && (
@@ -21,9 +30,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         checked={erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
-                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, true).catch((err) =>
-                                console.error('err ', err)
-                            );
+                            return setInntektslinje(refusjonId, inntekt.id, true);
                         }}
                         name={inntekt.id}
                     />
@@ -32,9 +39,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
-                            setInntektslinjeOpptjentIPeriode(refusjonId, inntekt.id, false).catch((err) =>
-                                console.error('err ', err)
-                            );
+                            return setInntektslinje(refusjonId, inntekt.id, false);
                         }}
                         name={inntekt.id}
                     />
