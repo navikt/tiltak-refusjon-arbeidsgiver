@@ -17,22 +17,6 @@ const api = axios.create({
     validateStatus: (status) => status < 400,
 });
 
-/*const getAxiosRequestMethod = (url: string, method: string, data?: Object) => {
-    switch (method) {
-        case 'post':
-            return api
-                .post(url, { ...data })
-                .then((res: AxiosResponse<any>) => res.data)
-                .catch((err) => console.log('operasjon feilet. response: ', err));
-        case 'get':
-        default:
-            return api
-                .get(url)
-                .then((res: AxiosResponse<any>) => res.data)
-                .catch((err) => console.log('operasjon feilet. response: ', err));
-    }
-};*/
-
 const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res: AxiosResponse<any>) => res.data);
 
 const swrConfig = {
@@ -89,24 +73,10 @@ export const setInntektslinjeOpptjentIPeriode = async (
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
 ): Promise<void> => {
-    console.log('sender postkall til: ', `/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`);
-
-    /* const response = await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
-        inntektslinjeId,
-        erOpptjentIPeriode,
-    });*/
-
-    const res = await fetch(`/api/arbeidsgiver/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
-        method: 'POST',
-        body: JSON.stringify({
-            inntektslinjeId: inntektslinjeId,
-            erOpptjentIPeriode: erOpptjentIPeriode,
-        }),
-        headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache', 'content-type': 'application/json' },
+    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+        inntektslinjeId: inntektslinjeId,
+        erOpptjentIPeriode: erOpptjentIPeriode,
     });
-
-    console.log('test', res);
-
     await mutate(`/refusjon/${refusjonId}`);
 };
 
