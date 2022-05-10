@@ -1,6 +1,5 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import cors from './cors';
 import path from 'path';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import axios from 'axios';
