@@ -7,6 +7,8 @@ import axios from 'axios';
 const asyncHandler = require('express-async-handler');
 import logger from './logger';
 
+const cors = require('cors');
+
 async function startLabs(server) {
     const page = path.resolve(__dirname, '../build', 'index.html');
 
