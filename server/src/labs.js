@@ -54,7 +54,7 @@ async function startLabs(server) {
                 secure: true,
                 logLevel: 'info',
                 onError: (err, req, res) => {
-                    console.error('error in proxy', err, req, res);
+                    logger.error('error in proxy', err, req, res);
                 },
             })
         );
