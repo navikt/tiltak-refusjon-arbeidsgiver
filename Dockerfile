@@ -1,6 +1,7 @@
-FROM navikt/node-express:16
+FROM navikt/node-express:14-alpine
 
-WORKDIR /var
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
