@@ -1,7 +1,6 @@
 FROM navikt/node-express:16
 
-RUN mkdir -p /var/src/app
-WORKDIR /var/src/app
+WORKDIR /var
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
