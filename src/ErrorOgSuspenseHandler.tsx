@@ -8,7 +8,15 @@ const ErrorOgSuspenseHandler: FunctionComponent<{}> = (props) => (
     <Sentry.ErrorBoundary
         fallback={({ error, componentStack, resetError }) => <AlertStripeFeil>Feil ved lasting.</AlertStripeFeil>}
     >
-        <Suspense fallback={<HenterInntekterBoks />}>{props.children}</Suspense>
+        <Suspense
+            fallback={
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
+                    <HenterInntekterBoks />
+                </div>
+            }
+        >
+            {props.children}
+        </Suspense>
     </Sentry.ErrorBoundary>
 );
 
