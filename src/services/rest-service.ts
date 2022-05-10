@@ -73,29 +73,10 @@ export const setInntektslinjeOpptjentIPeriode = async (
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
 ): Promise<void> => {
-    await api.post(
-        `/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`,
-        {
-            inntektslinjeId: inntektslinjeId,
-            erOpptjentIPeriode: erOpptjentIPeriode,
-        },
-        {
-            baseURL: '/api/arbeidsgiver',
-            timeout: 35000,
-            withCredentials: true,
-            headers: {
-                Pragma: 'no-cache',
-                'Cache-Control': 'no-cache',
-                'Content-Length': Buffer.byteLength(
-                    JSON.stringify({
-                        inntektslinjeId: inntektslinjeId,
-                        erOpptjentIPeriode: erOpptjentIPeriode,
-                    })
-                ),
-            },
-            validateStatus: (status) => status < 400,
-        }
-    );
+    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+        inntektslinjeId: inntektslinjeId,
+        erOpptjentIPeriode: erOpptjentIPeriode,
+    });
     await mutate(`/refusjon/${refusjonId}`);
 };
 
