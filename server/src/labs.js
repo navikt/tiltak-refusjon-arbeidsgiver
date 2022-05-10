@@ -35,7 +35,19 @@ async function startLabs(server) {
 
         server.use(express.static(path.join(__dirname, '../build')));
 
-        server.use('/api', createProxyMiddleware({ target: 'https://tiltak-refusjon-api', changeOrigin: true }));
+        server.use(
+            '/api',
+            createProxyMiddleware({
+                target: 'http://tiltak-refusjon-api',
+                changeOrigin: true,
+                proxyTimeout: 30000,
+                secure: true,
+                logLevel: 'info',
+                onError: (err, req, res) => {
+                    console.error('error in proxy', err, req, res);
+                },
+            })
+        );
 
         server.use(
             '/dekoratoren/env',
@@ -50,7 +62,7 @@ async function startLabs(server) {
             '/dekoratoren/api/auth',
             asyncHandler(async (req, res) => {
                 try {
-                    const response = await axios.get('https://tiltak-refusjon-api/api/arbeidsgiver/innlogget-bruker', {
+                    const response = await axios.get('http://tiltak-refusjon-api/api/arbeidsgiver/innlogget-bruker', {
                         headers: req.headers,
                     });
                     res.json({ authenticated: true, name: response.data.identifikator || '' });
