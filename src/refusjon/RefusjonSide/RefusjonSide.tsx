@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
-import InformasjonFraAvtalen from './InformasjonFraAvtalen';
-import InntekterFraAMeldingen from './InntekterFraAMeldingen';
+import InformasjonFraAvtalen from './informasjonAvtalen/InformasjonFraAvtalen';
+import InntekterFraAMeldingen from './inntektsmelding/InntekterFraAMeldingen';
 import './RefusjonSide.less';
 import RefusjonIngress from './RefusjonIngress';
 import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
@@ -17,13 +17,13 @@ const RefusjonSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
-    console.log('ref', refusjon);
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
-            await godkjennRefusjon(refusjonId!);
-            navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
-            innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
+            await godkjennRefusjon(refusjon.id).then(() => {
+                navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
+                innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
+            });
         } catch (error: any) {
             console.log('feil ved innsending:', error);
             innSendingRefusjon(UtbetaltStatus.FEILET, refusjon, error);

@@ -1,0 +1,51 @@
+.inntektsmelding {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        align-items: baseline;
+    }
+
+    &__header-tittel {
+        margin-bottom: 1rem;
+    }
+
+    &__graboks-wrapper {
+        background-color: #f7f7f7;
+        border-radius: 4px;
+        padding: 1.5rem min(1.5rem, 2%);
+        margin-top: 2rem;
+    }
+
+    &__inntektstabell {
+        width: 100%;
+        th,
+        td {
+            text-align: left;
+            padding: 0.35rem 0.5rem;
+        }
+        th:first-child,
+        td:first-child {
+            padding: 0.35rem 0;
+        }
+        th:last-child,
+        td:last-child {
+            text-align: right;
+            padding: 0.35rem 0;
+        }
+    }
+
+    &__inntektsvalg {
+        display: flex;
+        column-gap: 3em;
+    }
+
+    &____valgtInntekt {
+        display: flex;
+        column-gap: 3em;
+    }
+
+    &__varsel-linje {
+        margin: 1rem 0;
+    }
+}

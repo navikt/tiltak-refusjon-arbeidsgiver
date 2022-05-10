@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Suspense } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
 import { useHentRefusjon } from '../../services/rest-service';
@@ -7,7 +7,6 @@ import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
 import KvitteringSide from '../KvitteringSide/KvitteringSide';
 import { RefusjonStatus } from '../status';
 import FeilSide from './FeilSide';
-import HenterInntekterBoks from './HenterInntekterBoks';
 import RefusjonSide from './RefusjonSide';
 
 const Komponent: FunctionComponent = () => {
@@ -51,9 +50,7 @@ const Refusjon: FunctionComponent = () => {
         <div style={{ margin: '0 auto', maxWidth: '55rem' }}>
             <div style={{ flex: '0 0 55rem', flexShrink: 1 }}>
                 <TilbakeTilOversikt />
-                <Suspense fallback={<HenterInntekterBoks />}>
-                    <Komponent />
-                </Suspense>
+                <Komponent />
             </div>
         </div>
     );

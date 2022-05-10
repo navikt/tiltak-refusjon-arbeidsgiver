@@ -1,11 +1,12 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import cors from './cors';
 import path from 'path';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import axios from 'axios';
 const asyncHandler = require('express-async-handler');
 import logger from './logger';
+
+const cors = require('cors');
 
 async function startLabs(server) {
     const page = path.resolve(__dirname, '../build', 'index.html');
@@ -18,7 +19,15 @@ async function startLabs(server) {
 
         // setup sane defaults for CORS and HTTP headers
         // server.use(helmet());
-        server.use(cors);
+        server.use(
+            cors({
+                allowedHeaders: ['sessionId', 'Content-Type'],
+                exposedHeaders: ['sessionId'],
+                origin: '*',
+                methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+                preflightContinue: false,
+            })
+        );
 
         // setup routes
         server.get('/isAlive', (req, res) => res.send('Alive'));
@@ -26,7 +35,29 @@ async function startLabs(server) {
 
         server.use(express.static(path.join(__dirname, '../build')));
 
-        server.use('/api', createProxyMiddleware({ target: 'http://tiltak-refusjon-api', changeOrigin: true }));
+        const restream = (proxyReq, req, res, options) => {
+            if (req.body) {
+                let bodyData = JSON.stringify(req.body);
+                proxyReq.setHeader('Content-Type', 'application/json');
+                proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+                proxyReq.write(bodyData);
+            }
+        };
+
+        server.use(
+            '/api',
+            createProxyMiddleware({
+                target: 'http://tiltak-refusjon-api',
+                onProxyReq: restream,
+                changeOrigin: true,
+                proxyTimeout: 30000,
+                secure: true,
+                logLevel: 'info',
+                onError: (err, req, res) => {
+                    logger.error('error in proxy', err, req, res);
+                },
+            })
+        );
 
         server.use(
             '/dekoratoren/env',

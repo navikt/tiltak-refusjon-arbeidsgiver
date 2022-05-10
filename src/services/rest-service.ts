@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import useSWR, { mutate } from 'swr';
 import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
@@ -11,13 +11,13 @@ export class ApiError extends Error {}
 
 const api = axios.create({
     baseURL: '/api/arbeidsgiver',
-    timeout: 30000,
+    timeout: 35000,
     withCredentials: true,
     headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' },
     validateStatus: (status) => status < 400,
 });
 
-const axiosFetcher = (url: string) => api.get(url).then((res) => res.data);
+const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res: AxiosResponse<any>) => res.data);
 
 const swrConfig = {
     fetcher: axiosFetcher,
@@ -46,7 +46,7 @@ export const endreBruttolønn = async (
     refusjonId: string,
     inntekterKunFraTiltaket: boolean | null,
     bruttoLønn?: number | null
-) => {
+): Promise<any> => {
     const response = await api.post(`/refusjon/${refusjonId}/endre-bruttolønn`, {
         inntekterKunFraTiltaket,
         bruttoLønn,
@@ -59,7 +59,7 @@ export const settTidligereRefunderbarBeløp = async (
     refusjonId: string,
     fratrekkRefunderbarBeløp: boolean | null,
     refunderbarBeløp?: number | null
-) => {
+): Promise<any> => {
     const response = await api.post(`/refusjon/${refusjonId}/fratrekk-sykepenger`, {
         fratrekkRefunderbarBeløp,
         refunderbarBeløp,
@@ -72,16 +72,15 @@ export const setInntektslinjeOpptjentIPeriode = async (
     refusjonId: string,
     inntektslinjeId: string,
     erOpptjentIPeriode: boolean
-) => {
-    const response = await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
-        inntektslinjeId,
-        erOpptjentIPeriode,
+): Promise<void> => {
+    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
+        inntektslinjeId: inntektslinjeId,
+        erOpptjentIPeriode: erOpptjentIPeriode,
     });
     await mutate(`/refusjon/${refusjonId}`);
-    return response.data;
 };
 
-export const godkjennRefusjon = async (refusjonId: string) => {
+export const godkjennRefusjon = async (refusjonId: string): Promise<any> => {
     const response = await api.post(`/refusjon/${refusjonId}/godkjenn`);
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
@@ -144,18 +143,18 @@ export const HentRefusjonForMangeOrganisasjoner = (
     return data!;
 };
 
-export const useHentRefusjon = (refusjonId?: string) => {
+export const useHentRefusjon = (refusjonId?: string): Refusjon => {
     const parameter = refusjonId ? `/refusjon/${refusjonId}` : null;
     const { data } = useSWR<Refusjon>(parameter, swrConfig);
     return data!;
 };
 
-export const useHentTidligereRefusjoner = (refusjonId: string) => {
+export const useHentTidligereRefusjoner = (refusjonId: string): Refusjon[] => {
     const { data } = useSWR<Refusjon[]>(`/refusjon/${refusjonId}/tidligere-refusjoner`, swrConfig);
     return data!;
 };
 
-export const useHentKorreksjon = (korreksjonId: string) => {
+export const useHentKorreksjon = (korreksjonId: string): Korreksjon => {
     const { data } = useSWR<Korreksjon>(`/korreksjon/${korreksjonId}`, swrConfig);
     return data!;
 };
