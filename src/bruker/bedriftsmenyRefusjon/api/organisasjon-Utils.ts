@@ -60,7 +60,10 @@ export const bedriftContextInitialisert = (
     orgnummerFraUrl: string | null
 ): boolean => {
     const valgtOrganisasjoner: string | undefined = serializeOrgNr(valgtBedrift?.valgtOrg);
-    return valgtOrganisasjoner === serializeOrgNr(bedriftvalg?.valgtOrg) || valgtOrganisasjoner === orgnummerFraUrl;
+    return (
+        valgtOrganisasjoner === serializeOrgNr(bedriftvalg?.valgtOrg) ||
+        (valgtOrganisasjoner === orgnummerFraUrl && orgnummerFraUrl?.length > 0)
+    );
 };
 
 export function compareBedriftvalg(

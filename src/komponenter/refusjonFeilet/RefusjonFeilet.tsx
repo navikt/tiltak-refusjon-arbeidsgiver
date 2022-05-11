@@ -1,33 +1,24 @@
-import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
-import HvitBoks from '../hvitboks/HvitBoks';
-import { Normaltekst, Systemtittel, Undertittel, Element } from 'nav-frontend-typografi';
+import { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import { Feilstatus, Organisasjon, StatusFeil } from '../../bruker/bedriftsmenyRefusjon/api/organisasjon';
-import { ReactComponent as SystemError } from '@/asset/image/systemError.svg';
-import { ReactComponent as ChevronRight } from '@/asset/image/chevronRight.svg';
-import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.svg';
-import { ReactComponent as Notes } from '@/asset/image/notes.svg';
-import BEMHelper from '../../utils/bem';
 import './refusjonFeilet.less';
-import Lenke from 'nav-frontend-lenker';
-import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 
 interface Props {
     feilstatus: Array<StatusFeil> | undefined;
 }
 
-interface LagNyRadProps {
+/*interface LagNyRadProps {
     navn: string;
     verdi: string;
     navnIcon?: React.ReactNode;
     verdiIcon?: React.ReactNode;
-}
+}*/
 
 const RefusjonFeilet: FunctionComponent<Props> = ({ feilstatus }: PropsWithChildren<Props>) => {
-    const cls = BEMHelper('refusjonFeilet');
+    //const cls = BEMHelper('refusjonFeilet');
     const orgMedFeilstatusJuridiskEnhetMangler: Organisasjon[] | undefined = feilstatus
         ?.find((feil) => feil.status === Feilstatus.JURIDISK_MANGLER_UNDERENHET)
         ?.gjeldeneOrg?.map((feil) => feil);
-    const [panel, setPanel] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
+    const [, setPanel] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
         orgMedFeilstatusJuridiskEnhetMangler?.map((_, i) => ({ index: i, apnet: false }))
     );
 
@@ -35,7 +26,7 @@ const RefusjonFeilet: FunctionComponent<Props> = ({ feilstatus }: PropsWithChild
         setPanel(orgMedFeilstatusJuridiskEnhetMangler?.map((_, i) => ({ index: i, apnet: false })));
     }, [orgMedFeilstatusJuridiskEnhetMangler]);
 
-    const LagNyRad: FunctionComponent<LagNyRadProps> = ({ navn, verdi, navnIcon, verdiIcon }: LagNyRadProps) => (
+    /*    const LagNyRad: FunctionComponent<LagNyRadProps> = ({ navn, verdi, navnIcon, verdiIcon }: LagNyRadProps) => (
         <div className={cls.element('rad')}>
             <div>
                 <span>{navnIcon}</span>
@@ -66,9 +57,9 @@ const RefusjonFeilet: FunctionComponent<Props> = ({ feilstatus }: PropsWithChild
                 Du kan også ha rettigheten <b>inntektsmelding</b>.
             </Normaltekst>
         </>
-    );
+    );*/
 
-    const feilMelding = (status: StatusFeil | undefined) => {
+    /*    const feilMelding = (status: StatusFeil | undefined) => {
         switch (status?.status) {
             case Feilstatus.JURIDISK_MANGLER_UNDERENHET:
                 return (
@@ -147,7 +138,7 @@ const RefusjonFeilet: FunctionComponent<Props> = ({ feilstatus }: PropsWithChild
                     </HvitBoks>
                 );
         }
-    };
+    };*/
     return null;
 };
 export default RefusjonFeilet;

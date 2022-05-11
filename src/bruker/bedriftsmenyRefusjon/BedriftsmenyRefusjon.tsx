@@ -55,11 +55,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                 }
                 if (
                     orglist.feilstatus &&
-                    (!valgtBedrift ||
-                        (valgtBedrift &&
-                            orglist?.feilstatus?.filter((feil) =>
-                                orglist?.feilstatus?.find((f) => f.status !== feil.status)
-                            )?.length < 0))
+                    orglist?.feilstatus?.filter((feil) => orglist?.feilstatus?.find((f) => f.status !== feil.status))
+                        ?.length < 0
                 ) {
                     setValgtBedrift(
                         Object.assign({}, valgtBedrift, {

@@ -21,49 +21,44 @@ export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Prom
             juridiskeEnheter.push(...juridiskeEnheterUtenTilgang);
         });
     }
-
     const bedriftliste = settSammenJuridiskEnhetMedUnderenheter(juridiskeEnheter, underenheter);
 
     return {
         juridisk: bedriftliste.juridisk.sort((a, b) => a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)),
-        feilstatus: OppdatertFeilstatus(bedriftliste),
+        feilstatus: bedriftliste.feilstatus,
     };
 }
 
-function OppdatertFeilstatus(bedriftliste: ByggOrganisasjonstre): Array<StatusFeil> | undefined {
-    if (bedriftliste?.juridisk?.length === 0) {
-        bedriftliste.feilstatus?.push({
-            status: Feilstatus.GREIDE_IKKE_BYGGE_ORGTRE,
-            gjeldeneOrg: undefined,
-        });
+const finJuridiskUtenUnderenheter = (juridiskenheter: Juridiskenhet[]) =>
+    juridiskenheter.filter((juridiskenhet) => juridiskenhet.Underenheter?.length === 0).map((o) => o.JuridiskEnhet);
+
+function oppdatertFeilstatus(juridiskenheter: Juridiskenhet[]) {
+    let feilstatus: Array<StatusFeil> | undefined = [];
+    const JuridiskUtenUnderenheter: Organisasjon[] = finJuridiskUtenUnderenheter(juridiskenheter);
+
+    if (JuridiskUtenUnderenheter?.length > 0) {
+        feilstatus?.push({ status: Feilstatus.JURIDISK_MANGLER_UNDERENHET, gjeldeneOrg: JuridiskUtenUnderenheter });
     }
-    return bedriftliste.feilstatus;
+    if (!juridiskenheter || juridiskenheter?.length === 0) {
+        feilstatus?.push({ status: Feilstatus.GREIDE_IKKE_BYGGE_ORGTRE, gjeldeneOrg: undefined });
+    }
+    return feilstatus;
 }
 
 const settSammenJuridiskEnhetMedUnderenheter = (
     enheter: Organisasjon[],
     underenheter: Organisasjon[]
 ): ByggOrganisasjonstre => {
-    const juridiskenheter = enheter.map((enhet) => {
-        const tilhorendeUnderenheter = underenheter.filter(
+    const juridiskenheter: Juridiskenhet[] = enheter.map((enhet) => ({
+        JuridiskEnhet: enhet,
+        Underenheter: underenheter.filter(
             (underenhet) => underenhet.ParentOrganizationNumber === enhet.OrganizationNumber
-        );
-        return {
-            JuridiskEnhet: enhet,
-            Underenheter: tilhorendeUnderenheter,
-            SokeresultatKunUnderenhet: false,
-        };
-    });
-
-    const JuridiskUtenUnderenheter = juridiskenheter
-        .filter((juridiskenhet) => juridiskenhet.Underenheter?.length === 0)
-        .map((o) => o.JuridiskEnhet);
-
+        ),
+        SokeresultatKunUnderenhet: false,
+    }));
     return {
         juridisk: juridiskenheter.filter((orgtre) => orgtre.Underenheter.length > 0),
-        feilstatus: !!JuridiskUtenUnderenheter
-            ? [{ status: Feilstatus.JURIDISK_MANGLER_UNDERENHET, gjeldeneOrg: JuridiskUtenUnderenheter }]
-            : undefined,
+        feilstatus: oppdatertFeilstatus(juridiskenheter),
     };
 };
 
