@@ -45,7 +45,7 @@ function useOrganisasjon(
             setBedriftvalg(valgtorg);
             setValgtBedrift(valgtorg);
         }
-        //
+
         function setFallbackOrganisasjon(type: BedriftvalgType): void {
             settOrganisasjon(
                 orgtre.flatMap((org) => org.Underenheter),
