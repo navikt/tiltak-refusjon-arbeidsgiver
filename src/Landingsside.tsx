@@ -6,6 +6,7 @@ import React, { FunctionComponent } from 'react';
 import EksternLenke from './komponenter/EksternLenke/EksternLenke';
 import HvitBoks from './komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from './komponenter/VerticalSpacer';
+import Lenke from 'nav-frontend-lenker';
 
 const Landingsside: FunctionComponent = () => {
     const gåTilOversikten = () => {
@@ -19,33 +20,49 @@ const Landingsside: FunctionComponent = () => {
                     <SommerIkon />
                     <VerticalSpacer rem={1} />
                     <Innholdstittel>Tiltaksrefusjon</Innholdstittel>
-                    <VerticalSpacer rem={3} />
+                    <VerticalSpacer rem={2} />
                 </div>
-                <Normaltekst>
-                    Dette er en løsning for søke om refusjon for tilskudd til sommerjobb. Før dere søker må dere:
+                <Normaltekst style={{ marginLeft: '7rem' }}>
+                    Dette er en løsning for søke om refusjon for{' '}
+                    <Lenke href={'https://arbeidsgiver.nav.no/veiviserarbeidsgiver/tiltak/lonnstilskudd'}>
+                        lønnstilskudd
+                    </Lenke>
                 </Normaltekst>
-                <VerticalSpacer rem={1} />
+                <Normaltekst style={{ marginLeft: '13.8rem' }}>
+                    og <Lenke href={'https://arbeidsgiver.nav.no/tiltak/sommerjobb'}>tilskudd til sommerjobb</Lenke>
+                </Normaltekst>
+                <VerticalSpacer rem={2} />
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Hovedknapp onClick={gåTilOversikten}>Gå til refusjonsoversikten</Hovedknapp>
+                </div>
+                <VerticalSpacer rem={2} />
+                <div>
+                    <Normaltekst>Før dere søker må dere:</Normaltekst>
+                </div>
+                <VerticalSpacer rem={2} />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Success style={{ marginRight: '0.5rem' }} />
                         <Element>Ha rapportert inntekter til a-meldingen for perioden dere søker om refusjon.</Element>
                     </div>
                 </div>
-                <ul>
-                    <li>Dette gjøres oftest av de som jobber med lønn og regnskap i din organisasjon.</li>
-                </ul>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <Normaltekst style={{ marginLeft: '1.5rem' }}>
+                        Dette gjøres oftest av de som jobber med lønn og regnskap i deres organisasjon.
+                    </Normaltekst>
+                </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Success style={{ marginRight: '0.5rem' }} />
                         <Element>
-                            Ha bestemt(e) rolle(r) eller rettighet i din virksomheten for å få tilgang til løsningen.
+                            Ha bestemt(e) rolle(r) eller rettighet i deres virksomheten for å få tilgang til løsningen.
                         </Element>
                     </div>
                 </div>
                 <ul>
                     <li>
-                        Du må ha enkeltrettigheten inntektsmelding eller en av følgende Altinn-rollene for å få tilgang
-                        til løsningen:
+                        Dere må ha enkeltrettigheten inntektsmelding eller en av følgende Altinn-rollene for å få
+                        tilgang til løsningen:
                     </li>
                     <div style={{ marginLeft: '2rem' }}>
                         <li>ansvarlig revisor</li>
@@ -63,11 +80,6 @@ const Landingsside: FunctionComponent = () => {
                         roller og rettigheter i Altinn
                     </EksternLenke>
                 </Normaltekst>
-
-                <VerticalSpacer rem={2} />
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Hovedknapp onClick={gåTilOversikten}>Gå til refusjonsoversikten</Hovedknapp>
-                </div>
             </div>
         </HvitBoks>
     );
