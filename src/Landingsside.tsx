@@ -23,7 +23,7 @@ const Landingsside: FunctionComponent = () => {
                     <VerticalSpacer rem={2} />
                 </div>
                 <Normaltekst style={{ marginLeft: '7rem' }}>
-                    Dette er en løsning for søke om refusjon for{' '}
+                    Dette er en løsning for å søke om refusjon for{' '}
                     <Lenke href={'https://arbeidsgiver.nav.no/veiviserarbeidsgiver/tiltak/lonnstilskudd'}>
                         lønnstilskudd
                     </Lenke>
@@ -48,7 +48,7 @@ const Landingsside: FunctionComponent = () => {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
                     <Normaltekst style={{ marginLeft: '1.5rem' }}>
-                        Dette gjøres oftest av de som jobber med lønn og regnskap i deres organisasjon.
+                        Dette gjøres som regel av de som jobber med lønn og regnskap i deres organisasjon.
                     </Normaltekst>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -61,8 +61,8 @@ const Landingsside: FunctionComponent = () => {
                 </div>
                 <ul>
                     <li>
-                        Dere må ha enkeltrettigheten inntektsmelding eller en av følgende Altinn-rollene for å få
-                        tilgang til løsningen:
+                        Dere må ha enkeltrettigheten inntektsmelding eller en av følgende Altinn-roller for å få tilgang
+                        til løsningen:
                     </li>
                     <div style={{ marginLeft: '2rem' }}>
                         <li>ansvarlig revisor</li>
