@@ -8,7 +8,7 @@ import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { statusTekst } from '../../messages';
 import { RefusjonStatus } from '../../refusjon/status';
 import { useHentRefusjon } from '../../services/rest-service';
-import { formatterDato, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
+import { formatterDato, NORSK_DATO_FORMAT, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import { Refusjon } from '../refusjon';
 import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
@@ -22,14 +22,26 @@ import Statusmelding from './Statusmelding';
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
         return <EtikettAdvarsel>{storForbokstav(statusTekst[refusjon.status])} </EtikettAdvarsel>;
+    } else if (refusjon.status === RefusjonStatus.SENDT_KRAV) {
+        return (
+            <EtikettInfo>
+                {storForbokstav(statusTekst[refusjon.status])}{' '}
+                {refusjon.godkjentAvArbeidsgiver &&
+                    formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
+            </EtikettInfo>
+        );
+    } else if (refusjon.status === RefusjonStatus.UTBETALT) {
+        return (
+            <EtikettInfo>
+                {storForbokstav(statusTekst[RefusjonStatus.SENDT_KRAV])}{' '}
+                {refusjon.godkjentAvArbeidsgiver && formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_FORMAT)}
+                {', '}
+                {storForbokstav(statusTekst[refusjon.status])}{' '}
+                {refusjon.utbetaltTidspunkt && formatterDato(refusjon.utbetaltTidspunkt, NORSK_DATO_FORMAT)}
+            </EtikettInfo>
+        );
     }
-    return (
-        <EtikettInfo>
-            {storForbokstav(statusTekst[refusjon.status])}{' '}
-            {refusjon.godkjentAvArbeidsgiver &&
-                formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
-        </EtikettInfo>
-    );
+    return <EtikettInfo>{storForbokstav(statusTekst[refusjon.status])} </EtikettInfo>;
 };
 const KvitteringSide: FunctionComponent = () => {
     const { refusjonId } = useParams();

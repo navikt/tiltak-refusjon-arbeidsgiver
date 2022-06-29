@@ -42,7 +42,7 @@ const RefusjonFeilet: FunctionComponent<Props> = ({ feilstatus }: PropsWithChild
     const GenerellTilgangsInnhold: FunctionComponent = () => (
         <>
             <Normaltekst className={cls.element('tittel')}>
-                For å få tilgang til refusjoner for din virksomhet må du ha en av disse Altinn-rollene:
+                For å få tilgang til refusjoner for din virksomhet må du ha en av disse Altinn-roller:
             </Normaltekst>
             <ul className={cls.element('liste')}>
                 <li>ansvarlig revisor</li>

@@ -36,8 +36,8 @@ api.interceptors.response.use(
 
 export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
     const response = await api.get<InnloggetBruker>(`/innlogget-bruker`).catch((err) => {
-        console.log('err.response ', err.response);
-        return err;
+        console.log('err.response ', err);
+        throw err;
     });
     return response.data;
 };

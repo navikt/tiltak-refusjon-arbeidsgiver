@@ -1,14 +1,15 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { NavigateFunction } from 'react-router-dom';
 import RefusjonFeilet from '../komponenter/refusjonFeilet/RefusjonFeilet';
 import LokalLogin from '../LokalLogin';
 import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
+import { useAsyncError } from '../useError';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 import { Bedriftvalg, BedriftvalgType, Feilstatus, initvalgtBedrift } from './bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
-import { NavigateFunction } from 'react-router-dom';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -50,12 +51,13 @@ export const BrukerProvider: FunctionComponent = (props) => {
         }
         setValgtBedrift(org);
     };
+    const throwError = useAsyncError();
 
     useEffect(() => {
         hentInnloggetBruker()
             .then((response) => setInnloggetBruker(response))
-            .catch((err) => console.log('err', err));
-    }, []);
+            .catch(throwError);
+    }, [throwError]);
 
     return (
         <XMLHttpReqHandler>
