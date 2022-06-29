@@ -28,6 +28,7 @@ export interface Refusjon {
     harTattStillingTilAlleInntektslinjer: boolean;
     korreksjonId?: string;
     refusjonsgrunnlag: Refusjonsgrunnlag;
+    utbetaltTidspunkt?: string;
 }
 
 export interface Korreksjon {
