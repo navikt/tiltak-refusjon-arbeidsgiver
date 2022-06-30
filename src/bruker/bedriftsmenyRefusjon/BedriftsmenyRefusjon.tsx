@@ -53,16 +53,10 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                     setOrganisasjonstre(orglist.juridisk);
                     setDefaultBedriftlisteMedApneElementer(orglist.juridisk, setBedriftListe);
                 }
-                if (
-                    orglist.feilstatus &&
-                    orglist?.feilstatus?.filter((feil) => orglist?.feilstatus?.find((f) => f.status !== feil.status))
-                        ?.length < 0
-                ) {
+                if (orglist.feilstatus) {
                     setValgtBedrift(
                         Object.assign({}, valgtBedrift, {
-                            type: valgtBedrift?.type ?? initvalgtBedrift.type,
-                            valgtOrg: valgtBedrift?.valgtOrg ?? initvalgtBedrift.valgtOrg,
-                            pageData: valgtBedrift?.pageData ?? initvalgtBedrift.pageData,
+                            ...(valgtBedrift ?? initvalgtBedrift),
                             feilstatus: orglist.feilstatus,
                         })
                     );

@@ -8,7 +8,7 @@ import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { useAsyncError } from '../useError';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { Bedriftvalg, BedriftvalgType, Feilstatus, initvalgtBedrift } from './bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, FeilNivå, initvalgtBedrift } from './bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
@@ -29,9 +29,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
     const navigate: NavigateFunction = useNavigate();
     const detErValgtBedrift: boolean = valgtBedrift?.valgtOrg?.length !== 0;
     const innloggetBrukerHarAltinnTilgangerBedrifter: boolean = innloggetBruker?.organisasjoner?.length === 0;
-    const greideIkkeByggeOrgtre: boolean = !!valgtBedrift?.feilstatus?.find(
-        (feil) => feil.status === Feilstatus.GREIDE_IKKE_BYGGE_ORGTRE
-    );
+    const greideIkkeByggeOrgtre: boolean = !!valgtBedrift?.feilstatus?.find((feil) => feil.nivå === FeilNivå.ERROR);
     const skalRendreRefusjonFeilet: boolean = innloggetBrukerHarAltinnTilgangerBedrifter || greideIkkeByggeOrgtre;
 
     const getBedriftSearchkey = (org: Bedriftvalg): string => {
@@ -82,7 +80,12 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     {props.children}
                 </BrukerContext.Provider>
             )}
-            {skalRendreRefusjonFeilet && <RefusjonFeilet feilstatus={valgtBedrift?.feilstatus} />}
+            {skalRendreRefusjonFeilet && (
+                <RefusjonFeilet
+                    bedriftvalg={valgtBedrift}
+                    innloggetBrukerHarAltinnTilgangerBedrifter={innloggetBrukerHarAltinnTilgangerBedrifter}
+                />
+            )}
         </XMLHttpReqHandler>
     );
 };

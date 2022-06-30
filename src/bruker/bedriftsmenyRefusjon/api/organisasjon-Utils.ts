@@ -43,14 +43,6 @@ export const definerDefaultBedriftvalgType = (
     return valgtBedrift?.type ?? BedriftvalgType.ALLEBEDRIFTER;
 };
 
-export const organisasjonerPaContextMatcherOrgFraUrl = (
-    valgtOrg: Organisasjon[] | undefined,
-    orgnummerFraUrl: string | null
-): boolean => {
-    const valgtOrganisasjoner: string | undefined = valgtOrg?.map((o) => o.OrganizationNumber).join(',');
-    return valgtOrganisasjoner === orgnummerFraUrl || valgtOrganisasjoner === BedriftvalgType.ALLEBEDRIFTER;
-};
-
 const serializeOrgNr = (valgtOrg: Array<Organisasjon> | undefined): string | undefined =>
     valgtOrg?.map((o) => o.OrganizationNumber).join(',');
 

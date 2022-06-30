@@ -18,15 +18,6 @@ function useOrganisasjon(
     bedriftvalg: Bedriftvalg | undefined,
     setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>
 ) {
-    /*    const navigate: NavigateFunction = useNavigate();
-
-    const getBedriftSearchkey = (org: Bedriftvalg): string => {
-        if (org?.type === BedriftvalgType.ALLEBEDRIFTER) {
-            return BedriftvalgType.ALLEBEDRIFTER;
-        }
-        return org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
-    };*/
-
     const initBedriftmenyContext = useCallback(() => {
         function settOrganisasjon(
             organisasjonsliste: Array<Organisasjon>,

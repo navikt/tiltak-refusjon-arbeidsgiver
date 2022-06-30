@@ -12,6 +12,7 @@ export enum PageSizeOption {
     FIVE = 5,
     SEVEN = 7,
     TEN = 10,
+    FIFTEEN = 15,
 }
 
 export interface Organisasjon {
@@ -35,9 +36,15 @@ export enum Feilstatus {
     UNDERENHET_MANGLET_JURIDISK = 'UNDERENHET_MANGLET_JURIDISK',
 }
 
-export interface StatusFeil {
+export enum FeilNivå {
+    ERROR = 'ERROR',
+    WARNING = 'WARNING',
+}
+
+export interface StatusFeilBedriftmeny {
     status: Feilstatus;
     gjeldeneOrg: Array<Organisasjon> | undefined;
+    nivå: FeilNivå;
 }
 
 export enum BedriftvalgType {
@@ -54,7 +61,7 @@ export interface Bedriftvalg extends IObjectsBedriftvalg {
     type: BedriftvalgType;
     valgtOrg: Array<Organisasjon>;
     pageData: PageData;
-    feilstatus: Array<StatusFeil> | undefined;
+    feilstatus: StatusFeilBedriftmeny[] | undefined;
 }
 
 export interface Sokefelt {
@@ -86,7 +93,7 @@ export interface MenyContextType {
 
 export const initPageData: PageData = {
     page: 0,
-    pagesize: 7,
+    pagesize: 10,
     currentPage: 0,
     size: 0,
     totalItems: 0,
