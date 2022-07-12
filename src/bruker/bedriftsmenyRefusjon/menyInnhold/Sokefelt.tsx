@@ -9,12 +9,12 @@ const Sokefelt: FunctionComponent = () => {
     const { organisasjonstre, setOrganisasjonstre, setSokefelt } = useContext(MenyContext);
     const [fultOrganisasjonstre, setFultOrganisasjonstre] = useState<Juridiskenhet[] | undefined>();
 
-    const getSearchResult = (findMe: string) => {
-        if (findMe.length >= 3) {
+    const getSearchResult = (sokeOrd: string) => {
+        if (sokeOrd.length >= 3) {
             if (!fultOrganisasjonstre) {
                 setFultOrganisasjonstre(organisasjonstre);
             }
-            const regex = new RegExp(findMe, 'i');
+            const regex = new RegExp(sokeOrd, 'i');
             const sokeliste = fultOrganisasjonstre ?? organisasjonstre;
             const filter: Juridiskenhet[] | undefined = sokeliste?.filter(
                 (org) =>
@@ -34,6 +34,7 @@ const Sokefelt: FunctionComponent = () => {
             }
         }
     };
+
     return (
         <Input
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
