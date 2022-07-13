@@ -32,6 +32,7 @@ const GråRamme = styled.div`
 
 const Utregning: FunctionComponent<Props> = (props) => {
     const { beregning, tilskuddsgrunnlag } = props;
+    console.log('fratrekkLønnFerie', beregning?.fratrekkLønnFerie);
     return (
         <GråRamme>
             <Systemtittel>Utregningen</Systemtittel>
@@ -41,12 +42,14 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelTekst={'Brutto lønn i perioden'}
                 verdi={beregning?.lønn || 0}
             />
-            {beregning && beregning.fratrekkLønnFerie > 0 && (
+            {beregning && beregning.fratrekkLønnFerie !== 0 && (
                 <Utregningsrad
                     labelIkon={<Endret />}
                     labelTekst="fratrekk for ferie"
                     verdiOperator={<MinusTegn />}
-                    verdi={beregning.fratrekkLønnFerie}
+                    verdi={
+                        beregning.fratrekkLønnFerie < 0 ? beregning.fratrekkLønnFerie * -1 : beregning.fratrekkLønnFerie
+                    }
                 />
             )}
             <Utregningsrad
