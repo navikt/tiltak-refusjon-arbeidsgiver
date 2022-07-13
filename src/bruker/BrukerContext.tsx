@@ -6,7 +6,6 @@ import LokalLogin from '../LokalLogin';
 import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
-import { useAsyncError } from '../useError';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 import { Bedriftvalg, BedriftvalgType, initBedriftvalg } from './bedriftsmenyRefusjon/api/organisasjon';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
@@ -50,13 +49,12 @@ export const BrukerProvider: FunctionComponent = (props) => {
         }
         setValgtBedrift(org);
     };
-    const throwError = useAsyncError();
 
     useEffect(() => {
         hentInnloggetBruker()
             .then((response) => setInnloggetBruker(response))
-            .catch(throwError);
-    }, [throwError]);
+            .catch((err) => console.log('err', err));
+    }, []);
 
     return (
         <XMLHttpReqHandler>
