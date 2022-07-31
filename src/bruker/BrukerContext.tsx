@@ -8,7 +8,7 @@ import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { useAsyncError } from '../useError';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { Bedriftvalg, BedriftvalgType, FeilNivå, initvalgtBedrift } from './bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, FeilNivå, initvalgtBedrift } from './bedriftsmenyRefusjon/api/api';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);

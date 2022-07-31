@@ -5,7 +5,7 @@ import { ReactComponent as Notes } from '@/asset/image/notes.svg';
 import { ReactComponent as ChevronRight } from '@/asset/image/chevronRight.svg';
 import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.svg';
 import { ReactComponent as SystemError } from '@/asset/image/systemError.svg';
-import { Bedriftvalg, Feilstatus, Organisasjon } from '../../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, Feilstatus, Organisasjon } from '../../bruker/bedriftsmenyRefusjon/api/api';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import Lenke from 'nav-frontend-lenker';
 import LagNyRad from './LagNyRad';

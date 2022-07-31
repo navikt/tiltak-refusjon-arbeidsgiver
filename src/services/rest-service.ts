@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import useSWR, { mutate } from 'swr';
-import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/api';
 import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
 import { Korreksjon, PageableRefusjon, Refusjon } from '../refusjon/refusjon';
 import { RefusjonStatus } from '../refusjon/status';

@@ -1,9 +1,9 @@
 import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import { BedriftvalgType, initPageData } from '../api/organisasjon';
+import { BedriftvalgType, initPageData } from '../api/api';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
-import { setDefaultBedriftlisteMedApneElementer } from '../api/api-Utils';
+import { setDefaultBedriftlisteMedApneElementer } from '../api/kontruer-Utils';
 
 interface Properties {
     className: string;
@@ -26,12 +26,12 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     onChange={() => {
                         const valg = Object.assign({}, bedriftvalg, {
                             type: BedriftvalgType.ENKELBEDRIFT,
-                            valgtOrg: [organisasjonstre?.at(0)?.Underenheter?.at(0)],
+                            valgtOrg: [organisasjonstre?.list?.at(0)?.Underenheter?.at(0)],
                             pageData: initPageData,
                         });
                         setBedriftvalg(valg);
                         if (callbackAlleClick) setValgtBedrift(valg);
-                        setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
+                        setDefaultBedriftlisteMedApneElementer(organisasjonstre?.list, setBedriftListe);
                     }}
                 />
                 <Radio
@@ -41,12 +41,12 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     onChange={() => {
                         const valg = Object.assign({}, bedriftvalg, {
                             type: BedriftvalgType.FLEREBEDRIFTER,
-                            valgtOrg: [organisasjonstre?.at(0)?.Underenheter?.at(0)],
+                            valgtOrg: [organisasjonstre?.list?.at(0)?.Underenheter?.at(0)],
                             pageData: initPageData,
                         });
                         setBedriftvalg(valg);
                         if (callbackAlleClick) setValgtBedrift(valg);
-                        setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
+                        setDefaultBedriftlisteMedApneElementer(organisasjonstre?.list, setBedriftListe);
                     }}
                 />
                 <Radio
@@ -56,12 +56,12 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
                     onChange={() => {
                         const valg = Object.assign({}, bedriftvalg, {
                             type: BedriftvalgType.ALLEBEDRIFTER,
-                            valgtOrg: organisasjonstre?.flatMap((e) => e.Underenheter),
+                            valgtOrg: organisasjonstre?.list?.flatMap((e) => e.Underenheter),
                             pageData: initPageData,
                         });
                         setBedriftvalg(valg);
                         if (callbackAlleClick) setValgtBedrift(valg);
-                        setDefaultBedriftlisteMedApneElementer(organisasjonstre, setBedriftListe);
+                        setDefaultBedriftlisteMedApneElementer(organisasjonstre?.list, setBedriftListe);
                     }}
                 />
             </RadioGruppe>

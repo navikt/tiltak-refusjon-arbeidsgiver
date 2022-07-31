@@ -3,7 +3,7 @@ import { BrukerContextType } from '../../../bruker/BrukerContextType';
 import { useInnloggetBruker } from '../../../bruker/BrukerContext';
 import './pagination.less';
 import BEMHelper from '../../../utils/bem';
-import { BedriftvalgType } from '../../../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { BedriftvalgType } from '../../../bruker/bedriftsmenyRefusjon/api/api';
 import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
 import PaginationBar from './PaginationBar';
 import { PaginationContext } from './PaginationProvider';

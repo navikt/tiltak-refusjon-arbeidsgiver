@@ -1,4 +1,4 @@
-import { Bedriftvalg, BedriftvalgType, Juridiskenhet, Organisasjon } from './organisasjon';
+import { Bedriftvalg, BedriftvalgType, Organisasjon, Organisasjonlist } from './api';
 import { History } from 'history';
 
 const ORGNUMMER_PARAMETER = 'bedrift';
@@ -11,8 +11,8 @@ export const appendUrl = (orgnummer: string, history: History): void => {
     (history as any).replace({ search });
 };
 
-export const hentUnderenheter = (organisasjonstre: Juridiskenhet[]): Organisasjon[] =>
-    organisasjonstre.reduce(
+export const hentUnderenheter = (organisasjonstre: Organisasjonlist): Organisasjon[] =>
+    organisasjonstre.list.reduce(
         (organisasjoner: Organisasjon[], parentOrg) => [...organisasjoner, ...parentOrg.Underenheter],
         []
     );
@@ -20,10 +20,10 @@ export const hentUnderenheter = (organisasjonstre: Juridiskenhet[]): Organisasjo
 export const hentOrgnummerFraUrl = (): string | null =>
     new URL(window.location.href).searchParams.get(ORGNUMMER_PARAMETER);
 
-export const altinnOrganisasjonerErInitialisertMedEnIkkeTomList = (orgtre: Juridiskenhet[]): boolean =>
-    orgtre.length > 0;
+export const altinnOrganisasjonerErInitialisertMedEnIkkeTomList = (orgtre: Organisasjonlist): boolean =>
+    orgtre?.list?.length > 0;
 
-export const filtrerOrgMatchUrl = (orgtre: Juridiskenhet[], orgnummerFraUrl: string | null): Organisasjon[] =>
+export const filtrerOrgMatchUrl = (orgtre: Organisasjonlist, orgnummerFraUrl: string | null): Organisasjon[] =>
     hentUnderenheter(orgtre).filter((org) => orgnummerFraUrl?.split(',').includes(org.OrganizationNumber));
 
 export const definerDefaultBedriftvalgType = (

@@ -6,10 +6,10 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { NedChevron } from 'nav-frontend-chevron';
 import './bedriftListe.less';
 import Lenke from 'nav-frontend-lenker';
-import { BedriftvalgType, initPageData, Juridiskenhet, Organisasjon } from '../../api/organisasjon';
+import { BedriftvalgType, initPageData, OrganisasjonEnhet, Organisasjon } from '../../api/api';
 import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from '../../../../utils/bem';
-import { setDefaultBedriftlisteMedApneElementer } from '../../api/api-Utils';
+import { setDefaultBedriftlisteMedApneElementer } from '../../api/kontruer-Utils';
 import TomtSok from './TomtSok';
 
 const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
@@ -26,7 +26,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
         callbackAlleClick,
     } = context;
 
-    const matchParentOrganisasjon = (org: Juridiskenhet) =>
+    const matchParentOrganisasjon = (org: OrganisasjonEnhet) =>
         bedriftvalg.valgtOrg.find((e) => e.ParentOrganizationNumber === org.JuridiskEnhet.OrganizationNumber);
 
     const matchOrganisasjon = (org: Organisasjon) =>
@@ -36,7 +36,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
         <div className={cls.className}>
             <TomtSok />
             <ul className={cls.element('organisasjonlist')}>
-                {context.organisasjonstre?.map((org: Juridiskenhet, index: number) => (
+                {context.organisasjonstre?.list?.map((org: OrganisasjonEnhet, index: number) => (
                     <li className={cls.element('juridisk-container')} key={index}>
                         <div
                             className={cls.element(
@@ -184,7 +184,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                         });
                                                         setMenyApen(false);
                                                         setDefaultBedriftlisteMedApneElementer(
-                                                            organisasjonstre,
+                                                            organisasjonstre?.list,
                                                             setBedriftListe
                                                         );
                                                     }

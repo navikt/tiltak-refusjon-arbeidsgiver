@@ -3,20 +3,19 @@ import BEMHelper from '../../utils/bem';
 import TypografiBase from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
 import Bedriftsmeny from './bedriftsmeny/Bedriftsmeny';
-import { ByggOrganisasjonstre, byggOrganisasjonstre } from './api/api';
+import { OrganisasjonData, konstruereOrganisasjonliste } from './api/konstruer';
 import {
     Bedriftvalg,
     ClsBedriftsmeny,
-    initvalgtBedrift,
-    Juridiskenhet,
     MenyContextType,
     Organisasjon,
     Sokefelt,
     initBedriftvalg,
-} from './api/organisasjon';
+    Organisasjonlist,
+} from './api/api';
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
-import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
+import { setDefaultBedriftlisteMedApneElementer } from './api/kontruer-Utils';
 import useSize from './api/useSize';
 
 interface Props {
@@ -31,7 +30,7 @@ export const MenyContext = React.createContext<MenyContextType>({} as MenyContex
 
 const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren<Props>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY_REFUSJON);
-    const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
+    const [organisasjonstre, setOrganisasjonstre] = useState<Organisasjonlist | undefined>(undefined);
     const [desktopview, setDesktopview] = useState<boolean>(window.innerWidth > 768);
     const [menyApen, setMenyApen] = useState<boolean>(false);
     const [sokefelt, setSokefelt] = useState<Sokefelt>({
@@ -43,27 +42,22 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const [callbackAlleClick] = useState<boolean>(sendCallbackAlleClick);
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
-        organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
+        organisasjonstre?.list.map((e, index) => ({ index: index, apnet: false }))
     );
 
     useEffect(() => {
         if (organisasjoner && organisasjoner?.length > 0) {
-            byggOrganisasjonstre(organisasjoner).then((orglist: ByggOrganisasjonstre) => {
-                if (orglist.juridisk.length > 0) {
-                    setOrganisasjonstre(orglist.juridisk);
-                    setDefaultBedriftlisteMedApneElementer(orglist.juridisk, setBedriftListe);
-                }
-                if (orglist.feilstatus) {
-                    setValgtBedrift(
-                        Object.assign({}, valgtBedrift, {
-                            ...(valgtBedrift ?? initvalgtBedrift),
-                            feilstatus: orglist.feilstatus,
-                        })
-                    );
+            konstruereOrganisasjonliste(organisasjoner).then((orglist: OrganisasjonData) => {
+                if (
+                    orglist.organisasjonliste.length > 0 &&
+                    (typeof organisasjonstre !== 'object' || organisasjonstre?.list.length === 0)
+                ) {
+                    setOrganisasjonstre({ list: orglist.organisasjonliste, feilstatus: orglist.feilstatus });
+                    setDefaultBedriftlisteMedApneElementer(orglist.organisasjonliste, setBedriftListe);
                 }
             });
         }
-    }, [organisasjoner, valgtBedrift, setValgtBedrift]);
+    }, [organisasjoner, valgtBedrift, setValgtBedrift, organisasjonstre]);
 
     useSize({ desktopview, setDesktopview });
 

@@ -1,5 +1,5 @@
-import { BedriftListe, Juridiskenhet, Organisasjon } from './organisasjon';
-import { hentAlleJuridiskeEnheter } from './api';
+import { BedriftListe, OrganisasjonEnhet, Organisasjon } from './api';
+import { hentAlleJuridiskeEnheter } from './konstruer';
 import { Dispatch, SetStateAction } from 'react';
 
 const BRREG_URL: string = 'https://data.brreg.no/enhetsregisteret/api/enheter/?organisasjonsnummer=';
@@ -45,7 +45,7 @@ export async function finnJuridiskeEnheter(
 }
 
 export function setDefaultBedriftlisteMedApneElementer(
-    orgtre: Juridiskenhet[] | undefined,
+    orgtre: OrganisasjonEnhet[] | undefined,
     setBedriftListe: Dispatch<SetStateAction<BedriftListe>>
 ): void {
     setBedriftListe(orgtre?.map((o, i) => ({ index: i, apnet: false })));

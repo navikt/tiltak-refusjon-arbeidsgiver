@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { PageSizeOption } from '../../../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { PageSizeOption } from '../../../bruker/bedriftsmenyRefusjon/api/api';
 import BEMHelper from '../../../utils/bem';
 import { PaginationContext } from './PaginationProvider';
 import { BrukerContextType } from '../../../bruker/BrukerContextType';

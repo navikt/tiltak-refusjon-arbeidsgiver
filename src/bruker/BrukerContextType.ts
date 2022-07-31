@@ -1,5 +1,5 @@
 import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
-import { Bedriftvalg } from './bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg } from './bedriftsmenyRefusjon/api/api';
 import { Dispatch, SetStateAction } from 'react';
 
 export type Bedrift = string;

@@ -1,155 +1,266 @@
-import {
-    FeilNivå,
-    Feilstatus,
-    Juridiskenhet,
-    ListeJuridiskeEnheter,
-    Organisasjon,
-    StatusFeilBedriftmeny,
-} from './organisasjon';
-import {
-    finnJuridiskeEnheter,
-    getJuridiskeEnheterFraBedrifter,
-    getUnderEnheterFraBedrifter,
-    getUnderenheterUtenJuridiskEnhet,
-} from './api-Utils';
+import { History } from 'history';
+import { Dispatch, SetStateAction } from 'react';
 
-export interface ByggOrganisasjonstre {
-    juridisk: Array<Juridiskenhet>;
-    feilstatus: Array<StatusFeilBedriftmeny> | undefined;
+export enum ClsBedriftsmeny {
+    BEDRIFTSMENY_REFUSJON = 'bedriftsmeny-refusjon',
+    BEDRIFTSMENY = 'bedriftsmenyen',
+    MENYINNHOLD = 'menyInnhold',
+    SOK_ETTER_BEDRIFTER = 'sok-etter-bedrifter',
 }
 
-export async function byggOrganisasjonstre(organisasjoner: Organisasjon[]): Promise<ByggOrganisasjonstre> {
-    const juridiskeEnheter = getJuridiskeEnheterFraBedrifter(organisasjoner);
-    const underenheter = getUnderEnheterFraBedrifter(organisasjoner);
-    const underenheterUtenJuridiskEnhet = getUnderenheterUtenJuridiskEnhet(underenheter, juridiskeEnheter);
-    const feilstatus: Array<StatusFeilBedriftmeny> | undefined = [];
-
-    if (underenheterUtenJuridiskEnhet.length > 0) {
-        await finnJuridiskeEnheter(underenheterUtenJuridiskEnhet).then((juridiskeEnheterUtenTilgang) => {
-            juridiskeEnheter.push(...juridiskeEnheterUtenTilgang.org);
-            if (juridiskeEnheterUtenTilgang?.manglerJuridisk?.length > 0) {
-                feilstatus.push({
-                    status: Feilstatus.UNDERENHET_MANGLET_JURIDISK,
-                    nivå: FeilNivå.WARNING,
-                    gjeldeneOrg: juridiskeEnheterUtenTilgang.manglerJuridisk,
-                });
-            }
-        });
-    }
-    const bedriftliste = settSammenJuridiskEnhetMedUnderenheter(juridiskeEnheter, underenheter);
-    if (bedriftliste.feilstatus) {
-        feilstatus.push(...bedriftliste.feilstatus);
-    }
-
-    return {
-        juridisk: bedriftliste.juridisk.sort((a, b) => a.JuridiskEnhet.Name.localeCompare(b.JuridiskEnhet.Name)),
-        feilstatus: feilstatus?.length > 0 ? feilstatus : undefined,
-    };
+export enum PageSizeOption {
+    FIVE = 5,
+    SEVEN = 7,
+    TEN = 10,
+    FIFTEEN = 15,
 }
 
-const finJuridiskUtenUnderenheter = (juridiskenheter: Juridiskenhet[]) =>
-    juridiskenheter.filter((juridiskenhet) => juridiskenhet.Underenheter?.length === 0).map((o) => o.JuridiskEnhet);
-
-function oppdatertFeilstatus(juridiskenheter: Juridiskenhet[]) {
-    let feilstatus: Array<StatusFeilBedriftmeny> | undefined = [];
-    const JuridiskUtenUnderenheter: Organisasjon[] = finJuridiskUtenUnderenheter(juridiskenheter);
-
-    if (JuridiskUtenUnderenheter?.length > 0) {
-        feilstatus?.push({
-            status: Feilstatus.JURIDISK_MANGLER_UNDERENHET,
-            gjeldeneOrg: JuridiskUtenUnderenheter,
-            nivå: FeilNivå.WARNING,
-        });
-    }
-    if (!juridiskenheter || juridiskenheter?.length === 0) {
-        feilstatus?.push({ status: Feilstatus.GREIDE_IKKE_BYGGE_ORGTRE, gjeldeneOrg: undefined, nivå: FeilNivå.ERROR });
-    }
-    const status = feilstatus.length > 0 ? feilstatus : undefined;
-    return status;
+export interface Organisasjon {
+    Name: string;
+    Type: string;
+    OrganizationNumber: string;
+    OrganizationForm: string;
+    Status: string;
+    ParentOrganizationNumber: string;
 }
 
-const settSammenJuridiskEnhetMedUnderenheter = (
-    enheter: Organisasjon[],
-    underenheter: Organisasjon[]
-): ByggOrganisasjonstre => {
-    const juridiskenheter: Juridiskenhet[] = enheter.map((enhet) => ({
-        JuridiskEnhet: enhet,
-        Underenheter: underenheter.filter(
-            (underenhet) => underenhet.ParentOrganizationNumber === enhet.OrganizationNumber
-        ),
-        SokeresultatKunUnderenhet: false,
-    }));
-    return {
-        juridisk: juridiskenheter.filter((orgtre) => orgtre.Underenheter.length > 0),
-        feilstatus: oppdatertFeilstatus(juridiskenheter),
-    };
+export interface OrganisasjonEnhet {
+    JuridiskEnhet: Organisasjon;
+    Underenheter: Array<Organisasjon>;
+}
+
+type OrgList = Array<OrganisasjonEnhet>;
+
+export interface Organisasjonlist {
+    list: OrgList;
+    feilstatus: StatusFeilBedriftmeny[] | undefined;
+}
+
+export enum Feilstatus {
+    GREIDE_IKKE_BYGGE_ORGTRE = 'GREIDE_IKKE_BYGGE_ORGTRE',
+    JURIDISK_MANGLER_UNDERENHET = 'JURIDISK_MANGLER_UNDERENHET',
+    UNDERENHET_MANGLET_JURIDISK = 'UNDERENHET_MANGLET_JURIDISK',
+}
+
+export enum FeilNivå {
+    ERROR = 'ERROR',
+    WARNING = 'WARNING',
+}
+
+export interface StatusFeilBedriftmeny {
+    status: Feilstatus;
+    gjeldeneOrg: Array<Organisasjon> | undefined;
+    nivå: FeilNivå;
+}
+
+export enum BedriftvalgType {
+    ENKELBEDRIFT = 'ENKELBEDRIFT',
+    FLEREBEDRIFTER = 'FLEREBEDRIFTER',
+    ALLEBEDRIFTER = 'ALLEBEDRIFTER',
+}
+
+interface IndexObjectOfBedriftvalg {
+    [key: string]: any;
+}
+
+export interface Bedriftvalg extends IndexObjectOfBedriftvalg {
+    type: BedriftvalgType;
+    valgtOrg: Array<Organisasjon>;
+    pageData: PageData;
+    feilstatus: StatusFeilBedriftmeny[] | undefined;
+}
+
+export interface Sokefelt {
+    aktivt: boolean;
+    antallTreff: number;
+    organisasjonstreTreff: Array<OrganisasjonEnhet> | undefined;
+}
+
+export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;
+
+export interface MenyContextType {
+    valgtBedrift: Bedriftvalg | undefined;
+    setValgtBedrift: (org: Bedriftvalg) => void;
+    organisasjoner: Organisasjon[];
+    history: History;
+    organisasjonstre: Organisasjonlist | undefined;
+    setOrganisasjonstre: Dispatch<SetStateAction<Organisasjonlist | undefined>>;
+    menyApen: boolean;
+    setMenyApen: Dispatch<SetStateAction<boolean>>;
+    bedriftvalg: Bedriftvalg;
+    setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>;
+    bedriftListe: BedriftListe;
+    setBedriftListe: Dispatch<SetStateAction<BedriftListe>>;
+    desktopview: boolean;
+    sokefelt: Sokefelt;
+    setSokefelt: Dispatch<SetStateAction<Sokefelt>>;
+    callbackAlleClick: boolean;
+}
+
+export const initPageData: PageData = {
+    page: 0,
+    pagesize: 10,
+    currentPage: 0,
+    size: 0,
+    totalItems: 0,
+    totalPages: 0,
 };
 
-export async function hentAlleJuridiskeEnheter(
-    listeMedJuridiskeOrgnr: { org: Organisasjon[]; nr: string },
-    brregUrl: string
-): Promise<{ org: Organisasjon[]; manglerJuridisk: Organisasjon[] }> {
-    try {
-        const respons = await fetch(brregUrl + listeMedJuridiskeOrgnr.nr);
-        if (respons.ok && listeMedJuridiskeOrgnr.nr.length > 0) {
-            const distinkteJuridiskeEnheterFraEreg: ListeJuridiskeEnheter = await respons.json();
-            if (
-                distinkteJuridiskeEnheterFraEreg._embedded &&
-                distinkteJuridiskeEnheterFraEreg._embedded.enheter.length > 0
-            ) {
-                const funnetOrgSomMangletJuridiskOssBrreg = finnAlleJuridiskeEnheterSomBrregIkkeFant(
-                    listeMedJuridiskeOrgnr,
-                    distinkteJuridiskeEnheterFraEreg
-                );
-                const org = distinkteJuridiskeEnheterFraEreg._embedded.enheter.map((orgFraEereg) => {
-                    return {
-                        Name: orgFraEereg.navn,
-                        Type: 'Enterprise',
-                        OrganizationNumber: orgFraEereg.organisasjonsnummer,
-                        OrganizationForm: orgFraEereg.organisasjonsform?.kode ?? 'AS',
-                        Status: 'Active',
-                        ParentOrganizationNumber: '',
-                    };
-                });
+export const initvalgtBedrift: Bedriftvalg = {
+    type: BedriftvalgType.ALLEBEDRIFTER,
+    valgtOrg: [] as Array<Organisasjon>,
+    pageData: initPageData,
+    feilstatus: undefined,
+};
 
-                return { org: org, manglerJuridisk: funnetOrgSomMangletJuridiskOssBrreg };
-            }
-        }
-    } catch (e) {
-        console.warn('kall til brreg.no feilet: ', e);
-    }
-    return lagBackupListeMedJuridiskeEnheter(listeMedJuridiskeOrgnr);
+export interface PageData {
+    page: number;
+    pagesize: number;
+    currentPage: number;
+    size: number;
+    totalItems: number;
+    totalPages: number;
 }
 
-function finnAlleJuridiskeEnheterSomBrregIkkeFant(
-    listeMedJuridiskeOrgnr: { org: Organisasjon[]; nr: string },
-    distinkteJuridiskeEnheterFraEreg: ListeJuridiskeEnheter
-): Organisasjon[] {
-    const juridiskeEnheter = listeMedJuridiskeOrgnr.nr.split(',');
-    distinkteJuridiskeEnheterFraEreg._embedded.enheter.forEach((enhet) => {
-        const enhetIndex = juridiskeEnheter.indexOf(enhet.organisasjonsnummer);
-        if (enhetIndex !== -1) {
-            juridiskeEnheter.splice(enhetIndex, 1);
-        }
-    });
-    return listeMedJuridiskeOrgnr.org.filter((org) =>
-        listeMedJuridiskeOrgnr.nr.split(',').find((nr) => nr === org.ParentOrganizationNumber)
-    );
-}
+export const initOrganisasjon: Organisasjon = {
+    Name: '',
+    Type: '',
+    OrganizationNumber: '',
+    OrganizationForm: '',
+    Status: '',
+    ParentOrganizationNumber: '',
+};
 
-function lagBackupListeMedJuridiskeEnheter(listeMedJuridiskeOrgnr: { org: Organisasjon[]; nr: string }) {
-    const org = listeMedJuridiskeOrgnr.nr.split(',').map((orgnr) => {
-        return {
-            Name: `${orgnr} (Juridisk enhet) `,
-            Type: 'Enterprise',
-            OrganizationNumber: orgnr,
-            OrganizationForm: 'AS',
-            Status: 'Active',
-            ParentOrganizationNumber: '',
+export const initBedriftvalg: Bedriftvalg = {
+    ...initvalgtBedrift,
+    valgtOrg: [{ ...initOrganisasjon, OrganizationNumber: '999999999' }],
+};
+
+export interface OrganisasjonEnhetsregisteret {
+    organisasjonsnummer: string;
+    navn: string;
+    organisasjonsform: {
+        kode: string;
+        beskrivelse: string;
+        _links: {
+            self: {
+                href: string;
+            };
         };
-    });
-    const funnetOrgSomMangletJuridiskOssBrreg = listeMedJuridiskeOrgnr.org.filter((org) =>
-        listeMedJuridiskeOrgnr.nr.split(',').find((nr) => nr === org.ParentOrganizationNumber)
-    );
-    return { org: org, manglerJuridisk: funnetOrgSomMangletJuridiskOssBrreg };
+    };
+    hjemmeside: string;
+    postadresse: {
+        land: string;
+        landkode: string;
+        postnummer: string;
+        poststed: string;
+        adresse: string[];
+        kommune: string;
+        kommunenummer: string;
+    };
+    registreringsdatoEnhetsregisteret: string;
+    registrertIMvaregisteret: boolean;
+    naeringskode1: {
+        beskrivelse: string;
+        kode: string;
+    };
+    antallAnsatte: number;
+    forretningsadresse: {
+        land: string;
+        landkode: string;
+        postnummer: string;
+        poststed: string;
+        adresse: string[];
+        kommune: string;
+        kommunenummer: string;
+    };
+    institusjonellSektorkode: {
+        kode: string;
+        beskrivelse: string;
+    };
+    registrertIForetaksregisteret: boolean;
+    registrertIStiftelsesregisteret: boolean;
+    registrertIFrivillighetsregisteret: boolean;
+    konkurs: boolean;
+    underAvvikling: boolean;
+    underTvangsavviklingEllerTvangsopplosning: boolean;
+    maalform: string;
+    _links: {
+        self: {
+            href: string;
+        };
+    };
+}
+
+export const initEnhetsregOrg: OrganisasjonEnhetsregisteret = {
+    organisasjonsnummer: '',
+    navn: '',
+    organisasjonsform: {
+        kode: 'KOMM',
+        beskrivelse: 'Kommune',
+        _links: {
+            self: {
+                href: '',
+            },
+        },
+    },
+    hjemmeside: '',
+    postadresse: {
+        land: 'Norge',
+        landkode: 'NO',
+        postnummer: '',
+        poststed: '',
+        adresse: [''],
+        kommune: '',
+        kommunenummer: '',
+    },
+    registreringsdatoEnhetsregisteret: '1995-06-07',
+    registrertIMvaregisteret: true,
+    naeringskode1: {
+        beskrivelse: 'Generell offentlig administrasjon',
+        kode: '84.110',
+    },
+    antallAnsatte: 4571,
+    forretningsadresse: {
+        land: 'Norge',
+        landkode: 'NO',
+        postnummer: '',
+        poststed: '',
+        adresse: [''],
+        kommune: '',
+        kommunenummer: '',
+    },
+    institusjonellSektorkode: {
+        kode: '6500',
+        beskrivelse: '',
+    },
+    registrertIForetaksregisteret: false,
+    registrertIStiftelsesregisteret: false,
+    registrertIFrivillighetsregisteret: false,
+    konkurs: false,
+    underAvvikling: false,
+    underTvangsavviklingEllerTvangsopplosning: false,
+    maalform: 'Bokmål',
+    _links: {
+        self: {
+            href: '',
+        },
+    },
+};
+
+export interface ListeJuridiskeEnheter {
+    _embedded: {
+        enheter: OrganisasjonEnhetsregisteret[];
+    };
+    _links: {
+        self: {
+            href: string;
+        };
+    };
+    page: {
+        size: number;
+        totalElements: number;
+        totalPages: number;
+        number: 0;
+    };
 }

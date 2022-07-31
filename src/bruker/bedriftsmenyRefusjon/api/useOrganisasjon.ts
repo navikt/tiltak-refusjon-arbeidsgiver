@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import { Bedriftvalg, BedriftvalgType, initPageData, Juridiskenhet, Organisasjon } from './organisasjon';
+import { Bedriftvalg, BedriftvalgType, initPageData, Organisasjon, Organisasjonlist } from './api';
 import { History } from 'history';
 import {
     altinnOrganisasjonerErInitialisertMedEnIkkeTomList,
@@ -11,7 +11,7 @@ import {
 } from './organisasjon-Utils';
 
 function useOrganisasjon(
-    orgtre: Juridiskenhet[] = [],
+    orgtre: Organisasjonlist = { list: [], feilstatus: undefined },
     history: History,
     valgtBedrift: Bedriftvalg | undefined,
     setValgtBedrift: (org: Bedriftvalg) => void,
@@ -31,7 +31,7 @@ function useOrganisasjon(
                 type: bedriftvalgType,
                 valgtOrg: organisasjonsliste,
                 pageData: valgtBedrift?.pageData ?? initPageData,
-                feilstatus: valgtBedrift?.feilstatus ?? undefined,
+                feilstatus: orgtre?.feilstatus ?? undefined,
             };
             setBedriftvalg(valgtorg);
             setValgtBedrift(valgtorg);
@@ -39,7 +39,7 @@ function useOrganisasjon(
 
         function setFallbackOrganisasjon(type: BedriftvalgType): void {
             settOrganisasjon(
-                orgtre.flatMap((org) => org.Underenheter),
+                orgtre.list.flatMap((org) => org.Underenheter),
                 type,
                 true
             );

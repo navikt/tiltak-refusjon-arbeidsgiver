@@ -4,7 +4,7 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { NedChevron } from 'nav-frontend-chevron';
 import BEMHelper from '../../utils/bem';
 import { MenyContext } from './BedriftsmenyRefusjon';
-import { Bedriftvalg, BedriftvalgType, ClsBedriftsmeny } from './api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, ClsBedriftsmeny } from './api/api';
 
 const Menyknapp: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);

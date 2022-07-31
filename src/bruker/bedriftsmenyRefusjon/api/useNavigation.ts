@@ -1,6 +1,6 @@
 import { NavigateFunction } from 'react-router-dom';
 import { useNavigate } from 'react-router';
-import { Bedriftvalg, BedriftvalgType } from './organisasjon';
+import { Bedriftvalg, BedriftvalgType } from './api';
 
 const useNavigation = (valgtBedrift: Bedriftvalg | undefined) => {
     if (valgtBedrift) {

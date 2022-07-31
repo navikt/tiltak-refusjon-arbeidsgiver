@@ -4,7 +4,7 @@ import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from
 import { useLocation, useNavigate } from 'react-router';
 import { To } from 'react-router-dom';
 import BedriftsmenyRefusjon from '../bruker/bedriftsmenyRefusjon/BedriftsmenyRefusjon';
-import { Bedriftvalg } from '../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg } from '../bruker/bedriftsmenyRefusjon/api/api';
 
 interface Properties {
     organisasjoner: Array<Organisasjon>;

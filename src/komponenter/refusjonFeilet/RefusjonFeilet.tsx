@@ -1,5 +1,5 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { Bedriftvalg, Feilstatus, StatusFeilBedriftmeny } from '../../bruker/bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, Feilstatus, StatusFeilBedriftmeny } from '../../bruker/bedriftsmenyRefusjon/api/api';
 import './refusjonFeilet.less';
 import BEMHelper from '../../utils/bem';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';

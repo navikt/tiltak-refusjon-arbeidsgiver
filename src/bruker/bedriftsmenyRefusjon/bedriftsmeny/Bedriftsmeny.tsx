@@ -5,7 +5,7 @@ import { MenyContext } from '../BedriftsmenyRefusjon';
 import useOrganisasjon from '../api/useOrganisasjon';
 import MenyInnhold from '../menyInnhold/MenyInnhold';
 import Menyknapp from '../Menyknapp';
-import { ClsBedriftsmeny } from '../api/organisasjon';
+import { ClsBedriftsmeny } from '../api/api';
 import SokEtterBedrifter from '../menyInnhold/sokEtterBedrift/SokEtterBedrifter';
 
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
@@ -37,7 +37,7 @@ const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
 
     return (
         <div className={cls.className}>
-            {((organisasjonstre && organisasjonstre.length > 0) || sokefelt.aktivt) && (
+            {((organisasjonstre && organisasjonstre?.list?.length > 0) || sokefelt.aktivt) && (
                 <nav>
                     <div className={cls.element('container')}>
                         <Menyknapp />

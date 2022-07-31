@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { BedriftvalgType } from '../api/organisasjon';
+import { BedriftvalgType } from '../api/api';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ReactComponent as UnderEnhet } from '@/asset/image/underenhet.svg';
 import BEMHelper from '../../../utils/bem';

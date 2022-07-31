@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { PageableRefusjon } from '../../refusjon/refusjon';
-import { Bedriftvalg } from './api/organisasjon';
+import { Bedriftvalg } from './api/api';
 
 function useOppdaterPagedata(
     pagable: PageableRefusjon,
