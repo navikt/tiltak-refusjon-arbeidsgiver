@@ -13,7 +13,7 @@
         max-width: 52.5rem;
         background-color: white;
         border-radius: 4px;
-        margin-bottom: 1rem;
+        margin-bottom: 0;
     }
 
     &__label-rad {
@@ -25,7 +25,35 @@
         outline: 1px solid #f1f1f1;
     }
 
+    &__label-rad {
+        .oversikt__kolonne {
+            &:nth-child(1) > p {
+                position: relative;
+
+                &:before,
+                &:after {
+                    display: block;
+                    position: absolute;
+                    line-height: 8px;
+                    font-size: 0.7em;
+                    opacity: 0.5;
+                    right: -1.125rem;
+                }
+                &:before {
+                    bottom: 52%;
+                    content: '▲';
+                }
+                &:after {
+                    content: '▼';
+                    top: 52%;
+                    opacity: 0.2;
+                }
+            }
+        }
+    }
+
     &__kolonne {
+        position: relative;
         margin-right: 0.25rem;
         width: 100%;
         display: flex;
@@ -36,10 +64,13 @@
         &:nth-child(1) {
             font-weight: 600;
         }
-
         &:nth-child(4) {
             width: 100%;
         }
+
+        // opacity 0.125 - opacity 0.6
+        // "▲"
+        // "▼";
     }
 
     &__ikon {

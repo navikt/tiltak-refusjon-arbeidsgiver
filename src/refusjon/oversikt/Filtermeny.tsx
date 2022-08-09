@@ -98,7 +98,7 @@ const Filtermeny: FunctionComponent = () => {
                     />
                 </RadioGruppe>
             </EkspanderbartpanelBase>
-            <div style={{ marginTop: '1.25rem' }} />
+            <div style={{ marginTop: '0.75rem' }} />
             <EkspanderbartpanelBase
                 tittel="Tiltakstype"
                 role="radiogroup"

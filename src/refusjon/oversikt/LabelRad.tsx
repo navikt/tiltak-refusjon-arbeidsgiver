@@ -11,16 +11,16 @@ const LabelRad = (props: Props) => {
     return (
         <div className={cls.element('label-rad')} aria-label="rad overkrifter for kolonnene i refusonslisten">
             <div className={cls.element('kolonne')} id={cls.element('deltaker')}>
-                <Element>Deltaker</Element>
+                <Element className={cls.element('deltaker')}>Deltaker</Element>
             </div>
             <div className={cls.element('kolonne')} id={cls.element('periode')}>
-                <Element>Periode</Element>
+                <Element className={cls.element('periode')}>Periode</Element>
             </div>
             <div className={cls.element('kolonne')} id={cls.element('status')}>
-                <Element>Status</Element>
+                <Element className={cls.element('status')}>Status</Element>
             </div>
             <div className={cls.element('kolonne')} id={cls.element('frist-godkjenning')}>
-                <Element>Frist for godkjenning</Element>
+                <Element className={cls.element('frist-godkjenning')}>Frist for godkjenning</Element>
             </div>
         </div>
     );
