@@ -1,16 +1,17 @@
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 import InformasjonFraAvtalen from './informasjonAvtalen/InformasjonFraAvtalen';
+import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import InntekterFraAMeldingen from './inntektsmelding/InntekterFraAMeldingen';
-import './RefusjonSide.less';
+import RefusjonGodjennModal from './RefusjonGodjennModal';
 import RefusjonIngress from './RefusjonIngress';
 import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
-import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
+import RefusjonMinusBelop from './RefusjonMinusBelop';
+import './RefusjonSide.less';
 import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
-import RefusjonGodjennModal from './RefusjonGodjennModal';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -31,6 +32,10 @@ const RefusjonSide: FunctionComponent = () => {
         }
     };
 
+    const lønnFratrukketFerieNegativt =
+        refusjon.refusjonsgrunnlag.beregning?.lønnFratrukketFerie !== undefined &&
+        refusjon.refusjonsgrunnlag.beregning?.lønnFratrukketFerie < 0;
+
     return (
         <>
             <HvitBoks>
@@ -39,7 +44,11 @@ const RefusjonSide: FunctionComponent = () => {
                 <InntekterFraAMeldingen kvitteringVisning={false} />
                 <InntekterFraTiltaketSpørsmål />
                 <TidligereRefunderbarBeløp refusjon={refusjon} />
-                <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+
+                {!lønnFratrukketFerieNegativt && (
+                    <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                )}
+                {lønnFratrukketFerieNegativt && <RefusjonMinusBelop refusjon={refusjon} />}
             </HvitBoks>
             <RefusjonGodjennModal
                 refusjon={refusjon}

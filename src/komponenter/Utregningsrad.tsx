@@ -1,8 +1,8 @@
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactNode } from 'react';
 import BEMHelper from '../utils/bem';
-import { visSatsMedEttDesimal } from '../utils/utregningUtil';
 import { formatterPenger } from '../utils/PengeUtils';
+import { visSatsMedEttDesimal } from '../utils/utregningUtil';
 import './Utregningsrad.less';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
     verdi: number | string;
     ikkePenger?: boolean;
     border?: 'NORMAL' | 'TYKK' | 'INGEN';
+    visMinusSomNull?: boolean;
 }
 
 const cls = BEMHelper('utregning-rad');
@@ -42,6 +43,8 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
 
     const labelTekstString = typeof props.labelTekst === 'string' ? props.labelTekst : undefined;
 
+    const nullHvisMinus = (beløp: number) => (beløp < 0 ? 0 : beløp);
+
     return (
         <div className={cls.element('utregning-rad', border())}>
             <div className={cls.element('utregning-label')}>
@@ -54,7 +57,9 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
             <div className={cls.element('utregning-verdi')}>
                 {setOperator(props.verdiOperator)}
                 <Normaltekst className={cls.element('sum')} aria-labelledby={labelTekstString}>
-                    {props.ikkePenger || typeof props.verdi === 'string' ? props.verdi : formatterPenger(props.verdi)}
+                    {props.ikkePenger || typeof props.verdi === 'string'
+                        ? props.verdi
+                        : formatterPenger(props.visMinusSomNull ? nullHvisMinus(props.verdi) : props.verdi)}
                 </Normaltekst>
             </div>
         </div>
