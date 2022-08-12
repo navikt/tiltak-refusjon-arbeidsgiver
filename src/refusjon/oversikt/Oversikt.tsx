@@ -13,9 +13,6 @@ import LabelRad from './LabelRad';
 import './oversikt.less';
 import { BrukerContextType } from '../../bruker/BrukerContextType';
 import useOppdaterPagedata from '../../bruker/bedriftsmenyRefusjon/useOppdaterPagedata';
-import _ from 'lodash';
-import { Refusjon } from '../refusjon';
-import { sorteringIndexRefusjonStatus } from '../OversiktSide/SortProvider';
 
 const cls = BEMHelper('oversikt');
 
@@ -25,29 +22,19 @@ const Oversikt: FunctionComponent = () => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { setValgtBedrift, valgtBedrift } = brukerContext;
     const { filter } = useFilter();
-    const pagable = useHentRefusjoner(brukerContext, filter.status, filter.tiltakstype);
+    const pagable = useHentRefusjoner(brukerContext, filter);
     const { refusjoner } = pagable;
     useOppdaterPagedata(pagable, valgtBedrift, setValgtBedrift);
 
     const navigate = useNavigate();
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);
 
-    console.log(
-        _.sortBy<Refusjon>(refusjoner, [
-            (refusjon: Refusjon) => sorteringIndexRefusjonStatus.indexOf(refusjon.status),
-            'fristForGodkjenning',
-        ])
-    );
-
     return (
         <nav className={cls.className} aria-label="Main">
             <div role="list">
                 <LabelRad className={cls.className} />
                 {refusjoner.length > 0 ? (
-                    /*    _.sortBy<Refusjon>(refusjoner, [
-                        (refusjon: Refusjon) => sorteringIndexRefusjonStatus.indexOf(refusjon.status),
-                        'fristForGodkjenning',
-                    ])*/ refusjoner.map((refusjon) => {
+                    refusjoner.map((refusjon) => {
                         const { deltakerEtternavn, deltakerFornavn, tilskuddTom, tilskuddFom } =
                             refusjon.refusjonsgrunnlag.tilskuddsgrunnlag;
                         return (

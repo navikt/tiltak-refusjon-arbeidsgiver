@@ -25,9 +25,44 @@
         outline: 1px solid #f1f1f1;
     }
 
+    &__label-sortering {
+        position: relative;
+    }
+
     &__label-rad {
-        .oversikt__kolonne {
-            &:nth-child(1) > p {
+        .oversikt__sortering {
+            display: block;
+            position: absolute;
+            opacity: 0.2;
+            right: -1rem;
+
+            &--asc,
+            &--asc-selected {
+                bottom: 0.1rem;
+                display: flex;
+                justify-content: flex-end;
+            }
+            &--desc,
+            &--desc-selected {
+                top: 0.1rem;
+                display: flex;
+                justify-content: flex-start;
+            }
+
+            &--asc-selected,
+            &--desc-selected {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &__label-rad {
+        /*       .oversikt__kolonne {
+            & > svg {
+
+            }
+
+            &:nth-child(1) > span {
                 position: relative;
 
                 &:before,
@@ -39,7 +74,12 @@
                     opacity: 0.5;
                     right: -1.125rem;
                 }
-                &:before {
+
+                & > svg {
+                    width: 1rem;
+                    height: 0.75rem;
+                }
+               &:before {
                     bottom: 52%;
                     content: '▲';
                 }
@@ -49,7 +89,7 @@
                     opacity: 0.2;
                 }
             }
-        }
+        }*/
     }
 
     &__kolonne {
@@ -67,10 +107,6 @@
         &:nth-child(4) {
             width: 100%;
         }
-
-        // opacity 0.125 - opacity 0.6
-        // "▲"
-        // "▼";
     }
 
     &__ikon {

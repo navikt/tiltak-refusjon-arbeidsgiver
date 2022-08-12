@@ -2,10 +2,13 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 import { registrerMenyValg } from '../../utils/amplitude-utils';
 import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
+import { LogReturn } from 'amplitude-js';
+import { SortingOrder } from '../refusjon';
 
 export interface Filter {
     status: RefusjonStatus | undefined;
     tiltakstype: Tiltak | undefined;
+    sorting: SortingOrder | undefined;
 }
 
 type FilterContextType = { filter: Filter; oppdaterFilter: (nyttFilter: Partial<Filter>) => void };
@@ -25,13 +28,13 @@ export const FilterProvider: FunctionComponent = (props) => {
     const [filter, setFilter] = useState<Filter>({
         status: undefined,
         tiltakstype: undefined,
+        sorting: undefined,
     });
 
-    const oppdaterFilter = (nyttFilter: Partial<Filter>) => {
+    const oppdaterFilter = (nyttFilter: Partial<Filter>): LogReturn => {
         setFilter({ ...filter, ...nyttFilter });
-        if (nyttFilter.status) {
-            registrerMenyValg(nyttFilter.status);
-        } else registrerMenyValg('Alle');
+        if (nyttFilter.status) return registrerMenyValg(nyttFilter.status);
+        return registrerMenyValg('Alle');
     };
 
     return (

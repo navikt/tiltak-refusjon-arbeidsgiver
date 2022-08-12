@@ -5,6 +5,7 @@ import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType'
 import { Korreksjon, PageableRefusjon, Refusjon } from '../refusjon/refusjon';
 import { RefusjonStatus } from '../refusjon/status';
 import { Tiltak } from '../refusjon/tiltak';
+import { Filter } from '../refusjon/oversikt/FilterContext';
 
 export class FeilkodeError extends Error {}
 export class ApiError extends Error {}
@@ -86,24 +87,19 @@ export const godkjennRefusjon = async (refusjonId: string): Promise<any> => {
     return response.data;
 };
 
-export const useHentRefusjoner = (
-    brukerContext: BrukerContextType,
-    status?: RefusjonStatus,
-    tiltakstype?: Tiltak
-): PageableRefusjon => {
+export const useHentRefusjoner = (brukerContext: BrukerContextType, filter: Filter): PageableRefusjon => {
     const { valgtBedrift } = brukerContext;
     switch (brukerContext.valgtBedrift.type) {
         case BedriftvalgType.ENKELBEDRIFT:
-            return HentRefusjonerForEnkeltOrganisasjon(brukerContext, status, tiltakstype);
+            return HentRefusjonerForEnkeltOrganisasjon(brukerContext, filter.status, filter.tiltakstype);
         case BedriftvalgType.FLEREBEDRIFTER:
             return HentRefusjonForMangeOrganisasjoner(
                 valgtBedrift.valgtOrg.map((e) => e.OrganizationNumber).join(','),
                 valgtBedrift,
-                status,
-                tiltakstype
+                filter
             );
         case BedriftvalgType.ALLEBEDRIFTER:
-            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, valgtBedrift, status, tiltakstype);
+            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, valgtBedrift, filter);
     }
 };
 
@@ -130,14 +126,13 @@ export const HentRefusjonerForEnkeltOrganisasjon = (
 export const HentRefusjonForMangeOrganisasjoner = (
     bedriftlist: string,
     valgtBedrift: Bedriftvalg,
-    status?: RefusjonStatus,
-    tiltakstype?: Tiltak
+    filter: Filter
 ): PageableRefusjon => {
     const { page, pagesize } = valgtBedrift.pageData;
     const { data } = useSWR<PageableRefusjon>(
         `/refusjon/hentliste?bedriftNr=${bedriftlist}&page=${page}&size=${pagesize}&&status=${
-            status || ''
-        }&tiltakstype=${tiltakstype || ''}`,
+            filter.status || ''
+        }&tiltakstype=${filter.tiltakstype || ''}&sortingOrder=${filter.sorting || ''}`,
         swrConfig
     );
     return data!;
