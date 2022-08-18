@@ -35,8 +35,10 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     const [menyApen, setMenyApen] = useState<boolean>(false);
     const [sokefelt, setSokefelt] = useState<Sokefelt>({
         aktivt: false,
+        sokeord: '',
         antallTreff: 0,
         organisasjonstreTreff: undefined,
+        fultOrganisasjonstre: undefined,
     });
     const { valgtBedrift, setValgtBedrift, organisasjoner, history, sendCallbackAlleClick } = props;
     const [callbackAlleClick] = useState<boolean>(sendCallbackAlleClick);
@@ -57,7 +59,8 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                 }
             });
         }
-    }, [organisasjoner, valgtBedrift, setValgtBedrift, organisasjonstre]);
+        // eslint-disable-next-line
+    }, [organisasjoner]);
 
     useSize({ desktopview, setDesktopview });
 

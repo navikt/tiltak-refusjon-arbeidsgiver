@@ -72,8 +72,10 @@ export interface Bedriftvalg extends IndexObjectOfBedriftvalg {
 
 export interface Sokefelt {
     aktivt: boolean;
+    sokeord: string;
     antallTreff: number;
     organisasjonstreTreff: Array<OrganisasjonEnhet> | undefined;
+    fultOrganisasjonstre: Organisasjonlist | undefined;
 }
 
 export type BedriftListe = Array<{ index: number; apnet: boolean }> | undefined;

@@ -1,3 +1,1 @@
-<svg viewBox="0 0 8 8" height="0.5em" width="0.5em" fill="black" xmlns="http://www.w3.org/2000/svg" class="triangleUp" role="img">
-    <path d="M0 0 L8 0 L4 8 Z" />
-</svg>
+<svg viewBox="0 0 8 8" height=".5em" width=".5em" xmlns="http://www.w3.org/2000/svg" class="triangleDown_svg__triangleUp"><path d="M0 0h8L4 8z"/></svg>

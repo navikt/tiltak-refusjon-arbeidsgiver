@@ -6,7 +6,7 @@ import StatusTekst from '../../komponenter/StatusTekst/StatusTekst';
 import { useHentRefusjoner } from '../../services/rest-service';
 import { antallRefusjoner } from '../../utils/amplitude-utils';
 import BEMHelper from '../../utils/bem';
-import { formatterDato, formatterPeriode } from '../../utils/datoUtils';
+import { formatterDato, formatterPeriode, NORSK_DATO_FORMAT_SHORT } from '../../utils/datoUtils';
 import { useFilter } from './FilterContext';
 import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
 import LabelRad from './LabelRad';
@@ -55,7 +55,7 @@ const Oversikt: FunctionComponent = () => {
                                     {deltakerFornavn} {deltakerEtternavn}
                                 </Kolonne>
                                 <Kolonne aria-labelledby={cls.element('periode')}>
-                                    {formatterPeriode(tilskuddFom, tilskuddTom)}
+                                    {formatterPeriode(tilskuddFom, tilskuddTom, NORSK_DATO_FORMAT_SHORT)}
                                 </Kolonne>
                                 <Kolonne aria-labelledby={cls.element('status')}>
                                     <StatusTekst

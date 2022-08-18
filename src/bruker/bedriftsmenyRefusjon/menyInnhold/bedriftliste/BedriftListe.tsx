@@ -27,10 +27,10 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     } = context;
 
     const matchParentOrganisasjon = (org: OrganisasjonEnhet) =>
-        bedriftvalg.valgtOrg.find((e) => e.ParentOrganizationNumber === org.JuridiskEnhet.OrganizationNumber);
+        bedriftvalg.valgtOrg?.find((e) => e.ParentOrganizationNumber === org.JuridiskEnhet.OrganizationNumber);
 
     const matchOrganisasjon = (org: Organisasjon) =>
-        bedriftvalg.valgtOrg.find((e) => e.OrganizationNumber === org.OrganizationNumber);
+        bedriftvalg.valgtOrg?.find((e) => e.OrganizationNumber === org.OrganizationNumber);
 
     return (
         <div className={cls.className}>

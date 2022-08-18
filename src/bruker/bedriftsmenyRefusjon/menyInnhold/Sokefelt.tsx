@@ -1,41 +1,51 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Input } from 'nav-frontend-skjema';
 import BEMHelper from '../../../utils/bem';
-import { ClsBedriftsmeny, OrganisasjonEnhet, Organisasjonlist } from '../api/api';
+import { ClsBedriftsmeny, OrganisasjonEnhet } from '../api/api';
 import { MenyContext } from '../BedriftsmenyRefusjon';
 
 const Sokefelt: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.MENYINNHOLD);
-    const { organisasjonstre, setOrganisasjonstre, setSokefelt } = useContext(MenyContext);
-    const [fultOrganisasjonstre, setFultOrganisasjonstre] = useState<Organisasjonlist | undefined>();
+    const { organisasjonstre, setOrganisasjonstre, setSokefelt, sokefelt } = useContext(MenyContext);
+    const [inputfelt, setInputfelt] = useState<string>('');
+
+    useEffect(() => {
+        if (!sokefelt.aktivt && inputfelt) {
+            setInputfelt('');
+        }
+    }, [sokefelt, inputfelt]);
 
     const getSearchResult = (sokeOrd: string) => {
-        if (sokeOrd.length >= 3) {
-            if (!fultOrganisasjonstre) {
-                setFultOrganisasjonstre(organisasjonstre);
-            }
+        setInputfelt(sokeOrd);
+        if (sokeOrd.length >= 0) {
             const regex = new RegExp(sokeOrd, 'i');
-            const sokeliste = fultOrganisasjonstre ?? organisasjonstre;
-            const filter: OrganisasjonEnhet[] | undefined = sokeliste?.list.filter(
+            const sokeliste = sokefelt.fultOrganisasjonstre ?? organisasjonstre;
+            const resultat = sokeliste?.list?.filter(
                 (org) =>
                     org.Underenheter.some(
                         (enhet) => enhet.Name.search(regex) > -1 || enhet.OrganizationNumber.search(regex) > -1
                     ) ||
                     org.JuridiskEnhet.Name.search(regex) > -1 ||
                     org.JuridiskEnhet.OrganizationNumber.search(regex) > -1
-            );
-            setSokefelt({ aktivt: true, antallTreff: filter?.length ?? 0, organisasjonstreTreff: filter });
-            setOrganisasjonstre(
-                Object.assign({}, organisasjonstre, {
-                    list: filter,
-                    feilstatus: sokeliste?.feilstatus,
-                })
-            );
+            ) as OrganisasjonEnhet[] | [];
+            setSokefelt({
+                aktivt: true,
+                sokeord: sokeOrd,
+                antallTreff: resultat?.length ?? 0,
+                organisasjonstreTreff: resultat,
+                fultOrganisasjonstre: sokeliste,
+            });
+            setOrganisasjonstre({ list: resultat, feilstatus: undefined });
         } else {
-            if (fultOrganisasjonstre) {
-                setOrganisasjonstre(fultOrganisasjonstre);
-                setSokefelt({ aktivt: false, antallTreff: 0, organisasjonstreTreff: undefined });
-                setFultOrganisasjonstre(undefined);
+            if (sokefelt.fultOrganisasjonstre) {
+                setOrganisasjonstre(sokefelt.fultOrganisasjonstre);
+                setSokefelt({
+                    aktivt: false,
+                    sokeord: sokeOrd,
+                    antallTreff: 0,
+                    organisasjonstreTreff: undefined,
+                    fultOrganisasjonstre: undefined,
+                });
             }
         }
     };
@@ -45,6 +55,7 @@ const Sokefelt: FunctionComponent = () => {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 getSearchResult(event.target.value);
             }}
+            value={inputfelt}
             className={cls.element('sokefelt')}
             aria-label="Søk etter bedrift"
             type="search"

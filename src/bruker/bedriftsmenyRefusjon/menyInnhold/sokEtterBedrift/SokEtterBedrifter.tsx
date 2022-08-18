@@ -52,8 +52,10 @@ const SokEtterBedrifter: FunctionComponent = () => {
                                         onClick={() => {
                                             setSokefelt({
                                                 aktivt: false,
+                                                sokeord: '',
                                                 antallTreff: 0,
                                                 organisasjonstreTreff: undefined,
+                                                fultOrganisasjonstre: undefined,
                                             });
                                             setValgtBedrift(bedriftvalg);
                                             setMenyApen(false);
