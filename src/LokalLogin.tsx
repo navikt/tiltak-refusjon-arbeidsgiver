@@ -7,6 +7,7 @@ import { Element } from 'nav-frontend-typografi';
 import { inneholderUrlnavn } from './utils/miljoUtils';
 import BEMHelper from './utils/bem';
 import './lokalLogin.less';
+import { useAsyncError } from './useError';
 
 type Props = {
     innloggetBruker: InnloggetBruker | undefined;
@@ -19,15 +20,16 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
     const cls = BEMHelper('login');
 
     const redirectFraLokalLogin = () => (window.location.href = window.location.href.replace('login', 'refusjon'));
+    const throwError = useAsyncError();
 
     const loggInnKnapp = async (pid: string) => {
         const response = await axios
             .get(`https://tiltak-fakelogin.labs.nais.io/token?aud=aud-tokenx&iss=tokenx&acr=Level4&pid=${pid}`)
-            .catch((er) => console.log('error', er));
-        if (response) {
+            .catch(throwError);
+        if (response && response.status === 200) {
             document.cookie = `${TOKENX_COOKIE_NAME}=${response.data};expires=Tue, 15 Jan 2044 21:47:38 GMT;domain=${window.location.hostname};path=/`;
+            redirectFraLokalLogin();
         }
-        redirectFraLokalLogin();
     };
 
     if (props.innloggetBruker !== undefined) {
