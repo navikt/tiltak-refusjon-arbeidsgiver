@@ -6,7 +6,7 @@ import useOrganisasjon from '../api/useOrganisasjon';
 import MenyInnhold from '../menyInnhold/MenyInnhold';
 import Menyknapp from '../Menyknapp';
 import { ClsBedriftsmeny } from '../api/api';
-import Infolinje from '../menyInnhold/sokEtterBedrift/Infolinje';
+import Infolinje from '../menyInnhold/infolinje/Infolinje';
 
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);

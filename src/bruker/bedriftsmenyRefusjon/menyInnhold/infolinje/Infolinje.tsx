@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext } from 'react';
 import BEMHelper from '../../../../utils/bem';
 import { BedriftvalgType, ClsBedriftsmeny } from '../../api/api';
-import './sokEtterBedrifter.less';
+import './infolinje.less';
 import KnappBase from 'nav-frontend-knapper';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
 import { Element } from 'nav-frontend-typografi';
