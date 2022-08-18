@@ -6,7 +6,7 @@ import useOrganisasjon from '../api/useOrganisasjon';
 import MenyInnhold from '../menyInnhold/MenyInnhold';
 import Menyknapp from '../Menyknapp';
 import { ClsBedriftsmeny } from '../api/api';
-import SokEtterBedrifter from '../menyInnhold/sokEtterBedrift/SokEtterBedrifter';
+import Infolinje from '../menyInnhold/sokEtterBedrift/Infolinje';
 
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
@@ -45,7 +45,7 @@ const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                             <div className={cls.element('meny-wrapper')}>
                                 <MenyInnhold />
                             </div>
-                            <SokEtterBedrifter />
+                            <Infolinje />
                         </div>
                     </div>
                 </nav>

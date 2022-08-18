@@ -6,7 +6,7 @@ import KnappBase from 'nav-frontend-knapper';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
 import { Element } from 'nav-frontend-typografi';
 
-const SokEtterBedrifter: FunctionComponent = () => {
+const Infolinje: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.SOK_ETTER_BEDRIFTER);
     const { bedriftvalg, setValgtBedrift, setMenyApen, valgtBedrift, desktopview, setSokefelt, callbackAlleClick } =
         useContext(MenyContext);
@@ -73,4 +73,4 @@ const SokEtterBedrifter: FunctionComponent = () => {
     );
 };
 
-export default SokEtterBedrifter;
+export default Infolinje;
