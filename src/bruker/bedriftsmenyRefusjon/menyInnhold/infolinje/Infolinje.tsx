@@ -1,25 +1,16 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import BEMHelper from '../../../../utils/bem';
-import { BedriftvalgType, ClsBedriftsmeny } from '../../api/organisasjon';
-import './sokEtterBedrifter.less';
+import { BedriftvalgType, ClsBedriftsmeny } from '../../api/api';
+import './infolinje.less';
 import KnappBase from 'nav-frontend-knapper';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
 import { Element } from 'nav-frontend-typografi';
 
-const SokEtterBedrifter: FunctionComponent = () => {
+const Infolinje: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.SOK_ETTER_BEDRIFTER);
-    const { bedriftvalg, setValgtBedrift, setMenyApen, valgtBedrift, desktopview, setSokefelt } =
+    const { bedriftvalg, setValgtBedrift, setMenyApen, valgtBedrift, desktopview, setSokefelt, callbackAlleClick } =
         useContext(MenyContext);
     const visSokeknapp: boolean = bedriftvalg.type !== BedriftvalgType.ENKELBEDRIFT && bedriftvalg.valgtOrg?.length > 0;
-    const [visningStatestikk, setVisningStatestikk] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (bedriftvalg.valgtOrg === valgtBedrift?.valgtOrg && !visningStatestikk) {
-            setVisningStatestikk(true);
-        } else if (bedriftvalg.valgtOrg !== valgtBedrift?.valgtOrg && visningStatestikk) {
-            setVisningStatestikk(false);
-        }
-    }, [bedriftvalg, valgtBedrift, visningStatestikk]);
 
     return (
         <div>
@@ -29,7 +20,7 @@ const SokEtterBedrifter: FunctionComponent = () => {
                         {visSokeknapp && (
                             <div className={cls.element('info-og-knapp-wrapper')}>
                                 <div className={cls.element('visning-statestikk')}>
-                                    {visningStatestikk && valgtBedrift && desktopview && (
+                                    {valgtBedrift && desktopview && (
                                         <>
                                             <Element>
                                                 antall refusjoner:
@@ -52,18 +43,27 @@ const SokEtterBedrifter: FunctionComponent = () => {
                                         </>
                                     )}
                                 </div>
-                                <KnappBase
-                                    kompakt={false}
-                                    type="hoved"
-                                    className={cls.element('sok-knapp')}
-                                    onClick={() => {
-                                        setSokefelt({ aktivt: false, antallTreff: 0 });
-                                        setValgtBedrift(bedriftvalg);
-                                        setMenyApen(false);
-                                    }}
-                                >
-                                    Søk
-                                </KnappBase>
+
+                                {!callbackAlleClick && (
+                                    <KnappBase
+                                        kompakt={false}
+                                        type="hoved"
+                                        className={cls.element('sok-knapp')}
+                                        onClick={() => {
+                                            setSokefelt({
+                                                aktivt: false,
+                                                sokeord: '',
+                                                antallTreff: 0,
+                                                organisasjonstreTreff: undefined,
+                                                fultOrganisasjonstre: undefined,
+                                            });
+                                            setValgtBedrift(bedriftvalg);
+                                            setMenyApen(false);
+                                        }}
+                                    >
+                                        Søk
+                                    </KnappBase>
+                                )}
                             </div>
                         )}
                     </div>
@@ -73,4 +73,4 @@ const SokEtterBedrifter: FunctionComponent = () => {
     );
 };
 
-export default SokEtterBedrifter;
+export default Infolinje;

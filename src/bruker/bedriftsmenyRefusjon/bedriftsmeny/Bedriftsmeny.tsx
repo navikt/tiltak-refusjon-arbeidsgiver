@@ -5,22 +5,39 @@ import { MenyContext } from '../BedriftsmenyRefusjon';
 import useOrganisasjon from '../api/useOrganisasjon';
 import MenyInnhold from '../menyInnhold/MenyInnhold';
 import Menyknapp from '../Menyknapp';
-import { ClsBedriftsmeny } from '../api/organisasjon';
-import SokEtterBedrifter from '../menyInnhold/sokEtterBedrift/SokEtterBedrifter';
+import { ClsBedriftsmeny } from '../api/api';
+import Infolinje from '../menyInnhold/infolinje/Infolinje';
 
 const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
     const context = useContext(MenyContext);
-    const { history, organisasjonstre, menyApen, valgtBedrift, setValgtBedrift, setBedriftvalg, sokefelt } = context;
-    const { hentOrg } = useOrganisasjon(organisasjonstre, history, valgtBedrift, setValgtBedrift, setBedriftvalg);
+    const {
+        history,
+        organisasjonstre,
+        menyApen,
+        valgtBedrift,
+        setValgtBedrift,
+        bedriftvalg,
+        setBedriftvalg,
+        sokefelt,
+    } = context;
+
+    const { initBedriftmenyContext } = useOrganisasjon(
+        organisasjonstre,
+        history,
+        valgtBedrift,
+        setValgtBedrift,
+        bedriftvalg,
+        setBedriftvalg
+    );
 
     useEffect(() => {
-        hentOrg();
-    }, [hentOrg]);
+        initBedriftmenyContext();
+    }, [initBedriftmenyContext]);
 
     return (
         <div className={cls.className}>
-            {((organisasjonstre && organisasjonstre.length > 0) || sokefelt.aktivt) && (
+            {((organisasjonstre && organisasjonstre?.list?.length > 0) || sokefelt.aktivt) && (
                 <nav>
                     <div className={cls.element('container')}>
                         <Menyknapp />
@@ -28,7 +45,7 @@ const Bedriftsmeny: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                             <div className={cls.element('meny-wrapper')}>
                                 <MenyInnhold />
                             </div>
-                            <SokEtterBedrifter />
+                            <Infolinje />
                         </div>
                     </div>
                 </nav>

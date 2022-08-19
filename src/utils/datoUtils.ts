@@ -6,6 +6,7 @@ moment.locale('nb');
 
 export const NORSK_MÅNEDÅR_FORMAT = 'YYYY/MM';
 export const NORSK_DATO_FORMAT = 'DD.MM.YYYY';
+export const NORSK_DATO_FORMAT_SHORT = 'DD.MM.YY';
 export const NORSK_DATO_OG_TID_FORMAT = 'DD.MM.YYYY HH:mm';
 
 export const formatterDato = (dato: string, format: string = NORSK_DATO_FORMAT) => {

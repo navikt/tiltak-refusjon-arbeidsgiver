@@ -9,15 +9,12 @@ const useSize = (props: Properties) => {
     const { desktopview, setDesktopview } = props;
 
     useEffect(() => {
-        const sjekkWindowSize = () => {
-            if (window.innerWidth > 768 && !desktopview) {
-                setDesktopview(true);
-            } else if (window.innerWidth < 768 && desktopview) {
-                setDesktopview(false);
-            }
+        const applyWindowSize = () => {
+            if (window.innerWidth > 768 && !desktopview) setDesktopview(true);
+            else if (window.innerWidth < 768 && desktopview) setDesktopview(false);
         };
-        window.addEventListener('resize', sjekkWindowSize);
-        return () => window.removeEventListener('resize', sjekkWindowSize);
+        window.addEventListener('resize', applyWindowSize);
+        return () => window.removeEventListener('resize', applyWindowSize);
     }, [desktopview, setDesktopview]);
 };
 export default useSize;

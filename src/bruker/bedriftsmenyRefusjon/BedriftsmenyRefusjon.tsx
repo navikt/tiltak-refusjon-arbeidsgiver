@@ -3,20 +3,19 @@ import BEMHelper from '../../utils/bem';
 import TypografiBase from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
 import Bedriftsmeny from './bedriftsmeny/Bedriftsmeny';
-import { byggOrganisasjonstre } from './api/api';
+import { OrganisasjonData, konstruereOrganisasjonliste } from './api/konstruer';
 import {
     Bedriftvalg,
     ClsBedriftsmeny,
-    initBedriftvalg,
-    Juridiskenhet,
     MenyContextType,
     Organisasjon,
     Sokefelt,
-} from './api/organisasjon';
+    initBedriftvalg,
+    Organisasjonlist,
+} from './api/api';
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
-import { setDefaultBedriftlisteMedApneElementer } from './api/api-Utils';
-
+import { setDefaultBedriftlisteMedApneElementer } from './api/kontruer-Utils';
 import useSize from './api/useSize';
 
 interface Props {
@@ -24,46 +23,44 @@ interface Props {
     valgtBedrift: Bedriftvalg | undefined;
     setValgtBedrift: (org: Bedriftvalg) => void;
     history: History;
+    sendCallbackAlleClick: boolean;
 }
 
 export const MenyContext = React.createContext<MenyContextType>({} as MenyContextType);
 
 const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren<Props>) => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY_REFUSJON);
-    const [organisasjonstre, setOrganisasjonstre] = useState<Array<Juridiskenhet> | undefined>(undefined);
+    const [organisasjonstre, setOrganisasjonstre] = useState<Organisasjonlist | undefined>(undefined);
     const [desktopview, setDesktopview] = useState<boolean>(window.innerWidth > 768);
     const [menyApen, setMenyApen] = useState<boolean>(false);
-    const [sokefelt, setSokefelt] = useState<Sokefelt>({ aktivt: false, antallTreff: 0 });
-    const { valgtBedrift, setValgtBedrift, organisasjoner, history } = props;
+    const [sokefelt, setSokefelt] = useState<Sokefelt>({
+        aktivt: false,
+        sokeord: '',
+        antallTreff: 0,
+        organisasjonstreTreff: undefined,
+        fultOrganisasjonstre: undefined,
+    });
+    const { valgtBedrift, setValgtBedrift, organisasjoner, history, sendCallbackAlleClick } = props;
+    const [callbackAlleClick] = useState<boolean>(sendCallbackAlleClick);
     const [bedriftvalg, setBedriftvalg] = useState<Bedriftvalg>(initBedriftvalg);
     const [bedriftListe, setBedriftListe] = useState<Array<{ index: number; apnet: boolean }> | undefined>(
-        organisasjonstre?.map((e, index) => ({ index: index, apnet: false }))
+        organisasjonstre?.list.map((e, index) => ({ index: index, apnet: false }))
     );
 
     useEffect(() => {
         if (organisasjoner && organisasjoner?.length > 0) {
-            byggOrganisasjonstre(organisasjoner).then((orglist) => {
-                if (orglist.juridisk.length > 0) {
-                    setOrganisasjonstre(orglist.juridisk);
-                    setDefaultBedriftlisteMedApneElementer(orglist.juridisk, setBedriftListe);
-                }
+            konstruereOrganisasjonliste(organisasjoner).then((orglist: OrganisasjonData) => {
                 if (
-                    orglist.feilstatus &&
-                    (!valgtBedrift ||
-                        (valgtBedrift && orglist?.feilstatus?.status !== valgtBedrift?.feilstatus?.status))
+                    orglist.organisasjonliste.length > 0 &&
+                    (typeof organisasjonstre !== 'object' || organisasjonstre?.list.length === 0)
                 ) {
-                    setValgtBedrift(
-                        Object.assign({}, valgtBedrift, {
-                            type: valgtBedrift?.type ?? initBedriftvalg.type,
-                            valgtOrg: valgtBedrift?.valgtOrg ?? initBedriftvalg.valgtOrg,
-                            pageData: valgtBedrift?.pageData ?? initBedriftvalg.pageData,
-                            feilstatus: orglist.feilstatus,
-                        })
-                    );
+                    setOrganisasjonstre({ list: orglist.organisasjonliste, feilstatus: orglist.feilstatus });
+                    setDefaultBedriftlisteMedApneElementer(orglist.organisasjonliste, setBedriftListe);
                 }
             });
         }
-    }, [organisasjoner, valgtBedrift, setValgtBedrift]);
+        // eslint-disable-next-line
+    }, [organisasjoner]);
 
     useSize({ desktopview, setDesktopview });
 
@@ -83,6 +80,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
         desktopview,
         sokefelt,
         setSokefelt,
+        callbackAlleClick,
     };
 
     return (

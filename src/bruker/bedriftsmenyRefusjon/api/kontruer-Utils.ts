@@ -1,5 +1,5 @@
-import { BedriftListe, Juridiskenhet, Organisasjon } from './organisasjon';
-import { hentAlleJuridiskeEnheter } from './api';
+import { BedriftListe, OrganisasjonEnhet, Organisasjon } from './api';
+import { hentAlleJuridiskeEnheter } from './konstruer';
 import { Dispatch, SetStateAction } from 'react';
 
 const BRREG_URL: string = 'https://data.brreg.no/enhetsregisteret/api/enheter/?organisasjonsnummer=';
@@ -27,21 +27,25 @@ export function getUnderenheterUtenJuridiskEnhet(
     );
 }
 
-function hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet: Organisasjon[]): string {
-    const listeMedJuridiskenhetsNr = underenheterUtenJuridiskEnhet
-        .filter((org, index) => org.ParentOrganizationNumber && underenheterUtenJuridiskEnhet.indexOf(org) === index)
-        .map((org) => org.ParentOrganizationNumber);
-    return listeMedJuridiskenhetsNr
-        .filter((orgnr, index) => listeMedJuridiskenhetsNr.indexOf(orgnr) === index)
-        .join(',');
+function hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet: Organisasjon[]): {
+    org: Organisasjon[];
+    nr: string;
+} {
+    const listeMedJuridiskenhetsOrg = underenheterUtenJuridiskEnhet.filter(
+        (org, index) => org.ParentOrganizationNumber && underenheterUtenJuridiskEnhet.indexOf(org) === index
+    );
+    const listeMedJuridiskenhetsNr = listeMedJuridiskenhetsOrg.map((org) => org.ParentOrganizationNumber).join(',');
+    return { org: listeMedJuridiskenhetsOrg, nr: listeMedJuridiskenhetsNr };
 }
 
-export async function finnJuridiskeEnheter(underenheterUtenJuridiskEnhet: Organisasjon[]): Promise<Organisasjon[]> {
+export async function finnJuridiskeEnheter(
+    underenheterUtenJuridiskEnhet: Organisasjon[]
+): Promise<{ org: Organisasjon[]; manglerJuridisk: Organisasjon[] }> {
     return await hentAlleJuridiskeEnheter(hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet), BRREG_URL);
 }
 
 export function setDefaultBedriftlisteMedApneElementer(
-    orgtre: Juridiskenhet[] | undefined,
+    orgtre: OrganisasjonEnhet[] | undefined,
     setBedriftListe: Dispatch<SetStateAction<BedriftListe>>
 ): void {
     setBedriftListe(orgtre?.map((o, i) => ({ index: i, apnet: false })));

@@ -6,11 +6,11 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { NedChevron } from 'nav-frontend-chevron';
 import './bedriftListe.less';
 import Lenke from 'nav-frontend-lenker';
-import { BedriftvalgType, initPageData, Juridiskenhet, Organisasjon } from '../../api/organisasjon';
+import { BedriftvalgType, initPageData, OrganisasjonEnhet, Organisasjon } from '../../api/api';
 import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from '../../../../utils/bem';
-import { setDefaultBedriftlisteMedApneElementer } from '../../api/api-Utils';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { setDefaultBedriftlisteMedApneElementer } from '../../api/kontruer-Utils';
+import TomtSok from './TomtSok';
 
 const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper('bedriftliste');
@@ -23,30 +23,20 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
         setBedriftListe,
         setMenyApen,
         organisasjonstre,
-        sokefelt,
+        callbackAlleClick,
     } = context;
 
-    const matchParentOrganisasjon = (org: Juridiskenhet) =>
-        bedriftvalg.valgtOrg.find((e) => e.ParentOrganizationNumber === org.JuridiskEnhet.OrganizationNumber);
+    const matchParentOrganisasjon = (org: OrganisasjonEnhet) =>
+        bedriftvalg.valgtOrg?.find((e) => e.ParentOrganizationNumber === org.JuridiskEnhet.OrganizationNumber);
 
     const matchOrganisasjon = (org: Organisasjon) =>
-        bedriftvalg.valgtOrg.find((e) => e.OrganizationNumber === org.OrganizationNumber);
-
-    const ingenSoketreff = sokefelt.aktivt && sokefelt.antallTreff === 0;
+        bedriftvalg.valgtOrg?.find((e) => e.OrganizationNumber === org.OrganizationNumber);
 
     return (
         <div className={cls.className}>
-            {ingenSoketreff && (
-                <div className={cls.element('tomt-sok')}>
-                    <AlertStripeInfo>
-                        <>
-                            <Normaltekst>Søket returnerte ingen treff.</Normaltekst>
-                        </>
-                    </AlertStripeInfo>
-                </div>
-            )}
+            <TomtSok />
             <ul className={cls.element('organisasjonlist')}>
-                {context.organisasjonstre?.map((org: Juridiskenhet, index: number) => (
+                {context.organisasjonstre?.list?.map((org: OrganisasjonEnhet, index: number) => (
                     <li className={cls.element('juridisk-container')} key={index}>
                         <div
                             className={cls.element(
@@ -62,18 +52,26 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                     if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
                                         const element = matchParentOrganisasjon(org);
                                         if (!!element) {
-                                            return setBedriftvalg({
+                                            const valg = {
                                                 type: bedriftvalg.type,
                                                 valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
                                                 pageData: initPageData,
                                                 feilstatus: undefined,
-                                            });
+                                            };
+                                            setBedriftvalg(valg);
+                                            if (callbackAlleClick) {
+                                                setValgtBedrift(valg);
+                                            }
+                                        } else {
+                                            const valg = {
+                                                ...bedriftvalg,
+                                                valgtOrg: [...bedriftvalg.valgtOrg, ...org.Underenheter],
+                                            };
+                                            setBedriftvalg(valg);
+                                            if (callbackAlleClick) {
+                                                setValgtBedrift(valg);
+                                            }
                                         }
-                                        setBedriftvalg({
-                                            ...bedriftvalg,
-                                            valgtOrg: [...bedriftvalg.valgtOrg, ...org.Underenheter],
-                                            pageData: initPageData,
-                                        });
                                     }
                                 }}
                             />
@@ -140,20 +138,28 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                         if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
                                                             const element = matchOrganisasjon(underenhet);
                                                             if (!!element) {
-                                                                return setBedriftvalg({
+                                                                const valg = {
                                                                     type: bedriftvalg.type,
                                                                     valgtOrg: bedriftvalg.valgtOrg.filter(
                                                                         (e) => e !== element
                                                                     ),
                                                                     pageData: initPageData,
                                                                     feilstatus: undefined,
-                                                                });
+                                                                };
+                                                                setBedriftvalg(valg);
+                                                                if (callbackAlleClick) {
+                                                                    setValgtBedrift(valg);
+                                                                }
+                                                            } else {
+                                                                const valg = {
+                                                                    ...bedriftvalg,
+                                                                    valgtOrg: [...bedriftvalg.valgtOrg, underenhet],
+                                                                };
+                                                                setBedriftvalg(valg);
+                                                                if (callbackAlleClick) {
+                                                                    setValgtBedrift(valg);
+                                                                }
                                                             }
-                                                            setBedriftvalg({
-                                                                ...bedriftvalg,
-                                                                valgtOrg: [...bedriftvalg.valgtOrg, underenhet],
-                                                                pageData: initPageData,
-                                                            });
                                                         }
                                                     }}
                                                 />
@@ -178,7 +184,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                         });
                                                         setMenyApen(false);
                                                         setDefaultBedriftlisteMedApneElementer(
-                                                            organisasjonstre,
+                                                            organisasjonstre?.list,
                                                             setBedriftListe
                                                         );
                                                     }

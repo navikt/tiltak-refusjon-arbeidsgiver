@@ -4,7 +4,7 @@ import BEMHelper from '../../../utils/bem';
 import './menyInnhold.less';
 import RadioValg from './RadioValg';
 import Sokefelt from './Sokefelt';
-import { ClsBedriftsmeny } from '../api/organisasjon';
+import { ClsBedriftsmeny } from '../api/api';
 
 const MenyInnhold: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.MENYINNHOLD);

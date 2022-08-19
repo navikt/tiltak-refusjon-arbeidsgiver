@@ -6,7 +6,7 @@ import StatusTekst from '../../komponenter/StatusTekst/StatusTekst';
 import { useHentRefusjoner } from '../../services/rest-service';
 import { antallRefusjoner } from '../../utils/amplitude-utils';
 import BEMHelper from '../../utils/bem';
-import { formatterDato, formatterPeriode } from '../../utils/datoUtils';
+import { formatterDato, formatterPeriode, NORSK_DATO_FORMAT_SHORT } from '../../utils/datoUtils';
 import { useFilter } from './FilterContext';
 import FinnerIngenRefusjoner from './FinnerIngenRefusjon/FinnerIngenRefusjoner';
 import LabelRad from './LabelRad';
@@ -22,7 +22,7 @@ const Oversikt: FunctionComponent = () => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { setValgtBedrift, valgtBedrift } = brukerContext;
     const { filter } = useFilter();
-    const pagable = useHentRefusjoner(brukerContext, filter.status, filter.tiltakstype);
+    const pagable = useHentRefusjoner(brukerContext, filter);
     const { refusjoner } = pagable;
     useOppdaterPagedata(pagable, valgtBedrift, setValgtBedrift);
 
@@ -34,42 +34,42 @@ const Oversikt: FunctionComponent = () => {
             <div role="list">
                 <LabelRad className={cls.className} />
                 {refusjoner.length > 0 ? (
-                    refusjoner.map((refusjon) => (
-                        <LenkepanelBase
-                            className={cls.element('rad')}
-                            role="listitem"
-                            key={refusjon.id}
-                            onClick={(event) => {
-                                event.preventDefault();
-                                navigate({
-                                    pathname: `/refusjon/${refusjon.id}`,
-                                    search: window.location.search,
-                                });
-                            }}
-                            href={`/refusjon/${refusjon.id}`}
-                        >
-                            <Kolonne aria-labelledby={cls.element('deltaker')}>
-                                {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn}{' '}
-                                {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerEtternavn}
-                            </Kolonne>
-                            <Kolonne aria-labelledby={cls.element('periode')}>
-                                {formatterPeriode(
-                                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-                                    refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
-                                )}
-                            </Kolonne>
-                            <Kolonne aria-labelledby={cls.element('status')}>
-                                <StatusTekst
-                                    status={refusjon.status}
-                                    tilskuddFom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom}
-                                    tilskuddTom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom}
-                                />
-                            </Kolonne>
-                            <Kolonne aria-labelledby={cls.element('frist-godkjenning')}>
-                                {formatterDato(refusjon.fristForGodkjenning)}
-                            </Kolonne>
-                        </LenkepanelBase>
-                    ))
+                    refusjoner.map((refusjon) => {
+                        const { deltakerEtternavn, deltakerFornavn, tilskuddTom, tilskuddFom } =
+                            refusjon.refusjonsgrunnlag.tilskuddsgrunnlag;
+                        return (
+                            <LenkepanelBase
+                                className={cls.element('rad')}
+                                role="listitem"
+                                key={refusjon.id}
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    navigate({
+                                        pathname: `/refusjon/${refusjon.id}`,
+                                        search: window.location.search,
+                                    });
+                                }}
+                                href={`/refusjon/${refusjon.id}`}
+                            >
+                                <Kolonne aria-labelledby={cls.element('deltaker')}>
+                                    {deltakerFornavn} {deltakerEtternavn}
+                                </Kolonne>
+                                <Kolonne aria-labelledby={cls.element('periode')}>
+                                    {formatterPeriode(tilskuddFom, tilskuddTom, NORSK_DATO_FORMAT_SHORT)}
+                                </Kolonne>
+                                <Kolonne aria-labelledby={cls.element('status')}>
+                                    <StatusTekst
+                                        status={refusjon.status}
+                                        tilskuddFom={tilskuddFom}
+                                        tilskuddTom={tilskuddTom}
+                                    />
+                                </Kolonne>
+                                <Kolonne aria-labelledby={cls.element('frist-godkjenning')}>
+                                    {formatterDato(refusjon.fristForGodkjenning)}
+                                </Kolonne>
+                            </LenkepanelBase>
+                        );
+                    })
                 ) : (
                     <FinnerIngenRefusjoner orgnr={brukerContext.valgtBedrift.valgtOrg?.[0].OrganizationNumber} />
                 )}

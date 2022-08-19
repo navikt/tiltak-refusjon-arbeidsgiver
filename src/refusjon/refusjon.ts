@@ -8,6 +8,17 @@ export enum KorreksjonStatus {
     TILBAKEKREVING = 'TILBAKEKREVING',
 }
 
+export enum SortingOrder {
+    DELTAKER_ASC = 'DELTAKER_ASC',
+    DELTAKER_DESC = 'DELTAKER_DESC',
+    PERIODE_ASC = 'PERIODE_ASC',
+    PERIODE_DESC = 'PERIODE_DESC',
+    STATUS_ASC = 'STATUS_ASC',
+    STATUS_DESC = 'STATUS_DESC',
+    FRISTFORGODKJENNING_ASC = 'FRISTFORGODKJENNING_ASC',
+    FRISTFORGODKJENNING_DESC = 'FRISTFORGODKJENNING_DESC',
+}
+
 export interface PageableRefusjon {
     currentPage: number;
     refusjoner: Array<Refusjon>;

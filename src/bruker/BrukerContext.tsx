@@ -7,7 +7,7 @@ import Banner from '../refusjon/Banner';
 import { hentInnloggetBruker } from '../services/rest-service';
 import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { Bedriftvalg, BedriftvalgType, initBedriftvalg } from './bedriftsmenyRefusjon/api/organisasjon';
+import { Bedriftvalg, BedriftvalgType, FeilNivå, initvalgtBedrift } from './bedriftsmenyRefusjon/api/api';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
@@ -23,14 +23,13 @@ export const useInnloggetBruker = () => {
 
 export const BrukerProvider: FunctionComponent = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
-    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>(initBedriftvalg);
+    const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>(initvalgtBedrift);
 
     const navigate: NavigateFunction = useNavigate();
     const detErValgtBedrift: boolean = valgtBedrift?.valgtOrg?.length !== 0;
     const innloggetBrukerHarAltinnTilgangerBedrifter: boolean = innloggetBruker?.organisasjoner?.length === 0;
-    const detFinnesFeilStatusFraMeny: boolean = !!valgtBedrift?.feilstatus;
-    const skalRendreRefusjonFeilet: boolean =
-        innloggetBrukerHarAltinnTilgangerBedrifter || (detFinnesFeilStatusFraMeny && !detErValgtBedrift);
+    const greideIkkeByggeOrgtre: boolean = !!valgtBedrift?.feilstatus?.find((feil) => feil.nivå === FeilNivå.ERROR);
+    const skalRendreRefusjonFeilet: boolean = innloggetBrukerHarAltinnTilgangerBedrifter || greideIkkeByggeOrgtre;
 
     const getBedriftSearchkey = (org: Bedriftvalg): string => {
         if (org?.type === BedriftvalgType.ALLEBEDRIFTER) {
@@ -79,7 +78,12 @@ export const BrukerProvider: FunctionComponent = (props) => {
                     {props.children}
                 </BrukerContext.Provider>
             )}
-            {skalRendreRefusjonFeilet && <RefusjonFeilet feilstatus={valgtBedrift?.feilstatus} />}
+            {skalRendreRefusjonFeilet && (
+                <RefusjonFeilet
+                    bedriftvalg={valgtBedrift}
+                    innloggetBrukerHarAltinnTilgangerBedrifter={innloggetBrukerHarAltinnTilgangerBedrifter}
+                />
+            )}
         </XMLHttpReqHandler>
     );
 };

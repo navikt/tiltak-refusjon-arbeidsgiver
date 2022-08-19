@@ -9,6 +9,7 @@ import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
 import BEMHelper from '../../utils/bem';
+import PagnationValg from '../OversiktSide/pagination/PagnationValg';
 
 const Filtermeny: FunctionComponent = () => {
     const cls = BEMHelper('OversiktSide');
@@ -97,7 +98,7 @@ const Filtermeny: FunctionComponent = () => {
                     />
                 </RadioGruppe>
             </EkspanderbartpanelBase>
-            <div style={{ marginTop: '1.25rem' }} />
+            <div style={{ marginTop: '0.75rem' }} />
             <EkspanderbartpanelBase
                 tittel="Tiltakstype"
                 role="radiogroup"
@@ -138,6 +139,7 @@ const Filtermeny: FunctionComponent = () => {
                     />
                 </RadioGruppe>
             </EkspanderbartpanelBase>
+            <PagnationValg />
         </div>
     );
 };
