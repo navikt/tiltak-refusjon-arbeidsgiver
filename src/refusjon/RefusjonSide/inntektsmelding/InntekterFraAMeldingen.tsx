@@ -1,21 +1,21 @@
 import _ from 'lodash';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
+import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
+import { useHentRefusjon } from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
+import BEMHelper from '../../../utils/bem';
 import { formatterDato, formatterPeriode, NORSK_MÅNEDÅR_FORMAT } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
-import BEMHelper from '../../../utils/bem';
+import { inntektProperties } from './inntektProperties';
 import './inntektsMelding.less';
 import InntektsMeldingHeader from './InntektsMeldingHeader';
-import { inntektProperties } from './inntektProperties';
 import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
+import InntektValg from './inntektsmeldingTabell/InntektValg';
+import HarInntekterMenIkkeForHeleTilskuddsperioden from './inntektsmeldingVarsel/HarInntekterMenIkkeForHeleTilskuddsperioden';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
-import HarInntekterMenIkkeForHeleTilskuddsperioden from './inntektsmeldingVarsel/HarInntekterMenIkkeForHeleTilskuddsperioden';
-import InntektValg from './inntektsmeldingTabell/InntektValg';
-import { useParams } from 'react-router';
-import { useHentRefusjon } from '../../../services/rest-service';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -52,13 +52,20 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         <div className={cls.element('graboks-wrapper')}>
             <InntektsMeldingHeader refusjon={refusjon} />
             {inntektsgrunnlag?.bruttoLønn && (
-                <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
+                <i>
+                    Her hentes inntekter rapportert inn til a-meldingen for måneden refusjonen gjelder for (
+                    {formatterPeriode(
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                    )}
+                    ).
+                </i>
             )}
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
                 <>
                     <VerticalSpacer rem={1} />
                     <table className={cls.element('inntektstabell')}>
-                        <InntektsmeldingTabellHeader />
+                        <InntektsmeldingTabellHeader refusjon={refusjon} />
                         <tbody>
                             {_.sortBy(
                                 inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag),
