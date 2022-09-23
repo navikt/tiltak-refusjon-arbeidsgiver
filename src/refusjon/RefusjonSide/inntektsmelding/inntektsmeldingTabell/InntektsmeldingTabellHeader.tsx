@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { FunctionComponent } from 'react';
+import { månedsNavn } from '../../../../utils/datoUtils';
 import { Refusjon } from '../../../refusjon';
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 };
 
 const InntektsmeldingTabellHeader: FunctionComponent<Props> = (props) => {
-    const månedNavn = moment(props.refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom).format('MMMM');
+    const månedNavn = månedsNavn(props.refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
     return (
         <thead>

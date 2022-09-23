@@ -1,17 +1,17 @@
 import { Input, Label, RadioPanel } from 'nav-frontend-skjema';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import React, { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
 import { endreBruttolønn, useHentRefusjon } from '../../services/rest-service';
-import { formatterPeriode } from '../../utils/datoUtils';
-import { formatterPenger } from '../../utils/PengeUtils';
-import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
-import { Refusjon } from '../refusjon';
 import BEMHelper from '../../utils/bem';
+import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
+import { formatterPenger } from '../../utils/PengeUtils';
+import { Refusjon } from '../refusjon';
+import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 
 export const GrønnBoks = styled.div`
     background-color: #ccf1d6;
@@ -42,6 +42,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     }
 
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
+    const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
     return (
         <div className={cls.element('inntekter-fra-tiltaket-boks')}>
@@ -55,15 +56,15 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 grunnlag.
             </Normaltekst>
             <VerticalSpacer rem={1} />
-            <InntekterOpptjentIPeriodeTabell inntekter={inntektsgrunnlag?.inntekter} />
+            <InntekterOpptjentIPeriodeTabell inntekter={inntektsgrunnlag?.inntekter} månedsNavn={månedNavn} />
             <VerticalSpacer rem={1} />
             <Label htmlFor={'inntekterKunFraTiltaket'}>
                 Er inntektene som du har huket av for{' '}
-                {sumInntekterOpptjent > 0 && <>({formatterPenger(sumInntekterOpptjent)})</>} kun fra tiltaket{' '}
+                {sumInntekterOpptjent > 0 && <>({formatterPenger(sumInntekterOpptjent)})</>} kun opptjent under tiltaket{' '}
                 {tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]}?
             </Label>
             <p>
-                <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller lønnstilskudd</i>
+                <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller et annet tiltak.</i>
             </p>
             <div className={cls.element('inntekter-kun-fra-tiltaket')}>
                 <RadioPanel
@@ -89,9 +90,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     <VerticalSpacer rem={1} />
                     <Input
                         bredde={'S'}
-                        label={`Skriv inn bruttolønn utbetalt for ${
+                        label={`Skriv inn bruttolønn utbetalt for perioden med ${
                             tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
-                        } perioden`}
+                        }`}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             const verdi: string = event.currentTarget.value;
                             if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {

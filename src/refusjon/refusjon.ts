@@ -40,6 +40,7 @@ export interface Refusjon {
     korreksjonId?: string;
     refusjonsgrunnlag: Refusjonsgrunnlag;
     utbetaltTidspunkt?: string;
+    unntakOmInntekterToMånederFrem: boolean;
 }
 
 export interface Korreksjon {

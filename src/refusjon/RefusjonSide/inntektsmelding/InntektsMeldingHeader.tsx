@@ -16,7 +16,8 @@ const InntektsMeldingHeader: FunctionComponent<Properties> = ({ refusjon }: Prop
     return (
         <div className={cls.element('header')}>
             <Undertittel className={cls.element('header-tittel')}>
-                Inntekter hentet fra a-meldingen for {månedNavn} måned
+                Inntekter hentet fra a-meldingen for {månedNavn} måned{' '}
+                {refusjon.unntakOmInntekterToMånederFrem && 'og 2 måneder etter'}
             </Undertittel>
             {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
                 <Normaltekst>

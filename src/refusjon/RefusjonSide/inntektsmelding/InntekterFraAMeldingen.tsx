@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
@@ -48,6 +50,19 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         harInntekterMenIkkeForHeleTilskuddsperioden
     );
 
+    const finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden = () => {
+        if (inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length === 0) {
+            return false;
+        }
+        const inntekterIkkeOptjentIPeriode = inntektsgrunnlag?.inntekter
+            .filter((i) => i.erMedIInntektsgrunnlag)
+            .filter((i) => i.erOpptjentIPeriode === false);
+        const ingenAvInntekteneErOpptjentIPerioden =
+            inntekterIkkeOptjentIPeriode?.length ===
+            inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length;
+        return ingenAvInntekteneErOpptjentIPerioden;
+    };
+
     return (
         <div className={cls.element('graboks-wrapper')}>
             <InntektsMeldingHeader refusjon={refusjon} />
@@ -58,7 +73,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
-                    ).
+                    ) {refusjon.unntakOmInntekterToMånederFrem && 'og 2 måneder etter'}.
                 </i>
             )}
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
@@ -113,6 +128,20 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                 tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                 harInntekterMenIkkeForHeleTilskuddsperioden={harInntekterMenIkkeForHeleTilskuddsperioden}
             />
+            {finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden() && (
+                <>
+                    <VerticalSpacer rem={1} />
+                    <AlertStripeAdvarsel>
+                        <Element>
+                            Du har huket av for at ingen av de innhentede inntektene er opptjent i august.
+                        </Element>
+                        <Normaltekst>
+                            Hvis du har rapportert inntekter for sent, kan du ta kontakt med NAV-veileder for å åpne for
+                            henting av inntekter som er rapport inn for senere måneder.
+                        </Normaltekst>
+                    </AlertStripeAdvarsel>
+                </>
+            )}
         </div>
     );
 };
