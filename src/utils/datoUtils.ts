@@ -73,3 +73,5 @@ export const getAntallMndTilSVGGrid = (fraDato: string, tilDato: string): string
 };
 
 export const datoString = (dato: Moment): string => dato.format('YYYY-MM-DD');
+
+export const månedsNavn = (dato: string) => moment(dato).format('MMMM');

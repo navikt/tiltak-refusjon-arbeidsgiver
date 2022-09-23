@@ -1,10 +1,10 @@
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
 import { useHentRefusjon } from '../../services/rest-service';
-import { formatterPeriode } from '../../utils/datoUtils';
+import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjonsgrunnlag } from '../refusjon';
 import { GrønnBoks } from './InntekterFraTiltaketSpørsmål';
@@ -33,6 +33,7 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
     if (!props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter) {
         return null;
     }
+    const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
     return (
         <div>
@@ -45,7 +46,10 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
                     )}
                 </Undertittel>
                 <VerticalSpacer rem={1} />
-                <InntekterOpptjentIPeriodeTabell inntekter={props.refusjonsgrunnlag.inntektsgrunnlag.inntekter} />
+                <InntekterOpptjentIPeriodeTabell
+                    inntekter={props.refusjonsgrunnlag.inntektsgrunnlag.inntekter}
+                    månedsNavn={månedNavn}
+                />
                 <VerticalSpacer rem={2} />
                 <Element>
                     Er inntektene du har valgt ({formatterPenger(valgtBruttoLønn as number)}) kun fra tiltaket{' '}

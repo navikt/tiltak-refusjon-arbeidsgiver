@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Element } from 'nav-frontend-typografi';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { Inntektslinje } from '../refusjon';
@@ -8,6 +8,7 @@ import { inntektBeskrivelse } from './inntektsmelding/InntekterFraAMeldingen';
 
 type Props = {
     inntekter: Inntektslinje[];
+    månedsNavn: string;
 };
 
 const InntekterTabell = styled.table`
@@ -49,8 +50,8 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                     <tr>
                         <th>Beskriv&shy;else</th>
                         <th>År/mnd</th>
-                        <th>Opptjeningsperiode</th>
-                        <th>Opptjent i perioden?</th>
+                        <th>Rapportert opptjeningsperiode</th>
+                        <th>Opptjent i {props.månedsNavn}?</th>
                         <th>Beløp</th>
                     </tr>
                 </thead>
