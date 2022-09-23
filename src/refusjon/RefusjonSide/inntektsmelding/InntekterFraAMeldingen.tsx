@@ -73,7 +73,13 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
-                    ) {refusjon.unntakOmInntekterToMånederFrem && 'og 2 måneder etter'}.
+                    ){' '}
+                    {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'SOMMERJOBB' ? (
+                        <>{refusjon.unntakOmInntekterToMånederFrem ? 'og 2 måneder etter' : 'og 1 måned etter'}</>
+                    ) : (
+                        <>{refusjon.unntakOmInntekterToMånederFrem && 'og 2 måneder etter'}</>
+                    )}
+                    .
                 </i>
             )}
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
