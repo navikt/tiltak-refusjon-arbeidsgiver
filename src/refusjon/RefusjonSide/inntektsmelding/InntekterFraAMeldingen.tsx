@@ -63,10 +63,12 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         return ingenAvInntekteneErOpptjentIPerioden;
     };
 
+    const harBruttolønn = inntektsgrunnlag ? inntektsgrunnlag?.bruttoLønn > 0 : false;
+
     return (
         <div className={cls.element('graboks-wrapper')}>
             <InntektsMeldingHeader refusjon={refusjon} />
-            {inntektsgrunnlag?.bruttoLønn && (
+            {harBruttolønn && (
                 <i>
                     Her hentes inntekter rapportert inn til a-meldingen for måneden refusjonen gjelder for (
                     {formatterPeriode(
