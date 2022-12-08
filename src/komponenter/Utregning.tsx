@@ -17,7 +17,6 @@ import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
-import refusjon from '../refusjon/RefusjonSide/Refusjon';
 
 interface Props {
     beregning?: Beregning;
