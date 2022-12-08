@@ -7,6 +7,7 @@ import { Refusjon } from '../../refusjon';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import BEMHelper from '../../../utils/bem';
 import './refusjonInnsending.less';
+import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 
 interface Properties {
     refusjon: Refusjon;
@@ -45,10 +46,21 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     return (
         <div className={cls.className}>
             <Utregning
+                forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag?.forrigeRefusjonMinusBeløp || 0}
                 beregning={refusjon.refusjonsgrunnlag.beregning}
                 tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
             />
             <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+
+            {refusjon.refusjonsgrunnlag.beregning.lønnFratrukketFerie < 0 && (
+                <AlertStripeAdvarsel>
+                    Siden fratrekk for ferie er større enn bruttolønn i perioden vil resterende fratrekk for ferie
+                    overføres til neste periode. Dere må allikevel fullføre refusjonen.
+                </AlertStripeAdvarsel>
+            )}
+
+            <VerticalSpacer rem={1} />
+
             <BekreftCheckboksPanel
                 className={cls.element('panel')}
                 onChange={() => bekreftOpplysninger()}
@@ -59,12 +71,19 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene nyttes
                 etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
             </BekreftCheckboksPanel>
-            {sluttsummen && sluttsummen < 1 ? (
-                <div className={cls.element('sluttsumForLiten')}>
-                    <AlertStripeAdvarsel>
-                        Kan ikke sende inn refusjonskrav hvor summen ikke overstiger 0 kr
-                    </AlertStripeAdvarsel>
-                </div>
+
+            {sluttsummen && sluttsummen < 1 && refusjon.refusjonsgrunnlag.beregning.fratrekkLønnFerie >= 0 ? (
+                <>
+                    <div className={cls.element('sluttsumForLiten')}>
+                        <AlertStripeAdvarsel>
+                            Fullfør denne refusjonen ved å sende inn refusjonskrav slik at du kan hehandle neste
+                            periode.
+                        </AlertStripeAdvarsel>
+                    </div>
+                    <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+                        Fullfør
+                    </LagreKnapp>
+                </>
             ) : (
                 <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
                     Fullfør

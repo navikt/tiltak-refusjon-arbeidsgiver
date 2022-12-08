@@ -70,6 +70,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                     <Utregning
                         beregning={refusjon.refusjonsgrunnlag.beregning}
                         tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                        forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
                     />
                     <VerticalSpacer rem={4} />
                     <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />

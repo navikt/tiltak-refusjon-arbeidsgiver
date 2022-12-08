@@ -17,10 +17,12 @@ import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
+import refusjon from '../refusjon/RefusjonSide/Refusjon';
 
 interface Props {
     beregning?: Beregning;
     tilskuddsgrunnlag: Tilskuddsgrunnlag;
+    forrigeRefusjonMinusBeløp?: number;
 }
 
 const GråRamme = styled.div`
@@ -31,8 +33,7 @@ const GråRamme = styled.div`
 `;
 
 const Utregning: FunctionComponent<Props> = (props) => {
-    const { beregning, tilskuddsgrunnlag } = props;
-    console.log('fratrekkLønnFerie', beregning?.fratrekkLønnFerie);
+    const { beregning, tilskuddsgrunnlag, forrigeRefusjonMinusBeløp } = props;
     return (
         <GråRamme>
             <Systemtittel>Utregningen</Systemtittel>
@@ -42,76 +43,105 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelTekst={'Brutto lønn i perioden'}
                 verdi={beregning?.lønn || 0}
             />
+
+            {forrigeRefusjonMinusBeløp != null && forrigeRefusjonMinusBeløp < 0 && (
+                <Utregningsrad
+                    labelIkon={<Endret />}
+                    labelTekst={
+                        'Resterende fratrekk for ferie fra refusjonsnummer: ' +
+                        tilskuddsgrunnlag.avtaleNr +
+                        '-' +
+                        (tilskuddsgrunnlag.løpenummer - 1)
+                    }
+                    verdiOperator={<MinusTegn />}
+                    verdi={forrigeRefusjonMinusBeløp}
+                    border="TYKK"
+                />
+            )}
             {beregning && beregning.fratrekkLønnFerie !== 0 && (
                 <Utregningsrad
                     labelIkon={<Endret />}
-                    labelTekst="fratrekk for ferie"
+                    labelTekst="Fratrekk for ferie (hentet fra A-meldingen)"
                     verdiOperator={<MinusTegn />}
                     verdi={
                         beregning.fratrekkLønnFerie < 0 ? beregning.fratrekkLønnFerie * -1 : beregning.fratrekkLønnFerie
                     }
                 />
             )}
-            <Utregningsrad
-                labelIkon={<Stranden />}
-                labelTekst="Feriepenger"
-                labelSats={props.tilskuddsgrunnlag.feriepengerSats}
-                verdiOperator={<PlussTegn />}
-                verdi={beregning?.feriepenger || 0}
-            />
-            <Utregningsrad
-                labelIkon={<Sparegris />}
-                labelTekst="Innskudd obligatorisk tjenestepensjon"
-                labelSats={props.tilskuddsgrunnlag.otpSats}
-                verdiOperator={<PlussTegn />}
-                verdi={beregning?.tjenestepensjon || 0}
-            />
-            <Utregningsrad
-                labelIkon={<Bygg />}
-                labelTekst="Arbeidsgiveravgift"
-                labelSats={props.tilskuddsgrunnlag.arbeidsgiveravgiftSats}
-                verdiOperator={<PlussTegn />}
-                verdi={beregning?.arbeidsgiveravgift || 0}
-                border={beregning && beregning?.tidligereRefundertBeløp > 0 ? 'TYKK' : undefined}
-            />
-            {beregning && beregning?.tidligereRefundertBeløp > 0 ? (
-                <>
-                    <Utregningsrad
-                        labelIkon={<Pengesekken />}
-                        labelTekst="Sum brutto lønnsutgifter"
-                        verdiOperator={<ErlikTegn />}
-                        verdi={beregning?.sumUtgifter || 0}
-                    />
-                    <Utregningsrad
-                        labelIkon={<Endret />}
-                        labelTekst="Refunderbar lønn"
-                        verdiOperator={<MinusTegn />}
-                        verdi={beregning?.tidligereRefundertBeløp}
-                    />
-                    <Utregningsrad
-                        labelIkon={<Pengesekken />}
-                        labelTekst="Refusjonsgrunnlag"
-                        verdiOperator={<ErlikTegn />}
-                        verdi={beregning?.sumUtgifterFratrukketRefundertBeløp}
-                        border="TYKK"
-                    />
-                </>
-            ) : (
+            {beregning?.lønnFratrukketFerie!! <= 0 && (
                 <Utregningsrad
-                    labelIkon={<Pengesekken />}
-                    labelTekst="Refusjonsgrunnlag"
+                    labelIkon={<RefusjonAvLønn />}
+                    labelTekst="Resterende fratrekk for ferie (overføres til neste refusjon)"
                     verdiOperator={<ErlikTegn />}
-                    verdi={beregning?.sumUtgifter || 0}
+                    verdi={beregning?.lønnFratrukketFerie ?? 'kan ikke beregne'}
+                    ikkePenger={beregning === undefined}
                     border="TYKK"
                 />
             )}
-            <Utregningsrad
-                labelIkon={<Stillingsprosent />}
-                labelTekst="Tilskuddsprosent"
-                verdiOperator={<ProsentTegn />}
-                ikkePenger
-                verdi={tilskuddsgrunnlag.lønnstilskuddsprosent}
-            />
+            {beregning?.lønnFratrukketFerie != null && beregning?.lønnFratrukketFerie >= 0 && (
+                <>
+                    <Utregningsrad
+                        labelIkon={<Stranden />}
+                        labelTekst="Feriepenger"
+                        labelSats={props.tilskuddsgrunnlag.feriepengerSats}
+                        verdiOperator={<PlussTegn />}
+                        verdi={beregning?.feriepenger || 0}
+                    />
+                    <Utregningsrad
+                        labelIkon={<Sparegris />}
+                        labelTekst="Innskudd obligatorisk tjenestepensjon"
+                        labelSats={props.tilskuddsgrunnlag.otpSats}
+                        verdiOperator={<PlussTegn />}
+                        verdi={beregning?.tjenestepensjon || 0}
+                    />
+                    <Utregningsrad
+                        labelIkon={<Bygg />}
+                        labelTekst="Arbeidsgiveravgift"
+                        labelSats={props.tilskuddsgrunnlag.arbeidsgiveravgiftSats}
+                        verdiOperator={<PlussTegn />}
+                        verdi={beregning?.arbeidsgiveravgift || 0}
+                        border={beregning && beregning?.tidligereRefundertBeløp > 0 ? 'TYKK' : undefined}
+                    />
+                    {beregning && beregning?.tidligereRefundertBeløp > 0 ? (
+                        <>
+                            <Utregningsrad
+                                labelIkon={<Pengesekken />}
+                                labelTekst="Sum brutto lønnsutgifter"
+                                verdiOperator={<ErlikTegn />}
+                                verdi={beregning?.sumUtgifter || 0}
+                            />
+                            <Utregningsrad
+                                labelIkon={<Endret />}
+                                labelTekst="Refunderbar lønn"
+                                verdiOperator={<MinusTegn />}
+                                verdi={beregning?.tidligereRefundertBeløp}
+                            />
+                            <Utregningsrad
+                                labelIkon={<Pengesekken />}
+                                labelTekst="Refusjonsgrunnlag"
+                                verdiOperator={<ErlikTegn />}
+                                verdi={beregning?.sumUtgifterFratrukketRefundertBeløp}
+                                border="TYKK"
+                            />
+                        </>
+                    ) : (
+                        <Utregningsrad
+                            labelIkon={<Pengesekken />}
+                            labelTekst="Refusjonsgrunnlag"
+                            verdiOperator={<ErlikTegn />}
+                            verdi={beregning?.sumUtgifter || 0}
+                            border="TYKK"
+                        />
+                    )}
+                    <Utregningsrad
+                        labelIkon={<Stillingsprosent />}
+                        labelTekst="Tilskuddsprosent"
+                        verdiOperator={<ProsentTegn />}
+                        ikkePenger
+                        verdi={tilskuddsgrunnlag.lønnstilskuddsprosent}
+                    />
+                </>
+            )}
 
             <VerticalSpacer rem={3} />
             {beregning && (beregning.overTilskuddsbeløp || beregning.tidligereUtbetalt > 0) && (
@@ -145,7 +175,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelIkon={<RefusjonAvLønn />}
                 labelTekst="Refusjonsbeløp"
                 verdiOperator={<ErlikTegn />}
-                verdi={beregning?.refusjonsbeløp ?? 'kan ikke beregne'}
+                verdi={(beregning?.refusjonsbeløp!! >= 0 ? beregning?.refusjonsbeløp : 0) ?? 'kan ikke beregne'}
                 ikkePenger={beregning === undefined}
                 border="TYKK"
             />
