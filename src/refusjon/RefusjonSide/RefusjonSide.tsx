@@ -13,6 +13,7 @@ import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
 import RefusjonGodjennModal from './RefusjonGodjennModal';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import Lenke from 'nav-frontend-lenker';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ const RefusjonSide: FunctionComponent = () => {
                 {refusjon.forrigeRefusjonSomSkalSendesFørst != null && (
                     <>
                         <AlertStripeAdvarsel>
-                            <a href={'/refusjon/' + refusjon.forrigeRefusjonSomSkalSendesFørst.id}>
+                            <Lenke href={'/refusjon/' + refusjon.forrigeRefusjonSomSkalSendesFørst.id}>
                                 <b>Refusjon:</b>{' '}
                                 {
                                     refusjon.forrigeRefusjonSomSkalSendesFørst.refusjonsgrunnlag.tilskuddsgrunnlag
@@ -51,8 +52,12 @@ const RefusjonSide: FunctionComponent = () => {
                                     refusjon.forrigeRefusjonSomSkalSendesFørst.refusjonsgrunnlag.tilskuddsgrunnlag
                                         .løpenummer
                                 }
-                            </a>{' '}
-                            må sendes inn før du kan sende inn denne refusjonen på grunn av fratrekk for ferie.
+                            </Lenke>{' '}
+                            må sendes inn før du kan sende inn denne refusjonen:{' '}
+                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr +
+                                '-' +
+                                refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}
+                            .
                         </AlertStripeAdvarsel>
                         <VerticalSpacer rem={1} />
                     </>
