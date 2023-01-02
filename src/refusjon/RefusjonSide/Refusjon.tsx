@@ -35,9 +35,9 @@ const Komponent: FunctionComponent = () => {
                 />
             );
         case RefusjonStatus.ANNULLERT:
-        case RefusjonStatus.GODKJENT_MINUSBELØP:
             return <FeilSide advarselType="advarsel" feiltekst="Refusjonen er annullert." />;
         case RefusjonStatus.SENDT_KRAV:
+        case RefusjonStatus.GODKJENT_MINUSBELØP:
         case RefusjonStatus.UTBETALT:
         case RefusjonStatus.UTBETALING_FEILET:
             return <KvitteringSide />;

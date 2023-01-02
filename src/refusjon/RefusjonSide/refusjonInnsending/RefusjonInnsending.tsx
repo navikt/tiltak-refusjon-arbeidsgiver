@@ -21,7 +21,6 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState<boolean>(false);
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState<string>('');
     const cls = BEMHelper('refusjonInnsending');
-    const sluttsummen: number | undefined = refusjon.refusjonsgrunnlag?.beregning?.refusjonsbeløp;
 
     if (
         !refusjon.harTattStillingTilAlleInntektslinjer ||
@@ -52,13 +51,6 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
             />
             <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
 
-            {refusjon.refusjonsgrunnlag.beregning.lønnFratrukketFerie < 0 && (
-                <AlertStripeAdvarsel>
-                    Siden fratrekk for ferie er større enn bruttolønn i perioden vil resterende fratrekk for ferie
-                    overføres til neste periode. Dere må allikevel fullføre refusjonen.
-                </AlertStripeAdvarsel>
-            )}
-
             <VerticalSpacer rem={1} />
 
             <BekreftCheckboksPanel
@@ -72,23 +64,9 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
             </BekreftCheckboksPanel>
 
-            {sluttsummen && sluttsummen < 1 && refusjon.refusjonsgrunnlag.beregning.fratrekkLønnFerie >= 0 ? (
-                <>
-                    <div className={cls.element('sluttsumForLiten')}>
-                        <AlertStripeAdvarsel>
-                            Fullfør denne refusjonen ved å sende inn refusjonskrav slik at du kan hehandle neste
-                            periode.
-                        </AlertStripeAdvarsel>
-                    </div>
-                    <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
-                        Fullfør
-                    </LagreKnapp>
-                </>
-            ) : (
-                <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
-                    Fullfør
-                </LagreKnapp>
-            )}
+            <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+                Fullfør
+            </LagreKnapp>
         </div>
     );
 };

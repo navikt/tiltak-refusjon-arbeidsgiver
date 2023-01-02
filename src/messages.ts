@@ -17,7 +17,7 @@ export const statusTekst: { [key in RefusjonStatus]: string } = {
     KLAR_FOR_INNSENDING: 'klar for innsending',
     FOR_TIDLIG: 'for tidlig',
     ANNULLERT: 'annullert',
-    GODKJENT_MINUSBELØP: 'Godkjent med minusbeløp',
+    GODKJENT_MINUSBELØP: 'sendt krav med minusbeløp',
     KORRIGERT: 'Korrigert',
 };
 

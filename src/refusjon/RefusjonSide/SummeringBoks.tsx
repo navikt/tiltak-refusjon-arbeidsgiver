@@ -28,6 +28,24 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
         return null;
     }
 
+    const hentStatusTittelMeldingOmDetErDenSisteRefusjonen = () => {
+        if (
+            props.refusjonsgrunnlag.beregning?.lønnFratrukketFerie != undefined &&
+            props.refusjonsgrunnlag.beregning?.lønnFratrukketFerie >= 0
+        )
+            return 'Dere skylder';
+        const sisteAvtaleDatoTOM = new Date(props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
+        const idag = new Date();
+        const sisteSetning = ' Dere må fortsatt trykke fullfør under.';
+        return (
+            (sisteAvtaleDatoTOM.getMonth() !== idag.getMonth() &&
+            sisteAvtaleDatoTOM.getFullYear() !== idag.getFullYear()
+                ? 'Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative refusjonsbeløpet overføres til neste periode.  '
+                : 'Siden fratrekk for ferie er større enn bruttolønn i perioden vil det ikke bli utbetalt refusjon. Siden tiltaket avsluttes, vil det negative refusjonsbeløpet ikke overføres til neste periode. ') +
+            sisteSetning
+        );
+    };
+
     return (
         <Boks>
             <div style={{ paddingRight: '1.5rem' }}>
@@ -49,7 +67,7 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
             )}
             {props.refusjonsgrunnlag.beregning?.refusjonsbeløp < 0 && (
                 <div>
-                    <Element>Dere skylder</Element>
+                    <Element> {hentStatusTittelMeldingOmDetErDenSisteRefusjonen()}</Element>
                     <VerticalSpacer rem={0.5} />
                     <Normaltekst>
                         <b>{formatterPenger(Math.abs(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0))}</b> for

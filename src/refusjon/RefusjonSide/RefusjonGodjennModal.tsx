@@ -37,9 +37,8 @@ const RefusjonGodjennModal: FunctionComponent<Properties> = ({
             </Normaltekst>
             <VerticalSpacer rem={1} />
             <Normaltekst>
-                Hvis refusjonsbeløpet på{' '}
-                <b>{formatterPenger(beregning?.refusjonsbeløp! > 0 ? beregning?.refusjonsbeløp! : 0)}</b> ikke stemmer,
-                ta kontakt med veileder før du klikker Send inn.
+                Hvis refusjonsbeløpet på <b>{formatterPenger(beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta kontakt
+                med veileder før du klikker Send inn.
             </Normaltekst>
         </GodkjennModal>
     );
