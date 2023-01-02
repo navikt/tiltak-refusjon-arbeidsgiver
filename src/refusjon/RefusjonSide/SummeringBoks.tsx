@@ -30,16 +30,15 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
 
     const hentStatusTittelMeldingOmDetErDenSisteRefusjonen = () => {
         if (
-            props.refusjonsgrunnlag.beregning?.lønnFratrukketFerie != undefined &&
+            props.refusjonsgrunnlag.beregning?.lønnFratrukketFerie !== undefined &&
             props.refusjonsgrunnlag.beregning?.lønnFratrukketFerie >= 0
         )
             return 'Dere skylder';
-        const sisteAvtaleDatoTOM = new Date(props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
+        const periodeTom = new Date(props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
         const idag = new Date();
         const sisteSetning = ' Dere må fortsatt trykke fullfør under.';
         return (
-            (sisteAvtaleDatoTOM.getMonth() !== idag.getMonth() &&
-            sisteAvtaleDatoTOM.getFullYear() !== idag.getFullYear()
+            (periodeTom.getMonth() !== idag.getMonth() && periodeTom.getFullYear() !== idag.getFullYear()
                 ? 'Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative refusjonsbeløpet overføres til neste periode.  '
                 : 'Siden fratrekk for ferie er større enn bruttolønn i perioden vil det ikke bli utbetalt refusjon. Siden tiltaket avsluttes, vil det negative refusjonsbeløpet ikke overføres til neste periode. ') +
             sisteSetning

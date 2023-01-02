@@ -4,7 +4,6 @@ import SummeringBoks from '../SummeringBoks';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import LagreKnapp from '../../../komponenter/LagreKnapp';
 import { Refusjon } from '../../refusjon';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import BEMHelper from '../../../utils/bem';
 import './refusjonInnsending.less';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
