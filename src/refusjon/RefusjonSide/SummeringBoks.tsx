@@ -27,24 +27,6 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
     ) {
         return null;
     }
-
-    const hentStatusTittelMeldingOmDetErDenSisteRefusjonen = () => {
-        if (
-            props.refusjonsgrunnlag.beregning?.lønnFratrukketFerie !== undefined &&
-            props.refusjonsgrunnlag.beregning?.lønnFratrukketFerie >= 0
-        )
-            return 'Dere skylder';
-        const periodeTom = new Date(props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
-        const idag = new Date();
-        const sisteSetning = ' Dere må fortsatt trykke fullfør under.';
-        return (
-            (periodeTom.getMonth() !== idag.getMonth() && periodeTom.getFullYear() !== idag.getFullYear()
-                ? 'Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative refusjonsbeløpet overføres til neste periode.  '
-                : 'Siden fratrekk for ferie er større enn bruttolønn i perioden vil det ikke bli utbetalt refusjon. Siden tiltaket avsluttes, vil det negative refusjonsbeløpet ikke overføres til neste periode. ') +
-            sisteSetning
-        );
-    };
-
     return (
         <Boks>
             <div style={{ paddingRight: '1.5rem' }}>
@@ -64,9 +46,17 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                     </Normaltekst>
                 </div>
             )}
+            {props.refusjonsgrunnlag.beregning.lønnFratrukketFerie < 0 && (
+                <Element>
+                    Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative refusjonsbeløpet
+                    overføres til neste periode. Om tiltaket avsluttes, vil det negative refusjonsbeløpet ikke overføres
+                    til neste periode. Dere må fortsatt trykke fullfør under.'
+                </Element>
+            )}
+
             {props.refusjonsgrunnlag.beregning?.refusjonsbeløp < 0 && (
                 <div>
-                    <Element> {hentStatusTittelMeldingOmDetErDenSisteRefusjonen()}</Element>
+                    <Element>Dere skylder</Element>
                     <VerticalSpacer rem={0.5} />
                     <Normaltekst>
                         <b>{formatterPenger(Math.abs(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0))}</b> for
