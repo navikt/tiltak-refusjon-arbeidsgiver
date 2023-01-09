@@ -46,16 +46,17 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                     </Normaltekst>
                 </div>
             )}
-            {props.refusjonsgrunnlag.beregning.lønnFratrukketFerie < 0 && (
-                <Element>
-                    Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative refusjonsbeløpet
-                    overføres til neste periode. Om tiltaket avsluttes, vil det negative refusjonsbeløpet ikke overføres
-                    til neste periode. Dere må fortsatt trykke fullfør under.'
-                </Element>
-            )}
 
             {props.refusjonsgrunnlag.beregning?.refusjonsbeløp < 0 && (
                 <div>
+                    {props.refusjonsgrunnlag.beregning.lønnFratrukketFerie < 0 && (
+                        <Element>
+                            Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative
+                            refusjonsbeløpet overføres til neste periode. Om tiltaket avsluttes, vil det negative
+                            refusjonsbeløpet ikke overføres til neste periode. Dere må fortsatt trykke fullfør under.
+                        </Element>
+                    )}
+                    <VerticalSpacer rem={0.5} />
                     <Element>Dere skylder</Element>
                     <VerticalSpacer rem={0.5} />
                     <Normaltekst>

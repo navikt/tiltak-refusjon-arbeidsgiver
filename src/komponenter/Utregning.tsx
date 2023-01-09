@@ -158,6 +158,15 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     border="TYKK"
                 />
             )}
+            {props.beregning?.tidligereUtbetalt != null && props.beregning?.tidligereUtbetalt < 0 && (
+                <Utregningsrad
+                    labelTekst="Tidligere utbetalt"
+                    verdiOperator={<ErlikTegn />}
+                    verdi={props.beregning?.tidligereUtbetalt ?? 0}
+                    ikkePenger={props.beregning === undefined}
+                    border="TYKK"
+                />
+            )}
             <Utregningsrad
                 labelIkon={<RefusjonAvLønn />}
                 labelTekst="Refusjonsbeløp"
