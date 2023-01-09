@@ -41,6 +41,7 @@ export interface Refusjon {
     refusjonsgrunnlag: Refusjonsgrunnlag;
     utbetaltTidspunkt?: string;
     unntakOmInntekterToMånederFrem: boolean;
+    forrigeRefusjonSomSkalSendesFørst?: Refusjon;
 }
 
 export interface Korreksjon {
@@ -64,6 +65,7 @@ export interface Refusjonsgrunnlag {
     endretBruttoLønn?: number;
     bedriftKontonummer?: string;
     beregning?: Beregning;
+    forrigeRefusjonMinusBeløp: number;
 }
 
 export interface Tilskuddsgrunnlag {

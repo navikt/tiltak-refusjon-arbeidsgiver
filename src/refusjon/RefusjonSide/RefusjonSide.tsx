@@ -11,6 +11,9 @@ import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
 import RefusjonGodjennModal from './RefusjonGodjennModal';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import Lenke from 'nav-frontend-lenker';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -35,11 +38,39 @@ const RefusjonSide: FunctionComponent = () => {
         <>
             <HvitBoks>
                 <RefusjonIngress refusjon={refusjon} />
+                {refusjon.forrigeRefusjonSomSkalSendesFørst != null && (
+                    <>
+                        <AlertStripeAdvarsel>
+                            <Lenke href={'/refusjon/' + refusjon.forrigeRefusjonSomSkalSendesFørst.id}>
+                                <b>Refusjon:</b>{' '}
+                                {
+                                    refusjon.forrigeRefusjonSomSkalSendesFørst.refusjonsgrunnlag.tilskuddsgrunnlag
+                                        .avtaleNr
+                                }
+                                -
+                                {
+                                    refusjon.forrigeRefusjonSomSkalSendesFørst.refusjonsgrunnlag.tilskuddsgrunnlag
+                                        .løpenummer
+                                }
+                            </Lenke>{' '}
+                            må sendes inn før du kan sende inn denne refusjonen:{' '}
+                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr +
+                                '-' +
+                                refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}
+                            .
+                        </AlertStripeAdvarsel>
+                        <VerticalSpacer rem={1} />
+                    </>
+                )}
                 <InformasjonFraAvtalen />
-                <InntekterFraAMeldingen kvitteringVisning={false} />
-                <InntekterFraTiltaketSpørsmål />
-                <TidligereRefunderbarBeløp refusjon={refusjon} />
-                <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                {!refusjon.forrigeRefusjonSomSkalSendesFørst && (
+                    <>
+                        <InntekterFraAMeldingen kvitteringVisning={false} />
+                        <InntekterFraTiltaketSpørsmål />
+                        <TidligereRefunderbarBeløp refusjon={refusjon} />
+                        <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                    </>
+                )}
             </HvitBoks>
             <RefusjonGodjennModal
                 refusjon={refusjon}

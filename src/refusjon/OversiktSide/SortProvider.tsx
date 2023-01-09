@@ -10,6 +10,7 @@ export const sorteringIndexRefusjonStatus = [
     'UTBETALING_FEILET',
     'UTGÅTT',
     'ANNULLERT',
+    'GODKJENT_MINUSBELØP',
     'KORRIGERT',
 ];
 
