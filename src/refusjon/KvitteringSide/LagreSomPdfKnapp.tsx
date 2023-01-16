@@ -3,8 +3,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
 
 const LagreSomPdfKnapp: FunctionComponent<{ avtaleId: string }> = (props) => {
-    //const href = `/tiltaksgjennomforing/api/avtaler/${props.avtaleId}/pdf`;
-    const href = `/tiltaksgjennomforing/api/avtaler/c498de09-ef5a-41ef-beed-698e32581355}/pdf`;
+    const href = `/api/arbeidsgiver/refusjon/${props.avtaleId}/pdf`;
     return (
         <Knapp
             onClick={() => {
