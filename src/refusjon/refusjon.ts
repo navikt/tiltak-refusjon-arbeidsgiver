@@ -78,6 +78,9 @@ export interface Tilskuddsgrunnlag {
     deltakerEtternavn: string;
     deltakerFnr: string;
     deltakerFornavn: string;
+    arbeidsgiverFornavn: string;
+    arbeidsgiverEtternavn: string;
+    arbeidsgiverTlf: string;
     feriepengerSats: number;
     id: string;
     lønnstilskuddsprosent: number;

@@ -18,6 +18,7 @@ import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import InntekterFraTiltaketSvarGammel from '../RefusjonSide/InntekterFraTiltaketSvarGammel';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Statusmelding from './Statusmelding';
+import LagreSomPdfKnapp from './LagreSomPdfKnapp';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -55,7 +56,13 @@ const KvitteringSide: FunctionComponent = () => {
                 {etikettForRefusjonStatus(refusjon)}
             </div>
             <VerticalSpacer rem={1} />
-            <Statusmelding status={refusjon.status} />
+            <div style={{ display: 'flex' }}>
+                <Statusmelding status={refusjon.status} />
+                <div style={{ marginLeft: '5rem' }}>
+                    <LagreSomPdfKnapp avtaleId={refusjon.id} />
+                </div>
+            </div>
+
             <VerticalSpacer rem={2} />
             <InformasjonFraAvtalen />
             <VerticalSpacer rem={2} />

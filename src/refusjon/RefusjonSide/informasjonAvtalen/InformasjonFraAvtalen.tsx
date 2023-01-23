@@ -49,6 +49,21 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 <Normaltekst>{refusjonsnummer}</Normaltekst>
             </IkonRad>
             <VerticalSpacer rem={1} />
+            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn && (
+                <>
+                    <IkonRad>
+                        <People />
+                        <Element>Arbeidsgiver: </Element>
+                        <Normaltekst>
+                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn}{' '}
+                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverEtternavn}
+                        </Normaltekst>
+                        <Element>Mobil: </Element>
+                        <Normaltekst>{refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverTlf}</Normaltekst>
+                    </IkonRad>
+                    <VerticalSpacer rem={1} />
+                </>
+            )}
             <IkonRad>
                 <People />
                 <Element>Deltaker: </Element>
