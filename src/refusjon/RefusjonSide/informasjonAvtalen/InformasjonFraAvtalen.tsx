@@ -38,13 +38,13 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <EksternLenke href={avtaleLenke}>
-                    <File />
+                    <File role="presentation" focusable="false" />
                     Avtale om {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
                 </EksternLenke>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <File />
+                <File role="presentation" focusable="false" />
                 <Element>Refusjonsnummer: </Element>
                 <Normaltekst>{refusjonsnummer}</Normaltekst>
             </IkonRad>
@@ -52,7 +52,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn && (
                 <>
                     <IkonRad>
-                        <People />
+                        <People role="presentation" focusable="false" />
                         <Element>Arbeidsgiver: </Element>
                         <Normaltekst>
                             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn}{' '}
@@ -65,7 +65,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 </>
             )}
             <IkonRad>
-                <People />
+                <People role="presentation" focusable="false" />
                 <Element>Deltaker: </Element>
                 <Normaltekst>
                     {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn}{' '}
@@ -74,7 +74,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Calender />
+                <Calender role="presentation" focusable="false" />
                 <Element>Periode: </Element>
                 <Normaltekst>
                     {formatterPeriode(
@@ -85,13 +85,13 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Warning />
+                <Warning role="presentation" focusable="false" />
                 <Element>Frist: </Element>
                 <Normaltekst>{formatterDato(refusjon.fristForGodkjenning)}</Normaltekst>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <FileContent />
+                <FileContent role="presentation" focusable="false" />
                 <Element>Avtalt beløp for perioden:</Element>
                 <Normaltekst>
                     Inntil {formatterPenger(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp)}
@@ -99,7 +99,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Money />
+                <Money role="presentation" focusable="false" />
                 <Element>Kontonummer:</Element>
                 <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKontonummer}</Normaltekst>
             </IkonRad>

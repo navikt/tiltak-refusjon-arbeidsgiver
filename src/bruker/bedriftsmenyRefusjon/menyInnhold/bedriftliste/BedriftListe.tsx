@@ -91,7 +91,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                             >
                                 <div className={cls.element('juridisk-wrapper')}>
                                     <div className={cls.element('icon-container')}>
-                                        <JuridiskEnhet />
+                                        <JuridiskEnhet role="presentation" focusable="false" />
                                     </div>
                                     <div className={cls.element('juridisk-info')}>
                                         <Element>{org.JuridiskEnhet?.Name ?? ''}</Element>

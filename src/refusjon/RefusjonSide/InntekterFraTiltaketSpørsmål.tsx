@@ -66,7 +66,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             <p>
                 <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller et annet tiltak.</i>
             </p>
-            <div className={cls.element('inntekter-kun-fra-tiltaket')}>
+            <fieldset className={cls.element('inntekter-kun-fra-tiltaket')}>
                 <RadioPanel
                     name="inntekterKunFraTiltaket"
                     label="Ja"
@@ -83,8 +83,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     checked={inntekterKunTiltaket === false}
                     onChange={(e) => setInntekterKunTiltaket(!e.currentTarget.checked)}
                 />
-            </div>
-
+            </fieldset>
             {inntekterKunTiltaket === false && (
                 <>
                     <VerticalSpacer rem={1} />

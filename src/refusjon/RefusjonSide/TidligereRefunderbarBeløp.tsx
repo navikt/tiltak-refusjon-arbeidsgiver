@@ -54,7 +54,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                     detalker har vært fraværende på grunn av egen eller barns sykdom i denne perioden.
                 </Normaltekst>
             </LesMerPanel>
-            <div className={cls.element('fratrekk-sykepenger-radiogroup')}>
+            <fieldset className={cls.element('fratrekk-sykepenger-radiogroup')}>
                 <RadioPanel
                     name=""
                     label="Ja"
@@ -73,7 +73,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                         settTidligereRefunderbarBeløp(refusjonId!, false, undefined);
                     }}
                 />
-            </div>
+            </fieldset>
             {fratrekk === true && (
                 <Input
                     bredde={'S'}

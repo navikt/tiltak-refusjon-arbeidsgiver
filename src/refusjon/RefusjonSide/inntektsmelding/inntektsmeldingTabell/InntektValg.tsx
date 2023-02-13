@@ -24,31 +24,33 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
     return (
         <td>
             {!kvitteringVisning && (
-                <div className="inntektsmelding__inntektsvalg">
+                <fieldset className="inntektsmelding__inntektsvalg">
                     <Radio
                         label="Ja"
+                        aria-label="ja"
                         checked={erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, true);
                         }}
                         name={inntekt.id}
+                        role="radio"
                     />
                     <Radio
                         label="Nei"
+                        aria-label="nei"
                         checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, false);
                         }}
                         name={inntekt.id}
+                        role="radio"
                     />
-                </div>
+                </fieldset>
             )}
             {kvitteringVisning && (
-                <div className="inntektsmelding__valgtInntekt">
-                    {inntekt.erOpptjentIPeriode ? <label>Ja</label> : <label>Nei</label>}
-                </div>
+                <div className="inntektsmelding__valgtInntekt">{inntekt.erOpptjentIPeriode ? <>Ja</> : <>Nei</>}</div>
             )}
         </td>
     );

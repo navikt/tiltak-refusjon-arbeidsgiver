@@ -17,7 +17,9 @@ const RefusjonIngress: FunctionComponent<Properties> = ({ refusjon }: PropsWithC
     return (
         <>
             <div className={cls.element('ingress')}>
-                <Innholdstittel role="heading">Beregning av refusjon</Innholdstittel>
+                <Innholdstittel role="heading" aria-level={1}>
+                    Beregning av refusjon
+                </Innholdstittel>
                 <EtikettInfo>
                     {storForbokstav(statusTekst[refusjon.status])}{' '}
                     {refusjon.godkjentAvArbeidsgiver &&

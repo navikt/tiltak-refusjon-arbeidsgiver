@@ -89,7 +89,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                 <div className={cls.element('container')}>
                     <div className={cls.element('brand')}>
                         <div>
-                            <NavIkon />
+                            <NavIkon role="presentation" focusable="false" />
                         </div>
                         {desktopview && (
                             <TypografiBase className={cls.element('tittel')} type="systemtittel">

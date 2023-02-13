@@ -53,7 +53,7 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
             </div>
             <div className={cls.element('utregning-verdi')}>
                 {setOperator(props.verdiOperator)}
-                <Normaltekst className={cls.element('sum')} aria-labelledby={labelTekstString}>
+                <Normaltekst className={cls.element('sum')}>
                     {props.ikkePenger || typeof props.verdi === 'string' ? props.verdi : formatterPenger(props.verdi)}
                 </Normaltekst>
             </div>

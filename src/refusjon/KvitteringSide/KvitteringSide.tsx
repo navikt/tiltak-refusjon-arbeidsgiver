@@ -52,7 +52,9 @@ const KvitteringSide: FunctionComponent = () => {
     return (
         <HvitBoks>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Innholdstittel role="heading">Kvittering for refusjon</Innholdstittel>
+                <Innholdstittel aria-level={1} role="heading">
+                    Kvittering for refusjon
+                </Innholdstittel>
                 {etikettForRefusjonStatus(refusjon)}
             </div>
             <VerticalSpacer rem={1} />
