@@ -14,7 +14,7 @@ const FinnerIngenRefusjoner: FunctionComponent<Props> = (props) => {
 
     return (
         <div className={cls.className}>
-            <Undertittel role="heading" className={cls.element('tittel')}>
+            <Undertittel role="heading" aria-level={2} className={cls.element('tittel')}>
                 <InfoIkon className={cls.element('ikon')} width={48} />
                 Finner ingen refusjoner på organisasjonsnummer: {orgnr}
             </Undertittel>

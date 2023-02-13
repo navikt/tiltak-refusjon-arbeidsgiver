@@ -18,6 +18,8 @@ const PagnationValg: FunctionComponent = () => {
                 <div className={cls.element('sidevisning-valg-wrapper')}>
                     <Normaltekst>vis</Normaltekst>
                     <select
+                        autoComplete="off"
+                        aria-label="side velger"
                         className={cls.element('select-page')}
                         value={valgtBedrift.pageData.pagesize}
                         onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setPageSizeOption(event)}

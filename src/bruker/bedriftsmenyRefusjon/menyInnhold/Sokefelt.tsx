@@ -58,6 +58,7 @@ const Sokefelt: FunctionComponent = () => {
             value={inputfelt}
             className={cls.element('sokefelt')}
             aria-label="Søk etter bedrift"
+            autoComplete="off"
             type="search"
             placeholder="orgnr eller navn"
             size={35}
