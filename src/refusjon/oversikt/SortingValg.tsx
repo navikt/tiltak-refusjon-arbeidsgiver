@@ -21,10 +21,14 @@ const SortingValg: FunctionComponent<SortingProps> = (props: PropsWithChildren<S
     return (
         <span className={cls.element('label-sortering')}>
             <TriangleUp
+                role="presentation"
+                focusable="false"
                 className={cls.element('sortering', highlightSortOrderAsc ? 'asc-selected' : 'asc')}
                 onClick={() => oppdaterFilter({ ...filter, sorting: sortingAsc })}
             />
             <TriangleDown
+                role="presentation"
+                focusable="false"
                 className={cls.element('sortering', highlightSortOrderDesc ? 'desc-selected' : 'desc')}
                 onClick={() => oppdaterFilter({ ...filter, sorting: sortingDesc })}
             />
