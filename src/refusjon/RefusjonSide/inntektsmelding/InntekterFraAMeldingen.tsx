@@ -8,7 +8,7 @@ import { lønnsbeskrivelseTekst } from '../../../messages';
 import { useHentRefusjon } from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
-import { formatterDato, formatterPeriode, NORSK_MÅNEDÅR_FORMAT } from '../../../utils/datoUtils';
+import { formatterDato, formatterPeriode, månedsNavn, NORSK_MÅNEDÅR_FORMAT } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
 import { inntektProperties } from './inntektProperties';
 import './inntektsMelding.less';
@@ -65,6 +65,8 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
 
     const harBruttolønn = inntektsgrunnlag ? inntektsgrunnlag?.bruttoLønn > 0 : false;
 
+    const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
+
     return (
         <div className={cls.element('graboks-wrapper')}>
             <InntektsMeldingHeader refusjon={refusjon} />
@@ -102,7 +104,9 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                 ]
                             ).map((inntekt) => (
                                 <tr key={inntekt.id}>
-                                    <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
+                                    <td>
+                                        {inntekt.id} {inntektBeskrivelse(inntekt.beskrivelse)}
+                                    </td>
                                     <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
 
                                     <td>
@@ -141,7 +145,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                     <VerticalSpacer rem={1} />
                     <AlertStripeAdvarsel>
                         <Element>
-                            Du har huket av for at ingen av de innhentede inntektene er opptjent i august.
+                            Du har huket av for at ingen av de innhentede inntektene er opptjent i {månedNavn}.
                         </Element>
                         <Normaltekst>
                             Hvis du har rapportert inntekter for sent, kan du ta kontakt med NAV-veileder for å åpne for
