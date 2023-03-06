@@ -86,9 +86,9 @@
         "typescript": "~4.5.2"
     },
     "scripts": {
-        "start": "craco start",
-        "build": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') craco build",
-        "release": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') node sentry.js",
+        "start": "NODE_OPTIONS=--openssl-legacy-provider craco start",
+        "build": "NODE_OPTIONS=--openssl-legacy-provider cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') craco build",
+        "release": "NODE_OPTIONS=--openssl-legacy-provider cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') node sentry.js",
         "test": "craco test",
         "prepare": "husky install",
         "pretty-svg": "pretty-quick --staged --pattern \"**/*.*(js|json|jsx|ts|tsx|css|scss|less)\" && sh ./svgo.sh"
