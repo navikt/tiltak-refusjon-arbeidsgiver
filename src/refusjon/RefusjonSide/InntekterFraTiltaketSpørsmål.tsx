@@ -30,7 +30,8 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
 
     useEffect(() => {
         setInntekterKunTiltaket(inntekterKunFraTiltaket);
-    }, [inntekterKunFraTiltaket]);
+        setEndringBruttoLønn(endretBruttoLønn?.toString() ?? '');
+    }, [inntekterKunFraTiltaket, endretBruttoLønn]);
 
     if (
         inntektsgrunnlag === undefined ||
