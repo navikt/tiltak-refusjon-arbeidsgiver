@@ -105,7 +105,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                             ).map((inntekt) => (
                                 <tr key={inntekt.id}>
                                     <td>
-                                        {inntekt.id} {inntektBeskrivelse(inntekt.beskrivelse)}
+                                        {/* inntekt.id */} {inntektBeskrivelse(inntekt.beskrivelse)}
                                     </td>
                                     <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
 
