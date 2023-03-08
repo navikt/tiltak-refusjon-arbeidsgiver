@@ -67,6 +67,7 @@ jobs:
           RESOURCE: .nais/nais.yml
           PRINT_PAYLOAD: true
           VARS: .nais/labs.yml
+          DEPLOY_SERVER: deploy.nais.io:443
 
   deploy-prod:
     name: Deploy til prod-gcp
