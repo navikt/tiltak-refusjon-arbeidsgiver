@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
@@ -77,15 +77,21 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
-                    ){' '}
-                    {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'SOMMERJOBB' ? (
-                        <>{refusjon.unntakOmInntekterToMånederFrem ? 'og 2 måneder etter' : 'og 1 måned etter'}</>
-                    ) : (
-                        <>{refusjon.unntakOmInntekterToMånederFrem && 'og 2 måneder etter'}</>
-                    )}
-                    .
+                    ) {refusjon.unntakOmInntekterToMånederFrem ? 'og 2 måneder etter' : 'og 1 måned etter'}.
                 </i>
             )}
+            {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) &&
+                inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length > 1 && (
+                    <>
+                        <VerticalSpacer rem={1} />
+                        <AlertStripeInfo>
+                            <div>
+                                Vi har funnet flere innrapporterte inntekter. Huk kun av for inntekter som er opptjent i{' '}
+                                <strong>{månedNavn}</strong>.
+                            </div>
+                        </AlertStripeInfo>
+                    </>
+                )}
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
                 <>
                     <VerticalSpacer rem={1} />
