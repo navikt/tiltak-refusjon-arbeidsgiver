@@ -1,9 +1,9 @@
+import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import { Bedriftvalg, Feilstatus, StatusFeilBedriftmeny } from '../../bruker/bedriftsmenyRefusjon/api/api';
-import './refusjonFeilet.less';
 import BEMHelper from '../../utils/bem';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import HvitBoks from '../hvitboks/HvitBoks';
+import './refusjonFeilet.less';
 import RefusjonFeiletManglerUnderEnhet from './RefusjonFeiletManglerUnderEnhet';
 
 interface Props {
@@ -58,6 +58,18 @@ const RefusjonFeilet: FunctionComponent<Props> = ({
                 );
         }
     };
+
+    if (innloggetBrukerHarAltinnTilgangerBedrifter) {
+        return (
+            <HvitBoks className={cls.className}>
+                <Systemtittel className={cls.element('tittel')}>
+                    Ikke tilgang til noen virksomheter i Altinn
+                </Systemtittel>
+                <GenerellTilgangsInnhold />
+            </HvitBoks>
+        );
+    }
+
     return <>{bedriftvalg.feilstatus?.map((feil) => feilMelding(feil))}</>;
 };
 export default RefusjonFeilet;
