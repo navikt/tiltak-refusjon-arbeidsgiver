@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import LesMerPanel from '../../komponenter/LesMerPanel/LesMerPanel';
 import BEMHelper from '../../utils/bem';
 import { Input, RadioPanel } from 'nav-frontend-skjema';
 import { Refusjon } from '../refusjon';
