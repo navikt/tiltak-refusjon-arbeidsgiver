@@ -1,4 +1,4 @@
-ingress: https://tiltak-refusjon.dev.nav.no
+ingress: https://tiltak-refusjon.ekstern.dev.nav.no
 labs: false
 host:
   - www.nav.no
