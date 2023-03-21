@@ -6,6 +6,7 @@ import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjonsgrunnlag } from '../refusjon';
+import { RefusjonStatus } from '../status';
 
 const Boks = styled.div`
     display: flex;
@@ -18,6 +19,7 @@ const Boks = styled.div`
 
 type Props = {
     refusjonsgrunnlag: Refusjonsgrunnlag;
+    status: RefusjonStatus;
 };
 
 const SummeringBoks: FunctionComponent<Props> = (props) => {
@@ -53,7 +55,8 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                         <Element>
                             Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative
                             refusjonsbeløpet overføres til neste periode. Om tiltaket avsluttes, vil det negative
-                            refusjonsbeløpet ikke overføres til neste periode. Dere må fortsatt trykke fullfør under.
+                            refusjonsbeløpet ikke overføres til neste periode.{' '}
+                            {props.status === 'KLAR_FOR_INNSENDING' && 'Dere må fortsatt trykke fullfør under.'}
                         </Element>
                     )}
                     <VerticalSpacer rem={0.5} />

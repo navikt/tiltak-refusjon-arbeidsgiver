@@ -86,7 +86,7 @@ const KvitteringSide: FunctionComponent = () => {
                 forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
             />
             <VerticalSpacer rem={4} />
-            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
         </HvitBoks>
     );
 };

@@ -48,7 +48,7 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 beregning={refusjon.refusjonsgrunnlag.beregning}
                 tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
             />
-            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
 
             <VerticalSpacer rem={1} />
 
