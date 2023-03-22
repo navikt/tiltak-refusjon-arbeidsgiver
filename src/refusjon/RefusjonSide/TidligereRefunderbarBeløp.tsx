@@ -47,13 +47,13 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
             <div className={cls.element('fratrekk-sykepenger-txt')}>
                 <Normaltekst>
                     Har dere fått utbetalt refusjon av lønn på grunn av fravær for deltaker, for eksempel refusjon av
-                    sykepenger, så skal dette beløpet trekkes fra refusjon om lønnstilskudd. Beløpet som skal trekkes
+                    sykepenger, så skal dette beløpet trekkes fra refusjon om {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}. Beløpet som skal trekkes
                     fra er det beløpet dere har fått i refusjon av NAV.
                 </Normaltekst>
                 <VerticalSpacer rem={0.5}/>
                 <Normaltekst >
                     Har dere søkt om refusjon for fravær og venter på rett beløp så må dere vente med å fylle ut refusjon for {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}.
-                    Fristen vil automatisk utsettes 6 mnd fremover i tid mens dere venter på rett beløp.
+                    Fristen vil automatisk utsettes mens dere venter på rett beløp.
                 </Normaltekst>
             </div>
             <AlertStripeInfo >

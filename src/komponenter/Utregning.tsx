@@ -39,7 +39,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
             <VerticalSpacer rem={1} />
             <Utregningsrad
                 labelIkon={<Pengesekken />}
-                labelTekst={'Brutto lønn i perioden'}
+                labelTekst={'Bruttolønn i perioden'}
                 verdi={beregning?.lønn || 0}
             />
 
