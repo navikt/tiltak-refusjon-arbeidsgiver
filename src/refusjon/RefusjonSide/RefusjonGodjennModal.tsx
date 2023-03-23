@@ -20,27 +20,53 @@ const RefusjonGodjennModal: FunctionComponent<Properties> = ({
     godkjennRefusjonen,
 }: PropsWithChildren<Properties>) => {
     const { tilskuddsgrunnlag, beregning } = refusjon.refusjonsgrunnlag;
-    return (
-        <GodkjennModal
-            isOpen={visGodkjennModal}
-            lukkModal={() => setVisGodkjennModal(false)}
-            godkjenn={godkjennRefusjonen}
-            tittel="Send inn refusjon"
-        >
-            <Normaltekst>
-                Du søker nå om refusjon for hele den avtalte perioden{' '}
-                <b>
-                    {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}. Dette kan du kun
-                    gjøre en gang.
-                </b>{' '}
-                Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at refusjonsbeløpet stemmer.
-            </Normaltekst>
-            <VerticalSpacer rem={1} />
-            <Normaltekst>
-                Hvis refusjonsbeløpet på <b>{formatterPenger(beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta kontakt
-                med veileder før du klikker Send inn.
-            </Normaltekst>
-        </GodkjennModal>
-    );
+    if (beregning?.refusjonsbeløp! > 0) {
+        return (
+            <GodkjennModal
+                isOpen={visGodkjennModal}
+                lukkModal={() => setVisGodkjennModal(false)}
+                godkjenn={godkjennRefusjonen}
+                tittel="Send inn refusjon"
+            >
+                <Normaltekst>
+                    Du søker nå om refusjon for hele den avtalte perioden{' '}
+                    <b>
+                        {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}. Dette kan du
+                        kun gjøre en gang.
+                    </b>{' '}
+                    Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at refusjonsbeløpet
+                    stemmer.
+                </Normaltekst>
+                <VerticalSpacer rem={1} />
+                <Normaltekst>
+                    Hvis refusjonsbeløpet på <b>{formatterPenger(beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta
+                    kontakt med veileder før du klikker Send inn.
+                </Normaltekst>
+            </GodkjennModal>
+        );
+    } else {
+        return (
+            <GodkjennModal
+                isOpen={visGodkjennModal}
+                lukkModal={() => setVisGodkjennModal(false)}
+                godkjenn={godkjennRefusjonen}
+                tittel="Godta beløp"
+            >
+                <Normaltekst>
+                    Du godtar nå beløpet for den avtalte perioden{' '}
+                    <b>
+                        {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}. Dette kan du
+                        kun gjøre en gang.
+                    </b>{' '}
+                    Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at beløpet stemmer.
+                </Normaltekst>
+                <VerticalSpacer rem={1} />
+                <Normaltekst>
+                    Hvis beløpet på <b>{formatterPenger(beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta kontakt med
+                    veileder før du klikker Send inn.
+                </Normaltekst>
+            </GodkjennModal>
+        );
+    }
 };
 export default RefusjonGodjennModal;
