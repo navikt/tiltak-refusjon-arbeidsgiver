@@ -69,6 +69,12 @@ export const settTidligereRefunderbarBeløp = async (
     return response.data;
 };
 
+export const utsettFriskSykepenger = async (refusjonId: string): Promise<any> => {
+    const response = await api.post(`/refusjon/${refusjonId}/utsett-frist`);
+    await mutate(`/refusjon/${refusjonId}`);
+    return response.data;
+};
+
 export const setInntektslinjeOpptjentIPeriode = async (
     refusjonId: string,
     inntektslinjeId: string,

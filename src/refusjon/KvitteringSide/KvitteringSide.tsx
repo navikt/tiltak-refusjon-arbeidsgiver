@@ -19,6 +19,7 @@ import InntekterFraTiltaketSvarGammel from '../RefusjonSide/InntekterFraTiltaket
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Statusmelding from './Statusmelding';
 import LagreSomPdfKnapp from './LagreSomPdfKnapp';
+import TidligereRefunderbarBeløpKvittering from '../RefusjonSide/TidligereRefunderbarBeløpKvittering';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -71,12 +72,14 @@ const KvitteringSide: FunctionComponent = () => {
                     <InntekterFraAMeldingen kvitteringVisning={true} />
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                    <TidligereRefunderbarBeløpKvittering refusjon={refusjon} />
                 </>
             ) : (
                 <>
                     <InntekterFraAMeldingenGammel />
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvarGammel refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                    <TidligereRefunderbarBeløpKvittering refusjon={refusjon} />
                 </>
             )}
             <VerticalSpacer rem={2} />
@@ -86,7 +89,7 @@ const KvitteringSide: FunctionComponent = () => {
                 forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
             />
             <VerticalSpacer rem={4} />
-            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
         </HvitBoks>
     );
 };

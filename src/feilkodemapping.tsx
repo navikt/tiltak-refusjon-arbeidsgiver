@@ -7,7 +7,8 @@ export type Feilkode =
     | 'TEKNISK_FEIL_EREGOPPSLAG'
     | 'INGEN_BEDRIFTKONTONUMMER'
     | 'GODKJENN_TIDLIGERE_REFUSJON_FØRST'
-    | 'REFUSJON_BELOP_NEGATIVT_TALL';
+    | 'REFUSJON_BELOP_NEGATIVT_TALL'
+    | 'UGYLDIG_FORLENGELSE_AV_FRIST';
 
 export const Feilmeldinger: { [key in Feilkode]: string } = {
     INGEN_BEDRIFTKONTONUMMER: 'Mangler kontonummer for bedriften',
@@ -21,4 +22,5 @@ export const Feilmeldinger: { [key in Feilkode]: string } = {
     UGYLDIG_STATUS: 'Handlingen kan ikke utføres fordi refusjonen har ugyldig status.',
     REFUSJON_BELOP_NEGATIVT_TALL: 'Refusjonsbeløpet kan ikke være et negativt tall',
     GODKJENN_TIDLIGERE_REFUSJON_FØRST: 'Du må godkjenne en eldre refusjon, før du sender inn denne.',
+    UGYLDIG_FORLENGELSE_AV_FRIST: 'Refusjonen kan ikke lenger forlenges',
 };

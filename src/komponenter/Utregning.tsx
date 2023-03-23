@@ -39,7 +39,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
             <VerticalSpacer rem={1} />
             <Utregningsrad
                 labelIkon={<Pengesekken />}
-                labelTekst={'Brutto lønn i perioden'}
+                labelTekst={'Bruttolønn i perioden'}
                 verdi={beregning?.lønn || 0}
             />
 
@@ -147,12 +147,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
             {forrigeRefusjonMinusBeløp != null && forrigeRefusjonMinusBeløp < 0 && (
                 <Utregningsrad
                     labelIkon={<Endret />}
-                    labelTekst={
-                        'Resterende fratrekk for ferie fra refusjonsnummer: ' +
-                        tilskuddsgrunnlag.avtaleNr +
-                        '-' +
-                        (tilskuddsgrunnlag.løpenummer - 1)
-                    }
+                    labelTekst={'Resterende fratrekk for ferie fra tidligere refusjoner'}
                     verdiOperator={<MinusTegn />}
                     verdi={forrigeRefusjonMinusBeløp}
                     border="TYKK"
