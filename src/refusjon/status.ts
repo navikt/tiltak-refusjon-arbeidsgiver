@@ -8,6 +8,7 @@ export enum RefusjonStatus {
     UTGÅTT = 'UTGÅTT',
     ANNULLERT = 'ANNULLERT',
     KORRIGERT = 'KORRIGERT',
+    GODKJENT_NULLBELØP = 'GODKJENT_NULLBELØP',
 }
 
 export enum KorreksjonStatus {

@@ -19,6 +19,7 @@ export const statusTekst: { [key in RefusjonStatus]: string } = {
     ANNULLERT: 'annullert',
     GODKJENT_MINUSBELØP: 'sendt krav med minusbeløp',
     KORRIGERT: 'Korrigert',
+    GODKJENT_NULLBELØP: 'sendt krav med nullbeløp',
 };
 
 export const korreksjonStatusTekst: { [key in KorreksjonStatus]: string } = {
