@@ -92,7 +92,12 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                         label={`Refusjonsbeløpet på grunn av fravær`}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             const verdi: string = event.currentTarget.value;
-                            if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) setBelop(verdi);
+                            if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {
+                                setBelop(verdi);
+                            }
+                            if(!verdi) {
+                                setBelop("");
+                            }
                         }}
                         onBlur={() => settTidligereRefunderbarBeløp(refusjonId!, true, parseInt(belop, 10))}
                         value={belop}
