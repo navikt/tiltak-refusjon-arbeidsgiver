@@ -1,3 +1,4 @@
+appname: tiltak-refusjon-arbeidsgiver
 ingress: https://tiltak-refusjon.nav.no
 labs: false
 host:
@@ -6,6 +7,7 @@ outbound:
   - tiltak-refusjon-api
   - tiltak-refusjon-arbeidsgiver-redis
 env:
+  MILJO: prod-gcp
   DECORATOR_URL: https://www.nav.no/dekoratoren
   API_AUDIENCE: "prod-gcp:arbeidsgiver:tiltak-refusjon-api"
   API_URL: http://tiltak-refusjon-api

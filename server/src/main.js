@@ -43,7 +43,7 @@ async function startNormal(server) {
     }
 }
 
-if (process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
+if (process.env.MILJO === 'dev-gcp-labs') {
     startLabs(express()).catch((err) => logger.info(err));
 } else {
     startNormal(express()).catch((err) => logger.info(err));

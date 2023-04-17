@@ -1,7 +1,10 @@
-ingress: https://tiltak-refusjon-arbeidsgiver.labs.nais.io
+appname: tiltak-refusjon-arbeidsgiver-labs
+ingress: https://tiltak-refusjon-arbeidsgiver-labs.ekstern.dev.nav.no
 labs: true
 host:
   - www.nav.no
+env:
+  MILJO: dev-gcp-labs
 outbound:
-  - tiltak-refusjon-api
+  - tiltak-refusjon-api-labs
   - tiltak-fakelogin
