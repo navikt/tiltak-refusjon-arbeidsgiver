@@ -22,6 +22,13 @@ const Statusmelding: FunctionComponent<Props> = (props) => {
                     Refusjonskravet er utbetalt. Det vil ta 3–4 dager før pengene kommer på kontoen.
                 </Normaltekst>
             );
+        case RefusjonStatus.GODKJENT_MINUSBELØP:
+        case RefusjonStatus.GODKJENT_NULLBELØP:
+            return (
+                <Normaltekst>
+                    Refusjonskravet er godkjent. Denne refusjonen vil bli tatt vare på i oversikten.
+                </Normaltekst>
+            );
         default:
             return (
                 <Normaltekst>

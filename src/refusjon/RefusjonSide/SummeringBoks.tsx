@@ -23,10 +23,7 @@ type Props = {
 };
 
 const SummeringBoks: FunctionComponent<Props> = (props) => {
-    if (
-        props.refusjonsgrunnlag.beregning?.refusjonsbeløp === undefined ||
-        props.refusjonsgrunnlag.beregning?.refusjonsbeløp === 0
-    ) {
+    if (props.refusjonsgrunnlag.beregning?.refusjonsbeløp === undefined) {
         return null;
     }
     return (
@@ -45,6 +42,20 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                             props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                         )}{' '}
                         til kontonummer {props.refusjonsgrunnlag.bedriftKontonummer}
+                    </Normaltekst>
+                </div>
+            )}
+
+            {props.refusjonsgrunnlag.beregning?.refusjonsbeløp === 0 && (
+                <div>
+                    <VerticalSpacer rem={0.5} />
+                    <Normaltekst>
+                        Det er godtatt <b>{formatterPenger(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0)}</b>{' '}
+                        for perioden{' '}
+                        {formatterPeriode(
+                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                        )}
                     </Normaltekst>
                 </div>
             )}
