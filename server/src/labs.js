@@ -47,7 +47,7 @@ async function startLabs(server) {
         server.use(
             '/api',
             createProxyMiddleware({
-                target: 'http://tiltak-refusjon-api',
+                target: 'http://tiltak-refusjon-api-labs',
                 onProxyReq: restream,
                 changeOrigin: true,
                 proxyTimeout: 30000,
@@ -72,9 +72,12 @@ async function startLabs(server) {
             '/dekoratoren/api/auth',
             asyncHandler(async (req, res) => {
                 try {
-                    const response = await axios.get('http://tiltak-refusjon-api/api/arbeidsgiver/innlogget-bruker', {
-                        headers: req.headers,
-                    });
+                    const response = await axios.get(
+                        'http://tiltak-refusjon-api-labs/api/arbeidsgiver/innlogget-bruker',
+                        {
+                            headers: req.headers,
+                        }
+                    );
                     res.json({ authenticated: true, name: response.data.identifikator || '' });
                 } catch (error) {
                     res.json({ authenticated: false });

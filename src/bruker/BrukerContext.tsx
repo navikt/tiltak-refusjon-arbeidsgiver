@@ -57,9 +57,7 @@ export const BrukerProvider: FunctionComponent = (props) => {
 
     return (
         <XMLHttpReqHandler>
-            {(erUtviklingsmiljo() || inneholderVertsnavn('labs.nais.io')) && (
-                <LokalLogin innloggetBruker={innloggetBruker} />
-            )}
+            {(erUtviklingsmiljo() || inneholderVertsnavn('-labs')) && <LokalLogin innloggetBruker={innloggetBruker} />}
             {innloggetBruker && (
                 <Banner
                     organisasjoner={innloggetBruker.organisasjoner}
