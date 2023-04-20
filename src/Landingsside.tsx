@@ -29,7 +29,7 @@ const Landingsside: FunctionComponent = () => {
                     </Lenke>
                 </Normaltekst>
                 <Normaltekst style={{ marginLeft: '13.8rem' }}>
-                    og <Lenke href={'https://arbeidsgiver.nav.no/tiltak/sommerjobb'}>tilskudd til sommerjobb</Lenke>
+                    og <Lenke href={'https://www.nav.no/arbeidsgiver/sommerjobb'}>tilskudd til sommerjobb</Lenke>
                 </Normaltekst>
                 <VerticalSpacer rem={2} />
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
