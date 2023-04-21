@@ -1,11 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
-import useSWR, { mutate } from 'swr';
-import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/api';
+import useSWR, { SWRConfiguration, mutate } from 'swr';
 import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
+import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/api';
+import { Filter } from '../refusjon/oversikt/FilterContext';
 import { Korreksjon, PageableRefusjon, Refusjon } from '../refusjon/refusjon';
 import { RefusjonStatus } from '../refusjon/status';
 import { Tiltak } from '../refusjon/tiltak';
-import { Filter } from '../refusjon/oversikt/FilterContext';
 
 export class FeilkodeError extends Error {}
 export class ApiError extends Error {}
@@ -20,9 +20,11 @@ const api = axios.create({
 
 const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res: AxiosResponse<any>) => res.data);
 
-const swrConfig = {
+const swrConfig: SWRConfiguration = {
     fetcher: axiosFetcher,
     suspense: true,
+    revalidateOnFocus: false,
+    refreshInterval: 120000,
 };
 
 api.interceptors.response.use(
