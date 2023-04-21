@@ -99,6 +99,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                             if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {
                                 setEndringBruttoLønn(verdi);
                             }
+                            if(!verdi) {
+                                setEndringBruttoLønn("");
+                            }
                         }}
                         onBlur={() => endreBruttolønn(refusjonId!, false, parseInt(endringBruttoLønn, 10))}
                         value={endringBruttoLønn}
