@@ -1,5 +1,6 @@
 import { Calender, File, FileContent, Money, People, Warning } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
@@ -102,6 +103,12 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 <Money />
                 <Element>Kontonummer:</Element>
                 <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKontonummer}</Normaltekst>
+            </IkonRad>
+            <VerticalSpacer rem={1} />
+            <IkonRad>
+                <Money />
+                <Element>Kid:</Element>
+                <KIDInputValidator />
             </IkonRad>
             {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && (
                 <>
