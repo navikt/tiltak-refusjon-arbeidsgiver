@@ -1,5 +1,6 @@
-import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
+import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState, useContext } from 'react';
 import Utregning from '../../../komponenter/Utregning';
+import { RefusjonContext } from '../../../RefusjonProvider';
 import SummeringBoks from '../SummeringBoks';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import LagreKnapp from '../../../komponenter/LagreKnapp';
@@ -20,6 +21,8 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState<boolean>(false);
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState<string>('');
     const cls = BEMHelper('refusjonInnsending');
+
+    const refusjonContext = useContext(RefusjonContext);
 
     if (
         !refusjon.harTattStillingTilAlleInntektslinjer ||

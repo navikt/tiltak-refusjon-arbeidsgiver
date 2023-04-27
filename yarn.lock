@@ -1588,10 +1588,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@navikt/aksel-icons@^2.8.16":
-  version "2.8.16"
-  resolved "https://registry.yarnpkg.com/@navikt/aksel-icons/-/aksel-icons-2.8.16.tgz#991af8aea9179f6df5e8905e213b8bf1137b2f6b"
-  integrity sha512-RCvI9a8bBl4SE7x/cUMyZEgD/uL7xo8xuCwwtMN6WXXt0cbhLlZjXdn2S+T4J4KFZjZo82DZKhpZLyqEJjqMcw==
+"@navikt/aksel-icons@^2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@navikt/aksel-icons/-/aksel-icons-2.9.0.tgz#5de74b4925840e97d9d76fac2685b5e4899a306b"
+  integrity sha512-drd7slczZ0cRzZSzqoCePTkXqdIwrGq4itapk3JIm5m2YUpamWlMAr+uFDdVYrDDbqH0xqspFuQdMIZCTdZzJw==
 
 "@navikt/bedriftsmeny@3.5.2":
   version "3.5.2"
@@ -1601,31 +1601,24 @@
     "@types/amplitude-js" "^8.0.1"
     fuzzysort "^1.1.4"
 
-"@navikt/ds-css@^2.8.16":
-  version "2.8.16"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-css/-/ds-css-2.8.16.tgz#1afa71fea020f105c93ffe9233f867950fa2195d"
-  integrity sha512-NKBn1hip+mZTT+ZMhtLaWfxmYow9kattHDzMcZn9KEgSbnJqTFX7LuoLTCPWEZ09tpwh906qgfRqa2ulwWv+1A==
+"@navikt/ds-css@^2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-css/-/ds-css-2.9.0.tgz#7272f0aeae7c99bd7a474fbe97a993fa1bf44973"
+  integrity sha512-QaMDwWwDkHTqxle2sBNAfyLgZORpm4MAj99/4wuswdZT23bOL8RHhdPBM5tTWtWGQwv0s4NkFFkh/Bn0+TrWUw==
 
-"@navikt/ds-icons@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-icons/-/ds-icons-0.6.3.tgz#95dd8b7568ce770736859014cffa1571739323b7"
-  integrity sha512-sNmgP8a/V8PLccewcEc7+fy+HfA6vDf1zDbgbQ0ypW/OMf6rGsg43EoCnU/txuuh5cRWbmzbbTQnoNHHmUT58w==
-  dependencies:
-    uuid "^8.3.2"
+"@navikt/ds-icons@2.9.0", "@navikt/ds-icons@^2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-icons/-/ds-icons-2.9.0.tgz#0b74c60c5843b8c6f54f130e8cdb9d9005a629e9"
+  integrity sha512-/ulQBBnvXW6Rt56f4M3OmpJ5GEzoHhg1JzrvDu4oYnMgR6NFsLyFlTECTXWBcj4GQXd11ClaThpfgIxqtJR+pg==
 
-"@navikt/ds-icons@^2.8.16":
-  version "2.8.16"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-icons/-/ds-icons-2.8.16.tgz#b2163b43cd9e767ff5ee4995104b1fe58723c6b5"
-  integrity sha512-VTedmSmoovGCoQSf+xzAoWzbWNNG3BrEnDQVzNnq8ynsbYe55s+XPQTV5z76myMNg+DyLDKcoZe96NQxbpxvIw==
-
-"@navikt/ds-react@^2.8.16":
-  version "2.8.16"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-react/-/ds-react-2.8.16.tgz#f731932dfcce5b3f68bf23aaef238ae8fd26a0c4"
-  integrity sha512-UXgWMLwT/1kgXk+UJw9qMp2vDnIP3c6BYUovbuXvbKAHYgjchw0lhTLVTKVtUraN4Yb5O8J1qiXWsdrPjr5mRw==
+"@navikt/ds-react@^2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-react/-/ds-react-2.9.0.tgz#4264be93b794ab2f5034794603703f2ff698a6ea"
+  integrity sha512-5UqIHem45LgqpvrQXxTfddxYepCxUDZDhcNhDn2Ggmki+lRtkZEKWbR8eDzogZmLm/ZFjW0KNFi7cI8mpgwUIQ==
   dependencies:
     "@floating-ui/react" "0.17.0"
-    "@navikt/aksel-icons" "^2.8.16"
-    "@navikt/ds-icons" "^2.8.16"
+    "@navikt/aksel-icons" "^2.9.0"
+    "@navikt/ds-icons" "^2.9.0"
     "@radix-ui/react-tabs" "1.0.0"
     "@radix-ui/react-toggle-group" "1.0.0"
     clsx "^1.2.1"
@@ -8652,6 +8645,11 @@ normalize-url@^3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
 
+norsk-validator@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/norsk-validator/-/norsk-validator-1.2.0.tgz#864fd7e4187c6a21e7f2d27d546c48b80fce7815"
+  integrity sha512-S8vLcMvW7fclVr3KHBT+jD4R3Lnx/fAB9AtLKTZ9hMqv2p60B48RTIdsEMYjXFqbfj8eP5ID7k3NK39N/tTlSQ==
+
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -12182,7 +12180,7 @@ uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
-uuid@^8.3.0, uuid@^8.3.2:
+uuid@^8.3.0:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
