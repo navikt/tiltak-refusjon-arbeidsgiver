@@ -37,6 +37,7 @@ const KIDInputValidator: FunctionComponent = () => {
             }
             setKid(refusjon.refusjonsgrunnlag.bedriftKid);
         }
+        // eslint-disable-next-line
     }, [refusjon?.refusjonsgrunnlag?.bedriftKid]);
 
     return (
@@ -49,6 +50,7 @@ const KIDInputValidator: FunctionComponent = () => {
                 value={kid}
                 size="small"
                 type="number"
+                onFocus={() => fjerneFeilmelding('bedriftKid')}
                 onChange={(event) => {
                     setKid(event.currentTarget.value.trim());
                 }}
