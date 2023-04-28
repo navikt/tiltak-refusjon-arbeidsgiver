@@ -8,6 +8,7 @@ import { Refusjon } from '../../refusjon';
 import BEMHelper from '../../../utils/bem';
 import './refusjonInnsending.less';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
+import { Alert } from '@navikt/ds-react';
 
 interface Properties {
     refusjon: Refusjon;
@@ -22,7 +23,7 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState<string>('');
     const cls = BEMHelper('refusjonInnsending');
 
-    const refusjonContext = useContext(RefusjonContext);
+    const { feilListe } = useContext(RefusjonContext);
 
     if (
         !refusjon.harTattStillingTilAlleInntektslinjer ||
@@ -65,6 +66,13 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene nyttes
                 etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
             </BekreftCheckboksPanel>
+
+            {feilListe.includes('bedriftKid') && (
+                <>
+                    <Alert variant="error">KID-nummeret du har fylt ut er ikke gyldig.</Alert>
+                    <VerticalSpacer rem={1} />
+                </>
+            )}
 
             <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
                 Fullfør

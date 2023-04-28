@@ -107,8 +107,12 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <Money />
-                <Element>Kid:</Element>
-                <KIDInputValidator />
+                <Element>KID:</Element>
+                {refusjon.status === 'SENDT_KRAV' ? (
+                    <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKid}</Normaltekst>
+                ) : (
+                    <KIDInputValidator />
+                )}
             </IkonRad>
             {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && (
                 <>

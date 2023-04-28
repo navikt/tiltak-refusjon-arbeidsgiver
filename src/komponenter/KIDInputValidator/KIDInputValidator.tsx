@@ -2,19 +2,19 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 import { RefusjonContext } from '../../RefusjonProvider';
 import { useParams } from 'react-router';
 import { lagreBedriftKID } from '../../services/rest-service';
+import BEMHelper from '../../utils/bem';
 import validator from 'norsk-validator';
-import { useHentRefusjon } from '../../services/rest-service';
+
 import './KIDInputValidator.less';
 import { TextField } from '@navikt/ds-react';
 
 const KIDInputValidator: FunctionComponent = () => {
+    const cls = BEMHelper('kidValidator');
     const { refusjonId } = useParams();
-    //const refusjon = useHentRefusjon(refusjonId);
-
     const refusjonContext = useContext(RefusjonContext);
     const { refusjon, feilListe, setFeilListe } = useContext(RefusjonContext);
 
-    const [kid, setKid] = useState<string>();
+    const [kid, setKid] = useState<string | undefined>(refusjon?.refusjonsgrunnlag?.bedriftKid);
 
     const fjerneFeilmelding = (value: string) => {
         const nyFeilListe = feilListe.filter((item) => {
@@ -24,25 +24,30 @@ const KIDInputValidator: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        if (refusjon?.refusjonsgrunnlag?.bedriftKid && kid !== refusjon.refusjonsgrunnlag.bedriftKid) {
+        if (refusjon?.refusjonsgrunnlag?.bedriftKid !== undefined) {
+            if (
+                refusjon.refusjonsgrunnlag.bedriftKid?.length > 0 &&
+                !validator.kidnummer(refusjon.refusjonsgrunnlag.bedriftKid)
+            ) {
+                if (!feilListe.includes('bedriftKid')) {
+                    setFeilListe([...feilListe, 'bedriftKid']);
+                }
+            } else {
+                fjerneFeilmelding('bedriftKid');
+            }
             setKid(refusjon.refusjonsgrunnlag.bedriftKid);
         }
-    }, []);
-    /*
-    if (refusjonContext.refusjon.refusjonsgrunnlag!.bedriftKid != null) {
-        console.log('refusjon', refusjon.refusjonsgrunnlag);
-    }
-*/
-    console.log('refusjonContext', refusjonContext.refusjon);
-
-    console.log('feilListe', feilListe);
+    }, [refusjon?.refusjonsgrunnlag?.bedriftKid]);
 
     return (
         <>
             <TextField
-                label={''}
-                placeholder="Kidnummer"
+                className={cls.element('textField')}
+                hideLabel
+                label={'KID-nummer'}
+                placeholder="KID-nummer"
                 value={kid}
+                size="small"
                 type="number"
                 onChange={(event) => {
                     setKid(event.currentTarget.value.trim());
@@ -51,25 +56,14 @@ const KIDInputValidator: FunctionComponent = () => {
                     if (kid?.length === 0) {
                         setKid(undefined);
                         refusjonContext.settRefusjonsgrunnlagVerdi('bedriftKid', undefined);
+                        fjerneFeilmelding('bedriftKid');
                     }
                     setKid(kid);
                     lagreBedriftKID(refusjonId!, kid);
                     refusjonContext.settRefusjonsgrunnlagVerdi('bedriftKid', kid);
-                    fjerneFeilmelding('bedriftKid');
-                    if (kid !== undefined && kid?.length > 0 && !validator.kidnummer(kid)) {
-                        if (!feilListe.includes('bedriftKid')) {
-                            setFeilListe([...feilListe, 'bedriftKid']);
-                        }
-                        lagreBedriftKID(refusjonId!, kid);
-                    }
-                    //} else {
-                    //   fjerneFeilmelding('bedriftKid');
-                    //   refusjonContext.settRefusjonsgrunnlagVerdi('bedriftKid', undefined);
-                    //}
                 }}
-                error={feilListe.includes('bedriftKid') && <li style={{ color: 'red' }}>Feil Kid Nummer</li>}
+                error={feilListe.includes('bedriftKid') && <>Feil KID-nummer</>}
             />
-            {/*error && <AlertStripe type="feil">Skriv innn riktig kid </AlertStripe>*/}
         </>
     );
 };
