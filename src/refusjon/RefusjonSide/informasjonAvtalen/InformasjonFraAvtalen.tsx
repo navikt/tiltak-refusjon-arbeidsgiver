@@ -104,16 +104,27 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 <Element>Kontonummer:</Element>
                 <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKontonummer}</Normaltekst>
             </IkonRad>
-            <VerticalSpacer rem={1} />
-            <IkonRad>
-                <Money />
-                <Element>KID:</Element>
-                {refusjon.status === 'SENDT_KRAV' ? (
-                    <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKid}</Normaltekst>
-                ) : (
-                    <KIDInputValidator />
-                )}
-            </IkonRad>
+            {(!refusjon.refusjonsgrunnlag.bedriftKid || refusjon.refusjonsgrunnlag.bedriftKid.trim().length === 0) &&
+            refusjon.status !== 'KLAR_FOR_INNSENDING' ? (
+                <></>
+            ) : (
+                <>
+                    <VerticalSpacer rem={1} />
+                    <IkonRad>
+                        <Money />
+                        <Element>KID:</Element>
+                        {refusjon.status === 'KLAR_FOR_INNSENDING' ? (
+                            <>
+                                <KIDInputValidator />
+                                <Normaltekst>(Dette feltet er valgfritt)</Normaltekst>
+                            </>
+                        ) : (
+                            <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKid}</Normaltekst>
+                        )}
+                    </IkonRad>
+                </>
+            )}
+
             {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && (
                 <>
                     <VerticalSpacer rem={1} />
