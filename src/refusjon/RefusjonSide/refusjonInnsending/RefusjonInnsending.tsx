@@ -1,5 +1,6 @@
-import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
+import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState, useContext } from 'react';
 import Utregning from '../../../komponenter/Utregning';
+import { RefusjonContext } from '../../../RefusjonProvider';
 import SummeringBoks from '../SummeringBoks';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import LagreKnapp from '../../../komponenter/LagreKnapp';
@@ -7,6 +8,7 @@ import { Refusjon } from '../../refusjon';
 import BEMHelper from '../../../utils/bem';
 import './refusjonInnsending.less';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
+import { Alert } from '@navikt/ds-react';
 
 interface Properties {
     refusjon: Refusjon;
@@ -20,6 +22,8 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     const [bekrefetKorrekteOpplysninger, setBekrefetKorrekteOpplysninger] = useState<boolean>(false);
     const [ikkeBekreftetFeilmelding, setIkkeBekreftetFeilmelding] = useState<string>('');
     const cls = BEMHelper('refusjonInnsending');
+
+    const { feilListe } = useContext(RefusjonContext);
 
     if (
         !refusjon.harTattStillingTilAlleInntektslinjer ||
@@ -62,6 +66,13 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene nyttes
                 etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
             </BekreftCheckboksPanel>
+
+            {feilListe.includes('bedriftKid') && (
+                <>
+                    <Alert variant="error">KID-nummeret du har fylt ut er ikke gyldig.</Alert>
+                    <VerticalSpacer rem={1} />
+                </>
+            )}
 
             <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
                 Fullfør
