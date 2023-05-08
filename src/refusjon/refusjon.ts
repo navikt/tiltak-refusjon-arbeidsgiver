@@ -42,6 +42,7 @@ export interface Refusjon {
     utbetaltTidspunkt?: string;
     unntakOmInntekterToMånederFrem: boolean;
     forrigeRefusjonSomSkalSendesFørst?: Refusjon;
+    hentInntekterLengerFrem: string;
 }
 
 export interface Korreksjon {

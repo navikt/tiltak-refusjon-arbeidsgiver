@@ -1,3 +1,4 @@
+import { Link } from '@navikt/ds-react';
 import _ from 'lodash';
 import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
@@ -5,16 +6,22 @@ import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
-import { useHentRefusjon } from '../../../services/rest-service';
+import { hentInntekterLengerFrem, useHentRefusjon } from '../../../services/rest-service';
+import { formatterPenger } from '../../../utils/PengeUtils';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
-import { formatterDato, formatterPeriode, månedsNavn, NORSK_MÅNEDÅR_FORMAT } from '../../../utils/datoUtils';
-import { formatterPenger } from '../../../utils/PengeUtils';
+import {
+    NORSK_MÅNEDÅR_FORMAT,
+    formatterDato,
+    formatterPeriode,
+    månedsNavn,
+    månedsNavnPlusMåned,
+} from '../../../utils/datoUtils';
+import InntektsMeldingHeader from './InntektsMeldingHeader';
 import { inntektProperties } from './inntektProperties';
 import './inntektsMelding.less';
-import InntektsMeldingHeader from './InntektsMeldingHeader';
-import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
 import InntektValg from './inntektsmeldingTabell/InntektValg';
+import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
 
@@ -52,9 +59,14 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         return ingenAvInntekteneErOpptjentIPerioden;
     };
 
+    const merkForHentingAvInntekterFrem = (merking: boolean) => {
+        hentInntekterLengerFrem(refusjon.id, merking);
+    };
+
     const harBruttolønn = inntektsgrunnlag ? inntektsgrunnlag?.bruttoLønn > 0 : false;
 
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
+    const nesteMånedNavn = månedsNavnPlusMåned(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom, 1);
 
     return (
         <div className={cls.element('graboks-wrapper')}>
@@ -66,9 +78,25 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
-                    ) {refusjon.unntakOmInntekterToMånederFrem ? 'og 2 måneder etter' : 'og 1 måned etter'}.
+                    ) {refusjon.unntakOmInntekterToMånederFrem ? 'og 2 måneder etter' : ''}{' '}
+                    {refusjon.hentInntekterLengerFrem !== null && 'og 1 måned frem'}.
                 </i>
             )}
+            {!refusjon.hentInntekterLengerFrem && (
+                <AlertStripeInfo>
+                    Finner du ikke inntekten(e) du leter etter? Klikk{' '}
+                    <Link onClick={() => merkForHentingAvInntekterFrem(true)} style={{ cursor: 'pointer' }}>
+                        her
+                    </Link>{' '}
+                    for å hente inntekter rapportert i {nesteMånedNavn} også.
+                </AlertStripeInfo>
+            )}
+            {/* {refusjon.hentInntekterLengerFrem && (
+                    <AlertStripeAdvarsel>
+                        Dukker det opp inntekter du ikke forventer å se, for mai måned? Klikk{' '}
+                        <Link onClick={() => merkForHentingAvInntekterFrem(false)} style={{cursor: 'pointer'}}>her</Link>
+                    </AlertStripeAdvarsel>
+                )} */}
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) &&
                 inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length > 1 && (
                     <>
