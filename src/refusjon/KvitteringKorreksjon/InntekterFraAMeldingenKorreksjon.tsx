@@ -70,20 +70,6 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
         korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.length > 0 &&
         antallInntekterSomErMedIGrunnlag === 0;
 
-    // const harInntekterMenIkkeForHeleTilskuddsperioden =
-    //     refusjon.status === 'KLAR_FOR_INNSENDING' &&
-    //     !refusjon.harInntektIAlleMåneder &&
-    //     !!refusjon.refusjonsgrunnlag.inntektsgrunnlag &&
-    //     refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) !== undefined;
-
-    // refusjonApnet(
-    //     refusjon,
-    //     antallInntekterSomErMedIGrunnlag ?? 0,
-    //     ingenInntekter,
-    //     ingenRefunderbareInntekter,
-    //     harInntekterMenIkkeForHeleTilskuddsperioden
-    // );
-
     return (
         <GråBoks>
             <Fleks>
@@ -181,25 +167,6 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                     <VerticalSpacer rem={1} />
                 </>
             )}
-            {/* {harInntekterMenIkkeForHeleTilskuddsperioden && (
-                <>
-                    <VerticalSpacer rem={1} />
-                    <AlertStripeAdvarsel>
-                        Vi kan ikke finne inntekter for hele perioden som er avtalt. Dette kan skyldes at det ikke er
-                        rapportert inn inntekter for alle månedene i den avtalte perioden enda.
-                        <Element>
-                            Du kan kun søke om refusjon for den avtalte perioden{' '}
-                            {formatterPeriode(
-                                refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-                                refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
-                            )}{' '}
-                            én gang. Sikre deg derfor at alle inntekter innenfor perioden er rapportert før du klikker
-                            fullfør.
-                        </Element>
-                    </AlertStripeAdvarsel>
-                    <VerticalSpacer rem={1} />
-                </>
-            )} */}
         </GråBoks>
     );
 };

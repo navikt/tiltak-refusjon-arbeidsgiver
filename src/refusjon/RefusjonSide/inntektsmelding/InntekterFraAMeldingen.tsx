@@ -15,7 +15,6 @@ import './inntektsMelding.less';
 import InntektsMeldingHeader from './InntektsMeldingHeader';
 import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
 import InntektValg from './inntektsmeldingTabell/InntektValg';
-import HarInntekterMenIkkeForHeleTilskuddsperioden from './inntektsmeldingVarsel/HarInntekterMenIkkeForHeleTilskuddsperioden';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
 
@@ -35,20 +34,10 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     const refusjon = useHentRefusjon(refusjonId);
     const { inntektsgrunnlag } = refusjon.refusjonsgrunnlag;
 
-    const {
-        antallInntekterSomErMedIGrunnlag,
-        ingenInntekter,
-        ingenRefunderbareInntekter,
-        harInntekterMenIkkeForHeleTilskuddsperioden,
-    } = inntektProperties(refusjon);
+    const { antallInntekterSomErMedIGrunnlag, ingenInntekter, ingenRefunderbareInntekter } =
+        inntektProperties(refusjon);
 
-    refusjonApnet(
-        refusjon,
-        antallInntekterSomErMedIGrunnlag ?? 0,
-        ingenInntekter,
-        ingenRefunderbareInntekter,
-        harInntekterMenIkkeForHeleTilskuddsperioden
-    );
+    refusjonApnet(refusjon, antallInntekterSomErMedIGrunnlag ?? 0, ingenInntekter, ingenRefunderbareInntekter);
 
     const finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden = () => {
         if (inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length === 0) {
@@ -142,10 +131,6 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             )}
             <IngenInntekter ingenInntekter={ingenInntekter} />
             <IngenRefunderbareInntekter ingenRefunderbareInntekter={ingenRefunderbareInntekter} />
-            <HarInntekterMenIkkeForHeleTilskuddsperioden
-                tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
-                harInntekterMenIkkeForHeleTilskuddsperioden={harInntekterMenIkkeForHeleTilskuddsperioden}
-            />
             {finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden() && (
                 <>
                     <VerticalSpacer rem={1} />

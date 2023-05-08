@@ -28,7 +28,6 @@ interface ApnetRefusjon {
     antallInntekterSomErMedIGrunnlag: number;
     ingenInntekter: boolean;
     ingenRefunderbareInntekter: boolean;
-    harInntekterMenIkkeForHeleTilskuddsperioden: boolean;
 }
 
 const appkey = '#tiltak-refusjon-utside-';
@@ -79,8 +78,7 @@ export const refusjonApnet = (
     refusjon: Refusjon,
     antallInntekterSomErMedIGrunnlag: number,
     ingenInntekter: boolean,
-    ingenRefunderbareInntekter: boolean,
-    harInntekterMenIkkeForHeleTilskuddsperioden: boolean
+    ingenRefunderbareInntekter: boolean
 ): LogReturn => {
     const data: ApnetRefusjon = {
         id: refusjon.id,
@@ -90,7 +88,6 @@ export const refusjonApnet = (
         antallInntekterSomErMedIGrunnlag: antallInntekterSomErMedIGrunnlag,
         ingenInntekter: ingenInntekter,
         ingenRefunderbareInntekter: ingenRefunderbareInntekter,
-        harInntekterMenIkkeForHeleTilskuddsperioden: harInntekterMenIkkeForHeleTilskuddsperioden,
     };
     return amplitude.logEvent(appkey.concat('apnet-refusjon'), { ...data });
 };

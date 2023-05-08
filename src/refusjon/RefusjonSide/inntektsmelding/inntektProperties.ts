@@ -12,16 +12,9 @@ export const inntektProperties = (refusjon: Refusjon) => {
     const ingenRefunderbareInntekter: boolean =
         !!inntektsgrunnlag && inntektsgrunnlag.inntekter.length > 0 && antallInntekterSomErMedIGrunnlag === 0;
 
-    const harInntekterMenIkkeForHeleTilskuddsperioden: boolean =
-        refusjon.status === 'KLAR_FOR_INNSENDING' &&
-        !refusjon.harInntektIAlleMåneder &&
-        !!inntektsgrunnlag &&
-        inntektsgrunnlag.inntekter.find((i) => i.erMedIInntektsgrunnlag) !== undefined;
-
     return {
         antallInntekterSomErMedIGrunnlag,
         ingenInntekter,
         ingenRefunderbareInntekter,
-        harInntekterMenIkkeForHeleTilskuddsperioden,
     };
 };
