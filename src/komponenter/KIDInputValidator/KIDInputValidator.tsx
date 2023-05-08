@@ -16,6 +16,8 @@ const KIDInputValidator: FunctionComponent = () => {
 
     const [kid, setKid] = useState<string | undefined>(refusjon?.refusjonsgrunnlag?.bedriftKid);
 
+    const bedriftKidRegex = /^0+$/; // Sjekker at tallet er 0 eller flere 0000000
+
     const fjerneFeilmelding = (value: string) => {
         const nyFeilListe = feilListe.filter((item) => {
             return item !== value;
@@ -27,7 +29,8 @@ const KIDInputValidator: FunctionComponent = () => {
         if (refusjon?.refusjonsgrunnlag?.bedriftKid !== undefined) {
             if (
                 refusjon.refusjonsgrunnlag.bedriftKid?.length > 0 &&
-                !validator.kidnummer(refusjon.refusjonsgrunnlag.bedriftKid)
+                (!validator.kidnummer(refusjon.refusjonsgrunnlag.bedriftKid) ||
+                    bedriftKidRegex.test(refusjon?.refusjonsgrunnlag?.bedriftKid!))
             ) {
                 if (!feilListe.includes('bedriftKid')) {
                     setFeilListe([...feilListe, 'bedriftKid']);
