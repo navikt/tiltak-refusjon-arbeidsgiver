@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
@@ -17,6 +16,7 @@ import InntektsmeldingTabellHeader from './inntektsmeldingTabell/Inntektsmelding
 import InntektValg from './inntektsmeldingTabell/InntektValg';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
+import { Alert } from '@navikt/ds-react';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -73,12 +73,12 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                 inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length > 1 && (
                     <>
                         <VerticalSpacer rem={1} />
-                        <AlertStripeInfo>
+                        <Alert variant="info" size="small">
                             <div>
                                 Vi har funnet flere innrapporterte inntekter. Huk kun av for inntekter som er opptjent i{' '}
                                 <strong>{månedNavn}</strong>.
                             </div>
-                        </AlertStripeInfo>
+                        </Alert>
                     </>
                 )}
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
@@ -134,7 +134,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             {finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden() && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <AlertStripeAdvarsel>
+                    <Alert variant="warning" size="small">
                         <Element>
                             Du har huket av for at ingen av de innhentede inntektene er opptjent i {månedNavn}.
                         </Element>
@@ -142,7 +142,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                             Hvis du har rapportert inntekter for sent, kan du ta kontakt med NAV-veileder for å åpne for
                             henting av inntekter som er rapport inn for senere måneder.
                         </Normaltekst>
-                    </AlertStripeAdvarsel>
+                    </Alert>
                 </>
             )}
         </div>

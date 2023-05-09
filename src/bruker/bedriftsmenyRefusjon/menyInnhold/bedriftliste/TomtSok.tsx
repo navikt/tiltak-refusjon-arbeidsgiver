@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import BEMHelper from '../../../../utils/bem';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
+import { Alert } from '@navikt/ds-react';
 
 const TomtSok: FunctionComponent<{}> = () => {
     const cls = BEMHelper('bedriftliste');
@@ -13,11 +13,11 @@ const TomtSok: FunctionComponent<{}> = () => {
         <>
             {ingenSoketreff && (
                 <div className={cls.element('tomt-sok')}>
-                    <AlertStripeInfo>
+                    <Alert variant="info" size="small">
                         <>
                             <Normaltekst>Søket returnerte ingen treff.</Normaltekst>
                         </>
-                    </AlertStripeInfo>
+                    </Alert>
                 </div>
             )}
         </>

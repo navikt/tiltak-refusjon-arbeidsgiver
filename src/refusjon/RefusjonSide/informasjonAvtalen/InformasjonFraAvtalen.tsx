@@ -1,5 +1,4 @@
 import { Calender, File, FileContent, Money, People, Warning } from '@navikt/ds-icons';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
@@ -11,6 +10,7 @@ import { tiltakstypeTekst } from '../../../messages';
 import { useHentRefusjon } from '../../../services/rest-service';
 import { formatterDato, formatterPeriode } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
+import { Alert } from '@navikt/ds-react';
 
 const IkonRad = styled.div`
     display: flex;
@@ -128,12 +128,12 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <AlertStripeFeil>
+                    <Alert variant="error" size="small">
                         Vi kan ikke finne noe kontonummer på deres virksomhet. Riktig kontonummer må{' '}
                         <EksternLenke href="https://www.altinn.no/skjemaoversikt/arbeids--og-velferdsetaten-nav/bankkontonummer-for-refusjoner-fra-nav-til-arbeidsgiver/">
                             sendes inn via Altinn.
                         </EksternLenke>
-                    </AlertStripeFeil>
+                    </Alert>
                 </>
             )}
         </GråBoks>

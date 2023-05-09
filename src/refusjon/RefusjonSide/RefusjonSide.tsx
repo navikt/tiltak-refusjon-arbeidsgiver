@@ -11,9 +11,9 @@ import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
 import RefusjonGodjennModal from './RefusjonGodjennModal';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import Lenke from 'nav-frontend-lenker';
+import { Alert } from '@navikt/ds-react';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ const RefusjonSide: FunctionComponent = () => {
                 <RefusjonIngress refusjon={refusjon} />
                 {refusjon.forrigeRefusjonSomSkalSendesFørst != null && (
                     <>
-                        <AlertStripeAdvarsel>
+                        <Alert variant="warning" size="small">
                             <Lenke href={'/refusjon/' + refusjon.forrigeRefusjonSomSkalSendesFørst.id}>
                                 <b>Refusjon:</b>{' '}
                                 {
@@ -58,7 +58,7 @@ const RefusjonSide: FunctionComponent = () => {
                                 '-' +
                                 refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}
                             .
-                        </AlertStripeAdvarsel>
+                        </Alert>
                         <VerticalSpacer rem={1} />
                     </>
                 )}

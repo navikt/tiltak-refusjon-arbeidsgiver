@@ -1,9 +1,9 @@
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import KnappBase, { Knapp, KnappBaseProps } from 'nav-frontend-knapper';
 import React, { FunctionComponent, HTMLAttributes, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Nettressurs, Status } from '../nettressurs';
 import { handterFeil } from '../utils/apiFeilUtils';
 import VerticalSpacer from './VerticalSpacer';
+import { Alert } from '@navikt/ds-react';
 
 type Props = {
     lagreFunksjon: () => Promise<any>;
@@ -53,11 +53,11 @@ const LagreOgAvbrytKnapp: FunctionComponent<Props & KnappBaseProps> = (
             {oppslag.status === Status.Feil && (
                 <>
                     <VerticalSpacer rem={0.5} />
-                    <AlertStripeAdvarsel>
+                    <Alert variant="warning" size="small">
                         <div ref={feilRef} aria-live="polite">
                             {feilmelding}
                         </div>
-                    </AlertStripeAdvarsel>
+                    </Alert>
                 </>
             )}
         </div>

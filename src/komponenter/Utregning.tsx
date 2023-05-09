@@ -9,7 +9,6 @@ import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
 import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprosent.svg';
 import { ReactComponent as RefusjonAvLønn } from '@/asset/image/refusjonAvLønn.svg';
 import { ReactComponent as Endret } from '@/asset/image/endret.svg';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
@@ -17,6 +16,7 @@ import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
+import { Alert } from '@navikt/ds-react';
 
 interface Props {
     beregning?: Beregning;
@@ -172,11 +172,11 @@ const Utregning: FunctionComponent<Props> = (props) => {
             />
             <VerticalSpacer rem={1} />
             {beregning?.overTilskuddsbeløp && (
-                <AlertStripeAdvarsel>
+                <Alert variant="warning" size="small">
                     Beregnet beløp er høyere enn refusjonsbeløpet. Avtalt beløp er inntil{' '}
                     {formatterPenger(tilskuddsgrunnlag.tilskuddsbeløp)} for denne perioden. Lønn i denne
                     refusjonsperioden kan ikke endres og dere vil få utbetalt maks av avtalt beløp.
-                </AlertStripeAdvarsel>
+                </Alert>
             )}
         </GråRamme>
     );
