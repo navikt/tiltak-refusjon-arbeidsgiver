@@ -1,4 +1,4 @@
-import { Link } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
 import _ from 'lodash';
 import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
@@ -7,20 +7,13 @@ import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
 import { hentInntekterLengerFrem, useHentRefusjon } from '../../../services/rest-service';
-import { formatterPenger } from '../../../utils/PengeUtils';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
-import {
-    NORSK_MÅNEDÅR_FORMAT,
-    formatterDato,
-    formatterPeriode,
-    månedsNavn,
-    månedsNavnPlusMåned,
-} from '../../../utils/datoUtils';
+import { formatterPeriode, månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
 import InntektsMeldingHeader from './InntektsMeldingHeader';
 import { inntektProperties } from './inntektProperties';
 import './inntektsMelding.less';
-import InntektValg from './inntektsmeldingTabell/InntektValg';
+import InntektsmeldingTabellBody from './inntektsmeldingTabell/InntektsmeldingTabellBody';
 import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
@@ -68,6 +61,9 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
     const nesteMånedNavn = månedsNavnPlusMåned(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom, 1);
 
+    const inntektGrupperObjekt = _.groupBy(inntektsgrunnlag?.inntekter, (inntekt) => inntekt.måned);
+    const inntektGrupperListe = Object.entries(inntektGrupperObjekt);
+
     return (
         <div className={cls.element('graboks-wrapper')}>
             <InntektsMeldingHeader refusjon={refusjon} />
@@ -82,15 +78,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                     {refusjon.hentInntekterLengerFrem !== null && 'og 1 måned frem'}.
                 </i>
             )}
-            {!refusjon.hentInntekterLengerFrem && (
-                <AlertStripeInfo>
-                    Finner du ikke inntekten(e) du leter etter? Klikk{' '}
-                    <Link onClick={() => merkForHentingAvInntekterFrem(true)} style={{ cursor: 'pointer' }}>
-                        her
-                    </Link>{' '}
-                    for å hente inntekter rapportert i {nesteMånedNavn} også.
-                </AlertStripeInfo>
-            )}
+
             {/* {refusjon.hentInntekterLengerFrem && (
                     <AlertStripeAdvarsel>
                         Dukker det opp inntekter du ikke forventer å se, for mai måned? Klikk{' '}
@@ -112,53 +100,40 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <table className={cls.element('inntektstabell')}>
-                        <InntektsmeldingTabellHeader refusjon={refusjon} />
-                        <tbody>
-                            {_.sortBy(
-                                inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag),
-                                [
-                                    'måned',
-                                    'opptjeningsperiodeFom',
-                                    'opptjeningsperiodeTom',
-                                    'opptjent',
-                                    'beskrivelse',
-                                    'id',
-                                ]
-                            ).map((inntekt) => (
-                                <tr key={inntekt.id}>
-                                    <td>
-                                        {/* inntekt.id */} {inntektBeskrivelse(inntekt.beskrivelse)}
-                                    </td>
-                                    <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
-
-                                    <td>
-                                        {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
-                                            formatterPeriode(
-                                                inntekt.opptjeningsperiodeFom,
-                                                inntekt.opptjeningsperiodeTom,
-                                                'DD.MM'
-                                            )
-                                        ) : (
-                                            <em>Ikke rapportert opptjenings&shy;periode</em>
-                                        )}
-                                    </td>
-                                    {inntektsgrunnlag?.inntekter.filter((inntekt) => inntekt.erOpptjentIPeriode) && (
-                                        <InntektValg
-                                            inntekt={inntekt}
-                                            refusjonId={refusjon.id}
-                                            kvitteringVisning={kvitteringVisning}
-                                        />
-                                    )}
-                                    <td>{formatterPenger(inntekt.beløp)}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    {inntektGrupperListe.map(([aarManed, inntektslinjer]) => (
+                        <>
+                            <Heading level="4" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
+                                Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})
+                            </Heading>
+                            <div style={{ borderTop: '1px solid #06893b' }}>
+                                <table className={cls.element('inntektstabell')}>
+                                    <InntektsmeldingTabellHeader refusjon={refusjon} />
+                                    <InntektsmeldingTabellBody
+                                        inntektslinjer={inntektslinjer}
+                                        kvitteringVisning={kvitteringVisning}
+                                    />
+                                </table>
+                            </div>
+                            <VerticalSpacer rem={1} />
+                        </>
+                    ))}
                 </>
             )}
             <IngenInntekter ingenInntekter={ingenInntekter} />
             <IngenRefunderbareInntekter ingenRefunderbareInntekter={ingenRefunderbareInntekter} />
+            {!refusjon.hentInntekterLengerFrem && (
+                <>
+                    <VerticalSpacer rem={1} />
+                    <AlertStripeInfo>
+                        Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
+                        rapportert i {nesteMånedNavn} også.
+                        <VerticalSpacer rem={1} />
+                        <Button onClick={() => merkForHentingAvInntekterFrem(true)} size="small">
+                            Hent inntekter rapportert i {nesteMånedNavn}
+                        </Button>
+                    </AlertStripeInfo>
+                </>
+            )}
             {finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden() && (
                 <>
                     <VerticalSpacer rem={1} />
