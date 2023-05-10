@@ -121,7 +121,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             )}
             <IngenInntekter ingenInntekter={ingenInntekter} />
             <IngenRefunderbareInntekter ingenRefunderbareInntekter={ingenRefunderbareInntekter} />
-            {!refusjon.hentInntekterLengerFrem && (
+            {!refusjon.hentInntekterLengerFrem && !refusjon.unntakOmInntekterToMånederFrem && (
                 <>
                     <VerticalSpacer rem={1} />
                     <AlertStripeInfo>
