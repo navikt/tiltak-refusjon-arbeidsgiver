@@ -65,7 +65,7 @@ const refresh = (idportenClient, oldTokenSet) => {
     console.log('med endpoint', idportenMetadata.issuer.metadata.token_endpoint_auth_method);
     const additionalClaims = {
         clientAssertionPayload: {
-            aud: [idportenMetadata.issuer.metadata],
+            aud: [idportenMetadata.issuer.metadata.token_endpoint],
         },
     };
     return idportenClient.refresh(oldTokenSet, additionalClaims);
