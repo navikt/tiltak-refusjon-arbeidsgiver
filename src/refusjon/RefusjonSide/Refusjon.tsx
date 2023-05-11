@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
 import { formatterDato } from '../../utils/datoUtils';
 import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
