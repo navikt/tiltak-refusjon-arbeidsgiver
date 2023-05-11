@@ -36,6 +36,7 @@ const getTokenExchangeAccessToken = async (tokenxClient, req) => {
         const additionalClaims = {
             clientAssertionPayload: {
                 nbf: now,
+                aud: [tokenxClient.issuer.metadata.token_endpoint],
             },
         };
         backendTokenSet = await tokenxClient.grant(
