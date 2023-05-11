@@ -59,6 +59,10 @@ export const endreBruttolønn = async (
 };
 
 export const lagreBedriftKID = async (refusjonId: string, bedriftKID: string | undefined): Promise<any> => {
+    if (bedriftKID?.trim().length === 0) {
+        bedriftKID = undefined;
+    }
+    console.log('LAGRE KID: ', bedriftKID, bedriftKID?.trim().length, bedriftKID === undefined);
     const response = await api.post(`/refusjon/${refusjonId}/lagre-bedriftKID`, {
         bedriftKID,
     });

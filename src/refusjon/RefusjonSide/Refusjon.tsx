@@ -1,7 +1,5 @@
-import React, { FunctionComponent, useContext } from 'react';
-import { useParams } from 'react-router';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
-import { useHentRefusjon } from '../../services/rest-service';
 import { formatterDato } from '../../utils/datoUtils';
 import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
 import KvitteringSide from '../KvitteringSide/KvitteringSide';
@@ -11,12 +9,7 @@ import RefusjonSide from './RefusjonSide';
 import { RefusjonContext } from '../../RefusjonProvider';
 
 const Komponent: FunctionComponent = () => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
-
-    const { settRefusjonVerdier } = useContext(RefusjonContext);
-
-    settRefusjonVerdier(refusjon);
+    const { refusjon } = useContext(RefusjonContext);
 
     switch (refusjon.status) {
         case RefusjonStatus.FOR_TIDLIG:
