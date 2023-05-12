@@ -1,4 +1,4 @@
-import { Button, Heading } from '@navikt/ds-react';
+import { Alert, Button, Heading } from '@navikt/ds-react';
 import _ from 'lodash';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent } from 'react';
@@ -16,7 +16,6 @@ import InntektsmeldingTabellBody from './inntektsmeldingTabell/InntektsmeldingTa
 import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
-import { Alert } from '@navikt/ds-react';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -124,14 +123,14 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             {!refusjon.hentInntekterLengerFrem && !refusjon.unntakOmInntekterToMånederFrem && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <AlertStripeInfo>
+                    <Alert variant="info">
                         Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
                         rapportert i {nesteMånedNavn} også.
                         <VerticalSpacer rem={1} />
                         <Button onClick={() => merkForHentingAvInntekterFrem(true)} size="small">
                             Hent inntekter rapportert i {nesteMånedNavn}
                         </Button>
-                    </AlertStripeInfo>
+                    </Alert>
                 </>
             )}
             {finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden() && (
