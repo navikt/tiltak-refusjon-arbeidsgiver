@@ -90,8 +90,9 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                         <VerticalSpacer rem={1} />
                         <Alert variant="info" size="small">
                             <div>
-                                Vi har funnet flere innrapporterte inntekter. Huk kun av for inntekter som er opptjent i{' '}
-                                <strong>{månedNavn}</strong>.
+                                Vi har funnet flere innrapporterte inntekter. Huk kun av på Ja for inntekter som er
+                                opptjent i <strong>{månedNavn}</strong>. <br />
+                                Velg Nei for de andre.
                             </div>
                         </Alert>
                     </>
