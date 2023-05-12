@@ -173,3 +173,8 @@ export const useHentKorreksjon = (korreksjonId: string): Korreksjon => {
     const { data } = useSWR<Korreksjon>(`/korreksjon/${korreksjonId}`, swrConfig);
     return data!;
 };
+
+export const hentInntekterLengerFrem = async (refusjonId: string, merking: boolean): Promise<void> => {
+    await api.post(`/refusjon/${refusjonId}/merk-for-hent-inntekter-frem`, { merking });
+    await mutate(`/refusjon/${refusjonId}`);
+};
