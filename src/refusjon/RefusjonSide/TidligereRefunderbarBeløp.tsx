@@ -40,6 +40,8 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
     };
 
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
+    const erFratrekStørre = fratrekkRefunderbarBeløp && parseInt(belop, 10) - sumInntekterOpptjent > 0;
+
     const cls = BEMHelper('refusjonside');
     return (
         <div className={cls.element('fratrekk-sykepenger')}>
@@ -92,7 +94,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                         label={`Refusjonsbeløpet på grunn av fravær`}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             const verdi: string = event.currentTarget.value;
-                            if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {
+                            if (verdi.match(/^\d*$/)) {
                                 setBelop(verdi);
                             }
                             if(!verdi) {
@@ -103,6 +105,12 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                         value={belop}
                         />
                 </>
+            )}
+            <VerticalSpacer rem={1.75}/>
+            {erFratrekStørre && (
+                <Alert variant='warning' size='small' >
+                    Refusjon av utbetalt lønn er større enn bruttolønn.
+                </Alert>
             )}
         </div>
     );

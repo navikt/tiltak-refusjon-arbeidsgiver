@@ -7,6 +7,11 @@ module.exports = {
         alias: {
             '@': path.resolve(__dirname, 'src/'),
         },
+        configure: {
+            watchOptions: {
+                ignored: '**/node_modules/',
+            },
+        },
     },
     plugins: [{ plugin: CracoLessPlugin }],
     eslint: {
