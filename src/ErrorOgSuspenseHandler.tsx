@@ -1,12 +1,16 @@
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import * as React from 'react';
 import { FunctionComponent, Suspense } from 'react';
 import * as Sentry from '@sentry/react';
 import HenterInntekterBoks from './refusjon/RefusjonSide/HenterInntekterBoks';
+import { Alert } from '@navikt/ds-react';
 
 const ErrorOgSuspenseHandler: FunctionComponent<{}> = (props) => (
     <Sentry.ErrorBoundary
-        fallback={({ error, componentStack, resetError }) => <AlertStripeFeil>Feil ved lasting.</AlertStripeFeil>}
+        fallback={({ error, componentStack, resetError }) => (
+            <Alert variant="error" size="small">
+                Feil ved lasting.
+            </Alert>
+        )}
     >
         <Suspense
             fallback={

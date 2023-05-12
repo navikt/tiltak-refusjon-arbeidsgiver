@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
@@ -9,6 +8,7 @@ import { lønnsbeskrivelseTekst } from '../../messages';
 import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
+import { Alert } from '@navikt/ds-react';
 
 const GråBoks = styled.div`
     background-color: #eee;
@@ -150,20 +150,20 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
             {ingenInntekter && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <AlertStripeAdvarsel>
+                    <Alert variant="warning" size="small">
                         Vi kan ikke finne inntekter fra a-meldingen for denne perioden. Når a-meldingen er oppdatert vil
                         inntektsopplysningene vises her automatisk.
-                    </AlertStripeAdvarsel>
+                    </Alert>
                     <VerticalSpacer rem={1} />
                 </>
             )}
             {ingenRefunderbareInntekter && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <AlertStripeAdvarsel>
+                    <Alert variant="warning" size="small">
                         Vi kan ikke finne noen lønnsinntekter for denne perioden. Når a-meldingen er oppdatert vil
                         inntektsopplysningene vises her automatisk.
-                    </AlertStripeAdvarsel>
+                    </Alert>
                     <VerticalSpacer rem={1} />
                 </>
             )}

@@ -16,6 +16,8 @@ const KIDInputValidator: FunctionComponent = () => {
 
     const [kid, setKid] = useState<string | undefined>(refusjon?.refusjonsgrunnlag?.bedriftKid);
 
+    const bedriftKidRegex = new RegExp('[^ 0-9\\d]|^0+$'); // Sjekker at tallet er 0 eller flere 0000000 eller 00-00
+
     const fjerneFeilmelding = (value: string) => {
         const nyFeilListe = feilListe.filter((item) => {
             return item !== value;
@@ -27,7 +29,8 @@ const KIDInputValidator: FunctionComponent = () => {
         if (refusjon?.refusjonsgrunnlag?.bedriftKid !== undefined) {
             if (
                 refusjon.refusjonsgrunnlag.bedriftKid?.length > 0 &&
-                !validator.kidnummer(refusjon.refusjonsgrunnlag.bedriftKid)
+                (!validator.kidnummer(refusjon.refusjonsgrunnlag.bedriftKid) ||
+                    bedriftKidRegex.test(refusjon?.refusjonsgrunnlag?.bedriftKid!))
             ) {
                 if (!feilListe.includes('bedriftKid')) {
                     setFeilListe([...feilListe, 'bedriftKid']);
@@ -47,22 +50,33 @@ const KIDInputValidator: FunctionComponent = () => {
                 hideLabel
                 label={'KID-nummer'}
                 placeholder="KID-nummer"
-                value={kid}
+                value={kid || ''}
                 size="small"
-                type="number"
+                type="text"
                 onFocus={() => fjerneFeilmelding('bedriftKid')}
                 onChange={(event) => {
                     setKid(event.currentTarget.value.trim());
                 }}
                 onBlur={() => {
-                    if (kid?.length === 0) {
+                    setKid(kid);
+                    lagreBedriftKID(refusjonId!, kid);
+                    refusjonContext.settRefusjonsgrunnlagVerdi('bedriftKid', kid);
+                    fjerneFeilmelding('bedriftKid');
+
+                    if (
+                        kid &&
+                        kid?.length !== 0 &&
+                        (bedriftKidRegex.test(refusjon?.refusjonsgrunnlag?.bedriftKid!) ||
+                            !validator.kidnummer(refusjon.refusjonsgrunnlag.bedriftKid))
+                    ) {
+                        if (!feilListe.includes('bedriftKid')) {
+                            setFeilListe([...feilListe, 'bedriftKid']);
+                        }
+                    } else if (!kid || kid?.length === 0) {
                         setKid(undefined);
                         refusjonContext.settRefusjonsgrunnlagVerdi('bedriftKid', undefined);
                         fjerneFeilmelding('bedriftKid');
                     }
-                    setKid(kid);
-                    lagreBedriftKID(refusjonId!, kid);
-                    refusjonContext.settRefusjonsgrunnlagVerdi('bedriftKid', kid);
                 }}
                 error={feilListe.includes('bedriftKid') && <>Feil KID-nummer</>}
             />

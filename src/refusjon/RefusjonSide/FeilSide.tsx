@@ -1,4 +1,3 @@
-import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper';
 import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
@@ -8,6 +7,9 @@ import { tiltakstypeTekst } from '../../messages';
 import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
+import { Alert } from '@navikt/ds-react';
+
+type AlertStripeType = 'info' | 'success' | 'warning' | 'error';
 
 type Props = {
     feiltekst: string;
@@ -20,7 +22,8 @@ const FeilSide: FunctionComponent<Props> = (props) => {
 
     return (
         <HvitBoks>
-            <AlertStripe type={props.advarselType}>{props.feiltekst}</AlertStripe>
+            {/*<AlertStripe type={props.advarselType}>{props.feiltekst}</AlertStripe>*/}
+            <Alert variant={props.advarselType}>{props.feiltekst}</Alert>
             <VerticalSpacer rem={2} />
             <Innholdstittel>
                 Refusjon av {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}

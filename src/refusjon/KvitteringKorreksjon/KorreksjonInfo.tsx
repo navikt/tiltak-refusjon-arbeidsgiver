@@ -1,4 +1,3 @@
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
@@ -6,6 +5,7 @@ import { korreksjonsgrunnTekst } from '../../messages';
 import { formatterDato } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Korreksjon, Korreksjonsgrunn, KorreksjonStatus } from '../refusjon';
+import { Alert } from '@navikt/ds-react';
 
 type Props = {
     korreksjon: Korreksjon;
@@ -68,10 +68,10 @@ const KorreksjonInfo: FunctionComponent<Props> = (props) => {
                     {props.korreksjon.korreksjonsgrunner.find(
                         (g) => g === Korreksjonsgrunn.UTBETALT_HELE_TILSKUDDSBELØP
                     ) && (
-                        <AlertStripeInfo>
+                        <Alert variant="info" size="small">
                             Utbetalt hele tilskuddsbeløpet: utregningen viste feil refusjonsbeløp, hele tilskuddsbeløpet
                             ble utbetalt.
-                        </AlertStripeInfo>
+                        </Alert>
                     )}
                 </>
             );

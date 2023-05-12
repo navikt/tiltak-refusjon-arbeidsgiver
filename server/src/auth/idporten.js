@@ -63,7 +63,7 @@ const validateOidcCallback = async (idportenClient, req) => {
 const refresh = (idportenClient, oldTokenSet) => {
     const additionalClaims = {
         clientAssertionPayload: {
-            aud: idportenMetadata.metadata.issuer,
+            aud: idportenMetadata.issuer.metadata,
         },
     };
     return idportenClient.refresh(oldTokenSet, additionalClaims);

@@ -1,7 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { useParams } from 'react-router';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
-import { useHentRefusjon } from '../../services/rest-service';
 import { formatterDato } from '../../utils/datoUtils';
 import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
 import KvitteringSide from '../KvitteringSide/KvitteringSide';
@@ -11,12 +9,7 @@ import RefusjonSide from './RefusjonSide';
 import { RefusjonContext } from '../../RefusjonProvider';
 
 const Komponent: FunctionComponent = () => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
-
-    const { settRefusjonVerdier } = useContext(RefusjonContext);
-
-    settRefusjonVerdier(refusjon);
+    const { refusjon } = useContext(RefusjonContext);
 
     switch (refusjon.status) {
         case RefusjonStatus.FOR_TIDLIG:
@@ -33,14 +26,14 @@ const Komponent: FunctionComponent = () => {
         case RefusjonStatus.UTGÅTT:
             return (
                 <FeilSide
-                    advarselType="advarsel"
+                    advarselType="warning"
                     feiltekst={`Fristen for å søke om refusjon for denne perioden gikk ut ${formatterDato(
                         refusjon.fristForGodkjenning
                     )}. Innvilget tilskudd er derfor trukket tilbake.`}
                 />
             );
         case RefusjonStatus.ANNULLERT:
-            return <FeilSide advarselType="advarsel" feiltekst="Refusjonen er annullert." />;
+            return <FeilSide advarselType="warning" feiltekst="Refusjonen er annullert." />;
         case RefusjonStatus.SENDT_KRAV:
         case RefusjonStatus.GODKJENT_MINUSBELØP:
         case RefusjonStatus.GODKJENT_NULLBELØP:

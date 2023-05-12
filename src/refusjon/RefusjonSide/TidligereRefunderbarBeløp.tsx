@@ -9,7 +9,7 @@ import { useParams } from 'react-router';
 import { formatterDato } from '../../utils/datoUtils';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { Alert } from '@navikt/ds-react';
 
 interface Properties {
     refusjon: Refusjon;
@@ -56,11 +56,11 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                     Fristen vil automatisk utsettes mens dere venter på rett beløp.
                 </Normaltekst>
             </div>
-            <AlertStripeInfo >
+            <Alert variant='info' size='small' >
                 Refusjon av utbetalt lønn kan være aktuelt dersom dere har søkt om, eller fått utbetalt, refusjon
                 for sykepenger / foreldrepenger / svangerskapspenger / opplæringspenger / pleiepenger, eller hvis
                 detalker har vært fraværende på grunn av egen eller barns sykdom i denne perioden.
-            </AlertStripeInfo>
+            </Alert>
             <VerticalSpacer rem={1.75}/>
             <Element>Har deltaker hatt fravær med lønn som blir refundert av NAV i denne perioden?</Element>
             <div className={cls.element('fratrekk-sykepenger-radiogroup')}>

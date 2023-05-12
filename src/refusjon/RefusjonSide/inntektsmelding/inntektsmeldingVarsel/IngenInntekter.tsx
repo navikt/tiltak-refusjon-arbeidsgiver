@@ -1,5 +1,5 @@
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import React, { FunctionComponent } from 'react';
+import { Alert } from '@navikt/ds-react';
 
 interface Props {
     ingenInntekter: boolean;
@@ -8,10 +8,10 @@ interface Props {
 const IngenInntekter: FunctionComponent<Props> = ({ ingenInntekter }: Props) =>
     ingenInntekter ? (
         <div className={'inntektsmelding__varsel-linje'}>
-            <AlertStripeAdvarsel>
+            <Alert variant="warning" size="small">
                 Vi kan ikke finne inntekter fra a-meldingen for denne perioden. Når a-meldingen er oppdatert vil
                 inntektsopplysningene vises her automatisk.
-            </AlertStripeAdvarsel>
+            </Alert>
         </div>
     ) : null;
 

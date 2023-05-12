@@ -1,5 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
+import { useParams } from 'react-router';
 import { Refusjon, Refusjonsgrunnlag } from './refusjon/refusjon';
+import { useHentRefusjon } from './services/rest-service';
 
 export type SettRefusjonsgrunnlagVerdi = <K extends keyof NonNullable<Refusjonsgrunnlag>, T extends Refusjonsgrunnlag>(
     felt: K,
@@ -8,7 +10,6 @@ export type SettRefusjonsgrunnlagVerdi = <K extends keyof NonNullable<Refusjonsg
 
 export interface Context {
     refusjon: Refusjon;
-    settRefusjonVerdier: (refusjon: Refusjon) => void;
     settRefusjonsgrunnlagVerdi: SettRefusjonsgrunnlagVerdi;
     feilListe: String[];
     setFeilListe: (feilListe: String[]) => void;
@@ -22,9 +23,11 @@ const RefusjonProvider: FunctionComponent = (props) => {
     const [ulagredeEndringer, setUlagredeEndringer] = useState(false);
     const [feilListe, setFeilListe] = useState<String[]>([]);
 
-    const settRefusjonVerdier = (refusjon: Refusjon) => {
-        setRefusjon(refusjon);
-    };
+    const { refusjonId } = useParams();
+    const nyRefusjon = useHentRefusjon(refusjonId);
+    if (refusjon !== nyRefusjon) {
+        setRefusjon(nyRefusjon);
+    }
 
     const settRefusjonsgrunnlagVerdi = <K extends keyof NonNullable<Refusjonsgrunnlag>, T extends Refusjonsgrunnlag>(
         felt: K,
@@ -38,7 +41,6 @@ const RefusjonProvider: FunctionComponent = (props) => {
 
     const refusjonContext: Context = {
         refusjon,
-        settRefusjonVerdier,
         settRefusjonsgrunnlagVerdi,
         feilListe,
         setFeilListe,
