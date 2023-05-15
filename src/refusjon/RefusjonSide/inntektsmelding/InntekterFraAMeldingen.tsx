@@ -92,7 +92,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                             <div>
                                 Vi har funnet flere innrapporterte inntekter. Huk kun av på Ja for inntekter som er
                                 opptjent i <strong>{månedNavn}</strong>. <br />
-                                Velg Nei for de andre.
+                                Huk av Nei for inntekter som ikke er opptjent i {månedNavn}.
                             </div>
                         </Alert>
                     </>
