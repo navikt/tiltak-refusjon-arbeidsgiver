@@ -27,6 +27,7 @@ const client = async () => {
 };
 
 const getTokenExchangeAccessToken = async (tokenxClient, req) => {
+    const startTid = Date.now();
     const authToken = req.headers.authorization && req.headers.authorization.replace('Bearer ', '');
 
     const now = Math.floor(Date.now() / 1000);
@@ -46,6 +47,8 @@ const getTokenExchangeAccessToken = async (tokenxClient, req) => {
         },
         additionalClaims
     );
+
+    logger.info(`Kall til tokenX tok ${Date.now() - startTid}`);
 
     return backendTokenSet.access_token;
 };
