@@ -21,8 +21,8 @@ async function startLabs(server) {
         // server.use(helmet());
         server.use(
             cors({
-                allowedHeaders: ['sessionId', 'Content-Type'],
-                exposedHeaders: ['sessionId'],
+                allowedHeaders: ['Content-Type'],
+                exposedHeaders: [],
                 origin: '*',
                 methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
                 preflightContinue: false,

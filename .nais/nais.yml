@@ -47,7 +47,6 @@ spec:
     enabled: true
   idporten:
     enabled: true
-  envFrom:
-    - secret: tiltak-refusjon-session-encrypt-key
-    - secret: tiltak-refusjon-arbeidsgiver-redis
+    sidecar:
+      enabled: true
   {{/unless}}
