@@ -28,6 +28,7 @@ const client = async () => {
 };
 
 const getTokenExchangeAccessToken = async (tokenxClient, req) => {
+    const startTid = Date.now();
     let backendTokenSet = backendTokenSetFromSession(req);
 
     if (!backendTokenSet || backendTokenSet.expired()) {
@@ -53,6 +54,8 @@ const getTokenExchangeAccessToken = async (tokenxClient, req) => {
     } else {
         logger.info('Access token fra session');
     }
+
+    logger.info(`Kall til TokenX tok ${Date.now() - startTid}`);
 
     return backendTokenSet.access_token;
 };
