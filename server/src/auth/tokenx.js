@@ -35,8 +35,17 @@ const getTokenExchangeAccessToken = async (tokenxClient, req) => {
     const authToken = req.headers.authorization && req.headers.authorization.replace('Bearer ', '');
 
     let backendTokenSet = backendTokenSetFromSession(req);
+    const nyAuthToken = authToken !== req.session.idportenToken;
 
-    if (!backendTokenSet || backendTokenSet.expired()) {
+    // Mangler token ELLER token er utløpt ELLER header-token er ulikt sesjonstoken
+    if (!backendTokenSet || backendTokenSet.expired() || nyAuthToken) {
+        if (nyAuthToken) {
+            logger.info(`Auth-token er fornyet for sesjonen`);
+        }
+        if (!backendTokenSet || backendTokenSet.expired()) {
+            logger.info('Token utløpt');
+        }
+
         const now = Math.floor(Date.now() / 1000);
         const additionalClaims = {
             clientAssertionPayload: {
@@ -55,6 +64,7 @@ const getTokenExchangeAccessToken = async (tokenxClient, req) => {
             additionalClaims
         );
         req.session.backendTokenSet = backendTokenSet;
+        req.session.idportenToken = authToken;
     }
 
     logger.info(`Kall til tokenX tok ${Date.now() - startTid}`);
