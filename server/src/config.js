@@ -15,6 +15,7 @@ const server = () => {
         host: envVar({ name: 'HOST', required: false }) || 'localhost', // should be equivalent to the URL this application is hosted on for correct CORS origin header
         port: envVar({ name: 'PORT', required: false }) || 3000,
         proxy: envVar({ name: 'HTTP_PROXY', required: false }), // optional, only set if requests to Azure AD must be performed through a corporate proxy (i.e. traffic to login.microsoftonline.com is blocked by the firewall)
+        sessionKey: envVar({ name: 'SESSION_KEY' }),
         useSecureCookies: !!envVar({ name: 'NAIS_CLUSTER_NAME', required: false }),
     };
 };
@@ -43,14 +44,6 @@ const idporten = () => {
     };
 };
 
-const redis = () => {
-    return {
-        host: envVar({ name: 'REDIS_HOST', required: false }),
-        port: envVar({ name: 'REDIS_PORT', required: false }) || 6379,
-        password: envVar({ name: 'REDIS_PASSWORD', required: false }),
-    };
-};
-
 const api = () => {
     logger.info(`Loading reverse proxy config from API_* [CLIENT_ID, URL]`);
     const scopes = envVar({ name: 'API_SCOPES', required: false });
@@ -64,7 +57,6 @@ const api = () => {
 export default {
     server,
     api,
-    redis,
     tokenx,
     idporten,
 };

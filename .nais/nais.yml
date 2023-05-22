@@ -49,4 +49,6 @@ spec:
     enabled: true
     sidecar:
       enabled: true
+  envFrom:
+    - secret: tiltak-refusjon-session-encrypt-key
   {{/unless}}

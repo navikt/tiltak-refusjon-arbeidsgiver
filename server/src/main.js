@@ -1,5 +1,6 @@
 import { startLabs } from './labs';
 import express from 'express';
+import session from './session';
 import bodyParser from 'body-parser';
 import tokenx from './auth/tokenx';
 import routes from './routes';
@@ -11,6 +12,8 @@ async function startNormal(server) {
     try {
         server.use(bodyParser.json());
 
+        session.setup(server);
+
         server.use(express.json());
         server.use(express.urlencoded({ extended: true }));
 
@@ -18,8 +21,8 @@ async function startNormal(server) {
         // server.use(helmet());
         server.use(
             cors({
-                allowedHeaders: ['Content-Type'],
-                exposedHeaders: [],
+                allowedHeaders: ['Content-Type', 'sessionId'],
+                exposedHeaders: ['sessionId'],
                 origin: '*',
                 methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
                 preflightContinue: false,
