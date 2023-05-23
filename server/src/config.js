@@ -32,15 +32,7 @@ const tokenx = () => {
 const idporten = () => {
     return {
         discoveryUrl: envVar({ name: 'IDPORTEN_WELL_KNOWN_URL' }),
-        clientID: envVar({ name: 'IDPORTEN_CLIENT_ID' }),
-        clientJwk: envVar({ name: 'IDPORTEN_CLIENT_JWK' }),
-        redirectUri: envVar({ name: 'IDPORTEN_REDIRECT_URI' }),
-        logoutRedirectUri: 'https://nav.no',
-        responseType: 'code',
-        responseMode: 'query',
-        scope: 'openid profile',
-        tokenEndpointAuthMethod: 'private_key_jwt',
-        tokenEndpointAuthSigningAlg: 'RS256',
+        jwksUri: envVar({ name: 'IDPORTEN_JWKS_URI' }),
     };
 };
 

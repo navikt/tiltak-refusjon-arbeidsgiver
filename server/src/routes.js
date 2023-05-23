@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import apiProxy from './proxy/api-proxy';
 import decoratorProxy from './proxy/decorator-proxy';
+import idporten from './auth/idporten';
 
 const asyncHandler = require('express-async-handler');
 
@@ -20,10 +21,10 @@ const setup = (tokenxClient) => {
     router.get('/login', (req, res) => res.redirect(302, redirectUrlTilRefusjonsside));
 
     const ensureAuthenticated = async (req, res, next) => {
-        if (!req.headers.authorization) {
-            res.redirect(302, redirectUrlTilRefusjonsside);
-        } else {
+        if (idporten.verifyAuthorization(req)) {
             next();
+        } else {
+            res.redirect(302, redirectUrlTilRefusjonsside);
         }
     };
 
