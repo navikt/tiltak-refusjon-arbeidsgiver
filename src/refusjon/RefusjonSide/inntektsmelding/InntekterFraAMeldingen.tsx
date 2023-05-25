@@ -73,8 +73,16 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
-                    ) {refusjon.unntakOmInntekterToMånederFrem ? 'og 2 måneder etter' : ''}{' '}
-                    {refusjon.hentInntekterLengerFrem !== null && 'og 1 måned frem'}.
+                    ){' '}
+                    {refusjon.unntakOmInntekterFremitid ? (
+                        <>og {refusjon.unntakOmInntekterFremitid} måneder etter</>
+                    ) : (
+                        ''
+                    )}
+                    {refusjon.unntakOmInntekterFremitid <= 1 &&
+                        refusjon.hentInntekterLengerFrem !== null &&
+                        'og 1 måned frem'}
+                    .
                 </i>
             )}
 
@@ -121,7 +129,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             )}
             <IngenInntekter ingenInntekter={ingenInntekter} />
             <IngenRefunderbareInntekter ingenRefunderbareInntekter={ingenRefunderbareInntekter} />
-            {!refusjon.hentInntekterLengerFrem && !refusjon.unntakOmInntekterToMånederFrem && (
+            {!refusjon.hentInntekterLengerFrem && refusjon.unntakOmInntekterFremitid === 0 && (
                 <>
                     <VerticalSpacer rem={1} />
                     <Alert variant="info">

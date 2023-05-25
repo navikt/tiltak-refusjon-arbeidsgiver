@@ -40,7 +40,7 @@ export interface Refusjon {
     korreksjonId?: string;
     refusjonsgrunnlag: Refusjonsgrunnlag;
     utbetaltTidspunkt?: string;
-    unntakOmInntekterToMånederFrem: boolean;
+    unntakOmInntekterFremitid: number;
     forrigeRefusjonSomSkalSendesFørst?: Refusjon;
     hentInntekterLengerFrem: string;
 }

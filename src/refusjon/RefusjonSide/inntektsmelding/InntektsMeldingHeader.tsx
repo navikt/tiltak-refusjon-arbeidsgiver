@@ -17,9 +17,19 @@ const InntektsMeldingHeader: FunctionComponent<Properties> = ({ refusjon }: Prop
             <Undertittel className={cls.element('header-tittel')}>
                 Inntekter hentet fra a-meldingen for {månedNavn} måned{' '}
                 {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'SOMMERJOBB' ? (
-                    <>{refusjon.unntakOmInntekterToMånederFrem ? 'og 2 måneder etter' : 'og 1 måned etter'}</>
+                    <>
+                        {refusjon.unntakOmInntekterFremitid > 0 ? (
+                            <>og {refusjon.unntakOmInntekterFremitid} måneder etter</>
+                        ) : (
+                            'og 1 måned etter'
+                        )}
+                    </>
                 ) : (
-                    <>{refusjon.unntakOmInntekterToMånederFrem && 'og 2 måneder etter'}</>
+                    <>
+                        {refusjon.unntakOmInntekterFremitid > 0 && (
+                            <>og {refusjon.unntakOmInntekterFremitid} måneder etter</>
+                        )}
+                    </>
                 )}
             </Undertittel>
             {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
