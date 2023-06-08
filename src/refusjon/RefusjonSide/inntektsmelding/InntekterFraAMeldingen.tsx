@@ -9,6 +9,7 @@ import { hentInntekterLengerFrem, useHentRefusjon } from '../../../services/rest
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
 import { formatterPeriode, månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
+import { RefusjonStatus } from '../../status';
 import InntektsMeldingHeader from './InntektsMeldingHeader';
 import { inntektProperties } from './inntektProperties';
 import './inntektsMelding.less';
@@ -129,19 +130,21 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             )}
             <IngenInntekter ingenInntekter={ingenInntekter} />
             <IngenRefunderbareInntekter ingenRefunderbareInntekter={ingenRefunderbareInntekter} />
-            {!refusjon.hentInntekterLengerFrem && refusjon.unntakOmInntekterFremitid === 0 && (
-                <>
-                    <VerticalSpacer rem={1} />
-                    <Alert variant="info">
-                        Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
-                        rapportert i {nesteMånedNavn} også.
+            {refusjon.status === RefusjonStatus.KLAR_FOR_INNSENDING &&
+                !refusjon.hentInntekterLengerFrem &&
+                refusjon.unntakOmInntekterFremitid === 0 && (
+                    <>
                         <VerticalSpacer rem={1} />
-                        <Button onClick={() => merkForHentingAvInntekterFrem(true)} size="small">
-                            Hent inntekter rapportert i {nesteMånedNavn}
-                        </Button>
-                    </Alert>
-                </>
-            )}
+                        <Alert variant="info">
+                            Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
+                            rapportert i {nesteMånedNavn} også.
+                            <VerticalSpacer rem={1} />
+                            <Button onClick={() => merkForHentingAvInntekterFrem(true)} size="small">
+                                Hent inntekter rapportert i {nesteMånedNavn}
+                            </Button>
+                        </Alert>
+                    </>
+                )}
             {finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden() && (
                 <>
                     <VerticalSpacer rem={1} />
