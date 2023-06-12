@@ -92,17 +92,30 @@ export const utsettFriskSykepenger = async (refusjonId: string): Promise<any> =>
 export const setInntektslinjeOpptjentIPeriode = async (
     refusjonId: string,
     inntektslinjeId: string,
-    erOpptjentIPeriode: boolean
+    erOpptjentIPeriode: boolean,
+    sistEndret: string
 ): Promise<void> => {
-    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
-        inntektslinjeId: inntektslinjeId,
-        erOpptjentIPeriode: erOpptjentIPeriode,
-    });
+    await api.post(
+        `/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`,
+        {
+            inntektslinjeId: inntektslinjeId,
+            erOpptjentIPeriode: erOpptjentIPeriode,
+        },
+        {
+            headers: {
+                'If-Unmodified-Since': sistEndret,
+            },
+        }
+    );
     await mutate(`/refusjon/${refusjonId}`);
 };
 
-export const godkjennRefusjon = async (refusjonId: string): Promise<any> => {
-    const response = await api.post(`/refusjon/${refusjonId}/godkjenn`);
+export const godkjennRefusjon = async (refusjonId: string, sistEndret: string): Promise<any> => {
+    const response = await api.post(`/refusjon/${refusjonId}/godkjenn`, null, {
+        headers: {
+            'If-Unmodified-Since': sistEndret,
+        },
+    });
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
@@ -164,6 +177,14 @@ export const useHentRefusjon = (refusjonId?: string): Refusjon => {
     return data!;
 };
 
+export const oppdaterRefusjonMedInntektsgrunnlagOgKontonummer = async (refusjonId?: string): Promise<void> => {
+    const url = refusjonId ? `/refusjon/${refusjonId}/med-oppdatert-inntekstsgrunnlag-og-kontonummer` : null;
+    if (url) {
+        await api.put(url).then((res: AxiosResponse<any>) => res.data);
+    }
+    await mutate(`/refusjon/${refusjonId}`);
+};
+
 export const useHentTidligereRefusjoner = (refusjonId: string): Refusjon[] => {
     const { data } = useSWR<Refusjon[]>(`/refusjon/${refusjonId}/tidligere-refusjoner`, swrConfig);
     return data!;
@@ -174,7 +195,19 @@ export const useHentKorreksjon = (korreksjonId: string): Korreksjon => {
     return data!;
 };
 
-export const hentInntekterLengerFrem = async (refusjonId: string, merking: boolean): Promise<void> => {
-    await api.post(`/refusjon/${refusjonId}/merk-for-hent-inntekter-frem`, { merking });
+export const hentInntekterLengerFrem = async (
+    refusjonId: string,
+    merking: boolean,
+    sistEndret: string
+): Promise<void> => {
+    await api.post(
+        `/refusjon/${refusjonId}/merk-for-hent-inntekter-frem`,
+        { merking },
+        {
+            headers: {
+                'If-Unmodified-Since': sistEndret,
+            },
+        }
+    );
     await mutate(`/refusjon/${refusjonId}`);
 };

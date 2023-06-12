@@ -1,12 +1,12 @@
 import _ from 'lodash';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { useParams } from 'react-router';
-import { useHentRefusjon } from '../../../../services/rest-service';
 import { formatterPenger } from '../../../../utils/PengeUtils';
 import { NORSK_MÅNEDÅR_FORMAT, formatterDato, formatterPeriode } from '../../../../utils/datoUtils';
 import { Inntektslinje } from '../../../refusjon';
 import { inntektBeskrivelse } from '../InntekterFraAMeldingen';
 import InntektValg from './InntektValg';
+import { RefusjonContext } from '../../../../RefusjonProvider';
 
 type Props = {
     inntektslinjer: Inntektslinje[];
@@ -14,8 +14,7 @@ type Props = {
 };
 
 const InntektsmeldingTabellBody: FunctionComponent<Props> = (props) => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
+    const { refusjon, sistEndret } = useContext(RefusjonContext);
     return (
         <tbody>
             {_.sortBy(
@@ -40,6 +39,7 @@ const InntektsmeldingTabellBody: FunctionComponent<Props> = (props) => {
                             inntekt={inntekt}
                             refusjonId={refusjon.id}
                             kvitteringVisning={props.kvitteringVisning}
+                            sistEndret={sistEndret}
                         />
                     )}
                     <td>{formatterPenger(inntekt.beløp)}</td>
