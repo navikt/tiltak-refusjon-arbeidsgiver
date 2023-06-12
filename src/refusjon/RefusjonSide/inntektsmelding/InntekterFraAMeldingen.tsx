@@ -2,7 +2,6 @@ import { Alert, Button, Heading } from '@navikt/ds-react';
 import _ from 'lodash';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent, useContext } from 'react';
-import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
 import { hentInntekterLengerFrem } from '../../../services/rest-service';
