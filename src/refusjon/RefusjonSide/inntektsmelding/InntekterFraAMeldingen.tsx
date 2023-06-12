@@ -1,7 +1,7 @@
 import { Alert, Button, Heading } from '@navikt/ds-react';
 import _ from 'lodash';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
@@ -145,7 +145,11 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                             Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
                             rapportert i {nesteMånedNavn} også.
                             <VerticalSpacer rem={1} />
-                            <Button  disabled={lasterNå} onClick={() => merkForHentingAvInntekterFrem(true)} size="small">
+                            <Button
+                                disabled={lasterNå}
+                                onClick={() => merkForHentingAvInntekterFrem(true)}
+                                size="small"
+                            >
                                 Hent inntekter rapportert i {nesteMånedNavn}
                             </Button>
                         </Alert>
