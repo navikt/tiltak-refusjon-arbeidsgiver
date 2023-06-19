@@ -36,8 +36,12 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             setLasterNå(true);
-                            const svar = setInntektslinje(refusjonId, inntekt.id, true, sistEndret);
-                            svar.then(() => setLasterNå(false));
+                            setInntektslinje(refusjonId, inntekt.id, true, sistEndret)
+                                .catch((err) => {
+                                    alert('Samtidige endringer - Skal refreshe siden. Vennligst prøv igjen.');
+                                    window.location.reload();
+                                })
+                                .then(() => setLasterNå(false));
                         }}
                         name={inntekt.id}
                     />
@@ -48,8 +52,12 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             setLasterNå(true);
-                            const svar = setInntektslinje(refusjonId, inntekt.id, false, sistEndret);
-                            svar.then(() => setLasterNå(false));
+                            setInntektslinje(refusjonId, inntekt.id, false, sistEndret)
+                                .catch((err) => {
+                                    alert('Samtidige endringer - Skal refreshe siden. Vennligst prøv igjen.');
+                                    window.location.reload();
+                                })
+                                .then(() => setLasterNå(false));
                         }}
                         name={inntekt.id}
                     />
