@@ -177,11 +177,9 @@ export const useHentRefusjon = (refusjonId?: string): Refusjon => {
     return data!;
 };
 
-export const oppdaterRefusjonMedInntektsgrunnlagOgKontonummer = async (refusjonId?: string): Promise<void> => {
-    const url = refusjonId ? `/refusjon/${refusjonId}/med-oppdatert-inntekstsgrunnlag-og-kontonummer` : null;
-    if (url) {
-        await api.put(url).then((res: AxiosResponse<any>) => res.data);
-    }
+export const oppdaterRefusjonMedInntektsgrunnlagOgKontonummer = async (refusjonId: string): Promise<void> => {
+    const url = `/refusjon/${refusjonId}/med-oppdatert-inntekstsgrunnlag-og-kontonummer`;
+    await api.put(url).then((res: AxiosResponse<any>) => res.data);
     await mutate(`/refusjon/${refusjonId}`);
 };
 

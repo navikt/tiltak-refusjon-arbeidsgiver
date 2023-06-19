@@ -31,7 +31,7 @@ const RefusjonProvider: FunctionComponent = (props) => {
 
     useEffect(() => {
         const oppdatertRefusjon = async () => {
-            await oppdaterRefusjonMedInntektsgrunnlagOgKontonummer(refusjonId);
+            if (refusjonId) await oppdaterRefusjonMedInntektsgrunnlagOgKontonummer(refusjonId);
         };
 
         oppdatertRefusjon();
