@@ -75,6 +75,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
 
     const inntektGrupperObjekt = _.groupBy(inntektsgrunnlag?.inntekter, (inntekt) => inntekt.måned);
     const inntektGrupperListe = Object.entries(inntektGrupperObjekt);
+    let inntektGrupperListeSortert = _.sortBy(inntektGrupperListe, [(i) => i[0]]);
 
     return (
         <div className={cls.element('graboks-wrapper')}>
@@ -121,7 +122,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) && (
                 <>
                     <VerticalSpacer rem={1} />
-                    {inntektGrupperListe.map(([aarManed, inntektslinjer]) => (
+                    {inntektGrupperListeSortert.map(([aarManed, inntektslinjer]) => (
                         <>
                             <Heading level="4" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
                                 Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})

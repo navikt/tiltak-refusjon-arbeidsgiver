@@ -1,22 +1,22 @@
 import { ReactComponent as Bygg } from '@/asset/image/bygg.svg';
+import { ReactComponent as Endret } from '@/asset/image/endret.svg';
 import { ReactComponent as ErlikTegn } from '@/asset/image/erlikTegn.svg';
 import { ReactComponent as MinusTegn } from '@/asset/image/minusTegn.svg';
 import { ReactComponent as Pengesekken } from '@/asset/image/pengesekkdollar.svg';
 import { ReactComponent as PlussTegn } from '@/asset/image/plussTegn.svg';
 import { ReactComponent as ProsentTegn } from '@/asset/image/prosentTegn.svg';
-import { ReactComponent as Sparegris } from '@/asset/image/sparegris.svg';
-import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
-import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprosent.svg';
 import { ReactComponent as RefusjonAvLønn } from '@/asset/image/refusjonAvLønn.svg';
-import { ReactComponent as Endret } from '@/asset/image/endret.svg';
+import { ReactComponent as Sparegris } from '@/asset/image/sparegris.svg';
+import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprosent.svg';
+import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
+import { Alert } from '@navikt/ds-react';
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
-import { Alert } from '@navikt/ds-react';
 
 interface Props {
     beregning?: Beregning;
@@ -47,7 +47,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 <Utregningsrad
                     labelIkon={<Endret />}
                     labelTekst="Fratrekk for ferie (hentet fra A-meldingen)"
-                    verdiOperator={<MinusTegn />}
+                    verdiOperator={beregning.fratrekkLønnFerie < 0 ? <MinusTegn /> : <PlussTegn />}
                     verdi={
                         beregning.fratrekkLønnFerie < 0 ? beregning.fratrekkLønnFerie * -1 : beregning.fratrekkLønnFerie
                     }
