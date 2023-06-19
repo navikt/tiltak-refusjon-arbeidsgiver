@@ -62,7 +62,6 @@ export const lagreBedriftKID = async (refusjonId: string, bedriftKID: string | u
     if (bedriftKID?.trim().length === 0) {
         bedriftKID = undefined;
     }
-    console.log('LAGRE KID: ', bedriftKID, bedriftKID?.trim().length, bedriftKID === undefined);
     const response = await api.post(`/refusjon/${refusjonId}/lagre-bedriftKID`, {
         bedriftKID,
     });

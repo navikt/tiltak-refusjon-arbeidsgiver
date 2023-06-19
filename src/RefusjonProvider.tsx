@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Refusjon, Refusjonsgrunnlag } from './refusjon/refusjon';
-import { oppdaterRefusjonMedInntektsgrunnlagOgKontonummer, useHentRefusjon } from './services/rest-service';
+import { oppdaterRefusjonMedInntektsgrunnlagOgKontonummer } from './services/rest-service';
 
 export type SettRefusjonsgrunnlagVerdi = <K extends keyof NonNullable<Refusjonsgrunnlag>, T extends Refusjonsgrunnlag>(
     felt: K,
@@ -33,11 +33,6 @@ const RefusjonProvider: FunctionComponent = (props) => {
         };
         oppdatertRefusjon();
     }, []);
-
-    const nyRefusjon = useHentRefusjon(refusjonId);
-    if (refusjon !== nyRefusjon) {
-        setRefusjon(nyRefusjon);
-    }
 
     const settRefusjonsgrunnlagVerdi = <K extends keyof NonNullable<Refusjonsgrunnlag>, T extends Refusjonsgrunnlag>(
         felt: K,

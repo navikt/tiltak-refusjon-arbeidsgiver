@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { RefusjonContext } from '../../RefusjonProvider';
 import { useParams } from 'react-router';
-import { lagreBedriftKID } from '../../services/rest-service';
+import { lagreBedriftKID, useHentRefusjon } from '../../services/rest-service';
 import BEMHelper from '../../utils/bem';
 import validator from 'norsk-validator';
 
@@ -12,7 +12,8 @@ const KIDInputValidator: FunctionComponent = () => {
     const cls = BEMHelper('kidValidator');
     const { refusjonId } = useParams();
     const refusjonContext = useContext(RefusjonContext);
-    const { refusjon, feilListe, setFeilListe } = useContext(RefusjonContext);
+    const refusjon = useHentRefusjon(refusjonId);
+    const { feilListe, setFeilListe } = useContext(RefusjonContext);
 
     const [kid, setKid] = useState<string | undefined>(refusjon?.refusjonsgrunnlag?.bedriftKid);
 
