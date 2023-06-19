@@ -4,7 +4,10 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent, useContext } from 'react';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
-import { hentInntekterLengerFrem } from '../../../services/rest-service';
+import {
+    hentInntekterLengerFrem,
+    oppdaterRefusjonMedInntektsgrunnlagOgKontonummer,
+} from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
 import { formatterPeriode, månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
@@ -54,7 +57,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     const merkForHentingAvInntekterFrem = (merking: boolean) => {
         setLasterNå(true);
         hentInntekterLengerFrem(refusjon.id, merking, sistEndret)
-            .then(() => setLasterNå(false))
+            .then(() => oppdaterRefusjonMedInntektsgrunnlagOgKontonummer(refusjon.id).then(() => setLasterNå(false)))
             .catch((err) => {
                 alert('Samtidige endringer - skal refreshe siden. Vennligst prøv igjen.');
                 window.location.reload();
