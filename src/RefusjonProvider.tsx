@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Refusjon, Refusjonsgrunnlag } from './refusjon/refusjon';
-import { useHentRefusjon, oppdaterRefusjonMedInntektsgrunnlagOgKontonummer } from './services/rest-service';
+import { oppdaterRefusjonMedInntektsgrunnlagOgKontonummer, useHentRefusjon } from './services/rest-service';
 
 export type SettRefusjonsgrunnlagVerdi = <K extends keyof NonNullable<Refusjonsgrunnlag>, T extends Refusjonsgrunnlag>(
     felt: K,
@@ -15,7 +15,6 @@ export interface Context {
     setFeilListe: (feilListe: String[]) => void;
     ulagredeEndringer: boolean;
 
-    sistEndret: string;
     setLasterNå: (lasterNå: boolean) => void;
     lasterNå: boolean;
 }
@@ -28,18 +27,14 @@ const RefusjonProvider: FunctionComponent = (props) => {
     const [ulagredeEndringer, setUlagredeEndringer] = useState(false);
     const [feilListe, setFeilListe] = useState<String[]>([]);
     const { refusjonId } = useParams();
-
     useEffect(() => {
         const oppdatertRefusjon = async () => {
             if (refusjonId) await oppdaterRefusjonMedInntektsgrunnlagOgKontonummer(refusjonId);
         };
-
         oppdatertRefusjon();
     }, []);
 
     const nyRefusjon = useHentRefusjon(refusjonId);
-    const sistEndret = nyRefusjon.sistEndret;
-
     if (refusjon !== nyRefusjon) {
         setRefusjon(nyRefusjon);
     }
@@ -60,7 +55,6 @@ const RefusjonProvider: FunctionComponent = (props) => {
         feilListe,
         setFeilListe,
         ulagredeEndringer,
-        sistEndret,
         lasterNå,
         setLasterNå,
     };

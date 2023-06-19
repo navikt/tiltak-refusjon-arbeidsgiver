@@ -2,9 +2,11 @@ import { Alert, Button, Heading } from '@navikt/ds-react';
 import _ from 'lodash';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent, useContext } from 'react';
+import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
 import {
+    useHentRefusjon,
     hentInntekterLengerFrem,
     oppdaterRefusjonMedInntektsgrunnlagOgKontonummer,
 } from '../../../services/rest-service';
@@ -33,7 +35,9 @@ export interface Props {
 
 const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning }) => {
     const cls = BEMHelper('inntektsmelding');
-    const { refusjon, sistEndret, lasterNå, setLasterNå } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
+    const { lasterNå, setLasterNå } = useContext(RefusjonContext);
     const { inntektsgrunnlag } = refusjon.refusjonsgrunnlag;
 
     const { antallInntekterSomErMedIGrunnlag, ingenInntekter, ingenRefunderbareInntekter } =
@@ -56,7 +60,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
 
     const merkForHentingAvInntekterFrem = (merking: boolean) => {
         setLasterNå(true);
-        hentInntekterLengerFrem(refusjon.id, merking, sistEndret)
+        hentInntekterLengerFrem(refusjon.id, merking, refusjon.sistEndret)
             .then(() => oppdaterRefusjonMedInntektsgrunnlagOgKontonummer(refusjon.id).then(() => setLasterNå(false)))
             .catch((err) => {
                 alert('Samtidige endringer - skal refreshe siden. Vennligst prøv igjen.');

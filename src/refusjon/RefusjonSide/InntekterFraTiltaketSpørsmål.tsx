@@ -1,17 +1,17 @@
 import { Input, Label, RadioPanel } from 'nav-frontend-skjema';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
-import { endreBruttolønn } from '../../services/rest-service';
+import { endreBruttolønn, useHentRefusjon } from '../../services/rest-service';
 import BEMHelper from '../../utils/bem';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { formatterPenger } from '../../utils/PengeUtils';
+import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
-import { RefusjonContext } from '../../RefusjonProvider';
 
 export const GrønnBoks = styled.div`
     background-color: #ccf1d6;
@@ -22,7 +22,7 @@ export const GrønnBoks = styled.div`
 const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const cls = BEMHelper('refusjonside');
     const { refusjonId } = useParams();
-    const { refusjon } = useContext(RefusjonContext);
+    const refusjon: Refusjon = useHentRefusjon(refusjonId);
     const { inntektsgrunnlag, tilskuddsgrunnlag, inntekterKunFraTiltaket, endretBruttoLønn } =
         refusjon.refusjonsgrunnlag;
     const [inntekterKunTiltaket, setInntekterKunTiltaket] = useState<boolean | undefined>(inntekterKunFraTiltaket);

@@ -1,7 +1,7 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
-import { useNavigate } from 'react-router';
+import React, { FunctionComponent, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
-import { godkjennRefusjon } from '../../services/rest-service';
+import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 import InformasjonFraAvtalen from './informasjonAvtalen/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from './inntektsmelding/InntekterFraAMeldingen';
@@ -14,11 +14,11 @@ import RefusjonGodjennModal from './RefusjonGodjennModal';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import Lenke from 'nav-frontend-lenker';
 import { Alert } from '@navikt/ds-react';
-import { RefusjonContext } from '../../RefusjonProvider';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
 
     const godkjennRefusjonen = async (): Promise<void> => {

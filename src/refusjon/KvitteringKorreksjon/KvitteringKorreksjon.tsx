@@ -1,13 +1,13 @@
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import { Innholdstittel } from 'nav-frontend-typografi';
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { korreksjonStatusTekst } from '../../messages';
-import { useHentKorreksjon } from '../../services/rest-service';
+import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
@@ -16,10 +16,10 @@ import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';
 import KorreksjonInfo from './KorreksjonInfo';
-import { RefusjonContext } from '../../RefusjonProvider';
 
 const KvitteringKorreksjon: FunctionComponent = () => {
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
     const korreksjon = useHentKorreksjon(refusjon.korreksjonId!);
 
     return (

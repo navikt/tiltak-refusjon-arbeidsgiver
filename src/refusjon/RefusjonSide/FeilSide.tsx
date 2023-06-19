@@ -1,13 +1,13 @@
 import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
+import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Alert } from '@navikt/ds-react';
-import { RefusjonContext } from '../../RefusjonProvider';
 
 type AlertStripeType = 'info' | 'success' | 'warning' | 'error';
 
@@ -17,7 +17,8 @@ type Props = {
 };
 
 const FeilSide: FunctionComponent<Props> = (props) => {
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
 
     return (
         <HvitBoks>

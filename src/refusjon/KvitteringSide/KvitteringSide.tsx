@@ -1,12 +1,13 @@
 import { EtikettAdvarsel, EtikettInfo } from 'nav-frontend-etiketter';
 import { Innholdstittel } from 'nav-frontend-typografi';
-import React, { FunctionComponent, ReactElement, useContext } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { statusTekst } from '../../messages';
 import { RefusjonStatus } from '../../refusjon/status';
+import { useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, NORSK_DATO_FORMAT, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import { Refusjon } from '../refusjon';
@@ -19,7 +20,6 @@ import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Statusmelding from './Statusmelding';
 import LagreSomPdfKnapp from './LagreSomPdfKnapp';
 import TidligereRefunderbarBeløpKvittering from '../RefusjonSide/TidligereRefunderbarBeløpKvittering';
-import { RefusjonContext } from '../../RefusjonProvider';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -46,7 +46,8 @@ export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     return <EtikettInfo>{storForbokstav(statusTekst[refusjon.status])} </EtikettInfo>;
 };
 const KvitteringSide: FunctionComponent = () => {
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
     if (!refusjon.refusjonsgrunnlag.inntektsgrunnlag) return null;
 
     return (

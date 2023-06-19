@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
+import { useParams } from 'react-router';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { useHentKorreksjon } from '../../services/rest-service';
+import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Alert } from '@navikt/ds-react';
-import { RefusjonContext } from '../../RefusjonProvider';
 
 const GråBoks = styled.div`
     background-color: #eee;
@@ -52,8 +52,8 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 };
 
 const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
-    const { refusjon } = useContext(RefusjonContext);
-    const korreksjonId = refusjon.korreksjonId;
+    const { refusjonId } = useParams();
+    const korreksjonId = useHentRefusjon(refusjonId).korreksjonId;
 
     const korreksjon = useHentKorreksjon(korreksjonId!);
 

@@ -1,20 +1,22 @@
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { FunctionComponent, useContext } from 'react';
+import { FunctionComponent } from 'react';
+import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
+import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjonsgrunnlag } from '../refusjon';
 import { GrønnBoks } from './InntekterFraTiltaketSpørsmål';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
-import { RefusjonContext } from '../../RefusjonProvider';
 
 type Props = {
     refusjonsgrunnlag: Refusjonsgrunnlag;
 };
 
 const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
 
     if (
         props.refusjonsgrunnlag.inntekterKunFraTiltaket === null ||
