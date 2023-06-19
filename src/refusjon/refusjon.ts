@@ -43,6 +43,8 @@ export interface Refusjon {
     unntakOmInntekterFremitid: number;
     forrigeRefusjonSomSkalSendesFørst?: Refusjon;
     hentInntekterLengerFrem: string;
+
+    sistEndret: string;
 }
 
 export interface Korreksjon {

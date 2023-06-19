@@ -1,25 +1,29 @@
-import React, { ChangeEvent, FunctionComponent } from 'react';
+import React, { ChangeEvent, FunctionComponent, useContext } from 'react';
 import { Radio } from 'nav-frontend-skjema';
 import { setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
 import { Inntektslinje } from '../../../refusjon';
+import { RefusjonContext } from '../../../../RefusjonProvider';
 
 interface Props {
     inntekt: Inntektslinje;
     refusjonId: string;
     kvitteringVisning: boolean;
+    sistEndret: string;
 }
 
-const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, refusjonId }: Props) => {
+const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, refusjonId, sistEndret }: Props) => {
     const { erOpptjentIPeriode } = inntekt;
-
+    const { lasterNå, setLasterNå } = useContext(RefusjonContext);
     const setInntektslinje = (
         refusjonId: string,
         inntektslinjeId: string,
-        erOpptjentIPeriode: boolean
+        erOpptjentIPeriode: boolean,
+        sistEndret: string
     ): Promise<void> =>
-        setInntektslinjeOpptjentIPeriode(refusjonId, inntektslinjeId, erOpptjentIPeriode).catch((err) =>
-            console.error('err ', err)
-        );
+        setInntektslinjeOpptjentIPeriode(refusjonId, inntektslinjeId, erOpptjentIPeriode, sistEndret).catch((err) => {
+            alert('Samtidige endringer - Skal refreshe siden. Vennligst prøv igjen.');
+            window.location.reload();
+        });
 
     return (
         <td>
@@ -27,19 +31,33 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                 <div className="inntektsmelding__inntektsvalg">
                     <Radio
                         label="Ja"
+                        disabled={lasterNå}
                         checked={erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
-                            return setInntektslinje(refusjonId, inntekt.id, true);
+                            setLasterNå(true);
+                            setInntektslinje(refusjonId, inntekt.id, true, sistEndret)
+                                .catch((err) => {
+                                    alert('Samtidige endringer - Skal refreshe siden. Vennligst prøv igjen.');
+                                    window.location.reload();
+                                })
+                                .then(() => setLasterNå(false));
                         }}
                         name={inntekt.id}
                     />
                     <Radio
                         label="Nei"
+                        disabled={lasterNå}
                         checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
-                            return setInntektslinje(refusjonId, inntekt.id, false);
+                            setLasterNå(true);
+                            setInntektslinje(refusjonId, inntekt.id, false, sistEndret)
+                                .catch((err) => {
+                                    alert('Samtidige endringer - Skal refreshe siden. Vennligst prøv igjen.');
+                                    window.location.reload();
+                                })
+                                .then(() => setLasterNå(false));
                         }}
                         name={inntekt.id}
                     />

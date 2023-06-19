@@ -23,7 +23,7 @@ const RefusjonSide: FunctionComponent = () => {
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
-            await godkjennRefusjon(refusjon.id).then(() => {
+            await godkjennRefusjon(refusjon.id, refusjon.sistEndret).then(() => {
                 navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
                 innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
             });

@@ -9,10 +9,13 @@ export type Feilkode =
     | 'GODKJENN_TIDLIGERE_REFUSJON_FØRST'
     | 'REFUSJON_BELOP_NEGATIVT_TALL'
     | 'UGYLDIG_FORLENGELSE_AV_FRIST'
+    | 'SAMTIDIGE_ENDRINGER'
     | 'FEIL_BEDRIFT_KIDNUMMER';
 
 export const Feilmeldinger: { [key in Feilkode]: string } = {
     INGEN_BEDRIFTKONTONUMMER: 'Mangler kontonummer for bedriften',
+    SAMTIDIGE_ENDRINGER:
+        'Du må oppdatere siden før du kan lagre, godkjenne eller gjøre andre endringer. Det er gjort endringer i refusjonen som du ikke har sett.',
     INGEN_INNTEKTER: 'Ingen inntekter for perioden ble funnet',
     EREG_MANGLER_ADRESSEINFO:
         'Vi kan dessverre ikke betale ut refusjon fordi det mangler en forretningsadresse i Brønnøysundregistrene. Vennligst gå inn på: brreg.no og registrer forretningsadresse så kan du sende refusjon.',

@@ -40,6 +40,7 @@ const InntektsmeldingTabellBody: FunctionComponent<Props> = (props) => {
                             inntekt={inntekt}
                             refusjonId={refusjon.id}
                             kvitteringVisning={props.kvitteringVisning}
+                            sistEndret={refusjon.sistEndret}
                         />
                     )}
                     <td>{formatterPenger(inntekt.beløp)}</td>

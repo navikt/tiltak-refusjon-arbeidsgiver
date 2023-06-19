@@ -6,10 +6,12 @@ import KvitteringSide from '../KvitteringSide/KvitteringSide';
 import { RefusjonStatus } from '../status';
 import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
-import { RefusjonContext } from '../../RefusjonProvider';
+import { useHentRefusjon } from '../../services/rest-service';
+import { useParams } from 'react-router';
 
 const Komponent: FunctionComponent = () => {
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
 
     switch (refusjon.status) {
         case RefusjonStatus.FOR_TIDLIG:

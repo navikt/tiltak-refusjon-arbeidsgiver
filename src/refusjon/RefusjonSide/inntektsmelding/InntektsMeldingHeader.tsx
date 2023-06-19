@@ -38,7 +38,8 @@ const InntektsMeldingHeader: FunctionComponent<Properties> = ({ refusjon }: Prop
                     {formatterDato(
                         refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
                         NORSK_DATO_OG_TID_FORMAT
-                    )}
+                    )}{' '}
+                    (Last siden på nytt for oppdateringer)
                 </Normaltekst>
             )}
         </div>
