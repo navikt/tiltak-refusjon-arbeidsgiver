@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FunctionComponent } from 'react';
 import { Radio } from 'nav-frontend-skjema';
+import { ChangeEvent, FunctionComponent } from 'react';
 import { setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
 import { Inntektslinje } from '../../../refusjon';
 
@@ -20,6 +20,17 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
         setInntektslinjeOpptjentIPeriode(refusjonId, inntektslinjeId, erOpptjentIPeriode).catch((err) =>
             console.error('err ', err)
         );
+
+    const inntektValg = () => {
+        switch (inntekt.erOpptjentIPeriode) {
+            case true:
+                return 'Ja';
+            case false:
+                return 'Nei';
+            default:
+                return 'Ikke valgt';
+        }
+    };
 
     return (
         <td>
@@ -47,7 +58,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
             )}
             {kvitteringVisning && (
                 <div className="inntektsmelding__valgtInntekt">
-                    {inntekt.erOpptjentIPeriode ? <label>Ja</label> : <label>Nei</label>}
+                    <label>{inntektValg()}</label>
                 </div>
             )}
         </td>
