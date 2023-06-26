@@ -48,11 +48,11 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                 checked={!!matchParentOrganisasjon(org)}
                                 onChange={() => {
                                     if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
-                                        const Label = matchParentOrganisasjon(org);
-                                        if (!!Label) {
+                                        const element = matchParentOrganisasjon(org);
+                                        if (!!element) {
                                             const valg = {
                                                 type: bedriftvalg.type,
-                                                valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== Label),
+                                                valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
                                                 pageData: initPageData,
                                                 feilstatus: undefined,
                                             };
