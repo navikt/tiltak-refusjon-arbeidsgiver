@@ -10,7 +10,7 @@ import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
-import { BodyShort, Heading, Label, Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import { BodyShort, Heading, Label, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 export const GrønnBoks = styled.div`
     background-color: #ccf1d6;
@@ -66,28 +66,28 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             <p>
                 <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller et annet tiltak.</i>
             </p>
-            <div className={cls.element('inntekter-kun-fra-tiltaket')}>
-                <RadioGroup legend="">
-                    <Radio
-                        name="inntekterKunFraTiltaket"
-                        value="Ja"
-                        checked={inntekterKunTiltaket === true}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setInntekterKunTiltaket(event.currentTarget.checked);
-                            setEndringBruttoLønn('');
-                            endreBruttolønn(refusjonId!, true, undefined);
-                        }}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name="inntekterKunFraTiltaket"
-                        value="Nei"
-                        checked={inntekterKunTiltaket === false}
-                        onChange={(e) => setInntekterKunTiltaket(!e.currentTarget.checked)}
-                    >Nei</Radio>
-                </RadioGroup>
-            </div>
+            <RadioGroup legend="" className={cls.element('inntekter-kun-fra-tiltaket')}>
+                <Radio
+                    name="inntekterKunFraTiltaket"
+                    value="Ja"
+                    checked={inntekterKunTiltaket === true}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                        setInntekterKunTiltaket(event.currentTarget.checked);
+                        setEndringBruttoLønn('');
+                        endreBruttolønn(refusjonId!, true, undefined);
+                    }}
+                >
+                    Ja
+                </Radio>
+                <Radio
+                    name="inntekterKunFraTiltaket"
+                    value="Nei"
+                    checked={inntekterKunTiltaket === false}
+                    onChange={(e) => setInntekterKunTiltaket(!e.currentTarget.checked)}
+                >
+                    Nei
+                </Radio>
+            </RadioGroup>
 
             {inntekterKunTiltaket === false && (
                 <>
