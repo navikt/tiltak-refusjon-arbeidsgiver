@@ -1,5 +1,3 @@
-@import (reference) '~nav-frontend-core/less/_variabler';
-
 @background-color-main: #f7f7f7;
 @pagination-fontsize: 1rem;
 @pag-hover: #e6f0ff;
@@ -42,12 +40,12 @@
         font-weight: 400;
         &--aktivsteg {
             color: white;
-            background-color: @navBla;
+            background-color: #0067c5;
             border-radius: 8px;
         }
         &:hover:not(&--aktivsteg) {
             background-color: @pag-hover;
-            color: @navBla;
+            color: #0067c5;
         }
     }
 
@@ -106,7 +104,7 @@
 
         &:hover {
             & > span {
-                color: @navBla;
+                color: #0067c5;
             }
             background-color: @pag-hover;
         }
@@ -122,7 +120,7 @@
         margin-left: 0.25rem;
     }
 
-    @media (min-width: @screen-md) {
+    @media (min-width: 992px) {
         margin: 0 1rem;
 
         &__wrapper {

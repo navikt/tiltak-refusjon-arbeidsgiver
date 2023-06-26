@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShort } from '@navikt/ds-react';
 import BEMHelper from '../../../utils/bem';
 import { BrukerContextType } from '../../../bruker/BrukerContextType';
 import { useInnloggetBruker } from '../../../bruker/BrukerContext';
@@ -47,7 +47,7 @@ const PaginationBar: FunctionComponent = () => {
     const genererSkillelinje = () =>
         steg.push(
             <li className={cls.element('steg-skillelinje')}>
-                <Normaltekst>...</Normaltekst>
+                <BodyShort size="small">...</BodyShort>
             </li>
         );
 

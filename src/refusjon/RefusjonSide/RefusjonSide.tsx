@@ -12,8 +12,7 @@ import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
 import RefusjonGodjennModal from './RefusjonGodjennModal';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
-import Lenke from 'nav-frontend-lenker';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Link } from '@navikt/ds-react';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -41,7 +40,7 @@ const RefusjonSide: FunctionComponent = () => {
                 {refusjon.forrigeRefusjonSomSkalSendesFørst != null && (
                     <>
                         <Alert variant="warning" size="small">
-                            <Lenke href={'/refusjon/' + refusjon.forrigeRefusjonSomSkalSendesFørst.id}>
+                            <Link href={'/refusjon/' + refusjon.forrigeRefusjonSomSkalSendesFørst.id}>
                                 <b>Refusjon:</b>{' '}
                                 {
                                     refusjon.forrigeRefusjonSomSkalSendesFørst.refusjonsgrunnlag.tilskuddsgrunnlag
@@ -52,7 +51,7 @@ const RefusjonSide: FunctionComponent = () => {
                                     refusjon.forrigeRefusjonSomSkalSendesFørst.refusjonsgrunnlag.tilskuddsgrunnlag
                                         .løpenummer
                                 }
-                            </Lenke>{' '}
+                            </Link>{' '}
                             må sendes inn før du kan sende inn denne refusjonen:{' '}
                             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr +
                                 '-' +

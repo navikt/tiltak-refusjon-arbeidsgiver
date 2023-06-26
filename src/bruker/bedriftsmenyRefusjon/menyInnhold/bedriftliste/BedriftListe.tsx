@@ -2,15 +2,13 @@ import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
 import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.svg';
 import { ReactComponent as UnderEnhet } from '@/asset/image/childNode.svg';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { NedChevron } from 'nav-frontend-chevron';
+import { ChevronDownIcon } from '@navikt/aksel-icons';
 import './bedriftListe.less';
-import Lenke from 'nav-frontend-lenker';
 import { BedriftvalgType, initPageData, OrganisasjonEnhet, Organisasjon } from '../../api/api';
-import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from '../../../../utils/bem';
-import { setDefaultBedriftlisteMedApneElementer } from '../../api/kontruer-Utils';
+import { setDefaultBedriftlisteMedApneLabeler } from '../../api/kontruer-Utils';
 import TomtSok from './TomtSok';
+import { BodyShort, Checkbox, Label, Link } from '@navikt/ds-react';
 
 const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
     const cls = BEMHelper('bedriftliste');
@@ -45,16 +43,16 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                             )}
                         >
                             <Checkbox
-                                label={''}
+                                value={''}
                                 className={cls.element('checkbox')}
                                 checked={!!matchParentOrganisasjon(org)}
                                 onChange={() => {
                                     if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
-                                        const element = matchParentOrganisasjon(org);
-                                        if (!!element) {
+                                        const Label = matchParentOrganisasjon(org);
+                                        if (!!Label) {
                                             const valg = {
                                                 type: bedriftvalg.type,
-                                                valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== element),
+                                                valgtOrg: bedriftvalg.valgtOrg.filter((e) => e !== Label),
                                                 pageData: initPageData,
                                                 feilstatus: undefined,
                                             };
@@ -74,8 +72,10 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                         }
                                     }
                                 }}
-                            />
-                            <Lenke
+                            >
+                                <span></span>
+                            </Checkbox>
+                            <Link
                                 href="#nav.no"
                                 className={cls.element('juridisk-lenke')}
                                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -94,12 +94,14 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                         <JuridiskEnhet />
                                     </div>
                                     <div className={cls.element('juridisk-info')}>
-                                        <Element>{org.JuridiskEnhet?.Name ?? ''}</Element>
-                                        <Normaltekst>org.nr. {org.JuridiskEnhet?.OrganizationNumber ?? ''}</Normaltekst>
-                                        <Normaltekst>Vis {org.Underenheter.length} virksomhet</Normaltekst>
+                                        <Label>{org.JuridiskEnhet?.Name ?? ''}</Label>
+                                        <BodyShort size="small">
+                                            org.nr. {org.JuridiskEnhet?.OrganizationNumber ?? ''}
+                                        </BodyShort>
+                                        <BodyShort size="small">Vis {org.Underenheter.length} virksomhet</BodyShort>
                                     </div>
                                     <div>
-                                        <NedChevron
+                                        <ChevronDownIcon
                                             className={cls.element(
                                                 'juridiskenhet-chevron',
                                                 bedriftListe && bedriftListe[index]?.apnet ? 'open' : ''
@@ -107,7 +109,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                         />
                                     </div>
                                 </div>
-                            </Lenke>
+                            </Link>
                         </div>
                         <ul className={cls.element('underenhet-list')}>
                             {org.Underenheter.map((underenhet: Organisasjon, underenhetIndex: number) => {
@@ -127,7 +129,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                 )}
                                             >
                                                 <Checkbox
-                                                    label={''}
+                                                    value={''}
                                                     checked={
                                                         !!bedriftvalg.valgtOrg.find(
                                                             (e) =>
@@ -136,12 +138,12 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                     }
                                                     onChange={() => {
                                                         if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
-                                                            const element = matchOrganisasjon(underenhet);
-                                                            if (!!element) {
+                                                            const Label = matchOrganisasjon(underenhet);
+                                                            if (!!Label) {
                                                                 const valg = {
                                                                     type: bedriftvalg.type,
                                                                     valgtOrg: bedriftvalg.valgtOrg.filter(
-                                                                        (e) => e !== element
+                                                                        (e) => e !== Label
                                                                     ),
                                                                     pageData: initPageData,
                                                                     feilstatus: undefined,
@@ -162,9 +164,11 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                             }
                                                         }
                                                     }}
-                                                />
+                                                >
+                                                    <span></span>
+                                                </Checkbox>
                                             </div>
-                                            <Lenke
+                                            <Link
                                                 className={cls.element('underenhet-lenke')}
                                                 href="#nav.no"
                                                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -183,7 +187,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                             feilstatus: undefined,
                                                         });
                                                         setMenyApen(false);
-                                                        setDefaultBedriftlisteMedApneElementer(
+                                                        setDefaultBedriftlisteMedApneLabeler(
                                                             organisasjonstre?.list,
                                                             setBedriftListe
                                                         );
@@ -194,12 +198,12 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                     <UnderEnhet />
                                                 </div>
                                                 <div>
-                                                    <Element>{underenhet?.Name ?? ''}</Element>
-                                                    <Normaltekst>
+                                                    <Label>{underenhet?.Name ?? ''}</Label>
+                                                    <BodyShort size="small">
                                                         virksomhetsnr. {underenhet?.OrganizationNumber ?? ''}
-                                                    </Normaltekst>
+                                                    </BodyShort>
                                                 </div>
-                                            </Lenke>
+                                            </Link>
                                         </div>
                                     </li>
                                 );

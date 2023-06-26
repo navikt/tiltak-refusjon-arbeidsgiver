@@ -1,5 +1,3 @@
-import { EtikettAdvarsel, EtikettInfo } from 'nav-frontend-etiketter';
-import { Innholdstittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactElement } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
@@ -20,30 +18,31 @@ import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import Statusmelding from './Statusmelding';
 import LagreSomPdfKnapp from './LagreSomPdfKnapp';
 import TidligereRefunderbarBeløpKvittering from '../RefusjonSide/TidligereRefunderbarBeløpKvittering';
+import { Tag, Heading } from '@navikt/ds-react';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
-        return <EtikettAdvarsel>{storForbokstav(statusTekst[refusjon.status])} </EtikettAdvarsel>;
+        return <Tag variant="error">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
     } else if (refusjon.status === RefusjonStatus.SENDT_KRAV) {
         return (
-            <EtikettInfo>
+            <Tag variant="info">
                 {storForbokstav(statusTekst[refusjon.status])}{' '}
                 {refusjon.godkjentAvArbeidsgiver &&
                     formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
-            </EtikettInfo>
+            </Tag>
         );
     } else if (refusjon.status === RefusjonStatus.UTBETALT) {
         return (
-            <EtikettInfo>
+            <Tag variant="info">
                 {storForbokstav(statusTekst[RefusjonStatus.SENDT_KRAV])}{' '}
                 {refusjon.godkjentAvArbeidsgiver && formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_FORMAT)}
                 {', '}
                 {storForbokstav(statusTekst[refusjon.status])}{' '}
                 {refusjon.utbetaltTidspunkt && formatterDato(refusjon.utbetaltTidspunkt, NORSK_DATO_FORMAT)}
-            </EtikettInfo>
+            </Tag>
         );
     }
-    return <EtikettInfo>{storForbokstav(statusTekst[refusjon.status])} </EtikettInfo>;
+    return <Tag variant="info">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
 };
 const KvitteringSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -53,7 +52,9 @@ const KvitteringSide: FunctionComponent = () => {
     return (
         <HvitBoks>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Innholdstittel role="heading">Kvittering for refusjon</Innholdstittel>
+                <Heading size="large" role="heading">
+                    Kvittering for refusjon
+                </Heading>
                 {etikettForRefusjonStatus(refusjon)}
             </div>
             <VerticalSpacer rem={1} />

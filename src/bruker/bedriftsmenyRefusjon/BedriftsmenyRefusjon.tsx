@@ -1,6 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
-import TypografiBase from 'nav-frontend-typografi';
 import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
 import Bedriftsmeny from './bedriftsmeny/Bedriftsmeny';
 import { OrganisasjonData, konstruereOrganisasjonliste } from './api/konstruer';
@@ -15,8 +14,9 @@ import {
 } from './api/api';
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
-import { setDefaultBedriftlisteMedApneElementer } from './api/kontruer-Utils';
+import { setDefaultBedriftlisteMedApneLabeler } from './api/kontruer-Utils';
 import useSize from './api/useSize';
+import { Heading } from '@navikt/ds-react';
 
 interface Props {
     organisasjoner: Organisasjon[];
@@ -55,7 +55,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                     (typeof organisasjonstre !== 'object' || organisasjonstre?.list.length === 0)
                 ) {
                     setOrganisasjonstre({ list: orglist.organisasjonliste, feilstatus: orglist.feilstatus });
-                    setDefaultBedriftlisteMedApneElementer(orglist.organisasjonliste, setBedriftListe);
+                    setDefaultBedriftlisteMedApneLabeler(orglist.organisasjonliste, setBedriftListe);
                 }
             });
         }
@@ -92,9 +92,9 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                             <NavIkon />
                         </div>
                         {desktopview && (
-                            <TypografiBase className={cls.element('tittel')} type="systemtittel">
+                            <Heading size="medium" className={cls.element('tittel')}>
                                 Tiltaksrefusjon
-                            </TypografiBase>
+                            </Heading>
                         )}
                     </div>
                     <div className={cls.element('innhold')}>

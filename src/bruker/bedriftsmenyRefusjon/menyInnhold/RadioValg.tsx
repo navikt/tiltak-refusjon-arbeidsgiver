@@ -1,9 +1,9 @@
 import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
-import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { BedriftvalgType, initPageData, Organisasjonlist } from '../api/api';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
-import { setDefaultBedriftlisteMedApneElementer } from '../api/kontruer-Utils';
+import { setDefaultBedriftlisteMedApneLabeler } from '../api/kontruer-Utils';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 
 interface Properties {
     className: string;
@@ -52,31 +52,37 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
         setBedriftvalg(valg);
         if (callbackAlleClick) setValgtBedrift(valg);
         setOrganisasjonstre(orgtre);
-        setDefaultBedriftlisteMedApneElementer(organisasjonstre?.list, setBedriftListe);
+        setDefaultBedriftlisteMedApneLabeler(organisasjonstre?.list, setBedriftListe);
     };
 
     return (
         <div className={cls.element('radiovalg-av-bedrift')}>
-            <RadioGruppe legend="Bedriftvalg">
+            <RadioGroup legend="Bedriftvalg">
                 <Radio
-                    label="Velg en bedrift"
+                    value="Velg en bedrift"
                     name="Velg en bedrift"
                     checked={bedriftvalg.type === BedriftvalgType.ENKELBEDRIFT}
                     onChange={() => byttRadioValg(BedriftvalgType.ENKELBEDRIFT)}
-                />
+                >
+                    Velg en bedrift
+                </Radio>
                 <Radio
-                    label="Velg flere bedrifter"
+                    value="Velg flere bedrifter"
                     name="Velg flere bedrifter"
                     checked={bedriftvalg.type === BedriftvalgType.FLEREBEDRIFTER}
                     onChange={() => byttRadioValg(BedriftvalgType.FLEREBEDRIFTER)}
-                />
+                >
+                    Velg flere bedrifter
+                </Radio>
                 <Radio
-                    label="Velg alle bedrifter"
+                    value="Velg alle bedrifter"
                     name="Velg alle bedrifter"
                     checked={bedriftvalg.type === BedriftvalgType.ALLEBEDRIFTER}
                     onChange={() => byttRadioValg(BedriftvalgType.ALLEBEDRIFTER)}
-                />
-            </RadioGruppe>
+                >
+                    Velg alle bedrifter
+                </Radio>
+            </RadioGroup>
         </div>
     );
 };

@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { Input } from 'nav-frontend-skjema';
 import BEMHelper from '../../../utils/bem';
 import { ClsBedriftsmeny, OrganisasjonEnhet } from '../api/api';
 import { MenyContext } from '../BedriftsmenyRefusjon';
+import { TextField } from '@navikt/ds-react';
 
 const Sokefelt: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.MENYINNHOLD);
@@ -51,16 +51,15 @@ const Sokefelt: FunctionComponent = () => {
     };
 
     return (
-        <Input
+        <TextField
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 getSearchResult(event.target.value);
             }}
             value={inputfelt}
             className={cls.element('sokefelt')}
             aria-label="Søk etter bedrift"
-            type="search"
             placeholder="orgnr eller navn"
-            size={35}
+            size="small"
             label="Søk etter bedrift"
         />
     );

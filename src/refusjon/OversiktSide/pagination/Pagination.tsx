@@ -4,7 +4,7 @@ import { useInnloggetBruker } from '../../../bruker/BrukerContext';
 import './pagination.less';
 import BEMHelper from '../../../utils/bem';
 import { BedriftvalgType } from '../../../bruker/bedriftsmenyRefusjon/api/api';
-import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
+import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import PaginationBar from './PaginationBar';
 import { PaginationContext } from './PaginationProvider';
 
@@ -29,7 +29,7 @@ const Pagination: FunctionComponent = () => {
                                 }
                             }}
                         >
-                            <VenstreChevron />
+                            <ChevronLeftIcon />
                         </li>
                         <PaginationBar />
                         <li
@@ -40,7 +40,7 @@ const Pagination: FunctionComponent = () => {
                                 }
                             }}
                         >
-                            <HoyreChevron />
+                            <ChevronRightIcon />
                         </li>
                     </ul>
                 </div>

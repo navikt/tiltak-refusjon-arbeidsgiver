@@ -1,6 +1,3 @@
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
-import { EtikettInfo } from 'nav-frontend-etiketter';
-import { Innholdstittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
@@ -16,6 +13,7 @@ import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';
 import KorreksjonInfo from './KorreksjonInfo';
+import { ExpansionCard, Tag, Heading } from '@navikt/ds-react';
 
 const KvitteringKorreksjon: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -26,11 +24,13 @@ const KvitteringKorreksjon: FunctionComponent = () => {
         <>
             <HvitBoks>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Innholdstittel role="heading">Kvittering for korrigert refusjon</Innholdstittel>
-                    <EtikettInfo>
+                    <Heading size="large" role="heading">
+                        Kvittering for korrigert refusjon
+                    </Heading>
+                    <Tag variant="info">
                         {storForbokstav(korreksjonStatusTekst[korreksjon.status])}{' '}
                         {formatterDato(korreksjon.godkjentTidspunkt!, NORSK_DATO_OG_TID_FORMAT)}
-                    </EtikettInfo>
+                    </Tag>
                 </div>
                 <VerticalSpacer rem={1} />
                 <KorreksjonInfo korreksjon={korreksjon} />
@@ -50,32 +50,38 @@ const KvitteringKorreksjon: FunctionComponent = () => {
             </HvitBoks>
 
             <VerticalSpacer rem={2} />
-
-            <Ekspanderbartpanel tittel="Klikk for å se refusjonen som er korrigert">
-                <HvitBoks>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Innholdstittel role="heading">Kvittering for refusjon</Innholdstittel>
-                        <EtikettInfo>
-                            Sendt krav {formatterDato(refusjon.godkjentAvArbeidsgiver!, NORSK_DATO_OG_TID_FORMAT)}
-                        </EtikettInfo>
-                    </div>
-                    <VerticalSpacer rem={1} />
-                    {/* <VerticalSpacer rem={2} /> */}
-                    {/* <InformasjonFraAvtalen /> */}
-                    <VerticalSpacer rem={2} />
-                    <InntekterFraAMeldingen kvitteringVisning={true} />
-                    <VerticalSpacer rem={2} />
-                    <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
-                    <VerticalSpacer rem={2} />
-                    <Utregning
-                        beregning={refusjon.refusjonsgrunnlag.beregning}
-                        tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
-                        forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
-                    />
-                    <VerticalSpacer rem={4} />
-                    <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
-                </HvitBoks>
-            </Ekspanderbartpanel>
+            <ExpansionCard size="small" aria-label="Small-variant" defaultOpen={true}>
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title size="small">Klikk for å se refusjonen som er korrigert</ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <HvitBoks>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Heading size="large" role="heading">
+                                Kvittering for refusjon
+                            </Heading>
+                            <Tag variant="info">
+                                Sendt krav {formatterDato(refusjon.godkjentAvArbeidsgiver!, NORSK_DATO_OG_TID_FORMAT)}
+                            </Tag>
+                        </div>
+                        <VerticalSpacer rem={1} />
+                        {/* <VerticalSpacer rem={2} /> */}
+                        {/* <InformasjonFraAvtalen /> */}
+                        <VerticalSpacer rem={2} />
+                        <InntekterFraAMeldingen kvitteringVisning={true} />
+                        <VerticalSpacer rem={2} />
+                        <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                        <VerticalSpacer rem={2} />
+                        <Utregning
+                            beregning={refusjon.refusjonsgrunnlag.beregning}
+                            tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                            forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
+                        />
+                        <VerticalSpacer rem={4} />
+                        <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
+                    </HvitBoks>
+                </ExpansionCard.Content>
+            </ExpansionCard>
             <VerticalSpacer rem={2} />
         </>
     );

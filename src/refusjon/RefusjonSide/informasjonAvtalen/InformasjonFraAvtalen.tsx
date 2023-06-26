@@ -1,6 +1,5 @@
 import { Calender, File, FileContent, Money, People, Warning } from '@navikt/ds-icons';
 import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
@@ -10,7 +9,7 @@ import { tiltakstypeTekst } from '../../../messages';
 import { useHentRefusjon } from '../../../services/rest-service';
 import { formatterDato, formatterPeriode } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Heading, Label, BodyShort } from '@navikt/ds-react';
 
 const IkonRad = styled.div`
     display: flex;
@@ -35,7 +34,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
 
     return (
         <GråBoks>
-            <Undertittel>Informasjon hentet fra avtalen</Undertittel>
+            <Heading size="small">Informasjon hentet fra avtalen</Heading>
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <EksternLenke href={avtaleLenke}>
@@ -46,63 +45,65 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <File />
-                <Element>Refusjonsnummer: </Element>
-                <Normaltekst>{refusjonsnummer}</Normaltekst>
+                <Label>Refusjonsnummer: </Label>
+                <BodyShort size="small">{refusjonsnummer}</BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn && (
                 <>
                     <IkonRad>
                         <People />
-                        <Element>Arbeidsgiver: </Element>
-                        <Normaltekst>
+                        <Label>Arbeidsgiver: </Label>
+                        <BodyShort size="small">
                             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn}{' '}
                             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverEtternavn}
-                        </Normaltekst>
-                        <Element>Mobil: </Element>
-                        <Normaltekst>{refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverTlf}</Normaltekst>
+                        </BodyShort>
+                        <Label>Mobil: </Label>
+                        <BodyShort size="small">
+                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverTlf}
+                        </BodyShort>
                     </IkonRad>
                     <VerticalSpacer rem={1} />
                 </>
             )}
             <IkonRad>
                 <People />
-                <Element>Deltaker: </Element>
-                <Normaltekst>
+                <Label>Deltaker: </Label>
+                <BodyShort size="small">
                     {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn}{' '}
                     {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerEtternavn}
-                </Normaltekst>
+                </BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <Calender />
-                <Element>Periode: </Element>
-                <Normaltekst>
+                <Label>Periode: </Label>
+                <BodyShort size="small">
                     {formatterPeriode(
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
-                </Normaltekst>
+                </BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <Warning />
-                <Element>Frist: </Element>
-                <Normaltekst>{formatterDato(refusjon.fristForGodkjenning)}</Normaltekst>
+                <Label>Frist: </Label>
+                <BodyShort size="small">{formatterDato(refusjon.fristForGodkjenning)}</BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <FileContent />
-                <Element>Avtalt beløp for perioden:</Element>
-                <Normaltekst>
+                <Label>Avtalt beløp for perioden:</Label>
+                <BodyShort size="small">
                     Inntil {formatterPenger(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp)}
-                </Normaltekst>
+                </BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <Money />
-                <Element>Kontonummer:</Element>
-                <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKontonummer}</Normaltekst>
+                <Label>Kontonummer:</Label>
+                <BodyShort size="small">{refusjon.refusjonsgrunnlag.bedriftKontonummer}</BodyShort>
             </IkonRad>
             {(!refusjon.refusjonsgrunnlag.bedriftKid || refusjon.refusjonsgrunnlag.bedriftKid.trim().length === 0) &&
             refusjon.status !== 'KLAR_FOR_INNSENDING' ? (
@@ -112,14 +113,14 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                     <VerticalSpacer rem={1} />
                     <IkonRad>
                         <Money />
-                        <Element>KID:</Element>
+                        <Label>KID:</Label>
                         {refusjon.status === 'KLAR_FOR_INNSENDING' ? (
                             <>
                                 <KIDInputValidator />
-                                <Normaltekst>(Dette feltet er valgfritt)</Normaltekst>
+                                <BodyShort size="small">(Dette feltet er valgfritt)</BodyShort>
                             </>
                         ) : (
-                            <Normaltekst>{refusjon.refusjonsgrunnlag.bedriftKid}</Normaltekst>
+                            <BodyShort size="small">{refusjon.refusjonsgrunnlag.bedriftKid}</BodyShort>
                         )}
                     </IkonRad>
                 </>

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Label, BodyShort } from '@navikt/ds-react';
 
 interface LagNyRadProps {
     navn: string;
@@ -12,11 +12,11 @@ const LagNyRad: FunctionComponent<LagNyRadProps> = ({ navn, verdi, navnIcon, ver
     <div className="refusjonFeilet__rad">
         <div>
             <span>{navnIcon}</span>
-            <Element>{navn}</Element>
+            <Label>{navn}</Label>
         </div>
         <div>
             <span className="refusjonFeilet__verdi-icon">{verdiIcon}</span>
-            <Normaltekst>{verdi}</Normaltekst>
+            <BodyShort size="small">{verdi}</BodyShort>
         </div>
     </div>
 );

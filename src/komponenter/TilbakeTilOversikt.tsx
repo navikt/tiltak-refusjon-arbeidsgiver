@@ -1,4 +1,4 @@
-import { VenstreChevron } from 'nav-frontend-chevron';
+import { ChevronLeftIcon } from '@navikt/aksel-icons';
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const TilbakeTilOversikt: FunctionComponent = () => {
                 style={{ display: 'flex', alignItems: 'center', color: '#0067c5' }}
             >
                 <div aria-hidden={true}>
-                    <VenstreChevron />
+                    <ChevronLeftIcon />
                 </div>
                 Tilbake til oversikt
             </Link>

@@ -1,5 +1,5 @@
 import React from 'react';
-import NavFrontendChevron from 'nav-frontend-chevron';
+import { ChevronUpIcon } from '@navikt/aksel-icons';
 
 import './infoToggler.less';
 
@@ -23,7 +23,7 @@ const InfoToggler = (props: Props) => {
             aria-expanded={åpen}
         >
             <span className={'infoToggler__label'}>{children}</span>
-            <NavFrontendChevron type={åpen ? 'opp' : 'ned'} />
+            <ChevronUpIcon type={åpen ? 'opp' : 'ned'} />
         </button>
     );
 };

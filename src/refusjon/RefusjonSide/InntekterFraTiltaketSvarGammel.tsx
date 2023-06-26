@@ -1,4 +1,4 @@
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Label, BodyShort } from '@navikt/ds-react';
 import React, { FunctionComponent } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
@@ -20,18 +20,18 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
 
     return (
         <div>
-            <Element>
+            <Label>
                 Er inntektene som vi har hentet (
                 {formatterPenger(props.refusjonsgrunnlag.inntektsgrunnlag!!.bruttoLønn)}) kun fra tiltaket{' '}
                 {tiltakstypeTekst[props.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?{' '}
-            </Element>
-            <Normaltekst>{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</Normaltekst>
+            </Label>
+            <BodyShort size="small">{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</BodyShort>
             {props.refusjonsgrunnlag.endretBruttoLønn !== null &&
                 props.refusjonsgrunnlag.endretBruttoLønn !== undefined && (
                     <>
                         <VerticalSpacer rem={1} />
-                        <Element>Korrigert bruttolønn:</Element>
-                        <Normaltekst>{formatterPenger(props.refusjonsgrunnlag.endretBruttoLønn)}</Normaltekst>
+                        <Label>Korrigert bruttolønn:</Label>
+                        <BodyShort size="small">{formatterPenger(props.refusjonsgrunnlag.endretBruttoLønn)}</BodyShort>
                     </>
                 )}
         </div>

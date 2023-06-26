@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Element } from 'nav-frontend-typografi';
+import { Label } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { formatterPeriode } from '../../utils/datoUtils';
@@ -79,8 +79,8 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
             </InntekterTabell>
             <br />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Element>Sum bruttolønn</Element>
-                <Element>{inntekterHuketAvForOpptjentIPeriode.length >= 1 && sumInntekterOpptjentIPeriode}</Element>
+                <Label>Sum bruttolønn</Label>
+                <Label>{inntekterHuketAvForOpptjentIPeriode.length >= 1 && sumInntekterOpptjentIPeriode}</Label>
             </div>
         </div>
     );

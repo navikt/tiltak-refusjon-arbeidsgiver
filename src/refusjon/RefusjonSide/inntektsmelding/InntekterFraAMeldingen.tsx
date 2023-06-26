@@ -1,6 +1,5 @@
-import { Alert, Button, Heading } from '@navikt/ds-react';
+import { Alert, Button, Heading, Label, BodyShort } from '@navikt/ds-react';
 import _ from 'lodash';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
@@ -150,13 +149,13 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                 <>
                     <VerticalSpacer rem={1} />
                     <Alert variant="warning" size="small">
-                        <Element>
+                        <Label>
                             Du har huket av for at ingen av de innhentede inntektene er opptjent i {månedNavn}.
-                        </Element>
-                        <Normaltekst>
+                        </Label>
+                        <BodyShort size="small">
                             Hvis du har rapportert inntekter for sent, kan du ta kontakt med NAV-veileder for å åpne for
                             henting av inntekter som er rapport inn for senere måneder.
-                        </Normaltekst>
+                        </BodyShort>
                     </Alert>
                 </>
             )}

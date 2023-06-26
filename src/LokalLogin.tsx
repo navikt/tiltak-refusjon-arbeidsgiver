@@ -1,13 +1,11 @@
 import axios from 'axios';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { Input } from 'nav-frontend-skjema';
 import React, { FunctionComponent, useState } from 'react';
 import { InnloggetBruker } from './bruker/BrukerContextType';
-import { Element } from 'nav-frontend-typografi';
 import { inneholderUrlnavn } from './utils/miljoUtils';
 import BEMHelper from './utils/bem';
 import './lokalLogin.less';
 import { useAsyncError } from './useError';
+import { Label, TextField, Button } from '@navikt/ds-react';
 
 type Props = {
     innloggetBruker: InnloggetBruker | undefined;
@@ -23,6 +21,7 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
     const throwError = useAsyncError();
 
     const loggInnKnapp = async (pid: string) => {
+        console.log('pid', pid);
         const response = await axios
             .get(`https://tiltak-fakelogin.ekstern.dev.nav.no/token?aud=aud-tokenx&iss=tokenx&acr=Level4&pid=${pid}`)
             .catch(throwError);
@@ -42,20 +41,23 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
     return (
         <div className={cls.className}>
             <div className={cls.element('boks')}>
-                <Element>Logg inn med fødselsnummer</Element>
+                <Label>Logg inn med fødselsnummer</Label>
                 <div className={cls.element('input-wrapper')}>
-                    <Input
+                    <TextField
+                        label=""
+                        hideLabel
                         placeholder="Logg inn som"
                         value={pid}
                         onChange={(event) => setPid(event.currentTarget.value)}
                     />
-                    <Hovedknapp
+                    <Button
+                        variant="primary"
                         className={cls.element('submit-knapp')}
                         disabled={!pid}
                         onClick={() => loggInnKnapp(pid)}
                     >
                         Logg inn
-                    </Hovedknapp>
+                    </Button>
                 </div>
             </div>
         </div>

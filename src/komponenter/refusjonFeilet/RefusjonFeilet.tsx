@@ -1,10 +1,10 @@
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import { Bedriftvalg, Feilstatus, StatusFeilBedriftmeny } from '../../bruker/bedriftsmenyRefusjon/api/api';
 import BEMHelper from '../../utils/bem';
 import HvitBoks from '../hvitboks/HvitBoks';
 import './refusjonFeilet.less';
 import RefusjonFeiletManglerUnderEnhet from './RefusjonFeiletManglerUnderEnhet';
+import { BodyShort, Heading } from '@navikt/ds-react';
 
 interface Props {
     bedriftvalg: Bedriftvalg;
@@ -16,12 +16,11 @@ const RefusjonFeilet: FunctionComponent<Props> = ({
     innloggetBrukerHarAltinnTilgangerBedrifter,
 }: PropsWithChildren<Props>) => {
     const cls = BEMHelper('refusjonFeilet');
-
     const GenerellTilgangsInnhold: FunctionComponent = () => (
         <>
-            <Normaltekst className={cls.element('tittel')}>
+            <BodyShort size="small" className={cls.element('tittel')}>
                 For å få tilgang til refusjoner for din virksomhet må du ha en av disse Altinn-roller:
-            </Normaltekst>
+            </BodyShort>
             <ul className={cls.element('liste')}>
                 <li>ansvarlig revisor</li>
                 <li>lønn og personalmedarbeider</li>
@@ -31,9 +30,9 @@ const RefusjonFeilet: FunctionComponent<Props> = ({
                 <li>revisormedarbeider</li>
                 <li>norsk representant for utenlandsk enhet</li>
             </ul>
-            <Normaltekst>
+            <BodyShort size="small">
                 Du kan også ha rettigheten <b>inntektsmelding</b>.
-            </Normaltekst>
+            </BodyShort>
         </>
     );
 
@@ -42,6 +41,7 @@ const RefusjonFeilet: FunctionComponent<Props> = ({
         switch (status?.status) {
             case Feilstatus.JURIDISK_MANGLER_UNDERENHET:
                 return <RefusjonFeiletManglerUnderEnhet bedriftvalg={bedriftvalg} />;
+
             case Feilstatus.UNDERENHET_MANGLET_JURIDISK:
                 return <>.....</>;
 
@@ -50,9 +50,9 @@ const RefusjonFeilet: FunctionComponent<Props> = ({
             default:
                 return (
                     <HvitBoks className={cls.className}>
-                        <Systemtittel className={cls.element('tittel')}>
+                        <Heading size="medium" className={cls.element('tittel')}>
                             Ikke tilgang til noen virksomheter i Altinn
-                        </Systemtittel>
+                        </Heading>
                         <GenerellTilgangsInnhold />
                     </HvitBoks>
                 );
@@ -62,9 +62,9 @@ const RefusjonFeilet: FunctionComponent<Props> = ({
     if (innloggetBrukerHarAltinnTilgangerBedrifter) {
         return (
             <HvitBoks className={cls.className}>
-                <Systemtittel className={cls.element('tittel')}>
+                <Heading size="medium" className={cls.element('tittel')}>
                     Ikke tilgang til noen virksomheter i Altinn
-                </Systemtittel>
+                </Heading>
                 <GenerellTilgangsInnhold />
             </HvitBoks>
         );

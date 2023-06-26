@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
@@ -8,7 +7,7 @@ import { lønnsbeskrivelseTekst } from '../../messages';
 import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Alert } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 
 const GråBoks = styled.div`
     background-color: #eee;
@@ -73,15 +72,17 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
     return (
         <GråBoks>
             <Fleks>
-                <Undertittel style={{ marginBottom: '1rem' }}>Inntekter hentet fra a-meldingen</Undertittel>
+                <Heading size="small" style={{ marginBottom: '1rem' }}>
+                    Inntekter hentet fra a-meldingen
+                </Heading>
                 {korreksjon.refusjonsgrunnlag.inntektsgrunnlag && (
-                    <Normaltekst>
+                    <BodyShort size="small">
                         Sist hentet:{' '}
                         {formatterDato(
                             korreksjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
                             NORSK_DATO_OG_TID_FORMAT
                         )}
-                    </Normaltekst>
+                    </BodyShort>
                 )}
             </Fleks>
             {korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FunctionComponent } from 'react';
-import { Radio } from 'nav-frontend-skjema';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 import { setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
 import { Inntektslinje } from '../../../refusjon';
 
@@ -24,26 +24,30 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
     return (
         <td>
             {!kvitteringVisning && (
-                <div className="inntektsmelding__inntektsvalg">
+                <RadioGroup legend="" className="inntektsmelding__inntektsvalg">
                     <Radio
-                        label="Ja"
+                        value="ja"
                         checked={erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, true);
                         }}
                         name={inntekt.id}
-                    />
+                    >
+                        Ja
+                    </Radio>
                     <Radio
-                        label="Nei"
+                        value="Nei"
                         checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, false);
                         }}
                         name={inntekt.id}
-                    />
-                </div>
+                    >
+                        Nei
+                    </Radio>
+                </RadioGroup>
             )}
             {kvitteringVisning && (
                 <div className="inntektsmelding__valgtInntekt">

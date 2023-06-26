@@ -1,8 +1,7 @@
-import Modal from 'nav-frontend-modal';
-import { Innholdstittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, PropsWithChildren } from 'react';
 import LagreOgAvbrytKnapp from '../../komponenter/LagreOgAvbrytKnapp';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import { Modal, Heading } from '@navikt/ds-react';
 
 type Props = {
     isOpen: boolean;
@@ -18,24 +17,28 @@ const GodkjennModal: FunctionComponent<Props> = ({
     tittel,
     children,
 }: PropsWithChildren<Props>) => {
-    const setModalElement = () => {
+    const setModalLabel = () => {
         if (document.getElementById('root')) return '#root';
         return 'body';
     };
     if (typeof window !== 'undefined') {
-        Modal.setAppElement(setModalElement());
+        Modal.setAppElement(setModalLabel());
     }
     return (
-        <Modal isOpen={isOpen} onRequestClose={() => lukkModal()} contentLabel="">
-            <div style={{ margin: '2rem', maxWidth: '40rem' }}>
-                <Innholdstittel style={{ textAlign: 'center' }}>{tittel}</Innholdstittel>
-                <VerticalSpacer rem={2} />
-                {children}
-                <VerticalSpacer rem={2} />
-                <LagreOgAvbrytKnapp lagreFunksjon={godkjenn} avbryt={() => lukkModal()}>
-                    Send inn
-                </LagreOgAvbrytKnapp>
-            </div>
+        <Modal open={isOpen} onClose={() => lukkModal()} aria-label="">
+            <Modal.Content>
+                <div style={{ margin: '2rem', maxWidth: '40rem' }}>
+                    <Heading size="large" style={{ textAlign: 'center' }}>
+                        {tittel}
+                    </Heading>
+                    <VerticalSpacer rem={2} />
+                    {children}
+                    <VerticalSpacer rem={2} />
+                    <LagreOgAvbrytKnapp lagreFunksjon={godkjenn} avbryt={() => lukkModal()}>
+                        Send inn
+                    </LagreOgAvbrytKnapp>
+                </div>
+            </Modal.Content>
         </Modal>
     );
 };

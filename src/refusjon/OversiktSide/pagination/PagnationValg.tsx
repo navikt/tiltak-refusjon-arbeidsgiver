@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShort } from '@navikt/ds-react';
 import { PageSizeOption } from '../../../bruker/bedriftsmenyRefusjon/api/api';
 import BEMHelper from '../../../utils/bem';
 import { PaginationContext } from './PaginationProvider';
@@ -16,7 +16,7 @@ const PagnationValg: FunctionComponent = () => {
         <div className={cls.className}>
             <div className={cls.element('sidevisning-valg-container')}>
                 <div className={cls.element('sidevisning-valg-wrapper')}>
-                    <Normaltekst>vis</Normaltekst>
+                    <BodyShort size="small">vis</BodyShort>
                     <select
                         className={cls.element('select-page')}
                         value={valgtBedrift.pageData.pagesize}
@@ -28,9 +28,9 @@ const PagnationValg: FunctionComponent = () => {
                         <option>{PageSizeOption.FIFTEEN}</option>
                     </select>
                     <div>
-                        <Normaltekst>
+                        <BodyShort size="small">
                             {valgtBedrift.pageData.pagesize} av {valgtBedrift.pageData.totalItems}
-                        </Normaltekst>
+                        </BodyShort>
                     </div>
                 </div>
             </div>

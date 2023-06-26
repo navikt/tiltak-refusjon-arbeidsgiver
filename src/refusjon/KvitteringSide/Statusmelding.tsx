@@ -1,7 +1,6 @@
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { RefusjonStatus } from '../status';
-import { Alert } from '@navikt/ds-react';
+import { Alert, BodyShort } from '@navikt/ds-react';
 
 interface Props {
     status: RefusjonStatus;
@@ -18,23 +17,23 @@ const Statusmelding: FunctionComponent<Props> = (props) => {
             );
         case RefusjonStatus.UTBETALT:
             return (
-                <Normaltekst>
+                <BodyShort size="small">
                     Refusjonskravet er utbetalt. Det vil ta 3–4 dager før pengene kommer på kontoen.
-                </Normaltekst>
+                </BodyShort>
             );
         case RefusjonStatus.GODKJENT_MINUSBELØP:
         case RefusjonStatus.GODKJENT_NULLBELØP:
             return (
-                <Normaltekst>
+                <BodyShort size="small">
                     Refusjonskravet er godkjent. Denne refusjonen vil bli tatt vare på i oversikten.
-                </Normaltekst>
+                </BodyShort>
             );
         default:
             return (
-                <Normaltekst>
+                <BodyShort size="small">
                     Refusjonskravet er nå sendt. Det vil ta 3–4 dager før pengene kommer på kontoen. Denne refusjonen
                     vil bli tatt vare på under “Sendt krav”.
-                </Normaltekst>
+                </BodyShort>
             );
     }
 };
