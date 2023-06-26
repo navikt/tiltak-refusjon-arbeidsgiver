@@ -21,6 +21,17 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
             console.error('err ', err)
         );
 
+    const inntektValg = () => {
+        switch (inntekt.erOpptjentIPeriode) {
+            case true:
+                return 'Ja';
+            case false:
+                return 'Nei';
+            default:
+                return 'Ikke valgt';
+        }
+    };
+
     return (
         <td>
             {!kvitteringVisning && (
@@ -51,7 +62,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
             )}
             {kvitteringVisning && (
                 <div className="inntektsmelding__valgtInntekt">
-                    {inntekt.erOpptjentIPeriode ? <label>Ja</label> : <label>Nei</label>}
+                    <label>{inntektValg()}</label>
                 </div>
             )}
         </td>

@@ -16,6 +16,7 @@ import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
+import EksternLenke from './EksternLenke/EksternLenke';
 
 interface Props {
     beregning?: Beregning;
@@ -170,7 +171,18 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 border="TYKK"
             />
             <VerticalSpacer rem={1} />
-            {beregning?.overTilskuddsbeløp && (
+            {beregning?.overFemGrunnbeløp && (
+                <Alert variant="warning" size="small">
+                    Refusjonen har nå oversteget fem ganger grunnbeløpet per år. Det vil bli utbetalt{' '}
+                    {formatterPenger(beregning?.refusjonsbeløp)} for denne perioden. Refusjonen for resten av året vil
+                    settes til 0 kr, men dere må fortsatt sende inn refusjoner hver måned.
+                    <br />{' '}
+                    <EksternLenke href="https://lovdata.no/dokument/SF/forskrift/2015-12-11-1598/KAPITTEL_10#KAPITTEL_10">
+                        Forskrift om arbeidsmarkedstiltak (tiltaksforskriften) - Kapittel 10. Varig lønnstilskudd
+                    </EksternLenke>
+                </Alert>
+            )}
+            {beregning?.overTilskuddsbeløp && !beregning?.overFemGrunnbeløp && (
                 <Alert variant="warning" size="small">
                     Beregnet beløp er høyere enn refusjonsbeløpet. Avtalt beløp er inntil{' '}
                     {formatterPenger(tilskuddsgrunnlag.tilskuddsbeløp)} for denne perioden. Lønn i denne

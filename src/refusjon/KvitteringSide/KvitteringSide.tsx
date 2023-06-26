@@ -1,24 +1,24 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { useParams } from 'react-router';
-import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { statusTekst } from '../../messages';
 import { RefusjonStatus } from '../../refusjon/status';
 import { useHentRefusjon } from '../../services/rest-service';
-import { formatterDato, NORSK_DATO_FORMAT, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
+import { NORSK_DATO_FORMAT, NORSK_DATO_OG_TID_FORMAT, formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
-import { Refusjon } from '../refusjon';
-import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
-import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import InntekterFraAMeldingenGammel from '../RefusjonSide/InntekterFraAMeldingenGammel';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import InntekterFraTiltaketSvarGammel from '../RefusjonSide/InntekterFraTiltaketSvarGammel';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
-import Statusmelding from './Statusmelding';
-import LagreSomPdfKnapp from './LagreSomPdfKnapp';
 import TidligereRefunderbarBeløpKvittering from '../RefusjonSide/TidligereRefunderbarBeløpKvittering';
 import { Tag, Heading } from '@navikt/ds-react';
+import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
+import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
+import { Refusjon } from '../refusjon';
+import LagreSomPdfKnapp from './LagreSomPdfKnapp';
+import Statusmelding from './Statusmelding';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -68,7 +68,7 @@ const KvitteringSide: FunctionComponent = () => {
             <VerticalSpacer rem={2} />
             <InformasjonFraAvtalen />
             <VerticalSpacer rem={2} />
-            {refusjon.harTattStillingTilAlleInntektslinjer ? (
+            {refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find((i) => i.erOpptjentIPeriode === true) ? (
                 <>
                     <InntekterFraAMeldingen kvitteringVisning={true} />
                     <VerticalSpacer rem={2} />
