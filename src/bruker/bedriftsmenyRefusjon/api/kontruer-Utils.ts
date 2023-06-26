@@ -44,7 +44,7 @@ export async function finnJuridiskeEnheter(
     return await hentAlleJuridiskeEnheter(hentUnikListeMedJuridiskenhetsNr(underenheterUtenJuridiskEnhet), BRREG_URL);
 }
 
-export function setDefaultBedriftlisteMedApneLabeler(
+export function setDefaultBedriftlisteMedApneElementer(
     orgtre: OrganisasjonEnhet[] | undefined,
     setBedriftListe: Dispatch<SetStateAction<BedriftListe>>
 ): void {

@@ -14,7 +14,7 @@ import {
 } from './api/api';
 import { History } from 'history';
 import './bedriftsmenyRefusjon.less';
-import { setDefaultBedriftlisteMedApneLabeler } from './api/kontruer-Utils';
+import { setDefaultBedriftlisteMedApneElementer } from './api/kontruer-Utils';
 import useSize from './api/useSize';
 import { Heading } from '@navikt/ds-react';
 
@@ -55,7 +55,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
                     (typeof organisasjonstre !== 'object' || organisasjonstre?.list.length === 0)
                 ) {
                     setOrganisasjonstre({ list: orglist.organisasjonliste, feilstatus: orglist.feilstatus });
-                    setDefaultBedriftlisteMedApneLabeler(orglist.organisasjonliste, setBedriftListe);
+                    setDefaultBedriftlisteMedApneElementer(orglist.organisasjonliste, setBedriftListe);
                 }
             });
         }

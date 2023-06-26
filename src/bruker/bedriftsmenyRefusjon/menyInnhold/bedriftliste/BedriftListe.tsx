@@ -6,7 +6,7 @@ import { ChevronDownIcon } from '@navikt/aksel-icons';
 import './bedriftListe.less';
 import { BedriftvalgType, initPageData, OrganisasjonEnhet, Organisasjon } from '../../api/api';
 import BEMHelper from '../../../../utils/bem';
-import { setDefaultBedriftlisteMedApneLabeler } from '../../api/kontruer-Utils';
+import { setDefaultBedriftlisteMedApneElementer } from '../../api/kontruer-Utils';
 import TomtSok from './TomtSok';
 import { BodyShort, Checkbox, Label, Link } from '@navikt/ds-react';
 
@@ -187,7 +187,7 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                             feilstatus: undefined,
                                                         });
                                                         setMenyApen(false);
-                                                        setDefaultBedriftlisteMedApneLabeler(
+                                                        setDefaultBedriftlisteMedApneElementer(
                                                             organisasjonstre?.list,
                                                             setBedriftListe
                                                         );

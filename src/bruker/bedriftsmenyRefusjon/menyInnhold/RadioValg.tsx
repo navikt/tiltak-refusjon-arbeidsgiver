@@ -2,7 +2,7 @@ import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { BedriftvalgType, initPageData, Organisasjonlist } from '../api/api';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
-import { setDefaultBedriftlisteMedApneLabeler } from '../api/kontruer-Utils';
+import { setDefaultBedriftlisteMedApneElementer } from '../api/kontruer-Utils';
 import { Radio, RadioGroup } from '@navikt/ds-react';
 
 interface Properties {
@@ -52,7 +52,7 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
         setBedriftvalg(valg);
         if (callbackAlleClick) setValgtBedrift(valg);
         setOrganisasjonstre(orgtre);
-        setDefaultBedriftlisteMedApneLabeler(organisasjonstre?.list, setBedriftListe);
+        setDefaultBedriftlisteMedApneElementer(organisasjonstre?.list, setBedriftListe);
     };
 
     return (
