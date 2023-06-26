@@ -40,10 +40,12 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
 
     const setValgtBedriftOgNavigere = (org: Bedriftvalg) => {
         if (valgtBedrift?.valgtOrg) {
+            const searchParams = new URLSearchParams(window.location.search);
             const valgtOrg: string = getBedriftSearchkey(org);
+            searchParams.set('bedrift', valgtOrg);
             navigate({
                 pathname: window.location.pathname,
-                search: 'bedrift=' + valgtOrg,
+                search: searchParams.toString(),
             });
         }
         setValgtBedrift(org);

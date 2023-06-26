@@ -18,9 +18,9 @@ const Oversikt: FunctionComponent = () => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { setValgtBedrift, valgtBedrift } = brukerContext;
     const { filter } = useFilter();
-    const pagable = useHentRefusjoner(brukerContext, filter);
-    const { refusjoner } = pagable;
-    useOppdaterPagedata(pagable, valgtBedrift, setValgtBedrift);
+    const pageable = useHentRefusjoner(brukerContext, filter);
+    const { refusjoner } = pageable;
+    useOppdaterPagedata(pageable, valgtBedrift, setValgtBedrift);
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);
 
     return (
@@ -28,7 +28,7 @@ const Oversikt: FunctionComponent = () => {
             <div role="list">
                 <LabelRad />
                 {refusjoner.length > 0 ? (
-                    <OversiktTabell refusjoner={pagable.refusjoner} />
+                    <OversiktTabell refusjoner={pageable.refusjoner} />
                 ) : (
                     <FinnerIngenRefusjoner orgnr={brukerContext.valgtBedrift.valgtOrg?.[0].OrganizationNumber} />
                 )}

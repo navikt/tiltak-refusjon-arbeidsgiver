@@ -6,8 +6,8 @@ import { storForbokstav } from '../../utils/stringUtils';
 import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
-import PagnationValg from '../OversiktSide/pagination/PagnationValg';
 import { ExpansionCard, Radio, RadioGroup } from '@navikt/ds-react';
+import PaginationValg from '../OversiktSide/pagination/PaginationValg';
 
 const Filtermeny: FunctionComponent = () => {
     const { filter, oppdaterFilter } = useFilter();
@@ -131,7 +131,7 @@ const Filtermeny: FunctionComponent = () => {
                     </RadioGroup>
                 </ExpansionCard.Content>
             </ExpansionCard>
-            <PagnationValg />
+            <PaginationValg />
         </div>
     );
 };

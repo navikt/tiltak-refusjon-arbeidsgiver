@@ -5,7 +5,7 @@ import BEMHelper from '../../../utils/bem';
 import { PaginationContext } from './PaginationProvider';
 import { BrukerContextType } from '../../../bruker/BrukerContextType';
 import { useInnloggetBruker } from '../../../bruker/BrukerContext';
-import './pagnationValg.less';
+import './paginationValg.less';
 
 const PagnationValg: FunctionComponent = () => {
     const cls = BEMHelper('pagination-valg');
