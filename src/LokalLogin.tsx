@@ -21,7 +21,6 @@ const LokalLogin: FunctionComponent<Props> = (props) => {
     const throwError = useAsyncError();
 
     const loggInnKnapp = async (pid: string) => {
-        console.log('pid', pid);
         const response = await axios
             .get(`https://tiltak-fakelogin.ekstern.dev.nav.no/token?aud=aud-tokenx&iss=tokenx&acr=Level4&pid=${pid}`)
             .catch(throwError);
