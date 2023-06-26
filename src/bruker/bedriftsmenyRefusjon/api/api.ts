@@ -261,7 +261,7 @@ export interface ListeJuridiskeEnheter {
     };
     page: {
         size: number;
-        totalLabels: number;
+        totalElements: number;
         totalPages: number;
         number: 0;
     };
