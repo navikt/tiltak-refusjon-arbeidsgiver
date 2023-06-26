@@ -22,9 +22,9 @@ const Oversikt: FunctionComponent = () => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { setValgtBedrift, valgtBedrift } = brukerContext;
     const { filter } = useFilter();
-    const pagable = useHentRefusjoner(brukerContext, filter);
-    const { refusjoner } = pagable;
-    useOppdaterPagedata(pagable, valgtBedrift, setValgtBedrift);
+    const pageable = useHentRefusjoner(brukerContext, filter);
+    const { refusjoner } = pageable;
+    useOppdaterPagedata(pageable, valgtBedrift, setValgtBedrift);
 
     const navigate = useNavigate();
     antallRefusjoner(refusjoner.length > 0 ? refusjoner.length : 0);

@@ -9,7 +9,7 @@ import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
 import BEMHelper from '../../utils/bem';
-import PagnationValg from '../OversiktSide/pagination/PagnationValg';
+import PaginationValg from '../OversiktSide/pagination/PaginationValg';
 
 const Filtermeny: FunctionComponent = () => {
     const cls = BEMHelper('OversiktSide');
@@ -139,7 +139,7 @@ const Filtermeny: FunctionComponent = () => {
                     />
                 </RadioGruppe>
             </EkspanderbartpanelBase>
-            <PagnationValg />
+            <PaginationValg />
         </div>
     );
 };
