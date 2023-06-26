@@ -138,12 +138,12 @@ const BedriftListe: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
                                                     }
                                                     onChange={() => {
                                                         if (bedriftvalg.type !== BedriftvalgType.ALLEBEDRIFTER) {
-                                                            const Label = matchOrganisasjon(underenhet);
-                                                            if (!!Label) {
+                                                            const element = matchOrganisasjon(underenhet);
+                                                            if (!!element) {
                                                                 const valg = {
                                                                     type: bedriftvalg.type,
                                                                     valgtOrg: bedriftvalg.valgtOrg.filter(
-                                                                        (e) => e !== Label
+                                                                        (e) => e !== element
                                                                     ),
                                                                     pageData: initPageData,
                                                                     feilstatus: undefined,
