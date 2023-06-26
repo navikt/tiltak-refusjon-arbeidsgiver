@@ -17,12 +17,12 @@ const GodkjennModal: FunctionComponent<Props> = ({
     tittel,
     children,
 }: PropsWithChildren<Props>) => {
-    const setModalLabel = () => {
+    const setModalElement = () => {
         if (document.getElementById('root')) return '#root';
         return 'body';
     };
     if (typeof window !== 'undefined') {
-        Modal.setAppElement(setModalLabel());
+        Modal.setAppElement(setModalElement());
     }
     return (
         <Modal open={isOpen} onClose={() => lukkModal()} aria-label="">
