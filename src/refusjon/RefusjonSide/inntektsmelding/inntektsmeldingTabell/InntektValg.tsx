@@ -32,13 +32,16 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
         }
     };
 
+    let radioverdi = undefined;
+    if (erOpptjentIPeriode) radioverdi = 'ja';
+    if (erOpptjentIPeriode === false) radioverdi = 'nei';
+
     return (
         <td>
             {!kvitteringVisning && (
-                <RadioGroup legend="" className="inntektsmelding__inntektsvalg">
+                <RadioGroup legend="" className="inntektsmelding__inntektsvalg" value={radioverdi}>
                     <Radio
                         value="ja"
-                        checked={erOpptjentIPeriode}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, true);
@@ -48,8 +51,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         Ja
                     </Radio>
                     <Radio
-                        value="Nei"
-                        checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
+                        value="nei"
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, false);
