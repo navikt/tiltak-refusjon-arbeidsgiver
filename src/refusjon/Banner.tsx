@@ -1,5 +1,5 @@
 import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
-import { Action, History, Listener } from 'history';
+import { History } from 'history';
 import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { To } from 'react-router-dom';
@@ -14,12 +14,12 @@ interface Properties {
 
 const Banner: FunctionComponent<Properties> = (props: PropsWithChildren<Properties>) => {
     const location = useLocation();
-    const [listener, setListener] = useState<Listener>();
+    const [listener, setListener] = useState<any>();
     const { organisasjoner, valgtBedrift, setValgtBedrift } = props;
 
     useEffect(() => {
         if (listener) {
-            listener({ action: Action.Replace, location });
+            listener({ action: 'REPLACE', location });
         }
     }, [location, listener]);
 

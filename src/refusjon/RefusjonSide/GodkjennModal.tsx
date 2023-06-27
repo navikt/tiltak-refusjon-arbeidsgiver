@@ -8,6 +8,7 @@ type Props = {
     lukkModal: () => void;
     godkjenn: () => Promise<void>;
     tittel: string;
+    children: React.ReactNode;
 };
 
 const GodkjennModal: FunctionComponent<Props> = ({

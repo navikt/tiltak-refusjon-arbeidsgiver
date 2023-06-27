@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { NavigateFunction } from 'react-router-dom';
 import RefusjonFeilet from '../komponenter/refusjonFeilet/RefusjonFeilet';
@@ -21,7 +21,7 @@ export const useInnloggetBruker = () => {
     return context;
 };
 
-export const BrukerProvider: FunctionComponent = (props) => {
+export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
     const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>(initvalgtBedrift);
 

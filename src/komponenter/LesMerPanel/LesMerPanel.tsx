@@ -13,7 +13,13 @@ interface Props {
     onÅpne?: () => void;
 }
 
-const LesMerPanel: React.FunctionComponent<Props> = ({ åpneLabel, lukkLabel, children, className, onÅpne }) => {
+const LesMerPanel: React.FunctionComponent<Props & React.PropsWithChildren> = ({
+    åpneLabel,
+    lukkLabel,
+    children,
+    className,
+    onÅpne,
+}) => {
     const [åpen, setÅpenState] = useState<boolean>(false);
 
     const setÅpen = (skalÅpnes: boolean) => {

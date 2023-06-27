@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 
 const UNDEFINED_ACCESS_TOKEN_MESSAGE = "cannot read property 'access_token' of undefined";
 
@@ -25,7 +25,7 @@ function redirectlogin(xhr: any) {
     }
 }
 
-export const XMLHttpReqHandler: FunctionComponent<{}> = (props) => {
+export const XMLHttpReqHandler: FunctionComponent<PropsWithChildren> = (props) => {
     const [xmlHttpReq, setXmlHttpReq] = useState<boolean>(false);
 
     useEffect(() => {

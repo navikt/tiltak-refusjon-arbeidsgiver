@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useContext, useState } from 'react';
 import { registrerMenyValg } from '../../utils/amplitude-utils';
 import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
@@ -24,7 +24,7 @@ export const useFilter = () => {
     return context;
 };
 
-export const FilterProvider: FunctionComponent = (props) => {
+export const FilterProvider: FunctionComponent<PropsWithChildren> = (props) => {
     const [filter, setFilter] = useState<Filter>({
         status: undefined,
         tiltakstype: undefined,

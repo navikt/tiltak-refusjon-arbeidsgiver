@@ -114,7 +114,7 @@ const Filtermeny: FunctionComponent = () => {
                         </Radio>
                         <Radio
                             role="radio"
-                            value={'Varig lønnstilskudd'}
+                            value={Tiltak.VARIG_LØNNSTILSKUDD}
                             name={Tiltak.VARIG_LØNNSTILSKUDD}
                             onChange={() => oppdaterFilter({ tiltakstype: Tiltak.VARIG_LØNNSTILSKUDD })}
                         >
@@ -122,11 +122,11 @@ const Filtermeny: FunctionComponent = () => {
                         </Radio>
                         <Radio
                             role="radio"
-                            value={'Sommerjobb'}
+                            value={Tiltak.SOMMERJOBB}
                             name={Tiltak.SOMMERJOBB}
                             onChange={() => oppdaterFilter({ tiltakstype: Tiltak.SOMMERJOBB })}
                         >
-                            Sommerjobb'
+                            Sommerjobb
                         </Radio>
                     </RadioGroup>
                 </ExpansionCard.Content>

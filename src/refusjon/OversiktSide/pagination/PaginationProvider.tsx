@@ -10,7 +10,7 @@ interface Context {
 
 export const PaginationContext = React.createContext<Context>({} as Context);
 
-const PaginationProvider: FunctionComponent<{}> = (props: PropsWithChildren<{}>) => {
+const PaginationProvider: FunctionComponent<PropsWithChildren> = (props: PropsWithChildren) => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { filter } = useFilter();
     const { valgtBedrift, setValgtBedrift } = brukerContext;
