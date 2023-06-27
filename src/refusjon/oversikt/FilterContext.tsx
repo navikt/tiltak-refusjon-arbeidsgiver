@@ -50,8 +50,8 @@ export const FilterProvider: FunctionComponent<PropsWithChildren> = (props) => {
     // Lite elegant og høyst manuell måte å oppdatere adresselinjen på når vi setter nye filterverdier
     const oppdaterSearchParams = (searchParams: URLSearchParams, nyttFilter: Partial<Filter>) => {
         const newSearchParams = new URLSearchParams(searchParams);
-        // Hvis vi bytter status eller tiltakstype, gå til page 1
-        if (nyttFilter.status || nyttFilter.tiltakstype) {
+        // Hvis vi bytter status eller tiltakstype, gå til page 0 (status='Alle' er undefined, så vi bruker hasOwnProperty)
+        if (nyttFilter.hasOwnProperty('status') || nyttFilter.hasOwnProperty('tiltakstype')) {
             newSearchParams.delete('page');
         }
         // Hvis vi "nuller ut" status, slett parameteren fra URL

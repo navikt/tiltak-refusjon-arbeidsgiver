@@ -110,37 +110,15 @@ export const godkjennRefusjon = async (refusjonId: string): Promise<any> => {
 export const useHentRefusjoner = (brukerContext: BrukerContextType, filter: Filter): PageableRefusjon => {
     const { valgtBedrift } = brukerContext;
     switch (brukerContext.valgtBedrift.type) {
-        case BedriftvalgType.ENKELBEDRIFT:
-            return HentRefusjonerForEnkeltOrganisasjon(brukerContext, filter.status, filter.tiltakstype);
-        case BedriftvalgType.FLEREBEDRIFTER:
+        case BedriftvalgType.ALLEBEDRIFTER:
+            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, valgtBedrift, filter);
+        default:
             return HentRefusjonForMangeOrganisasjoner(
                 valgtBedrift.valgtOrg.map((e) => e.OrganizationNumber).join(','),
                 valgtBedrift,
                 filter
             );
-        case BedriftvalgType.ALLEBEDRIFTER:
-            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, valgtBedrift, filter);
     }
-};
-
-export const HentRefusjonerForEnkeltOrganisasjon = (
-    brukerContext: BrukerContextType,
-    status?: RefusjonStatus,
-    tiltakstype?: Tiltak
-): PageableRefusjon => {
-    const { currentPage, totalPages, totalItems, size } = brukerContext.valgtBedrift.pageData;
-    const bedriftnummer = brukerContext.valgtBedrift.valgtOrg[0].OrganizationNumber;
-    const { data } = useSWR<Refusjon[]>(
-        `/refusjon?bedriftNr=${bedriftnummer}&status=${status || ''}&tiltakstype=${tiltakstype || ''}`,
-        swrConfig
-    );
-    return {
-        currentPage: currentPage,
-        refusjoner: data!,
-        size: size,
-        totalItems: totalItems,
-        totalPages: totalPages,
-    };
 };
 
 export const HentRefusjonForMangeOrganisasjoner = (
