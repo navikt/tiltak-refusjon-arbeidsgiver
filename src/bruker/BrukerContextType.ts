@@ -1,4 +1,4 @@
-import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
+import { Organisasjon } from '@navikt/bedriftsmeny/lib/types/organisasjon';
 import { Bedriftvalg } from './bedriftsmenyRefusjon/api/api';
 import { Dispatch, SetStateAction } from 'react';
 

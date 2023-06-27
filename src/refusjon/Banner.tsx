@@ -1,4 +1,4 @@
-import { Organisasjon } from '@navikt/bedriftsmeny/lib/organisasjon';
+import { Organisasjon } from '@navikt/bedriftsmeny/lib/types/organisasjon';
 import { History } from 'history';
 import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
