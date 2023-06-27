@@ -10,8 +10,6 @@ interface Props {
 }
 
 const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, refusjonId }: Props) => {
-    const { erOpptjentIPeriode } = inntekt;
-
     const setInntektslinje = (
         refusjonId: string,
         inntektslinjeId: string,
@@ -21,27 +19,16 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
             console.error('err ', err)
         );
 
-    const inntektValg = () => {
-        switch (inntekt.erOpptjentIPeriode) {
-            case true:
-                return 'Ja';
-            case false:
-                return 'Nei';
-            default:
-                return 'Ikke valgt';
-        }
-    };
-
-    let radioverdi = undefined;
-    if (erOpptjentIPeriode) radioverdi = 'ja';
-    if (erOpptjentIPeriode === false) radioverdi = 'nei';
+    let inntektValg = 'Ikke valgt';
+    if (inntekt.erOpptjentIPeriode) inntektValg = 'Ja';
+    if (inntekt.erOpptjentIPeriode === false) inntektValg = 'Nei';
 
     return (
         <td>
             {!kvitteringVisning && (
-                <RadioGroup legend="" className="inntektsmelding__inntektsvalg" value={radioverdi}>
+                <RadioGroup legend="" className="inntektsmelding__inntektsvalg" value={inntektValg}>
                     <Radio
-                        value="ja"
+                        value="Ja"
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, true);
@@ -51,7 +38,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
                         Ja
                     </Radio>
                     <Radio
-                        value="nei"
+                        value="Nei"
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, false);
@@ -64,7 +51,7 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
             )}
             {kvitteringVisning && (
                 <div className="inntektsmelding__valgtInntekt">
-                    <label>{inntektValg()}</label>
+                    <label>{inntektValg}</label>
                 </div>
             )}
         </td>
