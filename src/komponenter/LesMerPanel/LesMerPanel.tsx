@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShort } from '@navikt/ds-react';
 import * as React from 'react';
 import { useState } from 'react';
 import { Collapse } from 'react-collapse';
@@ -13,7 +13,13 @@ interface Props {
     onÅpne?: () => void;
 }
 
-const LesMerPanel: React.FunctionComponent<Props> = ({ åpneLabel, lukkLabel, children, className, onÅpne }) => {
+const LesMerPanel: React.FunctionComponent<Props & React.PropsWithChildren> = ({
+    åpneLabel,
+    lukkLabel,
+    children,
+    className,
+    onÅpne,
+}) => {
     const [åpen, setÅpenState] = useState<boolean>(false);
 
     const setÅpen = (skalÅpnes: boolean) => {
@@ -27,7 +33,7 @@ const LesMerPanel: React.FunctionComponent<Props> = ({ åpneLabel, lukkLabel, ch
         <div className="les-mer-panel">
             <div className={classNames('les-mer-panel__toggler', åpen && 'les-mer-panel__toggler--åpen', className)}>
                 <InfoToggler onToggle={() => setÅpen(!åpen)} åpen={åpen}>
-                    <Normaltekst tag="span">{åpen ? lukkLabel : åpneLabel}</Normaltekst>
+                    <BodyShort size="small">{åpen ? lukkLabel : åpneLabel}</BodyShort>
                 </InfoToggler>
             </div>
             <div className="les-mer-panel__innhold">

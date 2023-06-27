@@ -1,5 +1,5 @@
 import { ReactComponent as Pengesedler } from '@/asset/image/pengesedler.svg';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Label, BodyShort } from '@navikt/ds-react';
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
@@ -34,28 +34,28 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
             </div>
             {props.refusjonsgrunnlag.beregning?.refusjonsbeløp > 0 && (
                 <div>
-                    <Element>Dere får utbetalt</Element>
+                    <Label>Dere får utbetalt</Label>
                     <VerticalSpacer rem={0.5} />
-                    <Normaltekst>
+                    <BodyShort size="small">
                         <b>{formatterPenger(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0)}</b> for perioden{' '}
                         {formatterPeriode(
                             props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                             props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                         )}{' '}
                         til kontonummer {props.refusjonsgrunnlag.bedriftKontonummer}
-                    </Normaltekst>
+                    </BodyShort>
                 </div>
             )}
 
             {props.refusjonsgrunnlag.beregning?.refusjonsbeløp === 0 && (
                 <div>
                     <VerticalSpacer rem={0.5} />
-                    <Normaltekst>
+                    <BodyShort size="small">
                         {props.status === 'KLAR_FOR_INNSENDING' &&
                             props.refusjonsgrunnlag.beregning.sumUtgifter !==
                                 props.refusjonsgrunnlag.beregning?.sumUtgifterFratrukketRefundertBeløp && (
                                 <>
-                                    <Normaltekst>
+                                    <BodyShort size="small">
                                         Oppgitt refunderbar lønn{' '}
                                         <b>
                                             (
@@ -66,9 +66,9 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                                         </b>{' '}
                                         gir et negativt refusjonsgrunnlag og refusjonsbeløpet settes da til{' '}
                                         {formatterPenger(0)}.
-                                    </Normaltekst>
+                                    </BodyShort>
                                     <VerticalSpacer rem={0.5} />
-                                    <Element>
+                                    <Label>
                                         Godta{' '}
                                         <b>{formatterPenger(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0)}</b>{' '}
                                         for perioden{' '}
@@ -77,21 +77,21 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                                             props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                                         )}{' '}
                                         ved å trykke fullfør under.
-                                    </Element>
+                                    </Label>
                                 </>
                             )}
                         {props.status !== 'KLAR_FOR_INNSENDING' && (
                             <>
-                                <Element>
+                                <Label>
                                     Refusjonen er godtatt med {formatterPenger(0)} for perioden{' '}
                                     {formatterPeriode(
                                         props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                                         props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                                     )}
-                                </Element>
+                                </Label>
                             </>
                         )}
-                    </Normaltekst>
+                    </BodyShort>
                 </div>
             )}
 
@@ -99,13 +99,13 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                 <div>
                     {props.refusjonsgrunnlag.beregning.lønnFratrukketFerie < 0 && (
                         <>
-                            <Normaltekst>
+                            <BodyShort size="small">
                                 Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative
                                 refusjonsbeløpet overføres til neste periode. Om tiltaket avsluttes, vil det negative
                                 refusjonsbeløpet ikke overføres til neste periode.
-                            </Normaltekst>
+                            </BodyShort>
                             <VerticalSpacer rem={0.5} />
-                            <Normaltekst>
+                            <BodyShort size="small">
                                 {props.refusjonsgrunnlag.beregning.sumUtgifter !==
                                     props.refusjonsgrunnlag.beregning?.sumUtgifterFratrukketRefundertBeløp && (
                                     <>
@@ -114,15 +114,15 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                                         ved negativt refusjonsbeløp. Dette er altså ikke med i beregnet refusjonsbeløp.{' '}
                                     </>
                                 )}
-                            </Normaltekst>
+                            </BodyShort>
                             <VerticalSpacer rem={0.5} />
-                            <Element>
+                            <Label>
                                 {props.status === 'KLAR_FOR_INNSENDING' && 'Dere må fortsatt trykke fullfør under.'}
-                            </Element>
+                            </Label>
                         </>
                     )}
                     <VerticalSpacer rem={0.5} />
-                    <Normaltekst>
+                    <BodyShort size="small">
                         Dere skylder{' '}
                         <b>{formatterPenger(Math.abs(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0))}</b> for
                         perioden{' '}
@@ -131,7 +131,7 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                             props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                         )}
                         . Dette vil trekkes fra neste refusjon.
-                    </Normaltekst>
+                    </BodyShort>
                 </div>
             )}
         </Boks>

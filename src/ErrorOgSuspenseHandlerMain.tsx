@@ -1,22 +1,19 @@
 import * as Sentry from '@sentry/react';
-import NavFrontendSpinner from 'nav-frontend-spinner';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import * as React from 'react';
-import { FunctionComponent, Suspense } from 'react';
+import { FunctionComponent, PropsWithChildren, Suspense } from 'react';
 import HvitBoks from './komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from './komponenter/VerticalSpacer';
-import { Alert } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, Loader } from '@navikt/ds-react';
 
-const ErrorOgSuspenseHandlerMain: FunctionComponent<{}> = (props) => (
+const ErrorOgSuspenseHandlerMain: FunctionComponent<PropsWithChildren> = (props) => (
     <Sentry.ErrorBoundary
         fallback={({ error, componentStack, resetError }) => (
             <>
                 <Alert variant="warning" size="small">
-                    <Undertittel>Det har oppstått en uventet feil. Forsøk å laste siden på nytt.</Undertittel>
+                    <Heading size="small">Det har oppstått en uventet feil. Forsøk å laste siden på nytt.</Heading>
                     <VerticalSpacer rem={0.5} />
-                    <Normaltekst>
+                    <BodyShort size="small">
                         Teknisk feilkode: <i>{error?.message}</i>
-                    </Normaltekst>
+                    </BodyShort>
                 </Alert>
             </>
         )}
@@ -25,7 +22,7 @@ const ErrorOgSuspenseHandlerMain: FunctionComponent<{}> = (props) => (
             fallback={
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
                     <HvitBoks style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                        <NavFrontendSpinner type="XL" />
+                        <Loader type="XL" />
                     </HvitBoks>
                 </div>
             }

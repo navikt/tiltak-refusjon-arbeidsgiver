@@ -1,4 +1,4 @@
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Label, BodyShort , Heading } from '@navikt/ds-react';
 import React, { FunctionComponent, PropsWithChildren } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
@@ -15,21 +15,21 @@ const TidligereRefunderbarBeløpKvittering: FunctionComponent<Properties> = ({ r
     if (refusjon.refusjonsgrunnlag.fratrekkRefunderbarBeløp) {
         return (
             <div className={cls.element('fratrekk-sykepenger')}>
-                <Undertittel className={cls.element('fratrekk-sykepenger-tittel')}>Fravær i perioden</Undertittel>
+                <Heading size="small" className={cls.element('fratrekk-sykepenger-tittel')}>Fravær i perioden</Heading>
                 {refusjon.refusjonsgrunnlag.fratrekkRefunderbarBeløp && refusjon.refusjonsgrunnlag.beregning && (
                     <>
-                        <Element>Har deltaker har hatt fravær med lønn som blir refundert av NAV i denne perioden?</Element>
-                        <Element>Ja</Element>
+                        <Label>Har deltaker har hatt fravær med lønn som blir refundert av NAV i denne perioden?</Label>
+                        <Label>Ja</Label>
                         <VerticalSpacer rem={1} />
-                        <Normaltekst>
+                        <BodyShort size="small">
                             Har dere fått utbetalt refusjon av lønn på grunn av fravær for deltaker, for eksempel refusjon av
                             sykepenger, så skal dette beløpet trekkes fra refusjon om {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}. Beløpet som skal trekkes
                             fra er det beløpet dere har fått i refusjon av NAV.
-                        </Normaltekst>
+                        </BodyShort >
                         <VerticalSpacer rem={1} />
-                        <Element>
+                        <Label>
                             Refusjonsbeløpet på grunn av fravær: {formatterPenger(refusjon.refusjonsgrunnlag.beregning?.tidligereRefundertBeløp)}  
-                        </Element>
+                        </Label>
                     </>
                 )}
             </div>

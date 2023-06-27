@@ -1,16 +1,15 @@
-import KnappBase, { KnappBaseProps } from 'nav-frontend-knapper';
 import React, { FunctionComponent, HTMLAttributes, useEffect, useRef, useState } from 'react';
 import { Nettressurs, Status } from '../nettressurs';
 import { handterFeil } from '../utils/apiFeilUtils';
 import VerticalSpacer from './VerticalSpacer';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Button, ButtonProps } from '@navikt/ds-react';
 
 type Props = {
     lagreFunksjon: () => Promise<void>;
-    attributes?: KnappBaseProps & HTMLAttributes<HTMLDivElement>;
+    attributes?: ButtonProps & HTMLAttributes<HTMLDivElement>;
 };
 
-const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
+const LagreKnapp: FunctionComponent<Props & ButtonProps> = (props) => {
     const [netverkStatus, setNetverkStatus] = useState<Nettressurs<any>>({ status: Status.IkkeLastet });
     const [feilmelding, setFeilmelding] = useState('');
 
@@ -35,14 +34,14 @@ const LagreKnapp: FunctionComponent<Props & KnappBaseProps> = (props) => {
 
     return (
         <div>
-            <KnappBase
-                spinner={netverkStatus.status === Status.LasterInn}
+            <Button
+                loading={netverkStatus.status === Status.LasterInn}
                 disabled={netverkStatus.status === Status.LasterInn}
                 onClick={onClick}
                 {...knappBaseProps.attributes}
             >
                 {props.children}
-            </KnappBase>
+            </Button>
             {netverkStatus.status === Status.Feil && (
                 <>
                     <VerticalSpacer rem={0.5} />

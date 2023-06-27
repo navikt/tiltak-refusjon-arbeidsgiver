@@ -1,6 +1,6 @@
 import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction } from 'react';
 import GodkjennModal from './GodkjennModal';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShort } from '@navikt/ds-react';
 import { formatterPeriode } from '../../utils/datoUtils';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { formatterPenger } from '../../utils/PengeUtils';
@@ -28,7 +28,7 @@ const RefusjonGodjennModal: FunctionComponent<Properties> = ({
                 godkjenn={godkjennRefusjonen}
                 tittel="Send inn refusjon"
             >
-                <Normaltekst>
+                <BodyShort size="small">
                     Du søker nå om refusjon for hele den avtalte perioden{' '}
                     <b>
                         {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}. Dette kan du
@@ -36,12 +36,12 @@ const RefusjonGodjennModal: FunctionComponent<Properties> = ({
                     </b>{' '}
                     Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at refusjonsbeløpet
                     stemmer.
-                </Normaltekst>
+                </BodyShort>
                 <VerticalSpacer rem={1} />
-                <Normaltekst>
+                <BodyShort size="small">
                     Hvis refusjonsbeløpet på <b>{formatterPenger(beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta
                     kontakt med veileder før du klikker Send inn.
-                </Normaltekst>
+                </BodyShort>
             </GodkjennModal>
         );
     } else {
@@ -52,19 +52,19 @@ const RefusjonGodjennModal: FunctionComponent<Properties> = ({
                 godkjenn={godkjennRefusjonen}
                 tittel="Godta beløp"
             >
-                <Normaltekst>
+                <BodyShort size="small">
                     Du godtar nå beløpet for den avtalte perioden{' '}
                     <b>
                         {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}. Dette kan du
                         kun gjøre en gang.
                     </b>{' '}
                     Sikre deg derfor at alle inntekter innenfor perioden er rapportert inn og at beløpet stemmer.
-                </Normaltekst>
+                </BodyShort>
                 <VerticalSpacer rem={1} />
-                <Normaltekst>
+                <BodyShort size="small">
                     Hvis beløpet på <b>{formatterPenger(beregning?.refusjonsbeløp!)}</b> ikke stemmer, ta kontakt med
                     veileder før du klikker Send inn.
-                </Normaltekst>
+                </BodyShort>
             </GodkjennModal>
         );
     }

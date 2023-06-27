@@ -1,19 +1,16 @@
-import KnappBase, { Knapp, KnappBaseProps } from 'nav-frontend-knapper';
 import React, { FunctionComponent, HTMLAttributes, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Nettressurs, Status } from '../nettressurs';
 import { handterFeil } from '../utils/apiFeilUtils';
 import VerticalSpacer from './VerticalSpacer';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Button, ButtonProps } from '@navikt/ds-react';
 
 type Props = {
     lagreFunksjon: () => Promise<any>;
     avbryt: () => void;
-    attributes?: KnappBaseProps & HTMLAttributes<HTMLDivElement>;
+    attributes?: ButtonProps & HTMLAttributes<HTMLDivElement>;
 };
 
-const LagreOgAvbrytKnapp: FunctionComponent<Props & KnappBaseProps> = (
-    props: PropsWithChildren<Props & KnappBaseProps>
-) => {
+const LagreOgAvbrytKnapp: FunctionComponent<Props & ButtonProps> = (props: PropsWithChildren<Props & ButtonProps>) => {
     const [oppslag, setOppslag] = useState<Nettressurs<any>>({ status: Status.IkkeLastet });
     const [feilmelding, setFeilmelding] = useState('');
 
@@ -39,16 +36,15 @@ const LagreOgAvbrytKnapp: FunctionComponent<Props & KnappBaseProps> = (
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <KnappBase
-                    spinner={oppslag.status === Status.LasterInn}
+                <Button
                     disabled={oppslag.status === Status.LasterInn}
                     onClick={onClick}
-                    type="hoved"
+                    variant="primary"
                     {...knappBaseProps}
                 >
                     {props.children ?? ''}
-                </KnappBase>
-                <Knapp onClick={props.avbryt}>Avbryt</Knapp>
+                </Button>
+                <Button onClick={props.avbryt}>Avbryt</Button>
             </div>
             {oppslag.status === Status.Feil && (
                 <>

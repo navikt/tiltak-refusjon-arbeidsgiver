@@ -1,7 +1,5 @@
 import React, { ChangeEvent, FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import BEMHelper from '../../utils/bem';
-import { Input, RadioPanel } from 'nav-frontend-skjema';
 import { Refusjon } from '../refusjon';
 import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { settTidligereRefunderbarBeløp, utsettFriskSykepenger } from '../../services/rest-service';
@@ -9,7 +7,7 @@ import { useParams } from 'react-router';
 import { formatterDato } from '../../utils/datoUtils';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Radio, RadioGroup, TextField, Heading, Label, BodyShort } from '@navikt/ds-react';
 
 interface Properties {
     refusjon: Refusjon;
@@ -36,7 +34,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
     const utsettFristForRefusjon = async (): Promise<void> => {
         try {
             await utsettFriskSykepenger(refusjon.id);
-        } catch(e) {}
+        } catch (e) {}
     };
 
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
@@ -45,70 +43,85 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
     const cls = BEMHelper('refusjonside');
     return (
         <div className={cls.element('fratrekk-sykepenger')}>
-            <Undertittel className={cls.element('fratrekk-sykepenger-tittel')}>Fravær i perioden</Undertittel>
+            <Heading size="small" className={cls.element('fratrekk-sykepenger-tittel')}>
+                Fravær i perioden
+            </Heading>
             <div className={cls.element('fratrekk-sykepenger-txt')}>
-                <Normaltekst>
+                <BodyShort size="small">
                     Har dere fått utbetalt refusjon av lønn på grunn av fravær for deltaker, for eksempel refusjon av
-                    sykepenger, så skal dette beløpet trekkes fra refusjon om {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}. Beløpet som skal trekkes
-                    fra er det beløpet dere har fått i refusjon av NAV.
-                </Normaltekst>
-                <VerticalSpacer rem={0.5}/>
-                <Normaltekst >
-                    Har dere søkt om refusjon for fravær og venter på rett beløp så må dere vente med å fylle ut refusjon for {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}.
-                    Fristen vil automatisk utsettes mens dere venter på rett beløp.
-                </Normaltekst>
+                    sykepenger, så skal dette beløpet trekkes fra refusjon om{' '}
+                    {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}. Beløpet som skal
+                    trekkes fra er det beløpet dere har fått i refusjon av NAV.
+                </BodyShort>
+                <VerticalSpacer rem={0.5} />
+                <BodyShort size="small">
+                    Har dere søkt om refusjon for fravær og venter på rett beløp så må dere vente med å fylle ut
+                    refusjon for {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}. Fristen
+                    vil automatisk utsettes mens dere venter på rett beløp.
+                </BodyShort>
             </div>
-            <Alert variant='info' size='small' >
-                Refusjon av utbetalt lønn kan være aktuelt dersom dere har søkt om, eller fått utbetalt, refusjon
-                for sykepenger / foreldrepenger / svangerskapspenger / opplæringspenger / pleiepenger, eller hvis
-                detalker har vært fraværende på grunn av egen eller barns sykdom i denne perioden.
+            <Alert variant="info" size="small">
+                Refusjon av utbetalt lønn kan være aktuelt dersom dere har søkt om, eller fått utbetalt, refusjon for
+                sykepenger / foreldrepenger / svangerskapspenger / opplæringspenger / pleiepenger, eller hvis detalker
+                har vært fraværende på grunn av egen eller barns sykdom i denne perioden.
             </Alert>
-            <VerticalSpacer rem={1.75}/>
-            <Element>Har deltaker hatt fravær med lønn som blir refundert av NAV i denne perioden?</Element>
-            <div className={cls.element('fratrekk-sykepenger-radiogroup')}>
-                <RadioPanel
+            <VerticalSpacer rem={1.75} />
+            <Label>Har deltaker hatt fravær med lønn som blir refundert av NAV i denne perioden?</Label>
+
+            <RadioGroup legend="" className={cls.element('fratrekk-sykepenger-radiogroup')}>
+                <Radio
                     name=""
-                    label="Ja"
+                    value={'Ja'}
                     checked={fratrekk === true}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(event.currentTarget.checked);
-                        utsettFristForRefusjon()
+                        utsettFristForRefusjon();
                     }}
-                />
-                <RadioPanel
+                >
+                    Ja
+                </Radio>
+                <Radio
                     name=""
-                    label="Nei"
+                    value={'Nei'}
                     checked={fratrekk === false}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(!event.currentTarget.checked);
                         setBelop('');
                         settTidligereRefunderbarBeløp(refusjonId!, false, undefined);
                     }}
-                />
-                {fratrekk === true && <Normaltekst className={cls.element('ny-frist')}>Ny frist for å søke refusjon: <strong>{formatterDato(refusjon.fristForGodkjenning)}</strong></Normaltekst>}
-            </div>
+                >
+                    Nei
+                </Radio>
+            </RadioGroup>
+            {fratrekk === true && (
+                <BodyShort size="small" className={cls.element('ny-frist')}>
+                    Ny frist for å søke refusjon: <strong>{formatterDato(refusjon.fristForGodkjenning)}</strong>
+                </BodyShort>
+            )}
+
             {fratrekk === true && (
                 <>
-                    <Input
-                        bredde={'S'}
+                    <TextField
+                        className={cls.element('beløp-grunnet-fravær')}
+                        size="small"
                         label={`Refusjonsbeløpet på grunn av fravær`}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             const verdi: string = event.currentTarget.value;
                             if (verdi.match(/^\d*$/)) {
                                 setBelop(verdi);
                             }
-                            if(!verdi) {
-                                setBelop("");
+                            if (!verdi) {
+                                setBelop('');
                             }
                         }}
                         onBlur={() => settTidligereRefunderbarBeløp(refusjonId!, true, parseInt(belop, 10))}
                         value={belop}
-                        />
+                    />
                 </>
             )}
-            <VerticalSpacer rem={1.75}/>
+            <VerticalSpacer rem={1.75} />
             {erFratrekStørre && (
-                <Alert variant='warning' size='small' >
+                <Alert variant="warning" size="small">
                     Refusjon av utbetalt lønn er større enn bruttolønn.
                 </Alert>
             )}

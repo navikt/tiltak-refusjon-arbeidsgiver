@@ -1,9 +1,9 @@
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactNode } from 'react';
 import BEMHelper from '../utils/bem';
 import { visSatsMedEttDesimal } from '../utils/utregningUtil';
 import { formatterPenger } from '../utils/PengeUtils';
 import './Utregningsrad.less';
+import { BodyShort, Heading } from '@navikt/ds-react';
 
 interface Props {
     labelIkon?: React.ReactNode;
@@ -22,9 +22,14 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
         ikon ? ikon : <div className={cls.element('ikon-placeholder')} aria-hidden={true} />;
 
     const setOperator = (operator?: string | ReactNode) =>
-        operator ? <Systemtittel className={cls.element('operator')}>{operator}</Systemtittel> : null;
+        operator ? (
+            <Heading size="medium" className={cls.element('operator')}>
+                {operator}
+            </Heading>
+        ) : null;
 
-    const setLabelSats = (sats?: number) => (sats ? <Normaltekst>({visSatsMedEttDesimal(sats)}%)</Normaltekst> : null);
+    const setLabelSats = (sats?: number) =>
+        sats ? <BodyShort size="small">({visSatsMedEttDesimal(sats)}%)</BodyShort> : null;
 
     const border = () => {
         switch (props.border) {
@@ -53,9 +58,9 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
             </div>
             <div className={cls.element('utregning-verdi')}>
                 {setOperator(props.verdiOperator)}
-                <Normaltekst className={cls.element('sum')} aria-labelledby={labelTekstString}>
+                <BodyShort size="small" className={cls.element('sum')} aria-labelledby={labelTekstString}>
                     {props.ikkePenger || typeof props.verdi === 'string' ? props.verdi : formatterPenger(props.verdi)}
-                </Normaltekst>
+                </BodyShort>
             </div>
         </div>
     );

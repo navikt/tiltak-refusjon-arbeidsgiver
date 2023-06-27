@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { ReactComponent as Underenhet } from '@/asset/image/underenhet.svg';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { NedChevron } from 'nav-frontend-chevron';
+import { ChevronDownIcon } from '@navikt/aksel-icons';
 import BEMHelper from '../../utils/bem';
 import { MenyContext } from './BedriftsmenyRefusjon';
 import { Bedriftvalg, BedriftvalgType, ClsBedriftsmeny } from './api/api';
+import { Label, BodyShort } from '@navikt/ds-react';
 
 const Menyknapp: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.BEDRIFTSMENY);
@@ -16,23 +16,23 @@ const Menyknapp: FunctionComponent = () => {
             case BedriftvalgType.ALLEBEDRIFTER:
                 return (
                     <>
-                        <Element>AlleBedrifter</Element>
-                        <Normaltekst>Antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
+                        <Label>AlleBedrifter</Label>
+                        <BodyShort size="small">Antall valgt {bedrift?.valgtOrg?.length ?? 0}</BodyShort>
                     </>
                 );
             case BedriftvalgType.FLEREBEDRIFTER:
                 return (
                     <>
-                        <Element>Flervalg Bedrift</Element>
-                        <Normaltekst>Antall valgt {bedrift?.valgtOrg?.length ?? 0}</Normaltekst>
+                        <Label>Flervalg Bedrift</Label>
+                        <BodyShort size="small">Antall valgt {bedrift?.valgtOrg?.length ?? 0}</BodyShort>
                     </>
                 );
             case BedriftvalgType.ENKELBEDRIFT:
             default:
                 return (
                     <>
-                        <Element>{bedrift?.valgtOrg?.[0]?.Name ?? ''}</Element>
-                        <Normaltekst>{bedrift?.valgtOrg?.[0]?.OrganizationNumber ?? ''}</Normaltekst>
+                        <Label>{bedrift?.valgtOrg?.[0]?.Name ?? ''}</Label>
+                        <BodyShort size="small">{bedrift?.valgtOrg?.[0]?.OrganizationNumber ?? ''}</BodyShort>
                     </>
                 );
         }
@@ -48,7 +48,7 @@ const Menyknapp: FunctionComponent = () => {
             <div className={cls.element('menyknapp-innhold')}>
                 <Underenhet />
                 <div className={cls.element('knapp-info')}>{setKnappVisning(valgtBedrift)}</div>
-                <NedChevron className={cls.element('chevron', menyApen ? 'open' : '')} />
+                <ChevronDownIcon className={cls.element('chevron', menyApen ? 'open' : '')} />
             </div>
         </button>
     );

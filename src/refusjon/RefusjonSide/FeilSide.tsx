@@ -1,4 +1,3 @@
-import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
@@ -7,7 +6,7 @@ import { tiltakstypeTekst } from '../../messages';
 import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Label, BodyShort, Heading } from '@navikt/ds-react';
 
 type AlertStripeType = 'info' | 'success' | 'warning' | 'error';
 
@@ -22,28 +21,27 @@ const FeilSide: FunctionComponent<Props> = (props) => {
 
     return (
         <HvitBoks>
-            {/*<AlertStripe type={props.advarselType}>{props.feiltekst}</AlertStripe>*/}
             <Alert variant={props.advarselType}>{props.feiltekst}</Alert>
             <VerticalSpacer rem={2} />
-            <Innholdstittel>
+            <Heading size="large">
                 Refusjon av {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
-            </Innholdstittel>
+            </Heading>
             <VerticalSpacer rem={1} />
-            <Element>Periode:</Element>
-            <Normaltekst>
+            <Label>Periode:</Label>
+            <BodyShort size="small">
                 {formatterPeriode(
                     refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                     refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                 )}
-            </Normaltekst>
+            </BodyShort>
             <VerticalSpacer rem={1} />
-            <Element>Beløp i perioden:</Element>
-            <Normaltekst>
+            <Label>Beløp i perioden:</Label>
+            <BodyShort size="small">
                 Inntil {formatterPenger(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp)}
-            </Normaltekst>
+            </BodyShort>
             <VerticalSpacer rem={1} />
-            <Element>Deltaker:</Element>
-            <Normaltekst>{`${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn} ${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerEtternavn}`}</Normaltekst>
+            <Label>Deltaker:</Label>
+            <BodyShort size="small">{`${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn} ${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerEtternavn}`}</BodyShort>
         </HvitBoks>
     );
 };

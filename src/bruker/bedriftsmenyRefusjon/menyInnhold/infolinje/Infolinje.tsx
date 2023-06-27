@@ -2,9 +2,8 @@ import React, { FunctionComponent, useContext } from 'react';
 import BEMHelper from '../../../../utils/bem';
 import { BedriftvalgType, ClsBedriftsmeny } from '../../api/api';
 import './infolinje.less';
-import KnappBase from 'nav-frontend-knapper';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
-import { Element } from 'nav-frontend-typografi';
+import { Label, Button } from '@navikt/ds-react';
 
 const Infolinje: FunctionComponent = () => {
     const cls = BEMHelper(ClsBedriftsmeny.SOK_ETTER_BEDRIFTER);
@@ -22,32 +21,30 @@ const Infolinje: FunctionComponent = () => {
                                 <div className={cls.element('visning-statestikk')}>
                                     {valgtBedrift && desktopview && (
                                         <>
-                                            <Element>
+                                            <Label>
                                                 antall refusjoner:
                                                 <span className={cls.element('visning-statestikk-data')}>
                                                     {valgtBedrift.pageData.totalItems}
                                                 </span>
-                                            </Element>
-                                            <Element>
+                                            </Label>
+                                            <Label>
                                                 nåværende sidevisning:
                                                 <span className={cls.element('visning-statestikk-data')}>
                                                     {valgtBedrift.pageData.currentPage + 1}
                                                 </span>
-                                            </Element>
-                                            <Element>
+                                            </Label>
+                                            <Label>
                                                 antall sider:
                                                 <span className={cls.element('visning-statestikk-data')}>
                                                     {valgtBedrift.pageData.totalPages}
                                                 </span>
-                                            </Element>
+                                            </Label>
                                         </>
                                     )}
                                 </div>
 
                                 {!callbackAlleClick && (
-                                    <KnappBase
-                                        kompakt={false}
-                                        type="hoved"
+                                    <Button
                                         className={cls.element('sok-knapp')}
                                         onClick={() => {
                                             setSokefelt({
@@ -62,7 +59,7 @@ const Infolinje: FunctionComponent = () => {
                                         }}
                                     >
                                         Søk
-                                    </KnappBase>
+                                    </Button>
                                 )}
                             </div>
                         )}

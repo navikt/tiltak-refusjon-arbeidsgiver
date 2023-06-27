@@ -1,22 +1,19 @@
 import React from 'react';
 import BEMHelper from '../../utils/bem';
-import { Element } from 'nav-frontend-typografi';
 import { useFilter } from './FilterContext';
 import { SortingOrder } from '../refusjon';
 import SortingValg from './SortingValg';
+import './LabelRad.less';
+import { Label } from '@navikt/ds-react';
 
-interface Props {
-    className: string;
-}
-
-const LabelRad = (props: Props) => {
-    const cls = BEMHelper(props.className);
+const LabelRad = () => {
+    const cls = BEMHelper('label-rad');
     const { filter } = useFilter();
 
     return (
-        <div className={cls.element('label-rad')} aria-label="rad overkrifter for kolonnene i refusonslisten">
+        <div className={cls.className} aria-label="rad overkrifter for kolonnene i refusonslisten">
             <div className={cls.element('kolonne')} id={cls.element('deltaker')}>
-                <Element className={cls.element('label')}>Deltaker</Element>
+                <Label className={cls.element('label')}>Deltaker</Label>
                 <SortingValg
                     className={cls.className}
                     sortingAsc={SortingOrder.DELTAKER_ASC}
@@ -26,7 +23,7 @@ const LabelRad = (props: Props) => {
                 />
             </div>
             <div className={cls.element('kolonne')} id={cls.element('periode')}>
-                <Element className={cls.element('label')}>Periode</Element>
+                <Label className={cls.element('label')}>Periode</Label>
                 <SortingValg
                     className={cls.className}
                     sortingAsc={SortingOrder.PERIODE_ASC}
@@ -36,7 +33,7 @@ const LabelRad = (props: Props) => {
                 />
             </div>
             <div className={cls.element('kolonne')} id={cls.element('status')}>
-                <Element className={cls.element('label')}>Status</Element>
+                <Label className={cls.element('label')}>Status</Label>
                 <SortingValg
                     className={cls.className}
                     sortingAsc={SortingOrder.STATUS_ASC}
@@ -46,7 +43,7 @@ const LabelRad = (props: Props) => {
                 />
             </div>
             <div className={cls.element('kolonne')} id={cls.element('frist-godkjenning')}>
-                <Element className={cls.element('label')}>Frist for godkjenning</Element>
+                <Label className={cls.element('label')}>Frist for godkjenning</Label>
                 <SortingValg
                     className={cls.className}
                     sortingAsc={SortingOrder.FRISTFORGODKJENNING_ASC}

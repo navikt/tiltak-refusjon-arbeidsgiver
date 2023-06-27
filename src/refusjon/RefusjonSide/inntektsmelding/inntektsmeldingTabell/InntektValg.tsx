@@ -1,5 +1,5 @@
-import { Radio } from 'nav-frontend-skjema';
-import { ChangeEvent, FunctionComponent } from 'react';
+import React, { ChangeEvent, FunctionComponent } from 'react';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 import { setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
 import { Inntektslinje } from '../../../refusjon';
 
@@ -10,8 +10,6 @@ interface Props {
 }
 
 const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, refusjonId }: Props) => {
-    const { erOpptjentIPeriode } = inntekt;
-
     const setInntektslinje = (
         refusjonId: string,
         inntektslinjeId: string,
@@ -21,44 +19,39 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
             console.error('err ', err)
         );
 
-    const inntektValg = () => {
-        switch (inntekt.erOpptjentIPeriode) {
-            case true:
-                return 'Ja';
-            case false:
-                return 'Nei';
-            default:
-                return 'Ikke valgt';
-        }
-    };
+    let inntektValg = 'Ikke valgt';
+    if (inntekt.erOpptjentIPeriode) inntektValg = 'Ja';
+    if (inntekt.erOpptjentIPeriode === false) inntektValg = 'Nei';
 
     return (
         <td>
             {!kvitteringVisning && (
-                <div className="inntektsmelding__inntektsvalg">
+                <RadioGroup legend="" className="inntektsmelding__inntektsvalg" value={inntektValg}>
                     <Radio
-                        label="Ja"
-                        checked={erOpptjentIPeriode}
+                        value="Ja"
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, true);
                         }}
                         name={inntekt.id}
-                    />
+                    >
+                        Ja
+                    </Radio>
                     <Radio
-                        label="Nei"
-                        checked={typeof erOpptjentIPeriode === 'boolean' && !erOpptjentIPeriode}
+                        value="Nei"
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             event.preventDefault();
                             return setInntektslinje(refusjonId, inntekt.id, false);
                         }}
                         name={inntekt.id}
-                    />
-                </div>
+                    >
+                        Nei
+                    </Radio>
+                </RadioGroup>
             )}
             {kvitteringVisning && (
                 <div className="inntektsmelding__valgtInntekt">
-                    <label>{inntektValg()}</label>
+                    <label>{inntektValg}</label>
                 </div>
             )}
         </td>

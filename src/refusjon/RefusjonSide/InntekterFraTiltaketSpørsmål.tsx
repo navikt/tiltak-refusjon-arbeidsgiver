@@ -1,5 +1,3 @@
-import { Input, Label, RadioPanel } from 'nav-frontend-skjema';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
@@ -12,6 +10,7 @@ import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
+import { BodyShort, Heading, Label, Radio, RadioGroup, TextField } from '@navikt/ds-react';
 
 export const GrønnBoks = styled.div`
     background-color: #ccf1d6;
@@ -47,15 +46,15 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
 
     return (
         <div className={cls.element('inntekter-fra-tiltaket-boks')}>
-            <Undertittel>
+            <Heading size="small">
                 Inntekter som skal refunderes for{' '}
                 {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}
-            </Undertittel>
+            </Heading>
             <VerticalSpacer rem={1} />
-            <Normaltekst>
+            <BodyShort size="small">
                 Dette er inntekter som er opptjent i perioden. Det vil gjøres en utregning under med sum bruttolønn som
                 grunnlag.
-            </Normaltekst>
+            </BodyShort>
             <VerticalSpacer rem={1} />
             <InntekterOpptjentIPeriodeTabell inntekter={inntektsgrunnlag?.inntekter} månedsNavn={månedNavn} />
             <VerticalSpacer rem={1} />
@@ -67,30 +66,35 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             <p>
                 <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller et annet tiltak.</i>
             </p>
-            <div className={cls.element('inntekter-kun-fra-tiltaket')}>
-                <RadioPanel
+            <RadioGroup legend="" className={cls.element('inntekter-kun-fra-tiltaket')}>
+                <Radio
                     name="inntekterKunFraTiltaket"
-                    label="Ja"
+                    value="Ja"
                     checked={inntekterKunTiltaket === true}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setInntekterKunTiltaket(event.currentTarget.checked);
                         setEndringBruttoLønn('');
                         endreBruttolønn(refusjonId!, true, undefined);
                     }}
-                />
-                <RadioPanel
+                >
+                    Ja
+                </Radio>
+                <Radio
                     name="inntekterKunFraTiltaket"
-                    label="Nei"
+                    value="Nei"
                     checked={inntekterKunTiltaket === false}
                     onChange={(e) => setInntekterKunTiltaket(!e.currentTarget.checked)}
-                />
-            </div>
+                >
+                    Nei
+                </Radio>
+            </RadioGroup>
 
             {inntekterKunTiltaket === false && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <Input
-                        bredde={'S'}
+                    <TextField
+                        className={cls.element('bruttolønn-utbetalt-for-periode')}
+                        size="small"
                         label={`Skriv inn bruttolønn utbetalt for perioden med ${
                             tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
                         }`}
@@ -99,8 +103,8 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                             if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {
                                 setEndringBruttoLønn(verdi);
                             }
-                            if(!verdi) {
-                                setEndringBruttoLønn("");
+                            if (!verdi) {
+                                setEndringBruttoLønn('');
                             }
                         }}
                         onBlur={() => endreBruttolønn(refusjonId!, false, parseInt(endringBruttoLønn, 10))}

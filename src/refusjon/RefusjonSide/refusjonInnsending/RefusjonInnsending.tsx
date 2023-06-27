@@ -2,13 +2,12 @@ import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, 
 import Utregning from '../../../komponenter/Utregning';
 import { RefusjonContext } from '../../../RefusjonProvider';
 import SummeringBoks from '../SummeringBoks';
-import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import LagreKnapp from '../../../komponenter/LagreKnapp';
 import { Refusjon } from '../../refusjon';
 import BEMHelper from '../../../utils/bem';
 import './refusjonInnsending.less';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
-import { Alert } from '@navikt/ds-react';
+import { Alert, ConfirmationPanel } from '@navikt/ds-react';
 
 interface Properties {
     refusjon: Refusjon;
@@ -56,16 +55,16 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
 
             <VerticalSpacer rem={1} />
 
-            <BekreftCheckboksPanel
+            <ConfirmationPanel
                 className={cls.element('panel')}
                 onChange={() => bekreftOpplysninger()}
                 checked={bekrefetKorrekteOpplysninger}
                 label="Jeg bekrefter at opplysningene er korrekte."
-                feil={ikkeBekreftetFeilmelding}
+                error={ikkeBekreftetFeilmelding}
             >
                 NAV og Riksrevisjonen kan iverksette kontroll (for eksempel stikkprøvekontroll) med at midlene nyttes
                 etter forutsetningene, jfr. Bevilgningsreglementet av 26.05.2005 § 10, 2. ledd
-            </BekreftCheckboksPanel>
+            </ConfirmationPanel>
 
             {feilListe.includes('bedriftKid') && (
                 <>
@@ -74,7 +73,7 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 </>
             )}
 
-            <LagreKnapp type="hoved" lagreFunksjon={() => fullførRefusjon()}>
+            <LagreKnapp variant="primary" lagreFunksjon={() => fullførRefusjon()}>
                 Fullfør
             </LagreKnapp>
         </div>

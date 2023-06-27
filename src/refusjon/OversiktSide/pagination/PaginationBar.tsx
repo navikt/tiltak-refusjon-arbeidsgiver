@@ -1,14 +1,15 @@
-import React, { FunctionComponent, useState } from 'react';
-import { Normaltekst } from 'nav-frontend-typografi';
+import React, { FunctionComponent, useContext, useState } from 'react';
+import { BodyShort } from '@navikt/ds-react';
 import BEMHelper from '../../../utils/bem';
 import { BrukerContextType } from '../../../bruker/BrukerContextType';
 import { useInnloggetBruker } from '../../../bruker/BrukerContext';
 import useSize from '../../../bruker/bedriftsmenyRefusjon/api/useSize';
+import { PaginationContext } from './PaginationProvider';
 
 const PaginationBar: FunctionComponent = () => {
     const [desktopview, setDesktopview] = useState<boolean>(window.innerWidth > 768);
     const brukerContext: BrukerContextType = useInnloggetBruker();
-    const { valgtBedrift, setValgtBedrift } = brukerContext;
+    const { valgtBedrift } = brukerContext;
     const cls = BEMHelper('pagination-bar');
     const steg: React.ReactNode[] = [];
     const pagelength = valgtBedrift?.pageData?.totalPages;
@@ -17,22 +18,7 @@ const PaginationBar: FunctionComponent = () => {
     const LAST_PAGE = pagelength - 1;
 
     useSize({ desktopview, setDesktopview });
-
-    const setNewPage = (newPageNr: number, newPageSize: number) => {
-        const { currentPage, size, totalItems, totalPages } = valgtBedrift.pageData;
-        setValgtBedrift(
-            Object.assign({}, valgtBedrift, {
-                pageData: {
-                    page: newPageNr,
-                    pagesize: newPageSize,
-                    currentPage: currentPage,
-                    size: size,
-                    totalItems: totalItems,
-                    totalPages: totalPages,
-                },
-            })
-        );
-    };
+    const { setNewPage } = useContext(PaginationContext);
 
     const genNyttsteg = (index: number) =>
         steg.push(
@@ -47,7 +33,7 @@ const PaginationBar: FunctionComponent = () => {
     const genererSkillelinje = () =>
         steg.push(
             <li className={cls.element('steg-skillelinje')}>
-                <Normaltekst>...</Normaltekst>
+                <BodyShort size="small">...</BodyShort>
             </li>
         );
 

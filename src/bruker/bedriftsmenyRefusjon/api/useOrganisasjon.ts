@@ -14,7 +14,7 @@ function useOrganisasjon(
     orgtre: Organisasjonlist = { list: [], feilstatus: undefined },
     history: History,
     valgtBedrift: Bedriftvalg | undefined,
-    setValgtBedrift: (org: Bedriftvalg) => void,
+    setValgtBedrift: (org: Bedriftvalg, nullstillFilter: boolean) => void,
     bedriftvalg: Bedriftvalg | undefined,
     setBedriftvalg: Dispatch<SetStateAction<Bedriftvalg>>
 ) {
@@ -34,7 +34,7 @@ function useOrganisasjon(
                 feilstatus: orgtre?.feilstatus ?? undefined,
             };
             setBedriftvalg(valgtorg);
-            setValgtBedrift(valgtorg);
+            setValgtBedrift(valgtorg, false); // Ikke nullstill filter ved første initiering (refresh)
         }
 
         function setFallbackOrganisasjon(type: BedriftvalgType): void {

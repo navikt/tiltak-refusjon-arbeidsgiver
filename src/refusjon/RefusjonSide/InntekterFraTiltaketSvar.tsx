@@ -1,4 +1,4 @@
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Label, BodyShort, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
@@ -38,30 +38,32 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
     return (
         <div>
             <GrønnBoks>
-                <Undertittel>
+                <Heading size="small">
                     Inntekter som refunderes for{' '}
                     {formatterPeriode(
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
-                </Undertittel>
+                </Heading>
                 <VerticalSpacer rem={1} />
                 <InntekterOpptjentIPeriodeTabell
                     inntekter={props.refusjonsgrunnlag.inntektsgrunnlag.inntekter}
                     månedsNavn={månedNavn}
                 />
                 <VerticalSpacer rem={2} />
-                <Element>
+                <Label>
                     Er inntektene du har valgt ({formatterPenger(valgtBruttoLønn as number)}) kun fra tiltaket{' '}
                     {tiltakstypeTekst[props.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?{' '}
-                </Element>
-                <Normaltekst>{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</Normaltekst>
+                </Label>
+                <BodyShort size="small">{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</BodyShort>
                 {props.refusjonsgrunnlag.endretBruttoLønn !== null &&
                     props.refusjonsgrunnlag.endretBruttoLønn !== undefined && (
                         <>
                             <VerticalSpacer rem={1} />
-                            <Element>Korrigert bruttolønn:</Element>
-                            <Normaltekst>{formatterPenger(props.refusjonsgrunnlag.endretBruttoLønn)}</Normaltekst>
+                            <Label>Korrigert bruttolønn:</Label>
+                            <BodyShort size="small">
+                                {formatterPenger(props.refusjonsgrunnlag.endretBruttoLønn)}
+                            </BodyShort>
                         </>
                     )}
             </GrønnBoks>

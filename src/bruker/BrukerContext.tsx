@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { NavigateFunction } from 'react-router-dom';
 import RefusjonFeilet from '../komponenter/refusjonFeilet/RefusjonFeilet';
@@ -21,7 +21,7 @@ export const useInnloggetBruker = () => {
     return context;
 };
 
-export const BrukerProvider: FunctionComponent = (props) => {
+export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
     const [innloggetBruker, setInnloggetBruker] = useState<InnloggetBruker>();
     const [valgtBedrift, setValgtBedrift] = useState<Bedriftvalg>(initvalgtBedrift);
 
@@ -38,12 +38,14 @@ export const BrukerProvider: FunctionComponent = (props) => {
         return org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
     };
 
-    const setValgtBedriftOgNavigere = (org: Bedriftvalg) => {
+    const setValgtBedriftOgNavigere = (org: Bedriftvalg, nullstillFilter: boolean = true) => {
         if (valgtBedrift?.valgtOrg) {
+            const searchParams = nullstillFilter ? new URLSearchParams() : new URLSearchParams(window.location.search);
             const valgtOrg: string = getBedriftSearchkey(org);
+            searchParams.set('bedrift', valgtOrg);
             navigate({
                 pathname: window.location.pathname,
-                search: 'bedrift=' + valgtOrg,
+                search: searchParams.toString(),
             });
         }
         setValgtBedrift(org);
@@ -62,7 +64,9 @@ export const BrukerProvider: FunctionComponent = (props) => {
                 <Banner
                     organisasjoner={innloggetBruker.organisasjoner}
                     valgtBedrift={valgtBedrift}
-                    setValgtBedrift={(org) => setValgtBedriftOgNavigere(org)}
+                    setValgtBedrift={(org, nullstillFilter = true) => {
+                        setValgtBedriftOgNavigere(org, nullstillFilter);
+                    }}
                 />
             )}
             {innloggetBruker && detErValgtBedrift && (

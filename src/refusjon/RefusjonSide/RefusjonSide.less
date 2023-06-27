@@ -17,14 +17,23 @@
     }
 
     &__inntekter-kun-fra-tiltaket {
-        display: flex;
-        flex-direction: row;
-        label {
-            flex-grow: 1;
-            margin-right: 0.5rem;
-            &:last-child {
-                margin-right: 0;
+        > div {
+            display: flex;
+            column-gap: 0.5rem;
+
+            label {
+                flex-grow: 1;
+                margin-right: 0.5rem;
+                &:last-child {
+                    margin-right: 0;
+                }
             }
+        }
+    }
+
+    &__bruttolønn-utbetalt-for-periode {
+        > input {
+            width: 15%;
         }
     }
 
@@ -36,18 +45,21 @@
         margin-bottom: 1rem;
     }
 
-    &__fratrekk-sykepenger-radiogroup {
+    &__fratrekk-sykepenger-radiogroup > div {
         display: flex;
-        margin: 1rem 0 2.5rem 0;
-        & > .radioPanel {
-            min-width: 5rem;
-            &:nth-child(1) {
-                margin-right: 1rem;
-            }
-        }
+        margin-bottom: 0.5rem;
+        column-gap: 0.5rem;
     }
+
     &__ny-frist {
-        margin-left: 1rem;
         align-self: flex-end;
+    }
+
+    &__beløp-grunnet-fravær {
+        margin-top: 1rem;
+
+        > input {
+            width: 15%;
+        }
     }
 }

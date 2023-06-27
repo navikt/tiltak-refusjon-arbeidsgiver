@@ -1,4 +1,4 @@
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import BEMHelper from '../../../utils/bem';
 import { formatterDato, månedsNavn, NORSK_DATO_OG_TID_FORMAT } from '../../../utils/datoUtils';
@@ -14,7 +14,7 @@ const InntektsMeldingHeader: FunctionComponent<Properties> = ({ refusjon }: Prop
 
     return (
         <div className={cls.element('header')}>
-            <Undertittel className={cls.element('header-tittel')}>
+            <Heading size="small" className={cls.element('header-tittel')}>
                 Inntekter hentet fra a-meldingen for {månedNavn} måned{' '}
                 {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'SOMMERJOBB' ? (
                     <>
@@ -31,15 +31,15 @@ const InntektsMeldingHeader: FunctionComponent<Properties> = ({ refusjon }: Prop
                         )}
                     </>
                 )}
-            </Undertittel>
+            </Heading>
             {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
-                <Normaltekst>
+                <BodyShort size="small">
                     Sist hentet:{' '}
                     {formatterDato(
                         refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
                         NORSK_DATO_OG_TID_FORMAT
                     )}
-                </Normaltekst>
+                </BodyShort>
             )}
         </div>
     );

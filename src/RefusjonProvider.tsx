@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useState } from 'react';
 import { useParams } from 'react-router';
 import { Refusjon, Refusjonsgrunnlag } from './refusjon/refusjon';
 import { useHentRefusjon } from './services/rest-service';
@@ -18,7 +18,7 @@ export interface Context {
 
 export const RefusjonContext = React.createContext<Context>({} as Context);
 
-const RefusjonProvider: FunctionComponent = (props) => {
+const RefusjonProvider: FunctionComponent<PropsWithChildren> = (props) => {
     const [refusjon, setRefusjon] = useState<Refusjon>({} as Refusjon);
     const [ulagredeEndringer, setUlagredeEndringer] = useState(false);
     const [feilListe, setFeilListe] = useState<String[]>([]);

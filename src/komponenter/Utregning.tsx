@@ -9,8 +9,7 @@ import { ReactComponent as RefusjonAvLønn } from '@/asset/image/refusjonAvLønn
 import { ReactComponent as Sparegris } from '@/asset/image/sparegris.svg';
 import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprosent.svg';
 import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
-import { Alert } from '@navikt/ds-react';
-import { Systemtittel } from 'nav-frontend-typografi';
+import { Alert, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
@@ -36,7 +35,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
     const { beregning, tilskuddsgrunnlag, forrigeRefusjonMinusBeløp } = props;
     return (
         <GråRamme>
-            <Systemtittel>Utregningen</Systemtittel>
+            <Heading size="medium">Utregningen</Heading>
             <VerticalSpacer rem={1} />
             <Utregningsrad
                 labelIkon={<Pengesekken />}

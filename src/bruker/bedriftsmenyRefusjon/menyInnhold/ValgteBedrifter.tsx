@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { BedriftvalgType } from '../api/api';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ReactComponent as UnderEnhet } from '@/asset/image/underenhet.svg';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
+import { Label, BodyShort } from '@navikt/ds-react';
 
 const ValgteBedrifter: FunctionComponent = () => {
     const cls = BEMHelper('menyInnhold');
@@ -12,7 +12,7 @@ const ValgteBedrifter: FunctionComponent = () => {
 
     return bedriftvalg.type !== BedriftvalgType.ENKELBEDRIFT && bedriftvalg.valgtOrg.length > 0 ? (
         <div className={cls.element('valgte-bedrifter')}>
-            <Element className={cls.element('valgte-org-overskrift')}>Valgte bedrifter</Element>
+            <Label className={cls.element('valgte-org-overskrift')}>Valgte bedrifter</Label>
             <div className={cls.element('valgte-bedrifter-innhold')}>
                 <div style={{ marginRight: '0.5rem' }}>
                     {bedriftvalg.valgtOrg.map((e, i) => (
@@ -20,9 +20,9 @@ const ValgteBedrifter: FunctionComponent = () => {
                             <div className={cls.element('ikon')}>
                                 <UnderEnhet />
                             </div>
-                            <Normaltekst className={cls.element('valgte-bedrifter-tekst')}>
+                            <BodyShort size="small" className={cls.element('valgte-bedrifter-tekst')}>
                                 org.nr {e.OrganizationNumber}
-                            </Normaltekst>
+                            </BodyShort>
                         </div>
                     ))}
                 </div>
