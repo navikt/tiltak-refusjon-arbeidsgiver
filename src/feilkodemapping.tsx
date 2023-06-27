@@ -9,7 +9,8 @@ export type Feilkode =
     | 'GODKJENN_TIDLIGERE_REFUSJON_FØRST'
     | 'REFUSJON_BELOP_NEGATIVT_TALL'
     | 'UGYLDIG_FORLENGELSE_AV_FRIST'
-    | 'FEIL_BEDRIFT_KIDNUMMER';
+    | 'FEIL_BEDRIFT_KIDNUMMER'
+    | 'LAST_REFUSJONEN_PÅ_NYTT_REFUSJONSGRUNNLAG_ENDRET';
 
 export const Feilmeldinger: { [key in Feilkode]: string } = {
     INGEN_BEDRIFTKONTONUMMER: 'Mangler kontonummer for bedriften',
@@ -25,4 +26,6 @@ export const Feilmeldinger: { [key in Feilkode]: string } = {
     GODKJENN_TIDLIGERE_REFUSJON_FØRST: 'Du må godkjenne en eldre refusjon, før du sender inn denne.',
     UGYLDIG_FORLENGELSE_AV_FRIST: 'Refusjonen kan ikke lenger forlenges',
     FEIL_BEDRIFT_KIDNUMMER: 'Kan ikke sende inn refusjon med ugyldig KID-nummer',
+    LAST_REFUSJONEN_PÅ_NYTT_REFUSJONSGRUNNLAG_ENDRET:
+        'Refusjonsgrunnlaget er blitt endret, vennligst last siden på nytt.',
 };
