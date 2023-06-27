@@ -12,31 +12,16 @@ export const PaginationContext = React.createContext<Context>({} as Context);
 
 const PaginationProvider: FunctionComponent<PropsWithChildren> = (props: PropsWithChildren) => {
     const brukerContext: BrukerContextType = useInnloggetBruker();
-    const { filter } = useFilter();
+    const { filter, oppdaterFilter } = useFilter();
     const { valgtBedrift, setValgtBedrift } = brukerContext;
 
     useEffect(() => {
-        if (valgtBedrift?.pageData?.currentPage !== 0) {
-            setValgtBedrift(
-                Object.assign({}, valgtBedrift, {
-                    pageData: {
-                        ...valgtBedrift.pageData,
-                        currentPage: 0,
-                        page: 0,
-                    },
-                })
-            );
-        }
-        // eslint-disable-next-line
-    }, [filter]);
-
-    const setNewPage = (newPageNr: number, newPageSize: number): void => {
         const { currentPage, size, totalItems, totalPages } = valgtBedrift.pageData;
         setValgtBedrift(
             Object.assign({}, valgtBedrift, {
                 pageData: {
-                    page: newPageNr,
-                    pagesize: newPageSize,
+                    page: filter.page || 0,
+                    pagesize: filter.size || 10,
                     currentPage: currentPage,
                     size: size,
                     totalItems: totalItems,
@@ -44,6 +29,11 @@ const PaginationProvider: FunctionComponent<PropsWithChildren> = (props: PropsWi
                 },
             })
         );
+        // eslint-disable-next-line
+    }, [filter]);
+
+    const setNewPage = (newPageNr: number, newPageSize: number): void => {
+        oppdaterFilter({ ...filter, page: newPageNr, size: newPageSize });
     };
 
     const setPageSizeOption = (event: React.ChangeEvent<HTMLSelectElement>): void => {
