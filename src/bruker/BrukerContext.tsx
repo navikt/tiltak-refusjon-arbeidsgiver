@@ -38,9 +38,9 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
         return org?.valgtOrg.map((o) => o.OrganizationNumber).join(',');
     };
 
-    const setValgtBedriftOgNavigere = (org: Bedriftvalg) => {
+    const setValgtBedriftOgNavigere = (org: Bedriftvalg, nullstillFilter: boolean = true) => {
         if (valgtBedrift?.valgtOrg) {
-            const searchParams = new URLSearchParams(window.location.search);
+            const searchParams = nullstillFilter ? new URLSearchParams() : new URLSearchParams(window.location.search);
             const valgtOrg: string = getBedriftSearchkey(org);
             searchParams.set('bedrift', valgtOrg);
             navigate({
@@ -64,7 +64,9 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
                 <Banner
                     organisasjoner={innloggetBruker.organisasjoner}
                     valgtBedrift={valgtBedrift}
-                    setValgtBedrift={(org) => setValgtBedriftOgNavigere(org)}
+                    setValgtBedrift={(org, nullstillFilter = true) => {
+                        setValgtBedriftOgNavigere(org, nullstillFilter);
+                    }}
                 />
             )}
             {innloggetBruker && detErValgtBedrift && (
