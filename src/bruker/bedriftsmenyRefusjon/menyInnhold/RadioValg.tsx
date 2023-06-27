@@ -57,27 +57,24 @@ const RadioValg: FunctionComponent<Properties> = (props: PropsWithChildren<Prope
 
     return (
         <div className={cls.element('radiovalg-av-bedrift')}>
-            <RadioGroup legend="Bedriftvalg">
+            <RadioGroup legend="Bedriftvalg" value={bedriftvalg.type}>
                 <Radio
-                    value="Velg en bedrift"
+                    value={BedriftvalgType.ENKELBEDRIFT}
                     name="Velg en bedrift"
-                    checked={bedriftvalg.type === BedriftvalgType.ENKELBEDRIFT}
                     onChange={() => byttRadioValg(BedriftvalgType.ENKELBEDRIFT)}
                 >
                     Velg en bedrift
                 </Radio>
                 <Radio
-                    value="Velg flere bedrifter"
+                    value={BedriftvalgType.FLEREBEDRIFTER}
                     name="Velg flere bedrifter"
-                    checked={bedriftvalg.type === BedriftvalgType.FLEREBEDRIFTER}
                     onChange={() => byttRadioValg(BedriftvalgType.FLEREBEDRIFTER)}
                 >
                     Velg flere bedrifter
                 </Radio>
                 <Radio
-                    value="Velg alle bedrifter"
+                    value={BedriftvalgType.ALLEBEDRIFTER}
                     name="Velg alle bedrifter"
-                    checked={bedriftvalg.type === BedriftvalgType.ALLEBEDRIFTER}
                     onChange={() => byttRadioValg(BedriftvalgType.ALLEBEDRIFTER)}
                 >
                     Velg alle bedrifter
