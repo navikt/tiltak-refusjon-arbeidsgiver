@@ -102,6 +102,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
             {fratrekk === true && (
                 <>
                     <TextField
+                        className={cls.element('beløp-grunnet-fravær')}
                         size="small"
                         label={`Refusjonsbeløpet på grunn av fravær`}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {

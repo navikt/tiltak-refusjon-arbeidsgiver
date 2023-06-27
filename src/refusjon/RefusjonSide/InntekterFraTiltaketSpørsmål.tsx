@@ -93,6 +93,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 <>
                     <VerticalSpacer rem={1} />
                     <TextField
+                        className={cls.element('bruttolønn-utbetalt-for-periode')}
                         size="small"
                         label={`Skriv inn bruttolønn utbetalt for perioden med ${
                             tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
