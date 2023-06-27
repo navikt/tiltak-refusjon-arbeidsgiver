@@ -19,7 +19,8 @@
     &__inntekter-kun-fra-tiltaket {
         > div {
             display: flex;
-            flex-direction: row;
+            column-gap: 0.5rem;
+
             label {
                 flex-grow: 1;
                 margin-right: 0.5rem;
@@ -38,16 +39,12 @@
         margin-bottom: 1rem;
     }
 
-    &__fratrekk-sykepenger-radiogroup {
+    &__fratrekk-sykepenger-radiogroup > div {
         display: flex;
-        margin: 1rem 0 2.5rem 0;
-        & > .radioPanel {
-            min-width: 5rem;
-            &:nth-child(1) {
-                margin-right: 1rem;
-            }
-        }
+        margin-bottom: 0.5rem;
+        column-gap: 0.5rem;
     }
+
     &__ny-frist {
         margin-left: 1rem;
         align-self: flex-end;
