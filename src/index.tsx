@@ -1,10 +1,10 @@
 import '@navikt/ds-css';
-import * as Sentry from '@sentry/browser';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOMClient from 'react-dom/client';
 import App from './App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import * as Sentry from '@sentry/browser';
 
 // sentry init
 Sentry.init({
@@ -12,11 +12,13 @@ Sentry.init({
     environment: window.location.hostname,
 });
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = ReactDOMClient.createRoot(container!);
+
+root.render(
     <React.StrictMode>
         <App />
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change
