@@ -43,7 +43,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
 
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
-
+    
     return (
         <div className={cls.element('inntekter-fra-tiltaket-boks')}>
             <Heading size="small">
@@ -66,11 +66,10 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             <p>
                 <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller et annet tiltak.</i>
             </p>
-            <RadioGroup legend="" className={cls.element('inntekter-kun-fra-tiltaket')}>
+            <RadioGroup legend="" className={cls.element('inntekter-kun-fra-tiltaket')} value={inntekterKunTiltaket}>
                 <Radio
                     name="inntekterKunFraTiltaket"
-                    value="Ja"
-                    checked={inntekterKunTiltaket === true}
+                    value={true}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setInntekterKunTiltaket(event.currentTarget.checked);
                         setEndringBruttoLønn('');
@@ -81,8 +80,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 </Radio>
                 <Radio
                     name="inntekterKunFraTiltaket"
-                    value="Nei"
-                    checked={inntekterKunTiltaket === false}
+                    value={false}
                     onChange={(e) => setInntekterKunTiltaket(!e.currentTarget.checked)}
                 >
                     Nei

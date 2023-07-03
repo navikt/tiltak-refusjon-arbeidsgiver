@@ -19,8 +19,8 @@ const Filtermeny: FunctionComponent = () => {
                 <ExpansionCard.Header>
                     <ExpansionCard.Title size="small">Status</ExpansionCard.Title>
                 </ExpansionCard.Header>
-                <ExpansionCard.Content>
-                    <RadioGroup legend="" value={filter.status || ''}>
+                <ExpansionCard.Content style={{ paddingTop: '0rem' }}>
+                    <RadioGroup legend="" value={filter.status || ''} size="small">
                         <Radio
                             role="radio"
                             value=""
@@ -93,8 +93,8 @@ const Filtermeny: FunctionComponent = () => {
                 <ExpansionCard.Header>
                     <ExpansionCard.Title size="small">Tiltakstype</ExpansionCard.Title>
                 </ExpansionCard.Header>
-                <ExpansionCard.Content>
-                    <RadioGroup legend="" value={filter.tiltakstype || ''}>
+                <ExpansionCard.Content style={{ paddingTop: '0rem' }}>
+                    <RadioGroup legend="" value={filter.tiltakstype || ''} size="small">
                         <Radio
                             role="radio"
                             value={''}
