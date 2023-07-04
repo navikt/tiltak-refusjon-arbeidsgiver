@@ -10,7 +10,8 @@ export type Feilkode =
     | 'REFUSJON_BELOP_NEGATIVT_TALL'
     | 'UGYLDIG_FORLENGELSE_AV_FRIST'
     | 'FEIL_BEDRIFT_KIDNUMMER'
-    | 'LAST_REFUSJONEN_PÅ_NYTT_REFUSJONSGRUNNLAG_ENDRET';
+    | 'LAST_REFUSJONEN_PÅ_NYTT_REFUSJONSGRUNNLAG_ENDRET'
+    | 'FERIETREKK_TRUKKET_FOR_SAMME_MÅNED';
 
 export const Feilmeldinger: { [key in Feilkode]: string } = {
     INGEN_BEDRIFTKONTONUMMER: 'Mangler kontonummer for bedriften',
@@ -28,4 +29,5 @@ export const Feilmeldinger: { [key in Feilkode]: string } = {
     FEIL_BEDRIFT_KIDNUMMER: 'Kan ikke sende inn refusjon med ugyldig KID-nummer',
     LAST_REFUSJONEN_PÅ_NYTT_REFUSJONSGRUNNLAG_ENDRET:
         'Refusjonsgrunnlaget er blitt endret, vennligst last siden på nytt.',
+    FERIETREKK_TRUKKET_FOR_SAMME_MÅNED: 'Ferietrekk er trukket for samme måned. Vent 1 minutt og last siden på nytt.',
 };
