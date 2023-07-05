@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Refusjonsgrunnlag } from '../refusjon';
+import { Refusjonsgrunnlag, Tilskuddsgrunnlag } from '../refusjon';
 import { RefusjonStatus } from '../status';
 
 const Boks = styled.div`
@@ -21,6 +21,11 @@ type Props = {
     refusjonsgrunnlag: Refusjonsgrunnlag;
     status: RefusjonStatus;
 };
+
+// Dersom vi vet at dette er siste tilskuddsperiode så vil vi vise alternativ tekst
+// som indikerer at man ikke behøver å tilbakebetale beløpet man skylder (med mindre avtale forlenges)
+const erSisteTilskuddsperiodeIAvtalen = (tilskuddsgrunnlag: Tilskuddsgrunnlag) =>
+    tilskuddsgrunnlag.avtaleTom === tilskuddsgrunnlag.tilskuddTom;
 
 const SummeringBoks: FunctionComponent<Props> = (props) => {
     if (props.refusjonsgrunnlag.beregning?.refusjonsbeløp === undefined) {
@@ -99,11 +104,20 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                 <div>
                     {props.refusjonsgrunnlag.beregning.lønnFratrukketFerie < 0 && (
                         <>
-                            <BodyShort size="small">
-                                Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative
-                                refusjonsbeløpet overføres til neste periode. Om tiltaket avsluttes, vil det negative
-                                refusjonsbeløpet ikke overføres til neste periode.
-                            </BodyShort>
+                            {erSisteTilskuddsperiodeIAvtalen(props.refusjonsgrunnlag.tilskuddsgrunnlag) ? (
+                                <BodyShort size="small">
+                                    Fratrekk for ferie er større enn bruttolønn i perioden. Ettersom tiltaket er
+                                    avsluttet vil dette beløpet bli sett bort fra.
+                                    <br />
+                                    Dersom tiltaket forlenges vil beløpet trekkes fra neste periode.
+                                </BodyShort>
+                            ) : (
+                                <BodyShort size="small">
+                                    Siden fratrekk for ferie er større enn bruttolønn i perioden vil det negative
+                                    refusjonsbeløpet overføres til neste periode.
+                                </BodyShort>
+                            )}
+
                             <VerticalSpacer rem={0.5} />
                             <BodyShort size="small">
                                 {props.refusjonsgrunnlag.beregning.sumUtgifter !==
@@ -122,16 +136,31 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                         </>
                     )}
                     <VerticalSpacer rem={0.5} />
-                    <BodyShort size="small">
-                        Dere skylder{' '}
-                        <b>{formatterPenger(Math.abs(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0))}</b> for
-                        perioden{' '}
-                        {formatterPeriode(
-                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-                            props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
-                        )}
-                        . Dette vil trekkes fra neste refusjon.
-                    </BodyShort>
+                    {erSisteTilskuddsperiodeIAvtalen(props.refusjonsgrunnlag.tilskuddsgrunnlag) ? (
+                        <BodyShort size="small">
+                            Dere skylder{' '}
+                            <b style={{ textDecoration: 'line-through' }}>
+                                {formatterPenger(Math.abs(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0))}
+                            </b>{' '}
+                            <b>{formatterPenger(0)}</b> for perioden{' '}
+                            {formatterPeriode(
+                                props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                                props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                            )}
+                            .
+                        </BodyShort>
+                    ) : (
+                        <BodyShort size="small">
+                            Dere skylder{' '}
+                            <b>{formatterPenger(Math.abs(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0))}</b>{' '}
+                            for perioden{' '}
+                            {formatterPeriode(
+                                props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                                props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                            )}
+                            . Dette vil trekkes fra neste refusjon.
+                        </BodyShort>
+                    )}
                 </div>
             )}
         </Boks>
