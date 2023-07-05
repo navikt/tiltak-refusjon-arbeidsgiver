@@ -3,12 +3,22 @@
         margin-bottom: 0.75rem;
     }
 
+    &__utregning-wrapper {
+        border-bottom: 1px solid #c6c2bf;
+        &--tykkbunn {
+            border-bottom: 1.25px solid #3e3832;
+        }
+        &--ingen-bunn {
+            border-bottom: none;
+        }
+    }
+
     &__utregning-rad {
         display: flex;
         flex-direction: row;
         align-content: center;
         height: 3.5rem;
-        border-bottom: 1px solid #c6c2bf;
+        //  border-bottom: 1px solid #c6c2bf;
 
         svg {
             min-width: 1.25rem;
@@ -16,12 +26,12 @@
             margin-right: 0.5rem;
         }
 
-        &--tykkbunn {
-            border-bottom: 1.25px solid #3e3832;
-        }
-        &--ingen-bunn {
-            border-bottom: none;
-        }
+        // &--tykkbunn {
+        //     border-bottom: 1.25px solid #3e3832;
+        // }
+        // &--ingen-bunn {
+        //     border-bottom: none;
+        // }
     }
 
     &__utregning-verdi svg {
