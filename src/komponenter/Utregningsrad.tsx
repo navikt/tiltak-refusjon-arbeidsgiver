@@ -54,7 +54,7 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
 
     return (
         <div className={cls.element('utregning-wrapper', border())}>
-            <div className={cls.element('utregning-rad', border())}>
+            <div className={cls.element('utregning-rad')}>
                 <div className={cls.element('utregning-label')}>
                     <div className={cls.element('label-innhold')}>
                         {setIkon(props.labelIkon)}
