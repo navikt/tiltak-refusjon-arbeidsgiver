@@ -22,7 +22,7 @@ const InfoToggler = (props: Props) => {
             }}
             aria-expanded={åpen}
         >
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span className={'infoToggler__label'}>{children}</span>
                 {props.åpen && <ChevronUpIcon fontSize={'1.5rem'} />}
                 {!props.åpen && <ChevronDownIcon fontSize={'1.5rem'} />}
