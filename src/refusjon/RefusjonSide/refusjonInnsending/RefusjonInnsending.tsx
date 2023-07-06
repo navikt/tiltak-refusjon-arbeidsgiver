@@ -1,13 +1,13 @@
-import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState, useContext } from 'react';
-import Utregning from '../../../komponenter/Utregning';
-import { RefusjonContext } from '../../../RefusjonProvider';
-import SummeringBoks from '../SummeringBoks';
-import LagreKnapp from '../../../komponenter/LagreKnapp';
-import { Refusjon } from '../../refusjon';
-import BEMHelper from '../../../utils/bem';
-import './refusjonInnsending.less';
-import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { Alert, ConfirmationPanel } from '@navikt/ds-react';
+import { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useContext, useState } from 'react';
+import { RefusjonContext } from '../../../RefusjonProvider';
+import LagreKnapp from '../../../komponenter/LagreKnapp';
+import Utregning from '../../../komponenter/Utregning';
+import VerticalSpacer from '../../../komponenter/VerticalSpacer';
+import BEMHelper from '../../../utils/bem';
+import { Refusjon } from '../../refusjon';
+import SummeringBoks from '../SummeringBoks';
+import './refusjonInnsending.less';
 
 interface Properties {
     refusjon: Refusjon;
@@ -50,6 +50,7 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                 forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag?.forrigeRefusjonMinusBeløp || 0}
                 beregning={refusjon.refusjonsgrunnlag.beregning}
                 tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
             />
             <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
 

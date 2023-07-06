@@ -12,16 +12,17 @@ import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
 import { Alert, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import { Beregning, Tilskuddsgrunnlag } from '../refusjon/refusjon';
+import { Beregning, Inntektsgrunnlag, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
+import EksternLenke from './EksternLenke/EksternLenke';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
-import EksternLenke from './EksternLenke/EksternLenke';
 
 interface Props {
     beregning?: Beregning;
     tilskuddsgrunnlag: Tilskuddsgrunnlag;
     forrigeRefusjonMinusBeløp?: number;
+    inntektsgrunnlag?: Inntektsgrunnlag;
 }
 
 const GråRamme = styled.div`
@@ -33,6 +34,13 @@ const GråRamme = styled.div`
 
 const Utregning: FunctionComponent<Props> = (props) => {
     const { beregning, tilskuddsgrunnlag, forrigeRefusjonMinusBeløp } = props;
+    const bruttoLønnsInntekter = props.inntektsgrunnlag?.inntekter.filter(
+        (inntekt) => inntekt.erMedIInntektsgrunnlag && inntekt.erOpptjentIPeriode === true
+    );
+    const ferietrekkInntekter = props.inntektsgrunnlag?.inntekter.filter(
+        (inntekt) => inntekt.beskrivelse === 'trekkILoennForFerie'
+    );
+
     return (
         <GråRamme>
             <Heading size="medium">Utregningen</Heading>
@@ -41,8 +49,8 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 labelIkon={<Pengesekken />}
                 labelTekst={'Bruttolønn i perioden'}
                 verdi={beregning?.lønn || 0}
+                inntekter={bruttoLønnsInntekter}
             />
-
             {beregning && beregning.fratrekkLønnFerie !== 0 && (
                 <Utregningsrad
                     labelIkon={<Endret />}
@@ -51,6 +59,8 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     verdi={
                         beregning.fratrekkLønnFerie < 0 ? beregning.fratrekkLønnFerie * -1 : beregning.fratrekkLønnFerie
                     }
+                    inntekter={ferietrekkInntekter}
+                    tilskuddsgunnlag={props.tilskuddsgrunnlag}
                 />
             )}
 

@@ -1,19 +1,19 @@
-import React, { FunctionComponent } from 'react';
+import { ExpansionCard, Heading, Tag } from '@navikt/ds-react';
+import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
-import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { korreksjonStatusTekst } from '../../messages';
 import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
-import { formatterDato, NORSK_DATO_OG_TID_FORMAT } from '../../utils/datoUtils';
+import { NORSK_DATO_OG_TID_FORMAT, formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
-import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
-import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
+import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
+import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';
 import KorreksjonInfo from './KorreksjonInfo';
-import { ExpansionCard, Tag, Heading } from '@navikt/ds-react';
 
 const KvitteringKorreksjon: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -44,6 +44,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                 <Utregning
                     beregning={korreksjon.refusjonsgrunnlag.beregning}
                     tilskuddsgrunnlag={korreksjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                    inntektsgrunnlag={korreksjon.refusjonsgrunnlag.inntektsgrunnlag}
                 />
                 <VerticalSpacer rem={4} />
                 <SummeringBoks refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} status={refusjon.status} />
@@ -76,6 +77,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                             beregning={refusjon.refusjonsgrunnlag.beregning}
                             tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                             forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
+                            inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
                         />
                         <VerticalSpacer rem={4} />
                         <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />

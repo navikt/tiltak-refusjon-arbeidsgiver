@@ -1,9 +1,12 @@
+import { BodyShort, Heading } from '@navikt/ds-react';
 import React, { FunctionComponent, ReactNode } from 'react';
+import { Inntektslinje, Tilskuddsgrunnlag } from '../refusjon/refusjon';
+import { formatterPenger } from '../utils/PengeUtils';
 import BEMHelper from '../utils/bem';
 import { visSatsMedEttDesimal } from '../utils/utregningUtil';
-import { formatterPenger } from '../utils/PengeUtils';
 import './Utregningsrad.less';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import UtregningsradHvaInngårIDette from './UtregningsradHvaInngårIDette';
+import VerticalSpacer from './VerticalSpacer';
 
 interface Props {
     labelIkon?: React.ReactNode;
@@ -13,6 +16,8 @@ interface Props {
     verdi: number | string;
     ikkePenger?: boolean;
     border?: 'NORMAL' | 'TYKK' | 'INGEN';
+    inntekter?: Inntektslinje[];
+    tilskuddsgunnlag?: Tilskuddsgrunnlag;
 }
 
 const cls = BEMHelper('utregning-rad');
@@ -48,20 +53,34 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
     const labelTekstString = typeof props.labelTekst === 'string' ? props.labelTekst : undefined;
 
     return (
-        <div className={cls.element('utregning-rad', border())}>
-            <div className={cls.element('utregning-label')}>
-                <div className={cls.element('label-innhold')}>
-                    {setIkon(props.labelIkon)}
-                    {<div id={labelTekstString}>{props.labelTekst}</div>}
+        <div className={cls.element('utregning-wrapper', border())}>
+            <div className={cls.element('utregning-rad')}>
+                <div className={cls.element('utregning-label')}>
+                    <div className={cls.element('label-innhold')}>
+                        {setIkon(props.labelIkon)}
+                        {<div id={labelTekstString}>{props.labelTekst}</div>}
+                    </div>
+                    {setLabelSats(props.labelSats)}
                 </div>
-                {setLabelSats(props.labelSats)}
+                <div className={cls.element('utregning-verdi')}>
+                    {setOperator(props.verdiOperator)}
+                    <BodyShort size="small" className={cls.element('sum')} aria-labelledby={labelTekstString}>
+                        {props.ikkePenger || typeof props.verdi === 'string'
+                            ? props.verdi
+                            : formatterPenger(props.verdi)}
+                    </BodyShort>
+                </div>
             </div>
-            <div className={cls.element('utregning-verdi')}>
-                {setOperator(props.verdiOperator)}
-                <BodyShort size="small" className={cls.element('sum')} aria-labelledby={labelTekstString}>
-                    {props.ikkePenger || typeof props.verdi === 'string' ? props.verdi : formatterPenger(props.verdi)}
-                </BodyShort>
-            </div>
+
+            {props.inntekter && (
+                <>
+                    <UtregningsradHvaInngårIDette
+                        inntekter={props.inntekter}
+                        tilskuddsgrunnlag={props.tilskuddsgunnlag}
+                    />
+                    <VerticalSpacer rem={1} />
+                </>
+            )}
         </div>
     );
 };
