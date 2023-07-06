@@ -1,13 +1,11 @@
-import { BodyShort, Heading, HelpText, Table } from '@navikt/ds-react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import React, { FunctionComponent, ReactNode } from 'react';
-import { inntektBeskrivelse } from '../refusjon/RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import { Inntektslinje, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import BEMHelper from '../utils/bem';
-import { NORSK_MÅNEDÅR_FORMAT, formatterDato, getMåned } from '../utils/datoUtils';
 import { visSatsMedEttDesimal } from '../utils/utregningUtil';
-import LesMerPanel from './LesMerPanel/LesMerPanel';
 import './Utregningsrad.less';
+import UtregningsradHvaInngårIDette from './UtregningsradHvaInngårIDette';
 import VerticalSpacer from './VerticalSpacer';
 
 interface Props {
@@ -75,55 +73,13 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
             </div>
 
             {props.inntekter && (
-                <div style={{ marginLeft: '2rem' }}>
-                    <LesMerPanel lukkLabel="Lukk" åpneLabel="Hva inngår i dette?">
-                        <div>
-                            <Table size="small">
-                                <Table.Header>
-                                    <Table.Row>
-                                        <Table.HeaderCell scope="col">Beskrivelse</Table.HeaderCell>
-                                        <Table.HeaderCell scope="col">Måned</Table.HeaderCell>
-                                        <Table.HeaderCell scope="col">Beløp</Table.HeaderCell>
-                                        <Table.HeaderCell scope="col"></Table.HeaderCell>
-                                    </Table.Row>
-                                </Table.Header>
-                                <Table.Body>
-                                    {props.inntekter.map((inntekt, i) => {
-                                        const erFerietrekkForAnnenMåned =
-                                            inntekt.beskrivelse === 'trekkILoennForFerie' &&
-                                            getMåned(inntekt.måned) !==
-                                                getMåned(props.tilskuddsgunnlag?.tilskuddFom || '');
-                                        return (
-                                            <Table.Row
-                                                key={inntekt.id}
-                                                style={{
-                                                    textDecoration: erFerietrekkForAnnenMåned ? 'line-through' : '',
-                                                }}
-                                            >
-                                                <Table.DataCell style={{ maxWidth: '10rem' }}>
-                                                    {inntektBeskrivelse(inntekt.beskrivelse)}
-                                                </Table.DataCell>
-                                                <Table.DataCell>
-                                                    {formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}
-                                                </Table.DataCell>
-                                                <Table.DataCell>{formatterPenger(inntekt.beløp)}</Table.DataCell>
-                                                <Table.DataCell>
-                                                    {erFerietrekkForAnnenMåned && (
-                                                        <HelpText>
-                                                            Dette ferietrekket hører til en annen måned enn refusjonen
-                                                            og vil ikke bli trukket her.
-                                                        </HelpText>
-                                                    )}
-                                                </Table.DataCell>
-                                            </Table.Row>
-                                        );
-                                    })}
-                                </Table.Body>
-                            </Table>
-                        </div>
-                    </LesMerPanel>
+                <>
+                    <UtregningsradHvaInngårIDette
+                        inntekter={props.inntekter}
+                        tilskuddsgrunnlag={props.tilskuddsgunnlag}
+                    />
                     <VerticalSpacer rem={1} />
-                </div>
+                </>
             )}
         </div>
     );
