@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import { Heading, Tag } from '@navikt/ds-react';
+import { FunctionComponent, ReactElement } from 'react';
 import { useParams } from 'react-router';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
@@ -13,7 +14,6 @@ import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import InntekterFraTiltaketSvarGammel from '../RefusjonSide/InntekterFraTiltaketSvarGammel';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import TidligereRefunderbarBeløpKvittering from '../RefusjonSide/TidligereRefunderbarBeløpKvittering';
-import { Tag, Heading } from '@navikt/ds-react';
 import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import { Refusjon } from '../refusjon';
@@ -88,6 +88,7 @@ const KvitteringSide: FunctionComponent = () => {
                 beregning={refusjon.refusjonsgrunnlag.beregning}
                 tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                 forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
+                inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
             />
             <VerticalSpacer rem={4} />
             <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
