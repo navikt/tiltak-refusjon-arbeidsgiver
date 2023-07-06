@@ -13,7 +13,7 @@ type Props = {
 
 const UtregningsradHvaInngårIDette: FunctionComponent<Props> = (props) => {
     return (
-        <div style={{ marginLeft: '2rem', marginTop: '-1rem' }}>
+        <div style={{ marginLeft: '2rem', marginTop: '-0.25rem' }}>
             <LesMerPanel lukkLabel="Lukk" åpneLabel="Hva inngår i dette?">
                 <div>
                     <Table size="small">
