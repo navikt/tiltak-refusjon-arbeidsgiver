@@ -7,6 +7,7 @@ import { RefusjonStatus } from '../status';
 import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
 import { RefusjonContext } from '../../RefusjonProvider';
+import { BodyShort } from '@navikt/ds-react';
 
 const Komponent: FunctionComponent = () => {
     const { refusjon } = useContext(RefusjonContext);
@@ -16,9 +17,20 @@ const Komponent: FunctionComponent = () => {
             return (
                 <FeilSide
                     advarselType="info"
-                    feiltekst={`Du kan søke om refusjon fra ${formatterDato(
-                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
-                    )} når perioden er over.`}
+                    feiltekst={
+                        <>
+                            <BodyShort style={{ marginBottom: '1rem' }}>
+                                Du kan søke om refusjon fra{' '}
+                                {formatterDato(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom)} når perioden
+                                er over.
+                            </BodyShort>
+                            <BodyShort>
+                                Siste frist for å sende inn kravet er senest to måneder etter at perioden er over. Hvis
+                                fristen ikke holdes, trekkes tilskuddet som er innvilget og dere får ikke utbetalt
+                                støtte.
+                            </BodyShort>
+                        </>
+                    }
                 />
             );
         case RefusjonStatus.KLAR_FOR_INNSENDING:

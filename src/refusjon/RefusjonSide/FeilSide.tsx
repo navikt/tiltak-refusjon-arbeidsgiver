@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { useParams } from 'react-router';
 import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
@@ -11,7 +11,7 @@ import { Alert, Label, BodyShort, Heading } from '@navikt/ds-react';
 type AlertStripeType = 'info' | 'success' | 'warning' | 'error';
 
 type Props = {
-    feiltekst: string;
+    feiltekst: ReactNode;
     advarselType: AlertStripeType;
 };
 

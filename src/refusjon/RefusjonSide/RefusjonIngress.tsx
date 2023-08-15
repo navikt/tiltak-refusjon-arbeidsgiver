@@ -36,6 +36,10 @@ const RefusjonIngress: FunctionComponent<Properties> = ({ refusjon }: PropsWithC
                 Feriepenger, innskudd obligatorisk tjenestepensjon, arbeidsgiveravgiften og lønnstilskuddsprosenten er
                 hentet fra avtalen om midlertidig lønnstilskudd.
             </BodyShort>
+            <BodyShort size="small" className={cls.element('ingress-text-refusjon')}>
+                Siste frist for å sende inn kravet er senest to måneder etter at perioden er over. Hvis fristen ikke
+                holdes, trekkes tilskuddet som er innvilget og dere får ikke utbetalt støtte.
+            </BodyShort>
         </>
     );
 };
