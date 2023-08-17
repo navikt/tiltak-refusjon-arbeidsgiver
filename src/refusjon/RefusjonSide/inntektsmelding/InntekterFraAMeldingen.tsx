@@ -69,7 +69,8 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
             <InntektsMeldingHeader refusjon={refusjon} />
             {harBruttolønn && (
                 <i>
-                    Her hentes inntekter rapportert inn til a-meldingen for måneden refusjonen gjelder for (
+                    Her hentes inntekter i form av fastlønn, timelønn, faste tillegg og uregelmessige tillegg knyttet
+                    til arbeidet tid, som er rapportert inn i a-meldingen for måneden refusjonen gjelder for (
                     {formatterPeriode(
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
@@ -83,7 +84,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                     {refusjon.unntakOmInntekterFremitid <= 1 &&
                         refusjon.hentInntekterLengerFrem !== null &&
                         'og 1 måned frem'}
-                    .
+                    . Løsningen henter også inntekt rapportert inn fra veldedige eller allmennyttige organisasjoner.
                 </i>
             )}
 
