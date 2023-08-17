@@ -49,7 +49,8 @@ const OversiktTabell: FunctionComponent<Props> = (props) => {
                                 refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                                 refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom,
                                 NORSK_DATO_FORMAT_SHORT
-                            )}
+                            )}{' '}
+                            ({refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer})
                         </BodyShort>
                         <div className={cls.element('title_row_column')}>
                             <StatusTekst

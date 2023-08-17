@@ -23,7 +23,7 @@ const LabelRad = () => {
                 />
             </div>
             <div className={cls.element('kolonne')} id={cls.element('periode')}>
-                <Label className={cls.element('label')}>Periode</Label>
+                <Label className={cls.element('label')}>Periode (løpenr)</Label>
                 <SortingValg
                     className={cls.className}
                     sortingAsc={SortingOrder.PERIODE_ASC}

@@ -87,12 +87,6 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                 </i>
             )}
 
-            {/* {refusjon.hentInntekterLengerFrem && (
-                    <AlertStripeAdvarsel>
-                        Dukker det opp inntekter du ikke forventer å se, for mai måned? Klikk{' '}
-                        <Link onClick={() => merkForHentingAvInntekterFrem(false)} style={{cursor: 'pointer'}}>her</Link>
-                    </AlertStripeAdvarsel>
-                )} */}
             {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) &&
                 inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length > 1 && (
                     <>

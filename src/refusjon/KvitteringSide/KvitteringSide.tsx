@@ -84,12 +84,14 @@ const KvitteringSide: FunctionComponent = () => {
                 </>
             )}
             <VerticalSpacer rem={2} />
-            <Utregning
-                beregning={refusjon.refusjonsgrunnlag.beregning}
-                tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
-                forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
-                inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
-            />
+            {refusjon.refusjonsgrunnlag.beregning && (
+                <Utregning
+                    beregning={refusjon.refusjonsgrunnlag.beregning}
+                    tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                    forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
+                    inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
+                />
+            )}
             <VerticalSpacer rem={4} />
             <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
         </HvitBoks>

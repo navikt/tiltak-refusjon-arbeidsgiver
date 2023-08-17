@@ -41,7 +41,6 @@ export interface Refusjon {
     refusjonsgrunnlag: Refusjonsgrunnlag;
     utbetaltTidspunkt?: string;
     unntakOmInntekterFremitid: number;
-    forrigeRefusjonSomSkalSendesFørst?: Refusjon;
     hentInntekterLengerFrem: string;
 }
 
