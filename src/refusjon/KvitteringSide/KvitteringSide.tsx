@@ -77,7 +77,7 @@ const KvitteringSide: FunctionComponent = () => {
                 </>
             ) : (
                 <>
-                    <InntekterFraAMeldingenGammel />
+                    {refusjon.status !== 'GODKJENT_NULLBELØP' && <InntekterFraAMeldingenGammel />}
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvarGammel refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                     <TidligereRefunderbarBeløpKvittering refusjon={refusjon} />
