@@ -19,6 +19,7 @@ import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFra
 import { Refusjon } from '../refusjon';
 import LagreSomPdfKnapp from './LagreSomPdfKnapp';
 import Statusmelding from './Statusmelding';
+import SummeringBoksNullbeløp from '../RefusjonSide/SummeringsBoksNullbeløp';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -77,21 +78,28 @@ const KvitteringSide: FunctionComponent = () => {
                 </>
             ) : (
                 <>
-                    <InntekterFraAMeldingenGammel />
+                    {refusjon.status !== 'GODKJENT_NULLBELØP' && <InntekterFraAMeldingenGammel />}
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvarGammel refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                     <TidligereRefunderbarBeløpKvittering refusjon={refusjon} />
                 </>
             )}
             <VerticalSpacer rem={2} />
-            <Utregning
-                beregning={refusjon.refusjonsgrunnlag.beregning}
-                tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
-                forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
-                inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
-            />
+            {refusjon.refusjonsgrunnlag.beregning && (
+                <Utregning
+                    beregning={refusjon.refusjonsgrunnlag.beregning}
+                    tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
+                    forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
+                    inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
+                />
+            )}
             <VerticalSpacer rem={4} />
-            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
+            {refusjon.status === 'GODKJENT_NULLBELØP' && (
+                <SummeringBoksNullbeløp refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+            )}
+            {refusjon.status !== 'GODKJENT_NULLBELØP' && (
+                <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
+            )}
         </HvitBoks>
     );
 };

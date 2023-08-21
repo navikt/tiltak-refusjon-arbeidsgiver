@@ -105,6 +105,12 @@ export const godkjennRefusjon = async (refusjonId: string): Promise<any> => {
     return response.data;
 };
 
+export const godkjennRefusjonMedNullbeløp = async (refusjonId: string): Promise<any> => {
+    const response = await api.post(`/refusjon/${refusjonId}/godkjenn-nullbeløp`);
+    await mutate(`/refusjon/${refusjonId}`);
+    return response.data;
+};
+
 export const useHentRefusjoner = (brukerContext: BrukerContextType, filter: Filter): PageableRefusjon => {
     const { valgtBedrift } = brukerContext;
     switch (brukerContext.valgtBedrift.type) {
