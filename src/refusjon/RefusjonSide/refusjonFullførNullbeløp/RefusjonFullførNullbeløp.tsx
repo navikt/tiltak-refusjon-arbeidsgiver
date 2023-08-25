@@ -33,11 +33,19 @@ const RefusjonFullførNullbeløp: FunctionComponent = () => {
         }
     };
 
-    if(refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.find((i) => i.erOpptjentIPeriode === true)) {
+    const harFerietrekkIPerioden = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.find((i) => {
+        if(i.måned) {
+            const periode = Number(i.måned.slice(-2))
+            return (i.beskrivelse === 'trekkILoennForFerie' && periode === new Date().getMonth())
+        }
+        return false;
+    })
+
+    if(harFerietrekkIPerioden || refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.find((i) => i.erOpptjentIPeriode === true)) {
         return null;
     }
 
-    if(refusjon.refusjonsgrunnlag.beregning) {
+    if(harFerietrekkIPerioden || refusjon.refusjonsgrunnlag.beregning) {
         return null;
     }
 
