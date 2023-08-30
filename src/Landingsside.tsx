@@ -8,7 +8,7 @@ import { Button, Heading, Label, Link, BodyShort } from '@navikt/ds-react';
 
 const Landingsside: FunctionComponent = () => {
     const gåTilOversikten = () => {
-        window.location.href = '/login';
+        window.location.href = '/oauth2/login?redirect=/refusjon';
     };
 
     return (
