@@ -56,5 +56,4 @@ spec:
       errorPath: ""
   envFrom:
     - secret: tiltak-refusjon-session-encrypt-key
-    - secret: tiltak-refusjon-arbeidsgiver-redis
   {{/unless}}

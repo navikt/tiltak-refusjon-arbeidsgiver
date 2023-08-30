@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-import config from './config';
 import apiProxy from './proxy/api-proxy';
 import decoratorProxy from './proxy/decorator-proxy';
 
@@ -41,4 +40,4 @@ const setup = (tokenxClient) => {
     return router;
 };
 
-export { setup };
+export default { setup };
