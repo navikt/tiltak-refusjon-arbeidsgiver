@@ -41,12 +41,19 @@ spec:
   {{/if}}
   {{#unless labs}}
   replicas:
-    min: 1
+    min: 2
     max: 2
   tokenx:
     enabled: true
   idporten:
+    clientUri: '{{{ingress}}}'
     enabled: true
+    sidecar:
+      enabled: true
+      level: Level4
+      locale: nb
+      autoLogin: false
+      errorPath: ""
   envFrom:
     - secret: tiltak-refusjon-session-encrypt-key
     - secret: tiltak-refusjon-arbeidsgiver-redis

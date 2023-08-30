@@ -1,7 +1,6 @@
 import { custom, Issuer } from 'openid-client';
 import config from '../config';
 import httpProxy from '../proxy/http-proxy';
-import { backendTokenSetFromSession, frontendTokenSetFromSession } from './utils';
 import logger from '../logger';
 
 const metadata = () => {
@@ -28,31 +27,25 @@ const client = async () => {
 };
 
 const getTokenExchangeAccessToken = async (tokenxClient, req) => {
-    let backendTokenSet = backendTokenSetFromSession(req);
-
-    if (!backendTokenSet || backendTokenSet.expired()) {
-        logger.info('Ny access token');
-        const now = Math.floor(Date.now() / 1000);
-        const additionalClaims = {
-            clientAssertionPayload: {
-                nbf: now,
-                aud: [tokenxClient.issuer.metadata.token_endpoint],
-            },
-        };
-        backendTokenSet = await tokenxClient.grant(
-            {
-                grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
-                client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-                subject_token_type: 'urn:ietf:params:oauth:token-type:jwt',
-                audience: config.api().audience,
-                subject_token: frontendTokenSetFromSession(req).access_token,
-            },
-            additionalClaims
-        );
-        req.session.backendTokenSet = backendTokenSet;
-    } else {
-        logger.info('Access token fra session');
-    }
+    logger.info('Skal hente ny access token fra tokendings');
+    const now = Math.floor(Date.now() / 1000);
+    const additionalClaims = {
+        clientAssertionPayload: {
+            nbf: now,
+            aud: [tokenxClient.issuer.metadata.token_endpoint],
+        },
+    };
+    const bearerToken = req.headers['authorization'].replace('Bearer', '').trim();
+    const backendTokenSet = await tokenxClient.grant(
+        {
+            grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
+            client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+            subject_token_type: 'urn:ietf:params:oauth:token-type:jwt',
+            audience: config.api().audience,
+            subject_token: bearerToken,
+        },
+        additionalClaims
+    );
 
     return backendTokenSet.access_token;
 };

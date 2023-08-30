@@ -1,77 +1,22 @@
 import express from 'express';
-import { generators } from 'openid-client';
 import path from 'path';
-import idporten from './auth/idporten';
-import { frontendTokenSetFromSession } from './auth/utils';
 import config from './config';
-import logger from './logger';
 import apiProxy from './proxy/api-proxy';
 import decoratorProxy from './proxy/decorator-proxy';
 
 const asyncHandler = require('express-async-handler');
 
-const hostname = process.env.HOST ?? '';
 const page = path.resolve(__dirname, '../build', 'index.html');
-const setHostnamePath = (path) => hostname.concat(path);
 const router = express.Router();
 
-const setup = (tokenxClient, idportenClient) => {
+const setup = (tokenxClient) => {
     // Unprotected
     router.get('/isAlive', (req, res) => res.send('Alive'));
     router.get('/isReady', (req, res) => res.send('Ready'));
 
-    router.get(
-        '/login',
-        asyncHandler(async (req, res) => {
-            const session = req.session;
-            session.nonce = generators.nonce();
-            session.state = generators.state();
-            res.redirect(idporten.authUrl(session, idportenClient));
-        })
-    );
-
-    router.get(
-        '/oauth2/callback',
-        asyncHandler(async (req, res) => {
-            const session = req.session;
-
-            try {
-                const tokenSet = await idporten.validateOidcCallback(idportenClient, req);
-                session.frontendTokenSet = tokenSet;
-                session.state = null;
-                session.nonce = null;
-                if (session.redirectTo) {
-                    res.redirect(session.redirectTo);
-                } else {
-                    res.redirect('/refusjon');
-                }
-            } catch (error) {
-                logger.error(error);
-                session.destroy();
-                res.sendStatus(403);
-            }
-        })
-    );
-
     const ensureAuthenticated = async (req, res, next) => {
-        const session = req.session;
-        const frontendTokenSet = frontendTokenSetFromSession(req);
-
-        if (!frontendTokenSet) {
-            logger.info('token not set. setting status 301 with redirect');
-            res.status(301).set('location', setHostnamePath('/login'));
-            res.redirect(setHostnamePath('/login'));
-        } else if (frontendTokenSet.expired()) {
-            try {
-                req.session.frontendTokenSet = await idporten.refresh(idportenClient, frontendTokenSet);
-                next();
-            } catch (err) {
-                logger.error('Feil ved refresh av token', err);
-                session.redirectTo = req.url;
-                req.session.destroy();
-                res.status(301).set('location', setHostnamePath('/login'));
-                res.redirect(setHostnamePath('/login'));
-            }
+        if (!req.headers['authorization']) {
+            res.status(401).send();
         } else {
             next();
         }
@@ -79,14 +24,9 @@ const setup = (tokenxClient, idportenClient) => {
 
     router.all(['/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
 
-    // Protected
-    router.get('/session', (req, res) => {
-        res.json(req.session);
-    });
-
     router.get('/logout', (req, res) => {
         req.session.destroy();
-        res.redirect(idportenClient.endSessionUrl({ post_logout_redirect_uri: config.idporten().logoutRedirectUri }));
+        //res.redirect(idportenClient.endSessionUrl({ post_logout_redirect_uri: config.idporten().logoutRedirectUri }));
     });
 
     apiProxy.setup(router, tokenxClient);
@@ -101,4 +41,4 @@ const setup = (tokenxClient, idportenClient) => {
     return router;
 };
 
-export default { setup };
+export { setup };
