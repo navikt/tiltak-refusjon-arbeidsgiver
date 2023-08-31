@@ -67,7 +67,7 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
 
     return (
         <>
-            {!erUtviklingsmiljo && !innloggetBruker && (
+            {!erUtviklingsmiljo() && !innloggetBruker && (
                 <>
                     <Button
                         variant="primary"
