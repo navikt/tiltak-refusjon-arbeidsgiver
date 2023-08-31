@@ -4,7 +4,7 @@ import { NavigateFunction } from 'react-router-dom';
 import LokalLogin from '../LokalLogin';
 import RefusjonFeilet from '../komponenter/refusjonFeilet/RefusjonFeilet';
 import Banner from '../refusjon/Banner';
-import { hentInnloggetBruker } from '../services/rest-service';
+import { AutentiseringError, hentInnloggetBruker } from '../services/rest-service';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
 import { Bedriftvalg, BedriftvalgType, FeilNivå, initvalgtBedrift } from './bedriftsmenyRefusjon/api/api';
@@ -53,8 +53,15 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
     useEffect(() => {
         hentInnloggetBruker()
             .then((response) => setInnloggetBruker(response))
-            .catch((err) => console.log('err', err));
-    }, []);
+            .catch((err) => {
+                console.log('err', err);
+                if (err instanceof AutentiseringError) {
+                    if (!erUtviklingsmiljo()) {
+                        navigate('/oauth2/login?redirect=/refusjon');
+                    }
+                }
+            });
+    }, [navigate]);
 
     return (
         <>

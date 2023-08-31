@@ -7,6 +7,7 @@ import { Korreksjon, PageableRefusjon, Refusjon } from '../refusjon/refusjon';
 
 export class FeilkodeError extends Error {}
 export class ApiError extends Error {}
+export class AutentiseringError extends ApiError {}
 
 const api = axios.create({
     baseURL: '/api/arbeidsgiver',
@@ -28,6 +29,9 @@ const swrConfig: SWRConfiguration = {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        if (error.response?.status === 401 || error.response?.status === 403) {
+            throw new AutentiseringError('Er ikke logget inn.');
+        }
         if (error.response?.status === 400 && error.response?.headers.feilkode) {
             throw new FeilkodeError(error.response?.headers.feilkode);
         }
