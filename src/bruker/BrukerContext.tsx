@@ -57,11 +57,12 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
                 console.log('err', err);
                 if (err instanceof AutentiseringError) {
                     if (!erUtviklingsmiljo()) {
-                        navigate('/oauth2/login?redirect=/refusjon');
+                        window.location.href = '/oauth2/login?redirect=/refusjon';
+                        //navigate('/oauth2/login?redirect=/refusjon');
                     }
                 }
             });
-    }, [navigate]);
+    }, []);
 
     return (
         <>
