@@ -65,18 +65,18 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
             });
     }, []);
 
+    if (!erUtviklingsmiljo() && !innloggetBruker) {
+        return (
+            <>
+                <Button variant="primary" onClick={() => (window.location.href = '/oauth2/login?redirect=/refusjon')}>
+                    Logg inn
+                </Button>
+            </>
+        );
+    }
+
     return (
         <>
-            {!erUtviklingsmiljo() && !innloggetBruker && (
-                <>
-                    <Button
-                        variant="primary"
-                        onClick={() => (window.location.href = '/oauth2/login?redirect=/refusjon')}
-                    >
-                        Logg inn
-                    </Button>
-                </>
-            )}
             {(erUtviklingsmiljo() || inneholderVertsnavn('-labs')) && !innloggetBruker && (
                 <LokalLogin innloggetBruker={innloggetBruker} />
             )}
