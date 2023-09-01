@@ -52,7 +52,9 @@ spec:
       enabled: true
       level: Level4
       locale: nb
-      autoLogin: false
+      autoLogin: true
+      autoLoginIgnorePaths:
+        - /
       errorPath: ""
   envFrom:
     - secret: tiltak-refusjon-session-encrypt-key
