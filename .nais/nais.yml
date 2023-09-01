@@ -54,7 +54,7 @@ spec:
       locale: nb
       autoLogin: true
       autoLoginIgnorePaths:
-        - '{{{ingress}}}'
+        - '/'
       errorPath: ""
   envFrom:
     - secret: tiltak-refusjon-session-encrypt-key
