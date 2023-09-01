@@ -15,8 +15,7 @@ env:
 jobs:
   bygg:
     permissions:
-      contents: "read"
-      id-token: "write"
+      packages: write
     name: Bygg og deploy
     runs-on: ubuntu-latest
     steps:
