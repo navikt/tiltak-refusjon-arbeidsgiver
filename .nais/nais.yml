@@ -55,6 +55,7 @@ spec:
       autoLogin: true
       autoLoginIgnorePaths:
         - /*
+        - /static/**
       errorPath: ""
   envFrom:
     - secret: tiltak-refusjon-session-encrypt-key
