@@ -54,7 +54,7 @@ spec:
       locale: nb
       autoLogin: true
       autoLoginIgnorePaths:
-        - /*
+        - /
         - /static/**
         - /dekoratoren/**
       errorPath: ""
