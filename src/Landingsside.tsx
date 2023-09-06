@@ -8,7 +8,6 @@ import HvitBoks from './komponenter/hvitboks/HvitBoks';
 
 const Landingsside: FunctionComponent = () => {
     const gåTilOversikten = () => {
-        //window.location.href = '/oauth2/login?redirect=/refusjon';
         window.location.href = '/refusjon';
     };
 

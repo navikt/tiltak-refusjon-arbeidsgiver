@@ -1,4 +1,3 @@
-import { Button } from '@navikt/ds-react';
 import React, { FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { NavigateFunction } from 'react-router-dom';
@@ -59,21 +58,10 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
                 if (err instanceof AutentiseringError) {
                     if (!erUtviklingsmiljo()) {
                         window.location.href = '/oauth2/login?redirect=/refusjon';
-                        //navigate('/oauth2/login?redirect=/refusjon');
                     }
                 }
             });
     }, []);
-
-    if (!erUtviklingsmiljo() && !innloggetBruker) {
-        return (
-            <>
-                <Button variant="primary" onClick={() => (window.location.href = '/oauth2/login?redirect=/refusjon')}>
-                    Logg inn
-                </Button>
-            </>
-        );
-    }
 
     return (
         <>
