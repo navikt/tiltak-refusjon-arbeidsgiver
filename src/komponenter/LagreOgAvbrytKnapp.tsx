@@ -35,7 +35,10 @@ const LagreOgAvbrytKnapp: FunctionComponent<Props & ButtonProps> = (props: Props
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+                <Button onClick={props.avbryt} variant={'secondary'} style={{ marginRight: '0.5rem' }}>
+                    Avbryt
+                </Button>
                 <Button
                     disabled={oppslag.status === Status.LasterInn}
                     onClick={onClick}
@@ -44,7 +47,6 @@ const LagreOgAvbrytKnapp: FunctionComponent<Props & ButtonProps> = (props: Props
                 >
                     {props.children ?? ''}
                 </Button>
-                <Button onClick={props.avbryt}>Avbryt</Button>
             </div>
             {oppslag.status === Status.Feil && (
                 <>

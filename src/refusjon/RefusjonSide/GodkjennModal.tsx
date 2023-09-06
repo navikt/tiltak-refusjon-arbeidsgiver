@@ -18,28 +18,22 @@ const GodkjennModal: FunctionComponent<Props> = ({
     tittel,
     children,
 }: PropsWithChildren<Props>) => {
-    const setModalElement = () => {
-        if (document.getElementById('root')) return '#root';
-        return 'body';
-    };
-    if (typeof window !== 'undefined') {
-        Modal.setAppElement(setModalElement());
-    }
     return (
         <Modal open={isOpen} onClose={() => lukkModal()} aria-label="">
-            <Modal.Content>
+            <Modal.Body>
                 <div style={{ margin: '2rem', maxWidth: '40rem' }}>
                     <Heading size="large" style={{ textAlign: 'center' }}>
                         {tittel}
                     </Heading>
                     <VerticalSpacer rem={2} />
                     {children}
-                    <VerticalSpacer rem={2} />
-                    <LagreOgAvbrytKnapp lagreFunksjon={godkjenn} avbryt={() => lukkModal()}>
-                        Send inn
-                    </LagreOgAvbrytKnapp>
                 </div>
-            </Modal.Content>
+            </Modal.Body>
+            <Modal.Footer>
+                <LagreOgAvbrytKnapp lagreFunksjon={godkjenn} avbryt={() => lukkModal()}>
+                    Send inn
+                </LagreOgAvbrytKnapp>
+            </Modal.Footer>
         </Modal>
     );
 };
