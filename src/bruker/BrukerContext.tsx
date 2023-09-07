@@ -56,7 +56,7 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
             .catch((err) => {
                 console.log('err', err);
                 if (err instanceof AutentiseringError) {
-                    if (!erUtviklingsmiljo()) {
+                    if (!erUtviklingsmiljo() || !inneholderVertsnavn('-labs')) {
                         window.location.href = '/oauth2/login?redirect=/refusjon';
                     }
                 }
