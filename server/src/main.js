@@ -1,10 +1,8 @@
 import { startLabs } from './labs';
 import express from 'express';
-import session from './session';
 import bodyParser from 'body-parser';
 import tokenx from './auth/tokenx';
 import routes from './routes';
-import idporten from './auth/idporten';
 import logger from './logger';
 
 const cors = require('cors');
@@ -12,9 +10,6 @@ const cors = require('cors');
 async function startNormal(server) {
     try {
         server.use(bodyParser.json());
-
-        session.setup(server);
-
         server.use(express.json());
         server.use(express.urlencoded({ extended: true }));
 
@@ -31,10 +26,9 @@ async function startNormal(server) {
         );
 
         const tokenxAuthClient = await tokenx.client();
-        const idportenAuthClient = await idporten.client();
 
         // setup routes
-        server.use('/', routes.setup(tokenxAuthClient, idportenAuthClient));
+        server.use('/', routes.setup(tokenxAuthClient));
 
         const port = 3000;
         server.listen(port, () => logger.info(`Listening on port ${port}`));

@@ -1,14 +1,13 @@
 import React, { FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { NavigateFunction } from 'react-router-dom';
-import RefusjonFeilet from '../komponenter/refusjonFeilet/RefusjonFeilet';
 import LokalLogin from '../LokalLogin';
+import RefusjonFeilet from '../komponenter/refusjonFeilet/RefusjonFeilet';
 import Banner from '../refusjon/Banner';
-import { hentInnloggetBruker } from '../services/rest-service';
-import { XMLHttpReqHandler } from '../services/XMLHttpRequestHandler';
+import { AutentiseringError, hentInnloggetBruker } from '../services/rest-service';
 import { erUtviklingsmiljo, inneholderVertsnavn } from '../utils/miljoUtils';
-import { Bedriftvalg, BedriftvalgType, FeilNivå, initvalgtBedrift } from './bedriftsmenyRefusjon/api/api';
 import { BrukerContextType, InnloggetBruker } from './BrukerContextType';
+import { Bedriftvalg, BedriftvalgType, FeilNivå, initvalgtBedrift } from './bedriftsmenyRefusjon/api/api';
 
 const BrukerContext = React.createContext<BrukerContextType | undefined>(undefined);
 
@@ -54,12 +53,21 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
     useEffect(() => {
         hentInnloggetBruker()
             .then((response) => setInnloggetBruker(response))
-            .catch((err) => console.log('err', err));
+            .catch((err) => {
+                console.log('err', err);
+                if (err instanceof AutentiseringError) {
+                    if (!erUtviklingsmiljo()) {
+                        window.location.href = '/oauth2/login?redirect=/refusjon';
+                    }
+                }
+            });
     }, []);
 
     return (
-        <XMLHttpReqHandler>
-            {(erUtviklingsmiljo() || inneholderVertsnavn('-labs')) && <LokalLogin innloggetBruker={innloggetBruker} />}
+        <>
+            {(erUtviklingsmiljo() || inneholderVertsnavn('-labs')) && !innloggetBruker && (
+                <LokalLogin innloggetBruker={innloggetBruker} />
+            )}
             {innloggetBruker && (
                 <Banner
                     organisasjoner={innloggetBruker.organisasjoner}
@@ -86,6 +94,6 @@ export const BrukerProvider: FunctionComponent<PropsWithChildren> = (props) => {
                     innloggetBrukerHarAltinnTilgangerBedrifter={innloggetBrukerHarAltinnTilgangerBedrifter}
                 />
             )}
-        </XMLHttpReqHandler>
+        </>
     );
 };

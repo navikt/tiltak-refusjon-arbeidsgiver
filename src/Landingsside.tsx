@@ -1,14 +1,14 @@
-import { ReactComponent as SommerIkon } from '@/asset/image/sommer.svg';
 import { ReactComponent as Success } from '@/asset/image/Success.svg';
-import React, { FunctionComponent } from 'react';
+import { ReactComponent as SommerIkon } from '@/asset/image/sommer.svg';
+import { BodyShort, Button, Heading, Label, Link } from '@navikt/ds-react';
+import { FunctionComponent } from 'react';
 import EksternLenke from './komponenter/EksternLenke/EksternLenke';
-import HvitBoks from './komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from './komponenter/VerticalSpacer';
-import { Button, Heading, Label, Link, BodyShort } from '@navikt/ds-react';
+import HvitBoks from './komponenter/hvitboks/HvitBoks';
 
 const Landingsside: FunctionComponent = () => {
     const gåTilOversikten = () => {
-        window.location.href = '/login';
+        window.location.href = '/refusjon';
     };
 
     return (

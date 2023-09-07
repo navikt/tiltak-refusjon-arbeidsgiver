@@ -5,11 +5,9 @@ host:
   - www.nav.no
 outbound:
   - tiltak-refusjon-api
-  - tiltak-refusjon-arbeidsgiver-redis
 env:
   MILJO: dev-gcp
   DECORATOR_URL: https://www.nav.no/dekoratoren
   API_AUDIENCE: "dev-gcp:arbeidsgiver:tiltak-refusjon-api"
   API_URL: http://tiltak-refusjon-api
-  REDIS_HOST: tiltak-refusjon-arbeidsgiver-redis
 slack_alert_channel: arbeidsgiver-notifications-test

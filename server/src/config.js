@@ -45,14 +45,6 @@ const idporten = () => {
     };
 };
 
-const redis = () => {
-    return {
-        host: envVar({ name: 'REDIS_HOST', required: false }),
-        port: envVar({ name: 'REDIS_PORT', required: false }) || 6379,
-        password: envVar({ name: 'REDIS_PASSWORD', required: false }),
-    };
-};
-
 const api = () => {
     logger.info(`Loading reverse proxy config from API_* [CLIENT_ID, URL]`);
     const scopes = envVar({ name: 'API_SCOPES', required: false });
@@ -66,7 +58,6 @@ const api = () => {
 export default {
     server,
     api,
-    redis,
     tokenx,
     idporten,
 };
