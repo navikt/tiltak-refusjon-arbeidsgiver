@@ -7,6 +7,7 @@ import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
 import { ExpansionCard, Radio, RadioGroup } from '@navikt/ds-react';
+import PagnationAntallValg from '../OversiktSide/PaginationAntallValg';
 
 const Filtermeny: FunctionComponent = () => {
     const { filter, oppdaterFilter } = useFilter();
@@ -130,6 +131,7 @@ const Filtermeny: FunctionComponent = () => {
                     </RadioGroup>
                 </ExpansionCard.Content>
             </ExpansionCard>
+            <PagnationAntallValg />
         </div>
     );
 };
