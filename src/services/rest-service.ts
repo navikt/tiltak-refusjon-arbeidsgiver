@@ -119,29 +119,27 @@ export const useHentRefusjoner = (brukerContext: BrukerContextType, filter: Filt
     const { valgtBedrift } = brukerContext;
     switch (brukerContext.valgtBedrift.type) {
         case BedriftvalgType.ALLEBEDRIFTER:
-            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, valgtBedrift, filter);
+            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, filter);
         default:
             return HentRefusjonForMangeOrganisasjoner(
                 valgtBedrift.valgtOrg.map((e) => e.OrganizationNumber).join(','),
-                valgtBedrift,
                 filter
             );
     }
 };
 
-export const HentRefusjonForMangeOrganisasjoner = (
-    bedriftlist: string,
-    valgtBedrift: Bedriftvalg,
-    filter: Filter
-): PageableRefusjon => {
-    const { page, pagesize } = valgtBedrift.pageData;
+export const HentRefusjonForMangeOrganisasjoner = (bedriftlist: string, filter: Filter): PageableRefusjon => {
+    const urlSearchParams = new URLSearchParams(removeEmpty(filter));
     const { data } = useSWR<PageableRefusjon>(
-        `/refusjon/hentliste?bedriftNr=${bedriftlist}&page=${page}&size=${pagesize}&&status=${
-            filter.status || ''
-        }&tiltakstype=${filter.tiltakstype || ''}&sortingOrder=${filter.sorting || ''}`,
+        `/refusjon/hentliste?bedriftNr=${bedriftlist}&${urlSearchParams}&size=10`,
         swrConfig
     );
     return data!;
+};
+
+const removeEmpty = (obj: any) => {
+    Object.keys(obj).forEach((k) => !obj[k] && delete obj[k]);
+    return obj;
 };
 
 export const useHentRefusjon = (refusjonId?: string): Refusjon => {
