@@ -17,8 +17,6 @@ jobs:
     permissions:
       packages: write
     name: Bygg og deploy
-    permissions:
-      packages: write
     runs-on: ubuntu-latest
     steps:
       - name: Sjekk ut kode
