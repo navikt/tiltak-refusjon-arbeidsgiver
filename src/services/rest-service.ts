@@ -64,7 +64,6 @@ export const lagreBedriftKID = async (refusjonId: string, bedriftKID: string | u
     if (bedriftKID?.trim().length === 0) {
         bedriftKID = undefined;
     }
-    console.log('LAGRE KID: ', bedriftKID, bedriftKID?.trim().length, bedriftKID === undefined);
     const response = await api.post(`/refusjon/${refusjonId}/lagre-bedriftKID`, {
         bedriftKID,
     });
@@ -131,7 +130,7 @@ export const useHentRefusjoner = (brukerContext: BrukerContextType, filter: Filt
 export const HentRefusjonForMangeOrganisasjoner = (bedriftlist: string, filter: Filter): PageableRefusjon => {
     const urlSearchParams = new URLSearchParams(removeEmpty(filter));
     const { data } = useSWR<PageableRefusjon>(
-        `/refusjon/hentliste?bedriftNr=${bedriftlist}&${urlSearchParams}&size=10`,
+        `/refusjon/hentliste?bedriftNr=${bedriftlist}&${urlSearchParams}`,
         swrConfig
     );
     return data!;
