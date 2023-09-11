@@ -29,30 +29,30 @@ function App() {
                         path="*"
                         element={
                             <BrukerProvider>
-                                <FilterProvider>
-                                    <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
-                                        <Routes>
-                                            <Route
-                                                path="/refusjon"
-                                                element={
-                                                    <ErrorOgSuspenseHandler>
+                                <div style={{ minHeight: '10rem', padding: '0.5rem' }}>
+                                    <Routes>
+                                        <Route
+                                            path="/refusjon"
+                                            element={
+                                                <ErrorOgSuspenseHandler>
+                                                    <FilterProvider>
                                                         <OversiktSide />
-                                                    </ErrorOgSuspenseHandler>
-                                                }
-                                            />
-                                            <Route
-                                                path="/refusjon/:refusjonId/*"
-                                                element={
-                                                    <ErrorOgSuspenseHandler>
-                                                        <RefusjonProvider>
-                                                            <Refusjon />
-                                                        </RefusjonProvider>
-                                                    </ErrorOgSuspenseHandler>
-                                                }
-                                            />
-                                        </Routes>
-                                    </div>
-                                </FilterProvider>
+                                                    </FilterProvider>
+                                                </ErrorOgSuspenseHandler>
+                                            }
+                                        />
+                                        <Route
+                                            path="/refusjon/:refusjonId/*"
+                                            element={
+                                                <ErrorOgSuspenseHandler>
+                                                    <RefusjonProvider>
+                                                        <Refusjon />
+                                                    </RefusjonProvider>
+                                                </ErrorOgSuspenseHandler>
+                                            }
+                                        />
+                                    </Routes>
+                                </div>
                             </BrukerProvider>
                         }
                     />
