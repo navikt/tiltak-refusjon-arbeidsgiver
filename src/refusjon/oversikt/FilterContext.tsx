@@ -33,7 +33,7 @@ const searchParamsToFilter = (searchParams: URLSearchParams): Filter => {
         tiltakstype: (searchParams.get('tiltakstype') || undefined) as Tiltak | undefined,
         sorting: (searchParams.get('sorting') || undefined) as SortingOrder | undefined,
         page: searchParams.has('page') ? parseInt(searchParams.get('page') || '') : undefined,
-        size: searchParams.has('size') ? parseInt(searchParams.get('size') || '') : undefined,
+        size: searchParams.has('size') ? parseInt(searchParams.get('size') || '') : 10,
     };
 };
 

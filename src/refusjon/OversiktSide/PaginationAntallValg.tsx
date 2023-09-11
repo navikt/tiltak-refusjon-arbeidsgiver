@@ -1,17 +1,17 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import { BodyShort } from '@navikt/ds-react';
-import { PageSizeOption } from '../../../bruker/bedriftsmenyRefusjon/api/api';
-import BEMHelper from '../../../utils/bem';
-import { PaginationContext } from './PaginationProvider';
-import { BrukerContextType } from '../../../bruker/BrukerContextType';
-import { useInnloggetBruker } from '../../../bruker/BrukerContext';
-import './paginationValg.less';
+import BEMHelper from '../../utils/bem';
+import { BrukerContextType } from '../../bruker/BrukerContextType';
+import { useInnloggetBruker } from '../../bruker/BrukerContext';
+import { PageSizeOption } from '../../bruker/bedriftsmenyRefusjon/api/api';
+import { useFilter } from '../oversikt/FilterContext';
+import './paginationAntallValg.less';
 
-const PagnationValg: FunctionComponent = () => {
+const PagnationAntallValg: FunctionComponent = () => {
     const cls = BEMHelper('pagination-valg');
     const brukerContext: BrukerContextType = useInnloggetBruker();
     const { valgtBedrift } = brukerContext;
-    const { setPageSizeOption } = useContext(PaginationContext);
+    const { filter, oppdaterFilter } = useFilter();
     return (
         <div className={cls.className}>
             <div className={cls.element('sidevisning-valg-container')}>
@@ -19,8 +19,12 @@ const PagnationValg: FunctionComponent = () => {
                     <BodyShort size="small">vis</BodyShort>
                     <select
                         className={cls.element('select-page')}
-                        value={valgtBedrift.pageData.pagesize}
-                        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setPageSizeOption(event)}
+                        value={filter.size}
+                        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                            event.preventDefault();
+                            const newSize: number = parseInt(event.target.value);
+                            oppdaterFilter({ size: newSize });
+                        }}
                     >
                         <option>{PageSizeOption.FIVE}</option>
                         <option>{PageSizeOption.SEVEN}</option>
@@ -29,7 +33,7 @@ const PagnationValg: FunctionComponent = () => {
                     </select>
                     <div>
                         <BodyShort size="small">
-                            {valgtBedrift.pageData.pagesize} av {valgtBedrift.pageData.totalItems}
+                            {filter.size} av {valgtBedrift.pageData.totalItems}
                         </BodyShort>
                     </div>
                 </div>
@@ -37,4 +41,4 @@ const PagnationValg: FunctionComponent = () => {
         </div>
     );
 };
-export default PagnationValg;
+export default PagnationAntallValg;

@@ -12,6 +12,7 @@ import OversiktSide from './refusjon/OversiktSide/OversiktSide';
 import Refusjon from './refusjon/RefusjonSide/Refusjon';
 import { registrereBesok } from './utils/amplitude-utils';
 import RefusjonProvider from './RefusjonProvider';
+import { FilterProvider } from './refusjon/oversikt/FilterContext';
 
 function App() {
     useEffect(() => {
@@ -34,7 +35,9 @@ function App() {
                                             path="/refusjon"
                                             element={
                                                 <ErrorOgSuspenseHandler>
-                                                    <OversiktSide />
+                                                    <FilterProvider>
+                                                        <OversiktSide />
+                                                    </FilterProvider>
                                                 </ErrorOgSuspenseHandler>
                                             }
                                         />

@@ -22,19 +22,19 @@ const Infolinje: FunctionComponent = () => {
                                     {valgtBedrift && desktopview && (
                                         <>
                                             <Label>
-                                                antall refusjoner:
+                                                Antall refusjoner:
                                                 <span className={cls.element('visning-statestikk-data')}>
                                                     {valgtBedrift.pageData.totalItems}
                                                 </span>
                                             </Label>
                                             <Label>
-                                                nåværende sidevisning:
+                                                Nåværende sidevisning:
                                                 <span className={cls.element('visning-statestikk-data')}>
                                                     {valgtBedrift.pageData.currentPage + 1}
                                                 </span>
                                             </Label>
                                             <Label>
-                                                antall sider:
+                                                Antall sider:
                                                 <span className={cls.element('visning-statestikk-data')}>
                                                     {valgtBedrift.pageData.totalPages}
                                                 </span>

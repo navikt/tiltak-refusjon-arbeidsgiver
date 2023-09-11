@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import useSWR, { SWRConfiguration, mutate } from 'swr';
 import { BrukerContextType, InnloggetBruker } from '../bruker/BrukerContextType';
-import { Bedriftvalg, BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/api';
+import { BedriftvalgType } from '../bruker/bedriftsmenyRefusjon/api/api';
 import { Filter } from '../refusjon/oversikt/FilterContext';
 import { Korreksjon, PageableRefusjon, Refusjon } from '../refusjon/refusjon';
 
@@ -64,7 +64,6 @@ export const lagreBedriftKID = async (refusjonId: string, bedriftKID: string | u
     if (bedriftKID?.trim().length === 0) {
         bedriftKID = undefined;
     }
-    console.log('LAGRE KID: ', bedriftKID, bedriftKID?.trim().length, bedriftKID === undefined);
     const response = await api.post(`/refusjon/${refusjonId}/lagre-bedriftKID`, {
         bedriftKID,
     });
@@ -119,29 +118,27 @@ export const useHentRefusjoner = (brukerContext: BrukerContextType, filter: Filt
     const { valgtBedrift } = brukerContext;
     switch (brukerContext.valgtBedrift.type) {
         case BedriftvalgType.ALLEBEDRIFTER:
-            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, valgtBedrift, filter);
+            return HentRefusjonForMangeOrganisasjoner(BedriftvalgType.ALLEBEDRIFTER, filter);
         default:
             return HentRefusjonForMangeOrganisasjoner(
                 valgtBedrift.valgtOrg.map((e) => e.OrganizationNumber).join(','),
-                valgtBedrift,
                 filter
             );
     }
 };
 
-export const HentRefusjonForMangeOrganisasjoner = (
-    bedriftlist: string,
-    valgtBedrift: Bedriftvalg,
-    filter: Filter
-): PageableRefusjon => {
-    const { page, pagesize } = valgtBedrift.pageData;
+export const HentRefusjonForMangeOrganisasjoner = (bedriftlist: string, filter: Filter): PageableRefusjon => {
+    const urlSearchParams = new URLSearchParams(removeEmpty(filter));
     const { data } = useSWR<PageableRefusjon>(
-        `/refusjon/hentliste?bedriftNr=${bedriftlist}&page=${page}&size=${pagesize}&&status=${
-            filter.status || ''
-        }&tiltakstype=${filter.tiltakstype || ''}&sortingOrder=${filter.sorting || ''}`,
+        `/refusjon/hentliste?bedriftNr=${bedriftlist}&${urlSearchParams}`,
         swrConfig
     );
     return data!;
+};
+
+const removeEmpty = (obj: any) => {
+    Object.keys(obj).forEach((k) => !obj[k] && delete obj[k]);
+    return obj;
 };
 
 export const useHentRefusjon = (refusjonId?: string): Refusjon => {
