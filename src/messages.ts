@@ -25,6 +25,8 @@ export const statusTekst: { [key in RefusjonStatus]: string } = {
 export const korreksjonStatusTekst: { [key in KorreksjonStatus]: string } = {
     UTKAST: 'korreksjonsutkast',
     TILLEGSUTBETALING: 'korreksjon sendt til utbetaling',
+    TILLEGGSUTBETALING_UTBETALT: 'korreksjon utbetalt',
+    TILLEGGSUTBETALING_FEILET: 'korreksjon feilet',
     OPPGJORT: 'korreksjon oppgjort',
     TILBAKEKREVING: 'korreksjon skal tilbakekreves',
 };

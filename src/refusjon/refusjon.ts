@@ -1,12 +1,5 @@
-import { RefusjonStatus } from './status';
+import { KorreksjonStatus, RefusjonStatus } from './status';
 import { Tiltak } from './tiltak';
-
-export enum KorreksjonStatus {
-    UTKAST = 'UTKAST',
-    TILLEGSUTBETALING = 'TILLEGSUTBETALING',
-    OPPGJORT = 'OPPGJORT',
-    TILBAKEKREVING = 'TILBAKEKREVING',
-}
 
 export enum SortingOrder {
     DELTAKER_ASC = 'DELTAKER_ASC',

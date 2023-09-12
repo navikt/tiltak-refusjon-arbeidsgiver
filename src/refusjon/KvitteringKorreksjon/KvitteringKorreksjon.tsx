@@ -12,6 +12,7 @@ import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
 import SummeringBoks from '../RefusjonSide/SummeringBoks';
 import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
 import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
+import { KorreksjonStatus } from '../status';
 import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';
 import KorreksjonInfo from './KorreksjonInfo';
 
@@ -29,7 +30,8 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                     </Heading>
                     <Tag variant="info">
                         {storForbokstav(korreksjonStatusTekst[korreksjon.status])}{' '}
-                        {formatterDato(korreksjon.godkjentTidspunkt!, NORSK_DATO_OG_TID_FORMAT)}
+                        {korreksjon.status === KorreksjonStatus.TILLEGSUTBETALING &&
+                            formatterDato(korreksjon.godkjentTidspunkt!, NORSK_DATO_OG_TID_FORMAT)}
                     </Tag>
                 </div>
                 <VerticalSpacer rem={1} />
