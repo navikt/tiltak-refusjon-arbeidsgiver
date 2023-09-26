@@ -1,10 +1,11 @@
-import React, { FunctionComponent } from 'react';
-import VerticalSpacer from '../../komponenter/VerticalSpacer';
-import { korreksjonsgrunnTekst } from '../../messages';
-import { formatterDato } from '../../utils/datoUtils';
-import { formatterPenger } from '../../utils/PengeUtils';
-import { Korreksjon, Korreksjonsgrunn, KorreksjonStatus } from '../refusjon';
 import { Alert, BodyShort } from '@navikt/ds-react';
+import { FunctionComponent } from 'react';
+import VerticalSpacer from '../../komponenter/VerticalSpacer';
+import { korreksjonsgrunnTekst, tiltakstypeTekst } from '../../messages';
+import { formatterPenger } from '../../utils/PengeUtils';
+import { formatterDato } from '../../utils/datoUtils';
+import { Korreksjon, Korreksjonsgrunn } from '../refusjon';
+import { KorreksjonStatus } from '../status';
 
 type Props = {
     korreksjon: Korreksjon;
@@ -35,6 +36,21 @@ const KorreksjonInfo: FunctionComponent<Props> = (props) => {
                         <b>{formatterPenger(props.korreksjon.refusjonsgrunnlag.beregning?.refusjonsbeløp!)}</b>. Denne
                         korreksjonen ble registrert {formatterDato(props.korreksjon.godkjentTidspunkt!)}. Pengene vil
                         være på konto i løpet av 3-4 dager etter dette.
+                    </BodyShort>
+                    <VerticalSpacer rem={1} />
+                    <Korreksjonsgrunner />
+                </>
+            );
+        case KorreksjonStatus.TILLEGGSUTBETALING_UTBETALT:
+            return (
+                <>
+                    <BodyShort size="small">
+                        Det er blitt foretatt en ny beregning av refusjonen for{' '}
+                        {tiltakstypeTekst[props.korreksjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}. Denne
+                        korreksjonen er nå utbetalt. Det tidligere utbetalte beløpet er fratrukket i denne korrigerte
+                        beregningen. Det er nå etterbetalt{' '}
+                        <b>{formatterPenger(props.korreksjon.refusjonsgrunnlag.beregning?.refusjonsbeløp!)}</b>. Denne
+                        korreksjonen ble registrert {formatterDato(props.korreksjon.godkjentTidspunkt!)}.
                     </BodyShort>
                     <VerticalSpacer rem={1} />
                     <Korreksjonsgrunner />
