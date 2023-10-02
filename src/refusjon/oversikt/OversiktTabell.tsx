@@ -56,6 +56,7 @@ const OversiktTabell: FunctionComponent<Props> = (props) => {
                                 status={refusjon.status}
                                 tilskuddFom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom}
                                 tilskuddTom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom}
+                                fratrekkRefunderbarBeløp={refusjon.refusjonsgrunnlag.fratrekkRefunderbarBeløp}
                             />
                         </div>
                         <BodyShort

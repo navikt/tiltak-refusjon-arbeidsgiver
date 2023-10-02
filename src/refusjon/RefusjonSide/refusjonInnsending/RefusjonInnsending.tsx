@@ -28,6 +28,8 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
         !refusjon.harTattStillingTilAlleInntektslinjer ||
         !refusjon.refusjonsgrunnlag.beregning ||
         typeof refusjon.refusjonsgrunnlag.fratrekkRefunderbarBeløp !== 'boolean' ||
+        (refusjon.refusjonsgrunnlag.fratrekkRefunderbarBeløp === true &&
+            refusjon.refusjonsgrunnlag.refunderbarBeløp === null) ||
         typeof refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket !== 'boolean'
     ) {
         return null;

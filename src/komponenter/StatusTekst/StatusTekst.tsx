@@ -10,11 +10,16 @@ interface Props {
     status: RefusjonStatus;
     tilskuddFom: string;
     tilskuddTom: string;
+    fratrekkRefunderbarBeløp?: boolean;
 }
 
 const StatusTekst: FunctionComponent<Props> = (props) => {
     if (props.status === RefusjonStatus.KLAR_FOR_INNSENDING) {
-        return <Tag variant="success">Klar for innsending</Tag>;
+        if (props.fratrekkRefunderbarBeløp === true) {
+            return <Tag variant="warning">Fravær i perioden</Tag>;
+        } else {
+            return <Tag variant="success">Klar for innsending</Tag>;
+        }
     } else if (props.status === RefusjonStatus.FOR_TIDLIG) {
         return <Tag variant="info">Søk fra {formatterDato(props.tilskuddTom)}</Tag>;
     } else if (
