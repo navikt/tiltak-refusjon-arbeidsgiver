@@ -58,7 +58,7 @@ export interface Refusjonsgrunnlag {
     endretBruttoLønn?: number;
     bedriftKontonummer?: string;
     bedriftKid?: string;
-
+    refunderbarBeløp?: number;
     beregning?: Beregning;
     forrigeRefusjonMinusBeløp: number;
 }

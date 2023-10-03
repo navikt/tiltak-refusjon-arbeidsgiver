@@ -15,7 +15,7 @@ interface Properties {
 
 const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }: PropsWithChildren<Properties>) => {
     const { refusjonId } = useParams();
-    const { inntektsgrunnlag, inntekterKunFraTiltaket, fratrekkRefunderbarBeløp, beregning } =
+    const { inntektsgrunnlag, inntekterKunFraTiltaket, fratrekkRefunderbarBeløp, beregning, refunderbarBeløp } =
         refusjon.refusjonsgrunnlag;
     const [fratrekk, setFratrekk] = useState<boolean | undefined>(fratrekkRefunderbarBeløp);
     const [belop, setBelop] = useState<string>(beregning?.tidligereRefundertBeløp?.toString() ?? '');
@@ -74,6 +74,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                     value={true}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(event.currentTarget.checked);
+                        settTidligereRefunderbarBeløp(refusjonId!, true, refunderbarBeløp);
                         utsettFristForRefusjon();
                     }}
                 >
