@@ -17,7 +17,12 @@ const api = axios.create({
     validateStatus: (status) => status < 400,
 });
 
-const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res: AxiosResponse<any>) => res.data);
+const axiosFetcher = (url: string, refusjon?: Refusjon): Promise<any> =>
+    api
+        .get(url, {
+            headers: { 'If-Unmodified-Since': refusjon ? (refusjon.sistEndret ? refusjon.sistEndret : null) : null },
+        })
+        .then((res: AxiosResponse<any>) => res.data);
 
 const swrConfig: SWRConfiguration = {
     fetcher: axiosFetcher,
@@ -141,10 +146,28 @@ const removeEmpty = (obj: any) => {
     return obj;
 };
 
-export const useHentRefusjon = (refusjonId?: string): Refusjon => {
+export const useHentRefusjon = (refusjonId?: string, sistEndret?: string): Refusjon => {
     const parameter = refusjonId ? `/refusjon/${refusjonId}` : null;
     const { data } = useSWR<Refusjon>(parameter, swrConfig);
     return data!;
+};
+
+export const hentInntekter = async (refusjonId?: string, sistEndret?: string) => {
+    //const parameter = refusjonId ? `/refusjon/${refusjonId}/finn-inntekter` : null;
+    //useSWR<Refusjon>(parameter, swrConfig);
+    console.log('Henter inntekter med sistEndret', sistEndret);
+    await api.post(`/refusjon/${refusjonId}/finn-inntekter`, null, {
+        headers: {
+            'If-Unmodified-Since': sistEndret,
+        },
+    });
+    await mutate(`/refusjon/${refusjonId}`);
+};
+
+export const useHentBedriftkontonummer = async (refusjonId?: string, sistEndret?: string) => {
+    const parameter = refusjonId ? `/refusjon/${refusjonId}/finn-bedriftkontonummer` : null;
+    useSWR<Refusjon>(parameter, swrConfig);
+    await mutate(`/refusjon/${refusjonId}`);
 };
 
 export const useHentTidligereRefusjoner = (refusjonId: string): Refusjon[] => {

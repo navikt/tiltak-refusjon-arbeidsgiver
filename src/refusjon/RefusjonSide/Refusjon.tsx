@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
 import { formatterDato } from '../../utils/datoUtils';
 import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
@@ -6,11 +6,17 @@ import KvitteringSide from '../KvitteringSide/KvitteringSide';
 import { RefusjonStatus } from '../status';
 import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
-import { RefusjonContext } from '../../RefusjonProvider';
 import { BodyShort } from '@navikt/ds-react';
+import { useParams } from 'react-router-dom';
+import { useHentRefusjon } from '../../services/rest-service';
 
 const Komponent: FunctionComponent = () => {
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
+
+    console.log('Denne da? Mange ganger?');
+
+    if (!refusjon) return null;
 
     switch (refusjon.status) {
         case RefusjonStatus.FOR_TIDLIG:

@@ -18,6 +18,7 @@ function App() {
     useEffect(() => {
         registrereBesok();
     });
+    console.log('Her renderes APP :D');
     return (
         <ErrorOgSuspenseHandlerMain>
             <BrowserRouter>

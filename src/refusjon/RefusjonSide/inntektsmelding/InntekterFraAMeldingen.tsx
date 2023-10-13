@@ -1,10 +1,10 @@
 import { Alert, Button, Heading, Label, BodyShort } from '@navikt/ds-react';
 import _ from 'lodash';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
-import { hentInntekterLengerFrem, useHentRefusjon } from '../../../services/rest-service';
+import { hentInntekterLengerFrem, hentInntekter, useHentRefusjon } from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
 import { formatterPeriode, månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
@@ -32,11 +32,33 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const { inntektsgrunnlag } = refusjon.refusjonsgrunnlag;
+    const [laster, setLaster] = useState<boolean>(false);
+    const initialized = useRef(false);
+
+    console.log('HVORFOR RENDRES DENNE FIRE GANGER!?!?##¤¤%&#¤%', laster);
 
     const { antallInntekterSomErMedIGrunnlag, ingenInntekter, ingenRefunderbareInntekter } =
         inntektProperties(refusjon);
 
     refusjonApnet(refusjon, antallInntekterSomErMedIGrunnlag ?? 0, ingenInntekter, ingenRefunderbareInntekter);
+
+    useEffect(() => {
+        console.log('Laster?', laster);
+        const triggerHentInntekter = async () => {
+            if (!laster && ingenInntekter) {
+                setLaster(true);
+                console.log('laster inntekter');
+                await hentInntekter(refusjon.id, refusjon.sistEndret);
+                console.log('laster inntekter ferdig');
+                setLaster(false);
+            }
+        };
+        // Muligens det er best at importere mutate fra useSwr her og sjekke "isLoading" for å unngå dobbelt post/get
+        if (!initialized.current && !laster && ingenInntekter) {
+            triggerHentInntekter();
+            initialized.current = true;
+        }
+    }, []);
 
     const finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden = () => {
         if (inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length === 0) {
@@ -66,6 +88,8 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
 
     return (
         <div className={cls.element('graboks-wrapper')}>
+            <p>HEI EI EHI</p>
+            {laster && <p>LASTER!!!</p>}
             <InntektsMeldingHeader refusjon={refusjon} />
             {harBruttolønn && (
                 <i>

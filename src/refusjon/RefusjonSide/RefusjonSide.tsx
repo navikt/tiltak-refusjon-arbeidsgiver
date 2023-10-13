@@ -32,6 +32,8 @@ const RefusjonSide: FunctionComponent = () => {
         }
     };
 
+    console.log('Hvor mange ganger rendres denne da tro?');
+
     return (
         <>
             <HvitBoks>
