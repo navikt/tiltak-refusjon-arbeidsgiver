@@ -164,10 +164,21 @@ export const hentInntekter = async (refusjonId?: string, sistEndret?: string) =>
     await mutate(`/refusjon/${refusjonId}`);
 };
 
-export const useHentBedriftkontonummer = async (refusjonId?: string, sistEndret?: string) => {
-    const parameter = refusjonId ? `/refusjon/${refusjonId}/finn-bedriftkontonummer` : null;
-    useSWR<Refusjon>(parameter, swrConfig);
-    await mutate(`/refusjon/${refusjonId}`);
+export const hentInntekterFetcher = async (key: string, { arg }: { arg: string }) => {
+    console.log('Henter inntekter med sistEndret', arg);
+    await api.post(`${key}/finn-inntekter`, null, {
+        headers: {
+            'If-Unmodified-Since': arg,
+        },
+    });
+};
+
+export const hentBedriftkontonummer = async (key: string, { arg }: { arg: string }) => {
+    await api.post(`${key}/finn-bedriftkontonummer`, null, {
+        headers: {
+            'If-Unmodified-Since': arg,
+        },
+    });
 };
 
 export const useHentTidligereRefusjoner = (refusjonId: string): Refusjon[] => {

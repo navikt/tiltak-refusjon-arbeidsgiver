@@ -1,15 +1,16 @@
 import { Calender, File, FileContent, Money, People, Warning } from '@navikt/ds-icons';
 import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import EksternLenke from '../../../komponenter/EksternLenke/EksternLenke';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../../messages';
-import { useHentRefusjon } from '../../../services/rest-service';
+import { hentBedriftkontonummer, useHentRefusjon } from '../../../services/rest-service';
 import { formatterDato, formatterPeriode } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
 import { Alert, Heading, Label, BodyShort } from '@navikt/ds-react';
+import useSWRMutation from 'swr/mutation';
 
 const IkonRad = styled.div`
     display: flex;
@@ -27,10 +28,21 @@ const GråBoks = styled.div`
 const InformasjonFraAvtalen: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
+    const initialized = useRef(false);
+    const { trigger, isMutating } = useSWRMutation(`/refusjon/${refusjonId}`, hentBedriftkontonummer);
 
     const avtaleLenke = `http://arbeidsgiver.nav.no/tiltaksgjennomforing/avtale/${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleId}`;
 
     const refusjonsnummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;
+
+    useEffect(() => {
+        if (!initialized.current) {
+            if (!refusjon.refusjonsgrunnlag.bedriftKontonummer && !isMutating) {
+                trigger(refusjon.sistEndret);
+                initialized.current = true;
+            }
+        }
+    }, [isMutating, refusjon.refusjonsgrunnlag.bedriftKontonummer, refusjon.sistEndret, trigger]);
 
     return (
         <GråBoks>
