@@ -38,7 +38,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
     useEffect(() => {
         if (!initialized.current) {
             if (!refusjon.refusjonsgrunnlag.bedriftKontonummer && !isMutating) {
-                trigger(refusjon.sistEndret);
+                //trigger(refusjon.sistEndret);
                 initialized.current = true;
             }
         }

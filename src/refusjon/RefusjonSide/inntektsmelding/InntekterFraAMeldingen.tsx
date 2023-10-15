@@ -44,7 +44,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     useEffect(() => {
         if (!initialized.current) {
             if (ingenInntekter && !isMutating) {
-                trigger(refusjon.sistEndret);
+                //trigger(refusjon.sistEndret);
                 initialized.current = true;
             }
         }

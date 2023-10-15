@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
 import { formatterDato } from '../../utils/datoUtils';
 import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
@@ -8,13 +8,27 @@ import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
 import { BodyShort } from '@navikt/ds-react';
 import { useParams } from 'react-router-dom';
-import { useHentRefusjon } from '../../services/rest-service';
+import { oppdaterRefusjonFetcher, useHentRefusjon } from '../../services/rest-service';
+import useSWRMutation from 'swr/mutation';
 
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
+    const initialized = useRef(false);
+    const { trigger, isMutating } = useSWRMutation(`/refusjon/${refusjonId}`, oppdaterRefusjonFetcher);
 
-    console.log('Denne da? Mange ganger?');
+    useEffect(() => {
+        if (!initialized.current) {
+            if (
+                refusjon &&
+                (!refusjon.refusjonsgrunnlag.inntektsgrunnlag || !refusjon.refusjonsgrunnlag.bedriftKontonummer) &&
+                !isMutating
+            ) {
+                trigger(refusjon.sistEndret ? refusjon.sistEndret : '');
+                initialized.current = true;
+            }
+        }
+    }, [isMutating, refusjon, trigger]);
 
     if (!refusjon) return null;
 

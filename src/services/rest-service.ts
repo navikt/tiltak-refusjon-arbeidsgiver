@@ -164,6 +164,15 @@ export const hentInntekter = async (refusjonId?: string, sistEndret?: string) =>
     await mutate(`/refusjon/${refusjonId}`);
 };
 
+export const oppdaterRefusjonFetcher = async (key: string, { arg }: { arg: string }) => {
+    console.log('Henter inntekter med sistEndret', arg);
+    await api.post(`${key}/oppdater-refusjon`, null, {
+        headers: {
+            'If-Unmodified-Since': arg,
+        },
+    });
+};
+
 export const hentInntekterFetcher = async (key: string, { arg }: { arg: string }) => {
     console.log('Henter inntekter med sistEndret', arg);
     await api.post(`${key}/finn-inntekter`, null, {
