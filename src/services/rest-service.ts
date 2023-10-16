@@ -135,7 +135,7 @@ export const setInntektslinjeOpptjentIPeriode = async (
 };
 
 export const godkjennRefusjon = async (refusjonId: string, sistEndret: string): Promise<any> => {
-    const response = await api.post(`/refusjon/${refusjonId}/godkjenn`, {
+    const response = await api.post(`/refusjon/${refusjonId}/godkjenn`, null, {
         headers: {
             'If-Unmodified-Since': sistEndret,
         },
@@ -145,12 +145,12 @@ export const godkjennRefusjon = async (refusjonId: string, sistEndret: string): 
 };
 
 export const godkjennRefusjonMedNullbeløp = async (refusjonId: string, sistEndret: string): Promise<any> => {
-    const response = await api.post(`/refusjon/${refusjonId}/godkjenn-nullbeløp`);
-    await mutate(`/refusjon/${refusjonId}`, {
+    const response = await api.post(`/refusjon/${refusjonId}/godkjenn-nullbeløp`, null, {
         headers: {
             'If-Unmodified-Since': sistEndret,
         },
     });
+    await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
 
