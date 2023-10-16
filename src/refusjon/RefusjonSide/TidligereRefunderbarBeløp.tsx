@@ -74,7 +74,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                     value={true}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(event.currentTarget.checked);
-                        settTidligereRefunderbarBeløp(refusjonId!, true, refunderbarBeløp);
+                        settTidligereRefunderbarBeløp(refusjonId!, true, refusjon.sistEndret, refunderbarBeløp);
                         utsettFristForRefusjon();
                     }}
                 >
@@ -86,7 +86,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(!event.currentTarget.checked);
                         setBelop('');
-                        settTidligereRefunderbarBeløp(refusjonId!, false, undefined);
+                        settTidligereRefunderbarBeløp(refusjonId!, false, refusjon.sistEndret, undefined);
                     }}
                 >
                     Nei
@@ -113,7 +113,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                                 setBelop('');
                             }
                         }}
-                        onBlur={() => settTidligereRefunderbarBeløp(refusjonId!, true, parseInt(belop, 10))}
+                        onBlur={() => settTidligereRefunderbarBeløp(refusjonId!, true, refusjon.sistEndret, parseInt(belop, 10))}
                         value={belop}
                     />
                 </>

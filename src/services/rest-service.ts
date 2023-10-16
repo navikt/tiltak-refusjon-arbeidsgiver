@@ -55,12 +55,21 @@ export const hentInnloggetBruker = async (): Promise<InnloggetBruker> => {
 export const endreBruttolønn = async (
     refusjonId: string,
     inntekterKunFraTiltaket: boolean | null,
+    sistEndret: string,
     bruttoLønn?: number | null
 ): Promise<any> => {
-    const response = await api.post(`/refusjon/${refusjonId}/endre-bruttolønn`, {
-        inntekterKunFraTiltaket,
-        bruttoLønn,
-    });
+    const response = await api.post(
+        `/refusjon/${refusjonId}/endre-bruttolønn`,
+        {
+            inntekterKunFraTiltaket,
+            bruttoLønn,
+        },
+        {
+            headers: {
+                'If-Unmodified-Since': sistEndret,
+            },
+        }
+    );
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
@@ -79,12 +88,21 @@ export const lagreBedriftKID = async (refusjonId: string, bedriftKID: string | u
 export const settTidligereRefunderbarBeløp = async (
     refusjonId: string,
     fratrekkRefunderbarBeløp: boolean | null,
+    sistEndret: string,
     refunderbarBeløp?: number | null
 ): Promise<any> => {
-    const response = await api.post(`/refusjon/${refusjonId}/fratrekk-sykepenger`, {
-        fratrekkRefunderbarBeløp,
-        refunderbarBeløp,
-    });
+    const response = await api.post(
+        `/refusjon/${refusjonId}/fratrekk-sykepenger`,
+        {
+            fratrekkRefunderbarBeløp,
+            refunderbarBeløp,
+        },
+        {
+            headers: {
+                'If-Unmodified-Since': sistEndret,
+            },
+        }
+    );
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
@@ -98,24 +116,41 @@ export const utsettFriskSykepenger = async (refusjonId: string): Promise<any> =>
 export const setInntektslinjeOpptjentIPeriode = async (
     refusjonId: string,
     inntektslinjeId: string,
-    erOpptjentIPeriode: boolean
+    erOpptjentIPeriode: boolean,
+    sistEndret: string
 ): Promise<void> => {
-    await api.post(`/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`, {
-        inntektslinjeId: inntektslinjeId,
-        erOpptjentIPeriode: erOpptjentIPeriode,
-    });
+    await api.post(
+        `/refusjon/${refusjonId}/set-inntektslinje-opptjent-i-periode`,
+        {
+            inntektslinjeId: inntektslinjeId,
+            erOpptjentIPeriode: erOpptjentIPeriode,
+        },
+        {
+            headers: {
+                'If-Unmodified-Since': sistEndret,
+            },
+        }
+    );
     await mutate(`/refusjon/${refusjonId}`);
 };
 
-export const godkjennRefusjon = async (refusjonId: string): Promise<any> => {
-    const response = await api.post(`/refusjon/${refusjonId}/godkjenn`);
+export const godkjennRefusjon = async (refusjonId: string, sistEndret: string): Promise<any> => {
+    const response = await api.post(`/refusjon/${refusjonId}/godkjenn`, {
+        headers: {
+            'If-Unmodified-Since': sistEndret,
+        },
+    });
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
 
-export const godkjennRefusjonMedNullbeløp = async (refusjonId: string): Promise<any> => {
+export const godkjennRefusjonMedNullbeløp = async (refusjonId: string, sistEndret: string): Promise<any> => {
     const response = await api.post(`/refusjon/${refusjonId}/godkjenn-nullbeløp`);
-    await mutate(`/refusjon/${refusjonId}`);
+    await mutate(`/refusjon/${refusjonId}`, {
+        headers: {
+            'If-Unmodified-Since': sistEndret,
+        },
+    });
     return response.data;
 };
 
@@ -153,9 +188,6 @@ export const useHentRefusjon = (refusjonId?: string, sistEndret?: string): Refus
 };
 
 export const hentInntekter = async (refusjonId?: string, sistEndret?: string) => {
-    //const parameter = refusjonId ? `/refusjon/${refusjonId}/finn-inntekter` : null;
-    //useSWR<Refusjon>(parameter, swrConfig);
-    console.log('Henter inntekter med sistEndret', sistEndret);
     await api.post(`/refusjon/${refusjonId}/finn-inntekter`, null, {
         headers: {
             'If-Unmodified-Since': sistEndret,
@@ -165,7 +197,6 @@ export const hentInntekter = async (refusjonId?: string, sistEndret?: string) =>
 };
 
 export const oppdaterRefusjonFetcher = async (key: string, { arg }: { arg: string }) => {
-    console.log('Henter inntekter med sistEndret', arg);
     await api.post(`${key}/oppdater-refusjon`, null, {
         headers: {
             'If-Unmodified-Since': arg,
@@ -174,7 +205,6 @@ export const oppdaterRefusjonFetcher = async (key: string, { arg }: { arg: strin
 };
 
 export const hentInntekterFetcher = async (key: string, { arg }: { arg: string }) => {
-    console.log('Henter inntekter med sistEndret', arg);
     await api.post(`${key}/finn-inntekter`, null, {
         headers: {
             'If-Unmodified-Since': arg,

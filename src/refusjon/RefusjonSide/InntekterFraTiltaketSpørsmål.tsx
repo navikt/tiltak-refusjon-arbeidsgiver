@@ -73,7 +73,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setInntekterKunTiltaket(event.currentTarget.checked);
                         setEndringBruttoLønn('');
-                        endreBruttolønn(refusjonId!, true, undefined);
+                        endreBruttolønn(refusjonId!, true, refusjon.sistEndret, undefined);
                     }}
                 >
                     Ja
@@ -105,7 +105,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                                 setEndringBruttoLønn('');
                             }
                         }}
-                        onBlur={() => endreBruttolønn(refusjonId!, false, parseInt(endringBruttoLønn, 10))}
+                        onBlur={() => endreBruttolønn(refusjonId!, false, refusjon.sistEndret, parseInt(endringBruttoLønn, 10))}
                         value={endringBruttoLønn}
                     />
                 </>
