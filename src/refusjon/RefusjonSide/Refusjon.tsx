@@ -21,7 +21,7 @@ const Komponent: FunctionComponent = () => {
         if (!initialized.current) {
             if (
                 refusjon &&
-                (!refusjon.refusjonsgrunnlag.inntektsgrunnlag || !refusjon.refusjonsgrunnlag.bedriftKontonummer) &&
+                // (!refusjon.refusjonsgrunnlag.inntektsgrunnlag || !refusjon.refusjonsgrunnlag.bedriftKontonummer) &&
                 !isMutating
             ) {
                 trigger(refusjon.sistEndret ? refusjon.sistEndret : '');

@@ -1,4 +1,4 @@
-import { Alert, Button, Heading, Label, BodyShort } from '@navikt/ds-react';
+import { Alert, Button, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 import _ from 'lodash';
 import { FunctionComponent, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
@@ -51,6 +51,9 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     }, [ingenInntekter, isMutating, refusjon.sistEndret, trigger]);
 
     const finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden = () => {
+        if (ingenInntekter) {
+            return false;
+        }
         if (inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length === 0) {
             return false;
         }
@@ -78,12 +81,12 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
 
     return (
         <div className={cls.element('graboks-wrapper')}>
-            {isMutating && (
+            <InntektsMeldingHeader refusjon={refusjon} />
+            {ingenInntekter && !refusjon.åpnetFørsteGang && (
                 <>
-                    <p>spinner...</p>
+                    <Loader type="L" />
                 </>
             )}
-            <InntektsMeldingHeader refusjon={refusjon} />
             {harBruttolønn && (
                 <i>
                     Her hentes inntekter i form av fastlønn, timelønn, faste tillegg og uregelmessige tillegg knyttet
@@ -140,7 +143,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                     ))}
                 </>
             )}
-            <IngenInntekter ingenInntekter={ingenInntekter} />
+            <IngenInntekter ingenInntekter={ingenInntekter} åpnetFørsteGang={refusjon.åpnetFørsteGang} />
             <IngenRefunderbareInntekter ingenRefunderbareInntekter={ingenRefunderbareInntekter} />
             {refusjon.status === RefusjonStatus.KLAR_FOR_INNSENDING &&
                 !refusjon.hentInntekterLengerFrem &&

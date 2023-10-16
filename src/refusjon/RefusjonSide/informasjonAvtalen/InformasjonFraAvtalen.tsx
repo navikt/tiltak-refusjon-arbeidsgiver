@@ -138,7 +138,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 </>
             )}
 
-            {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && (
+            {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && refusjon.åpnetFørsteGang && (
                 <>
                     <VerticalSpacer rem={1} />
                     <Alert variant="error" size="small">

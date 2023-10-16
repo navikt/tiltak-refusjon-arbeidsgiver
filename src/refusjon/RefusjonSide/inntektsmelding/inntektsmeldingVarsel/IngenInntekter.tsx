@@ -3,10 +3,11 @@ import { Alert } from '@navikt/ds-react';
 
 interface Props {
     ingenInntekter: boolean;
+    åpnetFørsteGang: string;
 }
 
-const IngenInntekter: FunctionComponent<Props> = ({ ingenInntekter }: Props) =>
-    ingenInntekter ? (
+const IngenInntekter: FunctionComponent<Props> = ({ ingenInntekter, åpnetFørsteGang }: Props) =>
+    ingenInntekter && åpnetFørsteGang ? (
         <div className={'inntektsmelding__varsel-linje'}>
             <Alert variant="warning" size="small">
                 Vi kan ikke finne inntekter fra a-meldingen for denne perioden. Når a-meldingen er oppdatert vil
