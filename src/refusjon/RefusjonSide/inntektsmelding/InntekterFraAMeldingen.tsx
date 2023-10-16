@@ -80,13 +80,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         <div className={cls.element('graboks-wrapper')}>
             {isMutating && (
                 <>
-                    <p>FEEEET JÄÄÄÄÄÄVLA SPINNER!!!!!</p>
-                    <p>FEEEET JÄÄÄÄÄÄVLA SPINNER!!!!!</p>
-                    <p>FEEEET JÄÄÄÄÄÄVLA SPINNER!!!!!</p>
-                    <p>FEEEET JÄÄÄÄÄÄVLA SPINNER!!!!!</p>
-                    <p>FEEEET JÄÄÄÄÄÄVLA SPINNER!!!!!</p>
-                    <p>FEEEET JÄÄÄÄÄÄVLA SPINNER!!!!!</p>
-                    <p>FEEEET JÄÄÄÄÄÄVLA SPINNER!!!!!</p>
+                    <p>spinner...</p>
                 </>
             )}
             <InntektsMeldingHeader refusjon={refusjon} />
