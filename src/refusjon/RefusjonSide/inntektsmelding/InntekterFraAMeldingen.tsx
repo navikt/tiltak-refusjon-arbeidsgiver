@@ -125,7 +125,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                 <>
                     <VerticalSpacer rem={1} />
                     {inntektGrupperListeSortert.map(([aarManed, inntektslinjer]) => (
-                        <>
+                        <div key={aarManed}>
                             <Heading level="4" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
                                 Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})
                             </Heading>
@@ -139,7 +139,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                 </table>
                             </div>
                             <VerticalSpacer rem={1} />
-                        </>
+                        </div>
                     ))}
                 </>
             )}
