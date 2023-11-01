@@ -19,11 +19,7 @@ const Komponent: FunctionComponent = () => {
 
     useEffect(() => {
         if (!initialized.current) {
-            if (
-                refusjon &&
-                // (!refusjon.refusjonsgrunnlag.inntektsgrunnlag || !refusjon.refusjonsgrunnlag.bedriftKontonummer) &&
-                !isMutating
-            ) {
+            if (refusjon && !isMutating) {
                 trigger(refusjon.sistEndret ? refusjon.sistEndret : '');
                 initialized.current = true;
             }

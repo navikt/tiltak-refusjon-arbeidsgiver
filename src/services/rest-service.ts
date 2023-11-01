@@ -187,33 +187,8 @@ export const useHentRefusjon = (refusjonId?: string, sistEndret?: string): Refus
     return data!;
 };
 
-export const hentInntekter = async (refusjonId?: string, sistEndret?: string) => {
-    await api.post(`/refusjon/${refusjonId}/finn-inntekter`, null, {
-        headers: {
-            'If-Unmodified-Since': sistEndret,
-        },
-    });
-    await mutate(`/refusjon/${refusjonId}`);
-};
-
 export const oppdaterRefusjonFetcher = async (key: string, { arg }: { arg: string }) => {
     await api.post(`${key}/oppdater-refusjon`, null, {
-        headers: {
-            'If-Unmodified-Since': arg,
-        },
-    });
-};
-
-export const hentInntekterFetcher = async (key: string, { arg }: { arg: string }) => {
-    await api.post(`${key}/finn-inntekter`, null, {
-        headers: {
-            'If-Unmodified-Since': arg,
-        },
-    });
-};
-
-export const hentBedriftkontonummer = async (key: string, { arg }: { arg: string }) => {
-    await api.post(`${key}/finn-bedriftkontonummer`, null, {
         headers: {
             'If-Unmodified-Since': arg,
         },

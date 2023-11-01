@@ -1,10 +1,10 @@
 import { Alert, Button, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 import _ from 'lodash';
-import { FunctionComponent, useEffect, useRef } from 'react';
+import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
-import { hentInntekterLengerFrem, useHentRefusjon, hentInntekterFetcher } from '../../../services/rest-service';
+import { hentInntekterLengerFrem, useHentRefusjon } from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
 import { formatterPeriode, månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
@@ -16,7 +16,6 @@ import InntektsmeldingTabellBody from './inntektsmeldingTabell/InntektsmeldingTa
 import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
-import useSWRMutation from 'swr/mutation';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -33,22 +32,11 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const { inntektsgrunnlag } = refusjon.refusjonsgrunnlag;
-    const initialized = useRef(false);
-    const { trigger, isMutating } = useSWRMutation(`/refusjon/${refusjonId}`, hentInntekterFetcher);
 
     const { antallInntekterSomErMedIGrunnlag, ingenInntekter, ingenRefunderbareInntekter } =
         inntektProperties(refusjon);
 
     refusjonApnet(refusjon, antallInntekterSomErMedIGrunnlag ?? 0, ingenInntekter, ingenRefunderbareInntekter);
-
-    useEffect(() => {
-        if (!initialized.current) {
-            if (ingenInntekter && !isMutating) {
-                //trigger(refusjon.sistEndret);
-                initialized.current = true;
-            }
-        }
-    }, [ingenInntekter, isMutating, refusjon.sistEndret, trigger]);
 
     const finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden = () => {
         if (ingenInntekter) {
