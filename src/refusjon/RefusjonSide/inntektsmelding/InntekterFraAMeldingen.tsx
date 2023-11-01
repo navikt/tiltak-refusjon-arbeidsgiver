@@ -70,11 +70,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     return (
         <div className={cls.element('graboks-wrapper')}>
             <InntektsMeldingHeader refusjon={refusjon} />
-            {ingenInntekter && !refusjon.åpnetFørsteGang && (
-                <>
-                    <Loader type="L" />
-                </>
-            )}
+            {ingenInntekter && !refusjon.åpnetFørsteGang && <Loader type="L" />}
             {harBruttolønn && (
                 <i>
                     Her hentes inntekter i form av fastlønn, timelønn, faste tillegg og uregelmessige tillegg knyttet

@@ -11,7 +11,8 @@ export type Feilkode =
     | 'UGYLDIG_FORLENGELSE_AV_FRIST'
     | 'FEIL_BEDRIFT_KIDNUMMER'
     | 'LAST_REFUSJONEN_PÅ_NYTT_REFUSJONSGRUNNLAG_ENDRET'
-    | 'FERIETREKK_TRUKKET_FOR_SAMME_MÅNED';
+    | 'FERIETREKK_TRUKKET_FOR_SAMME_MÅNED'
+    | 'SAMTIDIGE_ENDRINGER';
 
 export const Feilmeldinger: { [key in Feilkode]: string } = {
     INGEN_BEDRIFTKONTONUMMER: 'Mangler kontonummer for bedriften',
@@ -30,4 +31,5 @@ export const Feilmeldinger: { [key in Feilkode]: string } = {
     LAST_REFUSJONEN_PÅ_NYTT_REFUSJONSGRUNNLAG_ENDRET:
         'Refusjonsgrunnlaget er blitt endret, vennligst last siden på nytt.',
     FERIETREKK_TRUKKET_FOR_SAMME_MÅNED: 'Ferietrekk er trukket for samme måned. Vent 1 minutt og last siden på nytt.',
+    SAMTIDIGE_ENDRINGER: 'Refusjonen er endret og må lastes på ny. Oppfrisk siden og prøv igjen.',
 };

@@ -1,7 +1,8 @@
 import React, { ChangeEvent, FunctionComponent } from 'react';
 import { Radio, RadioGroup } from '@navikt/ds-react';
-import { setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
+import { FeilkodeError, setInntektslinjeOpptjentIPeriode } from '../../../../services/rest-service';
 import { Inntektslinje } from '../../../refusjon';
+import { mutate } from 'swr';
 
 interface Props {
     inntekt: Inntektslinje;
@@ -17,8 +18,13 @@ const InntektValg: FunctionComponent<Props> = ({ inntekt, kvitteringVisning, ref
         erOpptjentIPeriode: boolean,
         sistEndret: string
     ): Promise<void> =>
-        setInntektslinjeOpptjentIPeriode(refusjonId, inntektslinjeId, erOpptjentIPeriode, sistEndret).catch((err) =>
-            console.error('err ', err)
+        setInntektslinjeOpptjentIPeriode(refusjonId, inntektslinjeId, erOpptjentIPeriode, sistEndret).catch(
+            (err: FeilkodeError) => {
+                if (err.message === 'SAMTIDIGE_ENDRINGER') {
+                    mutate(`/refusjon/${refusjonId}`);
+                }
+                console.error('err ', err.message);
+            }
         );
 
     let inntektValg = 'Ikke valgt';

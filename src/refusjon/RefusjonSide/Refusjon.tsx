@@ -14,14 +14,15 @@ import useSWRMutation from 'swr/mutation';
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
-    const initialized = useRef(false);
+    const erLastet = useRef(false);
+
     const { trigger, isMutating } = useSWRMutation(`/refusjon/${refusjonId}`, oppdaterRefusjonFetcher);
 
     useEffect(() => {
-        if (!initialized.current) {
+        if (!erLastet.current) {
             if (refusjon && !isMutating) {
                 trigger(refusjon.sistEndret ? refusjon.sistEndret : '');
-                initialized.current = true;
+                erLastet.current = true;
             }
         }
     }, [isMutating, refusjon, trigger]);
