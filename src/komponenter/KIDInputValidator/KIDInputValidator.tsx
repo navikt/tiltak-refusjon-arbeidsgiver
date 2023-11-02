@@ -59,7 +59,7 @@ const KIDInputValidator: FunctionComponent = () => {
                 }}
                 onBlur={() => {
                     setKid(kid);
-                    lagreBedriftKID(refusjonId!, kid);
+                    lagreBedriftKID(refusjonId!, refusjon.sistEndret, kid);
                     refusjonContext.settRefusjonsgrunnlagVerdi('bedriftKid', kid);
                     fjerneFeilmelding('bedriftKid');
 

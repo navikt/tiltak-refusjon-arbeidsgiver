@@ -74,13 +74,25 @@ export const endreBruttolønn = async (
     return response.data;
 };
 
-export const lagreBedriftKID = async (refusjonId: string, bedriftKID: string | undefined): Promise<any> => {
+export const lagreBedriftKID = async (
+    refusjonId: string,
+    sistEndret: string,
+    bedriftKID: string | undefined
+): Promise<any> => {
     if (bedriftKID?.trim().length === 0) {
         bedriftKID = undefined;
     }
-    const response = await api.post(`/refusjon/${refusjonId}/lagre-bedriftKID`, {
-        bedriftKID,
-    });
+    const response = await api.post(
+        `/refusjon/${refusjonId}/lagre-bedriftKID`,
+        {
+            bedriftKID,
+        },
+        {
+            headers: {
+                'If-Unmodified-Since': sistEndret,
+            },
+        }
+    );
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
@@ -103,12 +115,6 @@ export const settTidligereRefunderbarBeløp = async (
             },
         }
     );
-    await mutate(`/refusjon/${refusjonId}`);
-    return response.data;
-};
-
-export const utsettFriskSykepenger = async (refusjonId: string): Promise<any> => {
-    const response = await api.post(`/refusjon/${refusjonId}/utsett-frist`);
     await mutate(`/refusjon/${refusjonId}`);
     return response.data;
 };
@@ -205,7 +211,21 @@ export const useHentKorreksjon = (korreksjonId: string): Korreksjon => {
     return data!;
 };
 
-export const hentInntekterLengerFrem = async (refusjonId: string, merking: boolean): Promise<void> => {
-    await api.post(`/refusjon/${refusjonId}/merk-for-hent-inntekter-frem`, { merking });
+export const hentInntekterLengerFrem = async (
+    refusjonId: string,
+    merking: boolean,
+    sistEndret: string
+): Promise<void> => {
+    await api.post(
+        `/refusjon/${refusjonId}/merk-for-hent-inntekter-frem`,
+        {
+            merking,
+        },
+        {
+            headers: {
+                'If-Unmodified-Since': sistEndret,
+            },
+        }
+    );
     await mutate(`/refusjon/${refusjonId}`);
 };

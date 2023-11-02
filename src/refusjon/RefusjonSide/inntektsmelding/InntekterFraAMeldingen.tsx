@@ -54,8 +54,8 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         return ingenAvInntekteneErOpptjentIPerioden;
     };
 
-    const merkForHentingAvInntekterFrem = (merking: boolean) => {
-        hentInntekterLengerFrem(refusjon.id, merking);
+    const merkForHentingAvInntekterFrem = (merking: boolean, sistEndret: string) => {
+        hentInntekterLengerFrem(refusjon.id, merking, sistEndret);
     };
 
     const harBruttolønn = inntektsgrunnlag ? inntektsgrunnlag?.bruttoLønn > 0 : false;
@@ -138,7 +138,10 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                             Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
                             rapportert i {nesteMånedNavn} også.
                             <VerticalSpacer rem={1} />
-                            <Button onClick={() => merkForHentingAvInntekterFrem(true)} size="small">
+                            <Button
+                                onClick={() => merkForHentingAvInntekterFrem(true, refusjon.sistEndret)}
+                                size="small"
+                            >
                                 Hent inntekter rapportert i {nesteMånedNavn}
                             </Button>
                         </Alert>
