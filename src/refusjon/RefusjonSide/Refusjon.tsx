@@ -19,8 +19,12 @@ const Komponent: FunctionComponent = () => {
     const { trigger, isMutating } = useSWRMutation(`/refusjon/${refusjonId}`, oppdaterRefusjonFetcher);
 
     useEffect(() => {
-        if (!erLastet.current) {
-            if (refusjon && !isMutating) {
+        if (
+            refusjon &&
+            (refusjon.status === RefusjonStatus.FOR_TIDLIG || refusjon.status === RefusjonStatus.KLAR_FOR_INNSENDING) &&
+            !erLastet.current
+        ) {
+            if (!isMutating) {
                 trigger(refusjon.sistEndret ? refusjon.sistEndret : '');
                 erLastet.current = true;
             }
