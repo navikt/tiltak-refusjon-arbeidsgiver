@@ -194,7 +194,7 @@ export const useHentRefusjon = (refusjonId?: string, sistEndret?: string): Refus
 };
 
 export const oppdaterRefusjonFetcher = async (key: string, { arg }: { arg: string }) => {
-    await api.post(`${key}/oppdater-refusjon`, null, {
+    await api.post(`${key}/sett-kontonummer-og-inntekter`, null, {
         headers: {
             'If-Unmodified-Since': arg,
         },
