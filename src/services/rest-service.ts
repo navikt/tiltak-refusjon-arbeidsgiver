@@ -17,12 +17,7 @@ const api = axios.create({
     validateStatus: (status) => status < 400,
 });
 
-const axiosFetcher = (url: string, refusjon?: Refusjon): Promise<any> =>
-    api
-        .get(url, {
-            headers: { 'If-Unmodified-Since': refusjon ? (refusjon.sistEndret ? refusjon.sistEndret : null) : null },
-        })
-        .then((res: AxiosResponse<any>) => res.data);
+const axiosFetcher = (url: string): Promise<any> => api.get(url).then((res: AxiosResponse<any>) => res.data);
 
 const swrConfig: SWRConfiguration = {
     fetcher: axiosFetcher,

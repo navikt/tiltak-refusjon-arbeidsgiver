@@ -9,7 +9,7 @@ import { tiltakstypeTekst } from '../../../messages';
 import { useHentRefusjon } from '../../../services/rest-service';
 import { formatterDato, formatterPeriode } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
-import { Alert, Heading, Label, BodyShort } from '@navikt/ds-react';
+import { Alert, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 
 const IkonRad = styled.div`
     display: flex;
@@ -103,7 +103,12 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             <IkonRad>
                 <Money />
                 <Label>Kontonummer:</Label>
-                <BodyShort size="small">{refusjon.refusjonsgrunnlag.bedriftKontonummer}</BodyShort>
+                {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && !refusjon.åpnetFørsteGang && (
+                    <Loader type="L" />
+                )}
+                {refusjon.refusjonsgrunnlag.bedriftKontonummer && (
+                    <BodyShort size="small">{refusjon.refusjonsgrunnlag.bedriftKontonummer}</BodyShort>
+                )}
             </IkonRad>
             {(!refusjon.refusjonsgrunnlag.bedriftKid || refusjon.refusjonsgrunnlag.bedriftKid.trim().length === 0) &&
             refusjon.status !== 'KLAR_FOR_INNSENDING' ? (
