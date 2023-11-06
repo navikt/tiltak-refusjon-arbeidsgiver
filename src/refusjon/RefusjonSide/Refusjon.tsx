@@ -10,26 +10,35 @@ import { BodyShort } from '@navikt/ds-react';
 import { useParams } from 'react-router-dom';
 import { oppdaterRefusjonFetcher, useHentRefusjon } from '../../services/rest-service';
 import useSWRMutation from 'swr/mutation';
+import { mutate } from 'swr';
 
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const erLastet = useRef(false);
 
-    const { trigger, isMutating } = useSWRMutation(`/refusjon/${refusjonId}`, oppdaterRefusjonFetcher);
+    const { trigger, isMutating, reset } = useSWRMutation(`/refusjon/${refusjonId}`, oppdaterRefusjonFetcher);
 
     useEffect(() => {
+        const asyncTrigger = async () => {
+            try {
+                await trigger(refusjon.sistEndret ? refusjon.sistEndret : '');
+            } catch (error: any) {
+                reset();
+                mutate(`/refusjon/${refusjonId}`);
+            }
+        };
         if (
             refusjon &&
             (refusjon.status === RefusjonStatus.FOR_TIDLIG || refusjon.status === RefusjonStatus.KLAR_FOR_INNSENDING) &&
             !erLastet.current
         ) {
             if (!isMutating) {
-                trigger(refusjon.sistEndret ? refusjon.sistEndret : '');
+                asyncTrigger();
                 erLastet.current = true;
             }
         }
-    }, [isMutating, refusjon, trigger]);
+    }, [isMutating, refusjon, trigger, reset, refusjonId]);
 
     if (!refusjon) return null;
 
