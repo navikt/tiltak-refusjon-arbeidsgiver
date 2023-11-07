@@ -35,6 +35,8 @@ export interface Refusjon {
     utbetaltTidspunkt?: string;
     unntakOmInntekterFremitid: number;
     hentInntekterLengerFrem: string;
+    sistEndret: string;
+    åpnetFørsteGang: string;
 }
 
 export interface Korreksjon {

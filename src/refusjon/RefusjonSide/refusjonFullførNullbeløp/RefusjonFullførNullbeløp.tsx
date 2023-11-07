@@ -22,7 +22,7 @@ const RefusjonFullførNullbeløp: FunctionComponent = () => {
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
-            await godkjennRefusjonMedNullbeløp(refusjon.id).then(() => {
+            await godkjennRefusjonMedNullbeløp(refusjon.id, refusjon.sistEndret).then(() => {
                 navigate({ pathname: `/refusjon/${refusjon.id}/kvittering`, search: window.location.search });
                 innSendingRefusjon(UtbetaltStatus.OK, refusjon, undefined);
             });

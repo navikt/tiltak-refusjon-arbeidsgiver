@@ -1,4 +1,4 @@
-import { Alert, Button, Heading, Label, BodyShort } from '@navikt/ds-react';
+import { Alert, Button, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 import _ from 'lodash';
 import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
@@ -39,6 +39,9 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     refusjonApnet(refusjon, antallInntekterSomErMedIGrunnlag ?? 0, ingenInntekter, ingenRefunderbareInntekter);
 
     const finnesInntekterMenAlleErHuketAvForÅIkkeVæreOpptjentIPerioden = () => {
+        if (ingenInntekter) {
+            return false;
+        }
         if (inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length === 0) {
             return false;
         }
@@ -51,8 +54,8 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         return ingenAvInntekteneErOpptjentIPerioden;
     };
 
-    const merkForHentingAvInntekterFrem = (merking: boolean) => {
-        hentInntekterLengerFrem(refusjon.id, merking);
+    const merkForHentingAvInntekterFrem = (merking: boolean, sistEndret: string) => {
+        hentInntekterLengerFrem(refusjon.id, merking, sistEndret);
     };
 
     const harBruttolønn = inntektsgrunnlag ? inntektsgrunnlag?.bruttoLønn > 0 : false;
@@ -67,6 +70,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
     return (
         <div className={cls.element('graboks-wrapper')}>
             <InntektsMeldingHeader refusjon={refusjon} />
+            {ingenInntekter && !refusjon.åpnetFørsteGang && <Loader type="L" />}
             {harBruttolønn && (
                 <i>
                     Her hentes inntekter i form av fastlønn, timelønn, faste tillegg og uregelmessige tillegg knyttet
@@ -105,7 +109,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                 <>
                     <VerticalSpacer rem={1} />
                     {inntektGrupperListeSortert.map(([aarManed, inntektslinjer]) => (
-                        <>
+                        <div key={aarManed}>
                             <Heading level="4" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
                                 Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})
                             </Heading>
@@ -119,11 +123,11 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                 </table>
                             </div>
                             <VerticalSpacer rem={1} />
-                        </>
+                        </div>
                     ))}
                 </>
             )}
-            <IngenInntekter ingenInntekter={ingenInntekter} />
+            <IngenInntekter ingenInntekter={ingenInntekter} åpnetFørsteGang={refusjon.åpnetFørsteGang} />
             <IngenRefunderbareInntekter ingenRefunderbareInntekter={ingenRefunderbareInntekter} />
             {refusjon.status === RefusjonStatus.KLAR_FOR_INNSENDING &&
                 !refusjon.hentInntekterLengerFrem &&
@@ -134,7 +138,10 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                             Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
                             rapportert i {nesteMånedNavn} også.
                             <VerticalSpacer rem={1} />
-                            <Button onClick={() => merkForHentingAvInntekterFrem(true)} size="small">
+                            <Button
+                                onClick={() => merkForHentingAvInntekterFrem(true, refusjon.sistEndret)}
+                                size="small"
+                            >
                                 Hent inntekter rapportert i {nesteMånedNavn}
                             </Button>
                         </Alert>

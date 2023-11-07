@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
 import TilbakeTilOversikt from '../../komponenter/TilbakeTilOversikt';
 import { formatterDato } from '../../utils/datoUtils';
 import KvitteringKorreksjon from '../KvitteringKorreksjon/KvitteringKorreksjon';
@@ -6,11 +6,41 @@ import KvitteringSide from '../KvitteringSide/KvitteringSide';
 import { RefusjonStatus } from '../status';
 import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
-import { RefusjonContext } from '../../RefusjonProvider';
 import { BodyShort } from '@navikt/ds-react';
+import { useParams } from 'react-router-dom';
+import { oppdaterRefusjonFetcher, useHentRefusjon } from '../../services/rest-service';
+import useSWRMutation from 'swr/mutation';
+import { mutate } from 'swr';
 
 const Komponent: FunctionComponent = () => {
-    const { refusjon } = useContext(RefusjonContext);
+    const { refusjonId } = useParams();
+    const refusjon = useHentRefusjon(refusjonId);
+    const erLastet = useRef(false);
+
+    const { trigger, isMutating, reset } = useSWRMutation(`/refusjon/${refusjonId}`, oppdaterRefusjonFetcher);
+
+    useEffect(() => {
+        const asyncTrigger = async () => {
+            try {
+                await trigger(refusjon.sistEndret ? refusjon.sistEndret : '');
+            } catch (error: any) {
+                reset();
+                mutate(`/refusjon/${refusjonId}`);
+            }
+        };
+        if (
+            refusjon &&
+            (refusjon.status === RefusjonStatus.FOR_TIDLIG || refusjon.status === RefusjonStatus.KLAR_FOR_INNSENDING) &&
+            !erLastet.current
+        ) {
+            if (!isMutating) {
+                asyncTrigger();
+                erLastet.current = true;
+            }
+        }
+    }, [isMutating, refusjon, trigger, reset, refusjonId]);
+
+    if (!refusjon) return null;
 
     switch (refusjon.status) {
         case RefusjonStatus.FOR_TIDLIG:
