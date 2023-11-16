@@ -10,7 +10,7 @@ import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
-import { BodyShort, Heading, Label, Radio, RadioGroup, TextField } from '@navikt/ds-react';
+import { BodyShort, Heading, Label, Radio, RadioGroup, TextField, debounce } from '@navikt/ds-react';
 
 export const GrønnBoks = styled.div`
     background-color: #ccf1d6;
@@ -40,6 +40,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     ) {
         return null;
     }
+
+    const ANTALL_MILLISEKUNDER = 100;
+    const delayEndreBruttolønn = debounce(endreBruttolønn, ANTALL_MILLISEKUNDER);
 
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
@@ -73,7 +76,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setInntekterKunTiltaket(event.currentTarget.checked);
                         setEndringBruttoLønn('');
-                        endreBruttolønn(refusjonId!, true, refusjon.sistEndret, undefined);
+                        delayEndreBruttolønn(refusjonId!, true, refusjon.sistEndret, undefined);
                     }}
                 >
                     Ja
@@ -105,7 +108,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                                 setEndringBruttoLønn('');
                             }
                         }}
-                        onBlur={() => endreBruttolønn(refusjonId!, false, refusjon.sistEndret, parseInt(endringBruttoLønn, 10))}
+                        onBlur={() => delayEndreBruttolønn(refusjonId!, false, refusjon.sistEndret, parseInt(endringBruttoLønn, 10))}
                         value={endringBruttoLønn}
                     />
                 </>

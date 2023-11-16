@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 import { formatterDato } from '../../utils/datoUtils';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
-import { Alert, Radio, RadioGroup, TextField, Heading, Label, BodyShort } from '@navikt/ds-react';
+import { Alert, Radio, RadioGroup, TextField, Heading, Label, BodyShort, debounce } from '@navikt/ds-react';
 
 interface Properties {
     refusjon: Refusjon;
@@ -30,6 +30,9 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
     ) {
         return null;
     }
+
+    const ANTALL_MILLISEKUNDER = 100;
+    const delaySettTidligereRefunderbarBeløp = debounce(settTidligereRefunderbarBeløp, ANTALL_MILLISEKUNDER);
 
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
     const erFratrekStørre = fratrekkRefunderbarBeløp && parseInt(belop, 10) - sumInntekterOpptjent > 0;
@@ -68,7 +71,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                     value={true}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(event.currentTarget.checked);
-                        settTidligereRefunderbarBeløp(refusjonId!, true, refusjon.sistEndret, refunderbarBeløp);
+                        delaySettTidligereRefunderbarBeløp(refusjonId!, true, refusjon.sistEndret, refunderbarBeløp);
                     }}
                 >
                     Ja
@@ -79,7 +82,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setFratrekk(!event.currentTarget.checked);
                         setBelop('');
-                        settTidligereRefunderbarBeløp(refusjonId!, false, refusjon.sistEndret, undefined);
+                        delaySettTidligereRefunderbarBeløp(refusjonId!, false, refusjon.sistEndret, undefined);
                     }}
                 >
                     Nei
@@ -106,7 +109,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                                 setBelop('');
                             }
                         }}
-                        onBlur={() => settTidligereRefunderbarBeløp(refusjonId!, true, refusjon.sistEndret, parseInt(belop, 10))}
+                        onBlur={() => delaySettTidligereRefunderbarBeløp(refusjonId!, true, refusjon.sistEndret, parseInt(belop, 10))}
                         value={belop}
                     />
                 </>
