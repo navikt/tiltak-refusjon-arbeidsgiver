@@ -68,6 +68,12 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
             )}
             <IkonRad>
                 <People />
+                <Label>Bedriftens navn: </Label>
+                <BodyShort size="small">{refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.bedriftNavn}</BodyShort>
+            </IkonRad>
+            <VerticalSpacer rem={1} />
+            <IkonRad>
+                <People />
                 <Label>Deltaker: </Label>
                 <BodyShort size="small">
                     {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn}{' '}
