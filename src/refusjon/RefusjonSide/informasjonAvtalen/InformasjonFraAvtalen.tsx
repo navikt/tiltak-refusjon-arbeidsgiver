@@ -1,4 +1,4 @@
-import { Calender, File, FileContent, Money, People, Warning } from '@navikt/ds-icons';
+import { Calender, File, FileContent, Money, Office1, People, Warning } from '@navikt/ds-icons';
 import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
@@ -67,7 +67,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                 </>
             )}
             <IkonRad>
-                <People />
+                <Office1 style={{ marginTop: '0.125rem' }} />
                 <Label>Bedriftens navn: </Label>
                 <BodyShort size="small">{refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.bedriftNavn}</BodyShort>
             </IkonRad>
