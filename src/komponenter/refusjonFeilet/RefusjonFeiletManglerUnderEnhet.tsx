@@ -22,7 +22,6 @@ const RefusjonFeiletManglerUnderEnhet: FunctionComponent<Props> = ({ bedriftvalg
     return (
         <Boks variant="hvit" className={cls.className}>
             <div className={cls.element('mangler-underenhet-wrapper')}>
-                ssdlkjfh
                 <div className={cls.element('header')}>
                     <Heading size="small">
                         Du har tilganger til en eller flere bedrifter, men kun på juridisk nivå.
