@@ -4,7 +4,7 @@ import { BodyShort, Button, Heading, Label, Link } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import EksternLenke from './komponenter/EksternLenke/EksternLenke';
 import VerticalSpacer from './komponenter/VerticalSpacer';
-import HvitBoks from './komponenter/hvitboks/HvitBoks';
+import Boks from './komponenter/Boks/Boks';
 
 const Landingsside: FunctionComponent = () => {
     const gåTilOversikten = () => {
@@ -12,7 +12,7 @@ const Landingsside: FunctionComponent = () => {
     };
 
     return (
-        <HvitBoks style={{ margin: '2rem auto' }}>
+        <Boks variant="hvit" styling={{ margin: '2rem auto' }}>
             <div style={{ maxWidth: '40rem', margin: '0 auto' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <SommerIkon />
@@ -81,7 +81,7 @@ const Landingsside: FunctionComponent = () => {
                     </EksternLenke>
                 </BodyShort>
             </div>
-        </HvitBoks>
+        </Boks>
     );
 };
 

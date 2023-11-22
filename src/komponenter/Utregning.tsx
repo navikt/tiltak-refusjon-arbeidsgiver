@@ -11,12 +11,12 @@ import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprose
 import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
 import { Alert, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
-import styled from 'styled-components';
 import { Beregning, Inntektsgrunnlag, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import EksternLenke from './EksternLenke/EksternLenke';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
+import GreyFrame from './GreyFrame/GreyFrame';
 
 interface Props {
     beregning?: Beregning;
@@ -24,13 +24,6 @@ interface Props {
     forrigeRefusjonMinusBeløp?: number;
     inntektsgrunnlag?: Inntektsgrunnlag;
 }
-
-const GråRamme = styled.div`
-    border: 4px solid #eee;
-    border-radius: 4px;
-    padding: 1.5rem;
-    margin-bottom: 4rem;
-`;
 
 const Utregning: FunctionComponent<Props> = (props) => {
     const { beregning, tilskuddsgrunnlag, forrigeRefusjonMinusBeløp } = props;
@@ -42,7 +35,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
     );
 
     return (
-        <GråRamme>
+        <GreyFrame>
             <Heading size="medium">Utregningen</Heading>
             <VerticalSpacer rem={1} />
             <Utregningsrad
@@ -199,7 +192,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     refusjonsperioden kan ikke endres og dere vil få utbetalt maks av avtalt beløp.
                 </Alert>
             )}
-        </GråRamme>
+        </GreyFrame>
     );
 };
 

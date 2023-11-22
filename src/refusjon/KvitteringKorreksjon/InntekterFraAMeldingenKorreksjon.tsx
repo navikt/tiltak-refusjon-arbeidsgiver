@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
-import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
 import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
@@ -9,36 +8,9 @@ import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNED
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 
-const GråBoks = styled.div`
-    background-color: #eee;
-    border-radius: 4px;
-    padding: 1.5rem min(1.5rem, 2%);
-`;
-
-const Fleks = styled.div`
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: baseline;
-`;
-
-const InntekterTabell = styled.table`
-    width: 100%;
-    th,
-    td {
-        text-align: left;
-        padding: 0.35rem 0.5rem;
-    }
-    th:first-child,
-    td:first-child {
-        padding: 0.35rem 0;
-    }
-    th:last-child,
-    td:last-child {
-        text-align: right;
-        padding: 0.35rem 0;
-    }
-`;
+import BEMHelper from '../../utils/bem';
+import '../RefusjonSide/InntekterFraAMeldingen.less';
+import Boks from '../../komponenter/Boks/Boks';
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
@@ -51,6 +23,7 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 };
 
 const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
+    const cls = BEMHelper('inntekterFraAMeldingen');
     const { refusjonId } = useParams();
     const korreksjonId = useHentRefusjon(refusjonId).korreksjonId;
 
@@ -70,8 +43,8 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
         antallInntekterSomErMedIGrunnlag === 0;
 
     return (
-        <GråBoks>
-            <Fleks>
+        <Boks variant="grå">
+            <div className={cls.element('fleks')}>
                 <Heading size="small" style={{ marginBottom: '1rem' }}>
                     Inntekter hentet fra a-meldingen
                 </Heading>
@@ -84,7 +57,7 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                         )}
                     </BodyShort>
                 )}
-            </Fleks>
+            </div>
             {korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
                 korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
                     <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
@@ -95,7 +68,7 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                 ) && (
                     <>
                         <VerticalSpacer rem={1} />
-                        <InntekterTabell>
+                        <div className={cls.element('inntekterTabell')}>
                             <thead>
                                 <tr>
                                     <th>Beskriv&shy;else</th>
@@ -145,7 +118,7 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                                     </tr>
                                 )}
                             </tbody>
-                        </InntekterTabell>
+                        </div>
                     </>
                 )}
             {ingenInntekter && (
@@ -168,7 +141,7 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                     <VerticalSpacer rem={1} />
                 </>
             )}
-        </GråBoks>
+        </Boks>
     );
 };
 export default InntekterFraAMeldingenKorreksjon;

@@ -7,8 +7,8 @@ import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjonsgrunnlag } from '../refusjon';
-import { GrønnBoks } from './InntekterFraTiltaketSpørsmål';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
+import Boks from '../../komponenter/Boks/Boks';
 
 type Props = {
     refusjonsgrunnlag: Refusjonsgrunnlag;
@@ -37,7 +37,7 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
 
     return (
         <div>
-            <GrønnBoks>
+            <Boks variant="grønn">
                 <Heading size="small">
                     Inntekter som refunderes for{' '}
                     {formatterPeriode(
@@ -66,7 +66,7 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
                             </BodyShort>
                         </>
                     )}
-            </GrønnBoks>
+            </Boks>
         </div>
     );
 };

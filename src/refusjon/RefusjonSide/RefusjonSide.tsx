@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { godkjennRefusjon, useHentRefusjon } from '../../services/rest-service';
 import { innSendingRefusjon, UtbetaltStatus } from '../../utils/amplitude-utils';
 import InformasjonFraAvtalen from './informasjonAvtalen/InformasjonFraAvtalen';
@@ -12,6 +11,7 @@ import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
 import RefusjonGodjennModal from './RefusjonGodjennModal';
 import RefusjonFullførNullbeløp from './refusjonFullførNullbeløp/RefusjonFullførNullbeløp';
 import './RefusjonSide.less';
+import Boks from '../../komponenter/Boks/Boks';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ const RefusjonSide: FunctionComponent = () => {
 
     return (
         <>
-            <HvitBoks>
+            <Boks variant="hvit">
                 <RefusjonIngress refusjon={refusjon} />
                 <InformasjonFraAvtalen />
                 <InntekterFraAMeldingen kvitteringVisning={false} />
@@ -42,7 +42,7 @@ const RefusjonSide: FunctionComponent = () => {
                 <InntekterFraTiltaketSpørsmål />
                 <TidligereRefunderbarBeløp refusjon={refusjon} />
                 <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
-            </HvitBoks>
+            </Boks>
             <RefusjonGodjennModal
                 refusjon={refusjon}
                 visGodkjennModal={visGodkjennModal}

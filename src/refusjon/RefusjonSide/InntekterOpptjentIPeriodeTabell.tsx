@@ -1,35 +1,19 @@
 import _ from 'lodash';
 import { Label } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
-import styled from 'styled-components';
 import { NORSK_MÅNEDÅR_FORMAT, formatterDato, formatterPeriode } from '../../utils/datoUtils';
 import { Inntektslinje } from '../refusjon';
 import { inntektBeskrivelse } from './inntektsmelding/InntekterFraAMeldingen';
+import BEMHelper from '../../utils/bem';
+import '../RefusjonSide/InntekterFraAMeldingen.less';
 
 type Props = {
     inntekter: Inntektslinje[];
     månedsNavn: string;
 };
 
-const InntekterTabell = styled.table`
-    width: 100%;
-    th,
-    td {
-        text-align: left;
-        padding: 0.35rem 0.5rem;
-    }
-    th:first-child,
-    td:first-child {
-        padding: 0.35rem 0;
-    }
-    th:last-child,
-    td:last-child {
-        text-align: right;
-        padding: 0.35rem 0;
-    }
-`;
-
 const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
+    const cls = BEMHelper('inntekterFraAMeldingen');
     const inntekterHuketAvForOpptjentIPeriode = props.inntekter.filter((inntekt) => inntekt.erOpptjentIPeriode);
     const sumInntekterOpptjentIPeriode = _.sumBy(inntekterHuketAvForOpptjentIPeriode, 'beløp');
 
@@ -45,7 +29,7 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
 
     return (
         <div>
-            <InntekterTabell>
+            <div className={cls.element('inntekterTabell')}>
                 <thead>
                     <tr>
                         <th>Beskriv&shy;else</th>
@@ -76,7 +60,7 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                         </tr>
                     ))}
                 </tbody>
-            </InntekterTabell>
+            </div>
             <br />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Label>Sum bruttolønn</Label>

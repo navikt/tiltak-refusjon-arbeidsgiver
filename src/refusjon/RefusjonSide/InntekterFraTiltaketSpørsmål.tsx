@@ -1,6 +1,5 @@
 import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
 import { endreBruttolønn, useHentRefusjon } from '../../services/rest-service';
@@ -11,12 +10,6 @@ import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 import { BodyShort, Heading, Label, Radio, RadioGroup, TextField, debounce } from '@navikt/ds-react';
-
-export const GrønnBoks = styled.div`
-    background-color: #ccf1d6;
-    padding: 1em;
-    border: 4px solid #99dead;
-`;
 
 const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const cls = BEMHelper('refusjonside');
