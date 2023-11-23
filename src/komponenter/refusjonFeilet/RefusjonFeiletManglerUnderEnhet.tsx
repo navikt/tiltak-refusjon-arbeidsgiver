@@ -1,5 +1,4 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react';
-import HvitBoks from '../hvitboks/HvitBoks';
 import { ReactComponent as Notes } from '@/asset/image/notes.svg';
 import { ReactComponent as ChevronRight } from '@/asset/image/chevronRight.svg';
 import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.svg';
@@ -8,6 +7,7 @@ import { Bedriftvalg, Feilstatus, Organisasjon } from '../../bruker/bedriftsmeny
 import LagNyRad from './LagNyRad';
 import BEMHelper from '../../utils/bem';
 import { ExpansionCard, Link, Heading } from '@navikt/ds-react';
+import Boks from '../Boks/Boks';
 
 interface Props {
     bedriftvalg: Bedriftvalg;
@@ -20,7 +20,7 @@ const RefusjonFeiletManglerUnderEnhet: FunctionComponent<Props> = ({ bedriftvalg
         ?.gjeldeneOrg?.map((feil) => feil);
 
     return (
-        <HvitBoks className={cls.className}>
+        <Boks variant="hvit" className={cls.className}>
             <div className={cls.element('mangler-underenhet-wrapper')}>
                 <div className={cls.element('header')}>
                     <Heading size="small">
@@ -74,7 +74,7 @@ const RefusjonFeiletManglerUnderEnhet: FunctionComponent<Props> = ({ bedriftvalg
                     Les mer om roller og rettigheter på altinn.no
                 </Link>
             </div>
-        </HvitBoks>
+        </Boks>
     );
 };
 export default RefusjonFeiletManglerUnderEnhet;

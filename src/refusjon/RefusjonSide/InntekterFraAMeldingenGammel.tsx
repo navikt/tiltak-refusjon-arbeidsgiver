@@ -1,8 +1,7 @@
 // DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
 import _ from 'lodash';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
-import styled from 'styled-components';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
 import { useHentRefusjon } from '../../services/rest-service';
@@ -10,37 +9,9 @@ import { refusjonApnet } from '../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
-
-const GråBoks = styled.div`
-    background-color: #eee;
-    border-radius: 4px;
-    padding: 1.5rem min(1.5rem, 2%);
-`;
-
-const Fleks = styled.div`
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: baseline;
-`;
-
-const InntekterTabell = styled.table`
-    width: 100%;
-    th,
-    td {
-        text-align: left;
-        padding: 0.35rem 0.5rem;
-    }
-    th:first-child,
-    td:first-child {
-        padding: 0.35rem 0;
-    }
-    th:last-child,
-    td:last-child {
-        text-align: right;
-        padding: 0.35rem 0;
-    }
-`;
+import BEMHelper from '../../utils/bem';
+import '../RefusjonSide/InntekterFraAMeldingen.less';
+import Boks from '../../komponenter/Boks/Boks';
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
@@ -54,6 +25,7 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 
 // DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
 const InntekterFraAMeldingen: FunctionComponent = () => {
+    const cls = BEMHelper('inntekterFraAMeldingen');
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const antallInntekterSomErMedIGrunnlag = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
@@ -72,21 +44,19 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
     refusjonApnet(refusjon, antallInntekterSomErMedIGrunnlag ?? 0, ingenInntekter, ingenRefunderbareInntekter);
 
     return (
-        <GråBoks>
-            <Fleks>
-                <Heading size="small" style={{ marginBottom: '1rem' }}>
-                    Inntekter hentet fra a-meldingen
-                </Heading>
-                {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
-                    <BodyShort size="small">
-                        Sist hentet:{' '}
-                        {formatterDato(
-                            refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
-                            NORSK_DATO_OG_TID_FORMAT
-                        )}
-                    </BodyShort>
-                )}
-            </Fleks>
+        <Boks variant="grå">
+            <Heading size="small" style={{ marginBottom: '1rem' }}>
+                Inntekter hentet fra a-meldingen
+            </Heading>
+            {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
+                <BodyShort size="small">
+                    Sist hentet:{' '}
+                    {formatterDato(
+                        refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
+                        NORSK_DATO_OG_TID_FORMAT
+                    )}
+                </BodyShort>
+            )}
             {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
                 refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
                     <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
@@ -97,7 +67,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                 ) && (
                     <>
                         <VerticalSpacer rem={1} />
-                        <InntekterTabell>
+                        <div className={cls.element('inntekterTabell')}>
                             <thead>
                                 <tr>
                                     <th>Beskriv&shy;else</th>
@@ -147,7 +117,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                                     </tr>
                                 )}
                             </tbody>
-                        </InntekterTabell>
+                        </div>
                     </>
                 )}
             {ingenInntekter && (
@@ -170,7 +140,7 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
                     <VerticalSpacer rem={1} />
                 </>
             )}
-        </GråBoks>
+        </Boks>
     );
 };
 export default InntekterFraAMeldingen;

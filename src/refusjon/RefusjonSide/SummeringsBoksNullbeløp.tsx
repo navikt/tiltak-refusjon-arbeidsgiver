@@ -1,29 +1,18 @@
 import { ReactComponent as Pengesedler } from '@/asset/image/pengesedler.svg';
 import { Label } from '@navikt/ds-react';
-import React, { FunctionComponent } from 'react';
-import styled from 'styled-components';
+import { FunctionComponent } from 'react';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjonsgrunnlag } from '../refusjon';
-
-const Boks = styled.div`
-    display: flex;
-    flex-direction: row;
-    border: 3px solid #cce1f3;
-    border-radius: 4px;
-    padding: 1.75rem;
-    margin-bottom: 1rem;
-`;
+import Boks from '../../komponenter/Boks/Boks';
 
 type Props = {
     refusjonsgrunnlag: Refusjonsgrunnlag;
 };
 
-
 const SummeringBoksNullbeløp: FunctionComponent<Props> = (props) => {
-
     return (
-        <Boks>
+        <Boks variant="blå">
             <div style={{ paddingRight: '1.5rem' }}>
                 <Pengesedler />
             </div>

@@ -3,7 +3,6 @@ import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
-import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { korreksjonStatusTekst } from '../../messages';
 import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { NORSK_DATO_OG_TID_FORMAT, formatterDato } from '../../utils/datoUtils';
@@ -15,6 +14,7 @@ import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFra
 import { KorreksjonStatus } from '../status';
 import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';
 import KorreksjonInfo from './KorreksjonInfo';
+import Boks from '../../komponenter/Boks/Boks';
 
 const KvitteringKorreksjon: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -23,7 +23,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
 
     return (
         <>
-            <HvitBoks>
+            <Boks variant="hvit">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Heading size="large" role="heading">
                         Kvittering for korrigert refusjon
@@ -50,7 +50,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                 />
                 <VerticalSpacer rem={4} />
                 <SummeringBoks refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} status={refusjon.status} />
-            </HvitBoks>
+            </Boks>
 
             <VerticalSpacer rem={2} />
             <ExpansionCard size="small" aria-label="Small-variant" defaultOpen={true}>
@@ -58,7 +58,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                     <ExpansionCard.Title size="small">Klikk for å se refusjonen som er korrigert</ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <HvitBoks>
+                    <Boks variant="hvit">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Heading size="large" role="heading">
                                 Kvittering for refusjon
@@ -83,7 +83,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                         />
                         <VerticalSpacer rem={4} />
                         <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
-                    </HvitBoks>
+                    </Boks>
                 </ExpansionCard.Content>
             </ExpansionCard>
             <VerticalSpacer rem={2} />

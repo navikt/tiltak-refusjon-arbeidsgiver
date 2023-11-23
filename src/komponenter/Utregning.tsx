@@ -11,12 +11,12 @@ import { ReactComponent as Stillingsprosent } from '@/asset/image/stillingsprose
 import { ReactComponent as Stranden } from '@/asset/image/strand.svg';
 import { Alert, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
-import styled from 'styled-components';
 import { Beregning, Inntektsgrunnlag, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import EksternLenke from './EksternLenke/EksternLenke';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
+import GråRamme from './GråRamme/GråRamme';
 
 interface Props {
     beregning?: Beregning;
@@ -24,13 +24,6 @@ interface Props {
     forrigeRefusjonMinusBeløp?: number;
     inntektsgrunnlag?: Inntektsgrunnlag;
 }
-
-const GråRamme = styled.div`
-    border: 4px solid #eee;
-    border-radius: 4px;
-    padding: 1.5rem;
-    margin-bottom: 4rem;
-`;
 
 const Utregning: FunctionComponent<Props> = (props) => {
     const { beregning, tilskuddsgrunnlag, forrigeRefusjonMinusBeløp } = props;

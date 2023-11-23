@@ -1,10 +1,10 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
 import { Bedriftvalg, Feilstatus, StatusFeilBedriftmeny } from '../../bruker/bedriftsmenyRefusjon/api/api';
 import BEMHelper from '../../utils/bem';
-import HvitBoks from '../hvitboks/HvitBoks';
 import './refusjonFeilet.less';
 import RefusjonFeiletManglerUnderEnhet from './RefusjonFeiletManglerUnderEnhet';
 import { BodyShort, Heading } from '@navikt/ds-react';
+import Boks from '../Boks/Boks';
 
 interface Props {
     bedriftvalg: Bedriftvalg;
@@ -49,24 +49,24 @@ const RefusjonFeilet: FunctionComponent<Props> = ({
                 return <>.....</>;
             default:
                 return (
-                    <HvitBoks className={cls.className}>
+                    <Boks variant="hvit" className={cls.className}>
                         <Heading size="medium" className={cls.element('tittel')}>
                             Ikke tilgang til noen virksomheter i Altinn
                         </Heading>
                         <GenerellTilgangsInnhold />
-                    </HvitBoks>
+                    </Boks>
                 );
         }
     };
 
     if (innloggetBrukerHarAltinnTilgangerBedrifter) {
         return (
-            <HvitBoks className={cls.className}>
+            <Boks variant="hvit" className={cls.className}>
                 <Heading size="medium" className={cls.element('tittel')}>
                     Ikke tilgang til noen virksomheter i Altinn
                 </Heading>
                 <GenerellTilgangsInnhold />
-            </HvitBoks>
+            </Boks>
         );
     }
 

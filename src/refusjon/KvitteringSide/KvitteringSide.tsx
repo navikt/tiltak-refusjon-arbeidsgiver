@@ -3,7 +3,6 @@ import { FunctionComponent, ReactElement } from 'react';
 import { useParams } from 'react-router';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
-import HvitBoks from '../../komponenter/hvitboks/HvitBoks';
 import { statusTekst } from '../../messages';
 import { RefusjonStatus } from '../../refusjon/status';
 import { useHentRefusjon } from '../../services/rest-service';
@@ -20,6 +19,7 @@ import { Refusjon } from '../refusjon';
 import LagreSomPdfKnapp from './LagreSomPdfKnapp';
 import Statusmelding from './Statusmelding';
 import SummeringBoksNullbeløp from '../RefusjonSide/SummeringsBoksNullbeløp';
+import Boks from '../../komponenter/Boks/Boks';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -51,7 +51,7 @@ const KvitteringSide: FunctionComponent = () => {
     if (!refusjon.refusjonsgrunnlag.inntektsgrunnlag) return null;
 
     return (
-        <HvitBoks>
+        <Boks variant="hvit">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Heading size="large" role="heading">
                     Kvittering for refusjon
@@ -100,7 +100,7 @@ const KvitteringSide: FunctionComponent = () => {
             {refusjon.status !== 'GODKJENT_NULLBELØP' && (
                 <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
             )}
-        </HvitBoks>
+        </Boks>
     );
 };
 

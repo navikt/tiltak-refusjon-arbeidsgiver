@@ -189,4 +189,9 @@ export const korreksjonsgrunnTekst: { [key in Korreksjonsgrunn]: string } = {
     UTBETALT_HELE_TILSKUDDSBELØP: 'Utbetalt hele tilskuddsbeløpet',
     INNTEKTER_RAPPORTERT_ETTER_TILSKUDDSPERIODE: 'Inntekter rapportert etter tilskuddsperioden',
     HENT_INNTEKTER_PÅ_NYTT: 'Beregnet refusjon på mangelfullt inntektsgrunnlag',
+    HENT_INNTEKTER_TO_MÅNEDER_FREM:
+        'Brukt feil inntektslinje og skal hente inntekter lenger ferm i tid (velg antall måneder)',
+    TRUKKET_FEIL_FOR_FRAVÆR: 'Trukket av feil beløp for fravær',
+    OPPDATERT_AMELDING: 'Oppdatert A-melding',
+    ANNEN_GRUNN: 'Annen grunn',
 };

@@ -1,8 +1,7 @@
 import { Calender, File, FileContent, Money, Office1, People, Warning } from '@navikt/ds-icons';
 import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useParams } from 'react-router';
-import styled from 'styled-components';
 import EksternLenke from '../../../komponenter/EksternLenke/EksternLenke';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../../messages';
@@ -10,19 +9,8 @@ import { useHentRefusjon } from '../../../services/rest-service';
 import { formatterDato, formatterPeriode } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
 import { Alert, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
-
-const IkonRad = styled.div`
-    display: flex;
-    * {
-        margin-right: 0.5rem;
-    }
-`;
-
-const GråBoks = styled.div`
-    background-color: #f7f7f7;
-    border-radius: 4px;
-    padding: 1.5rem;
-`;
+import IkonRad from '../../../komponenter/IkonRad/IkonRad';
+import Boks from '../../../komponenter/Boks/Boks';
 
 const InformasjonFraAvtalen: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -33,7 +21,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
     const refusjonsnummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;
 
     return (
-        <GråBoks>
+        <Boks variant="grå">
             <Heading size="small">Informasjon hentet fra avtalen</Heading>
             <VerticalSpacer rem={1} />
             <IkonRad>
@@ -136,7 +124,6 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                     </IkonRad>
                 </>
             )}
-
             {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && refusjon.åpnetFørsteGang && (
                 <>
                     <VerticalSpacer rem={1} />
@@ -148,7 +135,7 @@ const InformasjonFraAvtalen: FunctionComponent = () => {
                     </Alert>
                 </>
             )}
-        </GråBoks>
+        </Boks>
     );
 };
 

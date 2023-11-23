@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/react';
 import { FunctionComponent, PropsWithChildren, Suspense } from 'react';
-import HvitBoks from './komponenter/hvitboks/HvitBoks';
 import VerticalSpacer from './komponenter/VerticalSpacer';
 import { Alert, BodyShort, Heading, Loader } from '@navikt/ds-react';
+import Boks from './komponenter/Boks/Boks';
 
 const ErrorOgSuspenseHandlerMain: FunctionComponent<PropsWithChildren> = (props) => (
     <Sentry.ErrorBoundary
@@ -21,9 +21,9 @@ const ErrorOgSuspenseHandlerMain: FunctionComponent<PropsWithChildren> = (props)
         <Suspense
             fallback={
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                    <HvitBoks style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                    <Boks variant="hvit" style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                         <Loader type="XL" />
-                    </HvitBoks>
+                    </Boks>
                 </div>
             }
         >
