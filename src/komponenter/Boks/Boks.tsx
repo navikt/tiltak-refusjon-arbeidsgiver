@@ -1,17 +1,18 @@
 import './Boks.less';
 import { Farger } from '../../utils/boksUtils';
-import { CSSProperties, FunctionComponent } from 'react';
+import { CSSProperties, FunctionComponent, PropsWithChildren } from 'react';
+import BEMHelper from '../../utils/bem';
 
 type Props = {
-    children: React.ReactNode;
     className?: string;
-    styling?: CSSProperties;
+    style?: CSSProperties;
     variant: Farger;
 };
+const cls = BEMHelper('boks');
 
-const Boks: FunctionComponent<Props> = ({ children, className, styling, variant }) => {
+const Boks: FunctionComponent<PropsWithChildren<Props>> = ({ children, className, style, variant }) => {
     return (
-        <div className={`${variant} ${className || ''}`} style={styling}>
+        <div className={`${cls.element(variant)} ${className || ''}`} style={style}>
             {children}
         </div>
     );

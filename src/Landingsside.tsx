@@ -12,7 +12,7 @@ const Landingsside: FunctionComponent = () => {
     };
 
     return (
-        <Boks variant="hvit" styling={{ margin: '2rem auto' }}>
+        <Boks variant="hvit" style={{ margin: '2rem auto' }}>
             <div style={{ maxWidth: '40rem', margin: '0 auto' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <SommerIkon />

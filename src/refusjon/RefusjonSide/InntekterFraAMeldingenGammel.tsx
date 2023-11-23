@@ -45,20 +45,18 @@ const InntekterFraAMeldingen: FunctionComponent = () => {
 
     return (
         <Boks variant="grå">
-            <div className={cls.element('fleks')}>
-                <Heading size="small" style={{ marginBottom: '1rem' }}>
-                    Inntekter hentet fra a-meldingen
-                </Heading>
-                {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
-                    <BodyShort size="small">
-                        Sist hentet:{' '}
-                        {formatterDato(
-                            refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
-                            NORSK_DATO_OG_TID_FORMAT
-                        )}
-                    </BodyShort>
-                )}
-            </div>
+            <Heading size="small" style={{ marginBottom: '1rem' }}>
+                Inntekter hentet fra a-meldingen
+            </Heading>
+            {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
+                <BodyShort size="small">
+                    Sist hentet:{' '}
+                    {formatterDato(
+                        refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
+                        NORSK_DATO_OG_TID_FORMAT
+                    )}
+                </BodyShort>
+            )}
             {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
                 refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
                     <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>

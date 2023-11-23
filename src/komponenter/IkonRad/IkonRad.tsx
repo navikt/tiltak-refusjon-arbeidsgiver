@@ -1,13 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, PropsWithChildren } from 'react';
 import BEMHelper from '../../utils/bem';
 import './IkonRad.less';
 
-type Props = {
-    children: React.ReactNode;
-};
+const cls = BEMHelper('ikonRad');
 
-const IkonRad: FunctionComponent<Props> = ({ children }) => {
-    const cls = BEMHelper('ikonRad');
+const IkonRad: FunctionComponent<PropsWithChildren> = ({ children }) => {
     return <div className={cls.className}>{children}</div>;
 };
 export default IkonRad;

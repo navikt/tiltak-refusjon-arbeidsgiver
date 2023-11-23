@@ -29,7 +29,7 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
 
     return (
         <div>
-            <div className={cls.element('inntekterTabell')}>
+            <table className={cls.element('inntekterTabell')}>
                 <thead>
                     <tr>
                         <th>Beskriv&shy;else</th>
@@ -60,7 +60,7 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                         </tr>
                     ))}
                 </tbody>
-            </div>
+            </table>
             <br />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Label>Sum bruttolønn</Label>

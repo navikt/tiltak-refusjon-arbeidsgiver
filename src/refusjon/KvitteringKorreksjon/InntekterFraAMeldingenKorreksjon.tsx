@@ -44,20 +44,18 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
 
     return (
         <Boks variant="grå">
-            <div className={cls.element('fleks')}>
-                <Heading size="small" style={{ marginBottom: '1rem' }}>
-                    Inntekter hentet fra a-meldingen
-                </Heading>
-                {korreksjon.refusjonsgrunnlag.inntektsgrunnlag && (
-                    <BodyShort size="small">
-                        Sist hentet:{' '}
-                        {formatterDato(
-                            korreksjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
-                            NORSK_DATO_OG_TID_FORMAT
-                        )}
-                    </BodyShort>
-                )}
-            </div>
+            <Heading size="small" style={{ marginBottom: '1rem' }}>
+                Inntekter hentet fra a-meldingen
+            </Heading>
+            {korreksjon.refusjonsgrunnlag.inntektsgrunnlag && (
+                <BodyShort size="small">
+                    Sist hentet:{' '}
+                    {formatterDato(
+                        korreksjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
+                        NORSK_DATO_OG_TID_FORMAT
+                    )}
+                </BodyShort>
+            )}
             {korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
                 korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
                     <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
@@ -68,7 +66,7 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                 ) && (
                     <>
                         <VerticalSpacer rem={1} />
-                        <div className={cls.element('inntekterTabell')}>
+                        <table className={cls.element('inntekterTabell')}>
                             <thead>
                                 <tr>
                                     <th>Beskriv&shy;else</th>
@@ -118,7 +116,7 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                                     </tr>
                                 )}
                             </tbody>
-                        </div>
+                        </table>
                     </>
                 )}
             {ingenInntekter && (

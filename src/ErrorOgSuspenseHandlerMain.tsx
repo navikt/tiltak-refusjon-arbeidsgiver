@@ -21,7 +21,7 @@ const ErrorOgSuspenseHandlerMain: FunctionComponent<PropsWithChildren> = (props)
         <Suspense
             fallback={
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                    <Boks variant="hvit" styling={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                    <Boks variant="hvit" style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                         <Loader type="XL" />
                     </Boks>
                 </div>

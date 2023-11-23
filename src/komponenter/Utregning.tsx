@@ -16,7 +16,7 @@ import { formatterPenger } from '../utils/PengeUtils';
 import EksternLenke from './EksternLenke/EksternLenke';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
-import GreyFrame from './GreyFrame/GreyFrame';
+import GråRamme from './GråRamme/GråRamme';
 
 interface Props {
     beregning?: Beregning;
@@ -35,7 +35,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
     );
 
     return (
-        <GreyFrame>
+        <GråRamme>
             <Heading size="medium">Utregningen</Heading>
             <VerticalSpacer rem={1} />
             <Utregningsrad
@@ -192,7 +192,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     refusjonsperioden kan ikke endres og dere vil få utbetalt maks av avtalt beløp.
                 </Alert>
             )}
-        </GreyFrame>
+        </GråRamme>
     );
 };
 

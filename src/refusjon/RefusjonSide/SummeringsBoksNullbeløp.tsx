@@ -11,9 +11,8 @@ type Props = {
 };
 
 const SummeringBoksNullbeløp: FunctionComponent<Props> = (props) => {
-
     return (
-        <Boks variant='blå'>
+        <Boks variant="blå">
             <div style={{ paddingRight: '1.5rem' }}>
                 <Pengesedler />
             </div>
