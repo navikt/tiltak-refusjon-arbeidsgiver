@@ -147,6 +147,15 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     border="TYKK"
                 />
             )}
+            {beregning && forrigeRefusjonMinusBeløp != null && forrigeRefusjonMinusBeløp < 0 && (
+                <Utregningsrad
+                    labelIkon={<Pengesekken />}
+                    labelTekst="Beregning basert på innhentede innteker"
+                    verdiOperator={<ErlikTegn />}
+                    verdi={beregning.beregnetBeløp}
+                    border="TYKK"
+                />
+            )}
             {forrigeRefusjonMinusBeløp != null && forrigeRefusjonMinusBeløp < 0 && (
                 <Utregningsrad
                     labelIkon={<Endret />}
