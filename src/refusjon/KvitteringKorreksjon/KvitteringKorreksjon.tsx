@@ -68,8 +68,6 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                             </Tag>
                         </div>
                         <VerticalSpacer rem={1} />
-                        {/* <VerticalSpacer rem={2} /> */}
-                        {/* <InformasjonFraAvtalen /> */}
                         <VerticalSpacer rem={2} />
                         <InntekterFraAMeldingen kvitteringVisning={true} />
                         <VerticalSpacer rem={2} />

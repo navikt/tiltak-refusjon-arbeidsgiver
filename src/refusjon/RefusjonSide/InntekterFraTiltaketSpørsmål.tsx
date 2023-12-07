@@ -20,6 +20,9 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const [inntekterKunTiltaket, setInntekterKunTiltaket] = useState<boolean | undefined>(inntekterKunFraTiltaket);
     const [endringBruttoLønn, setEndringBruttoLønn] = useState<string>(endretBruttoLønn?.toString() ?? '');
 
+    const refusjonNummer = `${tilskuddsgrunnlag.avtaleNr}-${tilskuddsgrunnlag.løpenummer}`;
+    const periode = (formatterPeriode(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom, refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom, 'DD.MM'));
+
     useEffect(() => {
         setInntekterKunTiltaket(inntekterKunFraTiltaket);
         setEndringBruttoLønn(endretBruttoLønn?.toString() ?? '');
@@ -53,14 +56,16 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             </BodyShort>
             <VerticalSpacer rem={1} />
             <InntekterOpptjentIPeriodeTabell inntekter={inntektsgrunnlag?.inntekter} månedsNavn={månedNavn} />
-            <VerticalSpacer rem={1} />
+            <VerticalSpacer rem={1}/>
             <Label htmlFor={'inntekterKunFraTiltaket'}>
-                Er inntektene som du har huket av for{' '}
-                {sumInntekterOpptjent > 0 && <>({formatterPenger(sumInntekterOpptjent)})</>} kun opptjent under tiltaket{' '}
-                {tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]}?
+            Er inntektene du har huket av {' '}{sumInntekterOpptjent > 0 && <>({formatterPenger(sumInntekterOpptjent)})</>} 
+            {' '}tilknyttet refusjonssnummer {refusjonNummer} for perioden {periode} for tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
             </Label>
             <p>
-                <i>Du skal svare "nei" hvis noen av inntektene er fra f. eks. vanlig lønn eller et annet tiltak.</i>
+                <i>Du skal svare ja hvis perioden og bruttolønn samsvarer.</i>
+            </p>
+            <p>
+                <i>Du skal svare nei hvis inntekter skal brukes i andre refusjoner tilknyttet andre tilskuddsperioder eller bruttolønn blir høyere.</i>
             </p>
             <RadioGroup legend="" className={cls.element('inntekter-kun-fra-tiltaket')} value={inntekterKunTiltaket}>
                 <Radio
