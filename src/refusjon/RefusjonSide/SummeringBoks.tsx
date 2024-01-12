@@ -1,4 +1,4 @@
-import { ReactComponent as Pengesedler } from '@/asset/image/pengesedler.svg';
+import Pengesedler from '@/asset/image/pengesedler.svg?react';
 import { Label, BodyShort } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';

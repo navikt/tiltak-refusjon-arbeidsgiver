@@ -1,8 +1,8 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react';
-import { ReactComponent as Notes } from '@/asset/image/notes.svg';
-import { ReactComponent as ChevronRight } from '@/asset/image/chevronRight.svg';
-import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.svg';
-import { ReactComponent as SystemError } from '@/asset/image/systemError.svg';
+import Notes from '@/asset/image/notes.svg?react';
+import ChevronRight from '@/asset/image/chevronRight.svg?react';
+import JuridiskEnhet from '@/asset/image/juridiskEnhet2.svg?react';
+import SystemError from '@/asset/image/systemError.svg?react';
 import { Bedriftvalg, Feilstatus, Organisasjon } from '../../bruker/bedriftsmenyRefusjon/api/api';
 import LagNyRad from './LagNyRad';
 import BEMHelper from '../../utils/bem';

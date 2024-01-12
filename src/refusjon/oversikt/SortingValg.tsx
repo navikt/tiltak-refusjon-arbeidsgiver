@@ -1,7 +1,7 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react';
 import { SortingOrder } from '../refusjon';
-import { ReactComponent as TriangleUp } from '@/asset/image/triangleUp.svg';
-import { ReactComponent as TriangleDown } from '@/asset/image/triangleDown.svg';
+import TriangleUp from '@/asset/image/triangleUp.svg?react';
+import TriangleDown from '@/asset/image/triangleDown.svg?react';
 import BEMHelper from '../../utils/bem';
 import { useFilter } from './FilterContext';
 

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { ReactComponent as Underenhet } from '@/asset/image/underenhet.svg';
+import Underenhet from '@/asset/image/underenhet.svg?react';
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import BEMHelper from '../../utils/bem';
 import { MenyContext } from './BedriftsmenyRefusjon';

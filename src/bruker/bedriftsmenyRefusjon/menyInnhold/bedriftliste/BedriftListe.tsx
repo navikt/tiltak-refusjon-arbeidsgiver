@@ -1,7 +1,7 @@
 import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
 import { MenyContext } from '../../BedriftsmenyRefusjon';
-import { ReactComponent as JuridiskEnhet } from '@/asset/image/juridiskEnhet2.svg';
-import { ReactComponent as UnderEnhet } from '@/asset/image/childNode.svg';
+import JuridiskEnhet from '@/asset/image/juridiskEnhet2.svg?react';
+import UnderEnhet from '@/asset/image/childNode.svg?react';
 import { ChevronDownIcon } from '@navikt/aksel-icons';
 import './bedriftListe.less';
 import { BedriftvalgType, initPageData, OrganisasjonEnhet, Organisasjon } from '../../api/api';

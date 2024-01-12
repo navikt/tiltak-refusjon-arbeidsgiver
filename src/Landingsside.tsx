@@ -1,5 +1,5 @@
-import { ReactComponent as Success } from '@/asset/image/Success.svg';
-import { ReactComponent as SommerIkon } from '@/asset/image/sommer.svg';
+import Success from '@/asset/image/Success.svg?react';
+import SommerIkon from '@/asset/image/sommer.svg?react';
 import { BodyShort, Button, Heading, Label, Link } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import EksternLenke from './komponenter/EksternLenke/EksternLenke';
