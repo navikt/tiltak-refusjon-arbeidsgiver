@@ -32,9 +32,11 @@ export default defineConfig({
                                 res.end(
                                     JSON.stringify({
                                         ...response.data,
-                                        API_INNLOGGINGSLINJE_URL: '/dekoratoren/api',
+                                        API_DEKORATOREN_URL: '/dekoratoren/api',
                                         APP_URL: '/dekoratoren',
                                         LOGOUT_URL: '/logout',
+                                        // APP_BASE_URL: 'http://localhost:3001',
+                                        // APP_BASE_PATH: '/dekoratoren',
                                     })
                                 );
                             },
