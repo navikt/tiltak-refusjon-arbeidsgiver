@@ -28,9 +28,9 @@ jobs:
         working-directory: ./server
         run: yarn build
       - name: Frontend yarn install
-        run: yarn install
+        run: npm ci
       - name: Frontend yarn build
-        run: yarn build
+        run: npm run test-and-build
       - name: Bygg, tag og push Docker-image
         run: |
           echo ${GITHUB_TOKEN} | docker login ghcr.io -u ${GITHUB_REPOSITORY} --password-stdin
