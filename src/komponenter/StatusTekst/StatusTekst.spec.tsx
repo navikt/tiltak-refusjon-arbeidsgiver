@@ -4,6 +4,7 @@ import * as React from 'react';
 import { RefusjonStatus } from '../../refusjon/status';
 import { datoString, formatterDato } from '../../utils/datoUtils';
 import StatusTekst from './StatusTekst';
+import { describe, test, expect } from 'vitest';
 
 describe('Skal vise riktig statustekst', () => {
     test('UTGÅTT', () => {
@@ -15,7 +16,7 @@ describe('Skal vise riktig statustekst', () => {
                 tilskuddTom={tilskuddTom}
             />
         );
-        expect(getByText('Frist utgått')).toBeInTheDocument();
+        expect(getByText('Frist utgått')).toBeDefined();
     });
 
     test('for tidlig', () => {
@@ -27,7 +28,7 @@ describe('Skal vise riktig statustekst', () => {
                 tilskuddTom={tilskuddTom}
             />
         );
-        expect(getByText('Søk fra ' + formatterDato(tilskuddTom))).toBeInTheDocument();
+        expect(getByText('Søk fra ' + formatterDato(tilskuddTom))).toBeDefined();
     });
 
     test('Klar for innsending', () => {
@@ -38,6 +39,6 @@ describe('Skal vise riktig statustekst', () => {
                 tilskuddTom={datoString(moment())}
             />
         );
-        expect(getByText(/Klar for innsending/i)).toBeInTheDocument();
+        expect(getByText(/Klar for innsending/i)).toBeDefined();
     });
 });
