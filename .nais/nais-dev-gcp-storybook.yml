@@ -1,0 +1,22 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: tiltak-refusjon-arbeidsgiver-storybook
+  namespace: team-tiltak
+  labels:
+    team: team-tiltak
+spec:
+  image: {{image}}
+  team: team-tiltak
+  port: 80
+  ingresses:
+    - https://tiltak-refusjon-storybook.intern.dev.nav.no
+  liveness:
+    path: /
+    initialDelay: 10
+  readiness:
+    path: /
+    initialDelay: 10
+  replicas:
+    min: 1
+    max: 1
