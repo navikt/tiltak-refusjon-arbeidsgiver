@@ -45,7 +45,6 @@ spec:
   tokenx:
     enabled: true
   idporten:
-    clientUri: '{{{ingress}}}'
     enabled: true
     sidecar:
       enabled: true
@@ -56,7 +55,6 @@ spec:
         - /
         - /static/**
         - /dekoratoren/**
-      errorPath: ""
   envFrom:
     - secret: tiltak-refusjon-session-encrypt-key
   {{/unless}}
