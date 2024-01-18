@@ -53,6 +53,7 @@ spec:
       autoLogin: true
       autoLoginIgnorePaths:
         - /
+        - /assets/**
         - /static/**
         - /dekoratoren/**
   envFrom:
