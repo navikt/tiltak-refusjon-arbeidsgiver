@@ -37,11 +37,6 @@ const setup = (tokenxClient) => {
         res.status(200);
         res.sendFile(page);
     });
-    // Vite legger javascript og css i assets mappen
-    router.get('/assets/*', (req, res) => {
-        res.status(200);
-        res.sendFile(page);
-    });
     return router;
 };
 

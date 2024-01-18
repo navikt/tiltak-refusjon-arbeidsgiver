@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import * as path from 'path';
 import svgr from 'vite-plugin-svgr';
 const axios = require('axios');
 
@@ -21,7 +21,7 @@ export default defineConfig({
         proxy: {
             '/api': { target: 'http://localhost:8081', changeOrigin: true },
             '/dekoratoren/env': {
-                target: 'http://localhost:3001/',
+                target: 'http://localhost:3000/',
                 bypass(req, res, options) {
                     axios
                         .get(
@@ -35,8 +35,6 @@ export default defineConfig({
                                         API_DEKORATOREN_URL: '/dekoratoren/api',
                                         APP_URL: '/dekoratoren',
                                         LOGOUT_URL: '/logout',
-                                        // APP_BASE_URL: 'http://localhost:3001',
-                                        // APP_BASE_PATH: '/dekoratoren',
                                     })
                                 );
                             },
@@ -48,7 +46,7 @@ export default defineConfig({
                 },
             },
             '/dekoratoren/api/auth': {
-                target: 'http://localhost:3001',
+                target: 'http://localhost:3000',
                 bypass(req, res, options) {
                     axios
                         .get('http://localhost:8081/api/arbeidsgiver/innlogget-bruker', {
@@ -67,7 +65,7 @@ export default defineConfig({
                 },
             },
             '/logout': {
-                target: 'http://localhost:3001/',
+                target: 'http://localhost:3000/',
                 bypass(req, res, options) {
                     res.setHeader('set-cookie', 'tokenx-token=; max-age=0');
                     res.setHeader('set-cookie', 'aad-token=; max-age=0');
