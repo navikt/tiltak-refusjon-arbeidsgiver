@@ -54,6 +54,9 @@ const fratrekkData = {
         avtaleNr: 3456,
         løpenummer: 3,
         enhet: '1000',
+        arbeidsgiverFornavn: 'Arbeidsgiver',
+        arbeidsgiverEtternavn: 'Arbeidsgiversen',
+        arbeidsgiverTlf: '12345678',
         id: '01HKM5N9F88835R2DSANTK3WPN',
     },
     inntektsgrunnlag: {
