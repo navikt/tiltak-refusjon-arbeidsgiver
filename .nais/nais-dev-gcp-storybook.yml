@@ -7,7 +7,6 @@ metadata:
     team: team-tiltak
 spec:
   image: {{image}}
-  team: team-tiltak
   port: 80
   ingresses:
     - https://tiltak-refusjon-storybook.intern.dev.nav.no
