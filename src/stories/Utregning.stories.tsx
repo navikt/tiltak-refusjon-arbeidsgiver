@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-1;
 import Utregning from '@/komponenter/Utregning';
 import { Tiltak } from '@/refusjon/tiltak';
 
