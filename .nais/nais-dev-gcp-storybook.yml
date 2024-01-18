@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 80
   ingresses:
-    - https://tiltak-refusjon-storybook.intern.dev.nav.no
+    - https://tiltak-refusjon-arbeidsgiver-storybook.intern.dev.nav.no
   liveness:
     path: /
     initialDelay: 10
