@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import BEMHelper from '../../../utils/bem';
 import { Heading } from '@navikt/ds-react';
-import { ReactComponent as InfoIkon } from '@/asset/image/info.svg';
+import InfoIkon from '@/asset/image/info.svg?react';
 import './finnerIngenRefusjoner.less';
 
 interface Props {

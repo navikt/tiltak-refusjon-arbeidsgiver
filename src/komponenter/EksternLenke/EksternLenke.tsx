@@ -1,4 +1,4 @@
-import { ReactComponent as TilEkstern } from '@/asset/image/ekstern-lenke.svg';
+import TilEkstern from '@/asset/image/ekstern-lenke.svg?react';
 import React from 'react';
 import './EksternLenke.less';
 import { eksternlenkerTrykket } from '../../utils/amplitude-utils';

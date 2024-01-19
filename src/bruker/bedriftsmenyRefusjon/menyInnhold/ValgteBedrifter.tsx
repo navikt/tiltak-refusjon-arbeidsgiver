@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { BedriftvalgType } from '../api/api';
-import { ReactComponent as UnderEnhet } from '@/asset/image/underenhet.svg';
+import UnderEnhet from '@/asset/image/underenhet.svg?react';
 import BEMHelper from '../../../utils/bem';
 import { MenyContext } from '../BedriftsmenyRefusjon';
 import { Label, BodyShort } from '@navikt/ds-react';

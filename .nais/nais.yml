@@ -7,7 +7,6 @@ metadata:
     team: arbeidsgiver
 spec:
   image: {{image}}
-  team: arbeidsgiver
   port: 3000
   ingresses:
     - {{ingress}}
@@ -46,7 +45,6 @@ spec:
   tokenx:
     enabled: true
   idporten:
-    clientUri: '{{{ingress}}}'
     enabled: true
     sidecar:
       enabled: true
@@ -55,9 +53,9 @@ spec:
       autoLogin: true
       autoLoginIgnorePaths:
         - /
+        - /assets/**
         - /static/**
         - /dekoratoren/**
-      errorPath: ""
   envFrom:
     - secret: tiltak-refusjon-session-encrypt-key
   {{/unless}}

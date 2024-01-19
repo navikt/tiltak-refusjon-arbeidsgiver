@@ -1,5 +1,5 @@
 import moment, { DurationInputArg2, Moment } from 'moment';
-import 'moment/locale/nb';
+import 'moment/dist/locale/nb';
 import { storForbokstav } from './stringUtils';
 
 moment.locale('nb');

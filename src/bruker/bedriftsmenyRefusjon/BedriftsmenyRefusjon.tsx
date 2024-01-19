@@ -1,6 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
-import { ReactComponent as NavIkon } from '@/asset/image/navikon.svg';
+import NavIkon from '@/asset/image/navikon.svg?react';
 import Bedriftsmeny from './bedriftsmeny/Bedriftsmeny';
 import { OrganisasjonData, konstruereOrganisasjonliste } from './api/konstruer';
 import {
