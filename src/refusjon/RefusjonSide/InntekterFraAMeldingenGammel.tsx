@@ -1,10 +1,8 @@
 // DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
 import _ from 'lodash';
 import { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { useHentRefusjon } from '../../services/rest-service';
 import { refusjonApnet } from '../../utils/amplitude-utils';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
@@ -12,6 +10,7 @@ import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 import BEMHelper from '../../utils/bem';
 import '../RefusjonSide/InntekterFraAMeldingen.less';
 import Boks from '../../komponenter/Boks/Boks';
+import { Refusjon } from '../refusjon';
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
@@ -24,10 +23,8 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 };
 
 // DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
-const InntekterFraAMeldingen: FunctionComponent = () => {
+const InntekterFraAMeldingen: FunctionComponent<{ refusjon: Refusjon }> = ({ refusjon }) => {
     const cls = BEMHelper('inntekterFraAMeldingen');
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
     const antallInntekterSomErMedIGrunnlag = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.erMedIInntektsgrunnlag
     ).length;

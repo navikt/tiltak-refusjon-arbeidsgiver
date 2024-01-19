@@ -37,11 +37,11 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                 <VerticalSpacer rem={1} />
                 <KorreksjonInfo korreksjon={korreksjon} />
                 <VerticalSpacer rem={2} />
-                <InformasjonFraAvtalen />
+                <InformasjonFraAvtalen refusjon={refusjon} />
                 <VerticalSpacer rem={2} />
                 <InntekterFraAMeldingenKorreksjon />
                 <VerticalSpacer rem={2} />
-                <InntekterFraTiltaketSvar refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} />
+                <InntekterFraTiltaketSvar refusjon={refusjon} />
                 <VerticalSpacer rem={2} />
                 <Utregning
                     beregning={korreksjon.refusjonsgrunnlag.beregning}
@@ -69,9 +69,9 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                         </div>
                         <VerticalSpacer rem={1} />
                         <VerticalSpacer rem={2} />
-                        <InntekterFraAMeldingen kvitteringVisning={true} />
+                        <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={true} />
                         <VerticalSpacer rem={2} />
-                        <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                        <InntekterFraTiltaketSvar refusjon={refusjon} />
                         <VerticalSpacer rem={2} />
                         <Utregning
                             beregning={refusjon.refusjonsgrunnlag.beregning}

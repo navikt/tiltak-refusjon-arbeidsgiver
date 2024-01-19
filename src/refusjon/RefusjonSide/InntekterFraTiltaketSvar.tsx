@@ -1,22 +1,18 @@
 import { Label, BodyShort, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
-import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Refusjonsgrunnlag } from '../refusjon';
+import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 import Boks from '../../komponenter/Boks/Boks';
 
 type Props = {
-    refusjonsgrunnlag: Refusjonsgrunnlag;
+    refusjon: Refusjon;
 };
 
-const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
+const InntekterFraTiltaketSvar: FunctionComponent<Props> = ({ refusjon }) => {
     const refusjonNummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;
     const periode = formatterPeriode(
         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
@@ -25,18 +21,18 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
     );
 
     if (
-        props.refusjonsgrunnlag.inntekterKunFraTiltaket === null ||
-        props.refusjonsgrunnlag.inntekterKunFraTiltaket === undefined
+        refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket === null ||
+        refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket === undefined
     ) {
         return null;
     }
 
-    const valgtBruttoLønn = props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
+    const valgtBruttoLønn = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
         .filter((inntekt) => inntekt.erOpptjentIPeriode)
         .map((el) => el.beløp)
         .reduce((el, el2) => el + el2, 0);
 
-    if (!props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter) {
+    if (!refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter) {
         return null;
     }
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
@@ -53,7 +49,7 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
                 </Heading>
                 <VerticalSpacer rem={1} />
                 <InntekterOpptjentIPeriodeTabell
-                    inntekter={props.refusjonsgrunnlag.inntektsgrunnlag.inntekter}
+                    inntekter={refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter}
                     månedsNavn={månedNavn}
                 />
                 <VerticalSpacer rem={2} />
@@ -63,14 +59,14 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
                     for perioden {periode} for tiltaket{' '}
                     {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
                 </Label>
-                <BodyShort size="small">{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</BodyShort>
-                {props.refusjonsgrunnlag.endretBruttoLønn !== null &&
-                    props.refusjonsgrunnlag.endretBruttoLønn !== undefined && (
+                <BodyShort size="small">{refusjon.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</BodyShort>
+                {refusjon.refusjonsgrunnlag.endretBruttoLønn !== null &&
+                    refusjon.refusjonsgrunnlag.endretBruttoLønn !== undefined && (
                         <>
                             <VerticalSpacer rem={1} />
                             <Label>Korrigert bruttolønn:</Label>
                             <BodyShort size="small">
-                                {formatterPenger(props.refusjonsgrunnlag.endretBruttoLønn)}
+                                {formatterPenger(refusjon.refusjonsgrunnlag.endretBruttoLønn)}
                             </BodyShort>
                         </>
                     )}

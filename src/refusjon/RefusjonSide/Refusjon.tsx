@@ -81,7 +81,7 @@ const Komponent: FunctionComponent = () => {
         case RefusjonStatus.GODKJENT_NULLBELØP:
         case RefusjonStatus.UTBETALT:
         case RefusjonStatus.UTBETALING_FEILET:
-            return <KvitteringSide />;
+            return <KvitteringSide refusjon={refusjon} />;
         case RefusjonStatus.KORRIGERT:
             return <KvitteringKorreksjon />;
     }

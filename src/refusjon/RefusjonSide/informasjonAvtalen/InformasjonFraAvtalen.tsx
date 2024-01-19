@@ -1,21 +1,17 @@
 import { Calender, File, FileContent, Money, Office1, People, Warning } from '@navikt/ds-icons';
 import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
 import { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import EksternLenke from '../../../komponenter/EksternLenke/EksternLenke';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../../messages';
-import { useHentRefusjon } from '../../../services/rest-service';
 import { formatterDato, formatterPeriode } from '../../../utils/datoUtils';
 import { formatterPenger } from '../../../utils/PengeUtils';
 import { Alert, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 import IkonRad from '../../../komponenter/IkonRad/IkonRad';
 import Boks from '../../../komponenter/Boks/Boks';
+import { Refusjon } from '@/refusjon/refusjon';
 
-const InformasjonFraAvtalen: FunctionComponent = () => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
-
+const InformasjonFraAvtalen: FunctionComponent<{ refusjon: Refusjon }> = ({ refusjon }) => {
     const avtaleLenke = `http://arbeidsgiver.nav.no/tiltaksgjennomforing/avtale/${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleId}`;
 
     const refusjonsnummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;

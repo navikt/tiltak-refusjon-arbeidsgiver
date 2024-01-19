@@ -36,8 +36,8 @@ const RefusjonSide: FunctionComponent = () => {
         <>
             <Boks variant="hvit">
                 <RefusjonIngress refusjon={refusjon} />
-                <InformasjonFraAvtalen />
-                <InntekterFraAMeldingen kvitteringVisning={false} />
+                <InformasjonFraAvtalen refusjon={refusjon} />
+                <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={false} />
                 <RefusjonFullførNullbeløp />
                 <InntekterFraTiltaketSpørsmål />
                 <TidligereRefunderbarBeløp refusjon={refusjon} />
