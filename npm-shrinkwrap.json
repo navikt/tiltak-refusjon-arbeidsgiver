@@ -33,6 +33,7 @@
                 "swr": "^2.2.0"
             },
             "devDependencies": {
+                "@sentry/cli": "^2.19.3",
                 "@storybook/addon-essentials": "^7.6.4",
                 "@storybook/addon-interactions": "^7.6.4",
                 "@storybook/addon-links": "^7.6.4",
@@ -44,7 +45,6 @@
                 "@testing-library/react": "14.1.2",
                 "@types/amplitude-js": "^8.16.2",
                 "@types/lodash": "^4.14.175",
-                "@types/lodash.debounce": "^4.0.7",
                 "@types/node": "^20.3.2",
                 "@types/react": "18.2.14",
                 "@types/react-collapse": "^5.0.1",
@@ -5224,6 +5224,118 @@
                 "node": ">=8"
             }
         },
+        "node_modules/@sentry/cli": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli/-/cli-2.25.3.tgz",
+            "integrity": "sha512-vcMrzB6iN9H8AvzUPC/2A5n02Yni72ENO63oeOEzW/J/86Gp3+rFifXAWNnvtvZbgQ8x5RFO5HJ3NQ/8iuZcpA==",
+            "dev": true,
+            "hasInstallScript": true,
+            "dependencies": {
+                "https-proxy-agent": "^5.0.0",
+                "node-fetch": "^2.6.7",
+                "progress": "^2.0.3",
+                "proxy-from-env": "^1.1.0",
+                "which": "^2.0.2"
+            },
+            "bin": {
+                "sentry-cli": "bin/sentry-cli"
+            },
+            "engines": {
+                "node": ">= 10"
+            },
+            "optionalDependencies": {
+                "@sentry/cli-darwin": "2.25.3",
+                "@sentry/cli-linux-arm": "2.25.3",
+                "@sentry/cli-linux-arm64": "2.25.3",
+                "@sentry/cli-linux-i686": "2.25.3",
+                "@sentry/cli-linux-x64": "2.25.3",
+                "@sentry/cli-win32-i686": "2.25.3",
+                "@sentry/cli-win32-x64": "2.25.3"
+            }
+        },
+        "node_modules/@sentry/cli-darwin": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli-darwin/-/cli-darwin-2.25.3.tgz",
+            "integrity": "sha512-WCxYhppax6cljxEHfo+lwS80EKliJDKsO1DwJJ9FCzbaSe6FdlSWY/xndpMkhWnQ2zHRDKMFM66qhLHey5vPKQ==",
+            "dev": true,
+            "optional": true,
+            "os": ["darwin"],
+            "engines": {
+                "node": ">=10"
+            }
+        },
+        "node_modules/@sentry/cli-linux-arm": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli-linux-arm/-/cli-linux-arm-2.25.3.tgz",
+            "integrity": "sha512-Ny4Me0/zInX7iDq44fN4bQ0YAAr9OM4SUZqFrDy6FQpcZyG/wvy/jFdZhOj6mhIinyfQ2CESDlzj/2vqFRu+9w==",
+            "cpu": ["arm"],
+            "dev": true,
+            "optional": true,
+            "os": ["linux", "freebsd"],
+            "engines": {
+                "node": ">=10"
+            }
+        },
+        "node_modules/@sentry/cli-linux-arm64": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli-linux-arm64/-/cli-linux-arm64-2.25.3.tgz",
+            "integrity": "sha512-TjFC6o7U/YJIygLVKW1WA3qkAUS1eMTxn6RIvkyjowQJAB4CyPAsc8jCk9VGKlsTCYGbG4PnP4Iz7iHlUe+PrQ==",
+            "cpu": ["arm64"],
+            "dev": true,
+            "optional": true,
+            "os": ["linux", "freebsd"],
+            "engines": {
+                "node": ">=10"
+            }
+        },
+        "node_modules/@sentry/cli-linux-i686": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli-linux-i686/-/cli-linux-i686-2.25.3.tgz",
+            "integrity": "sha512-mUG+wcz6GWOrH4w7F/1ZVYw1S3B6DfeVEYu93XD+Wmlf8j8pz8ig+m7V7j7O74xU0z0KRB0qt+sYNG8KqeAiuA==",
+            "cpu": ["x86", "ia32"],
+            "dev": true,
+            "optional": true,
+            "os": ["linux", "freebsd"],
+            "engines": {
+                "node": ">=10"
+            }
+        },
+        "node_modules/@sentry/cli-linux-x64": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli-linux-x64/-/cli-linux-x64-2.25.3.tgz",
+            "integrity": "sha512-aImlQFgILlsrrWS/AztSF72EA63UAx9pofU63K9kR3BwjJ7ZkFM/BPsn5GGkf8TsMqgOp3CmfVynxC15+rCfgQ==",
+            "cpu": ["x64"],
+            "dev": true,
+            "optional": true,
+            "os": ["linux", "freebsd"],
+            "engines": {
+                "node": ">=10"
+            }
+        },
+        "node_modules/@sentry/cli-win32-i686": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli-win32-i686/-/cli-win32-i686-2.25.3.tgz",
+            "integrity": "sha512-RNMLmuwPVAxH81TsvpHMZaTbIh5JML6YVh8It7017NmeQS1N97kbBmUq6YBZ6twh7EzG64xKRJTHJkaktEBiVg==",
+            "cpu": ["x86", "ia32"],
+            "dev": true,
+            "optional": true,
+            "os": ["win32"],
+            "engines": {
+                "node": ">=10"
+            }
+        },
+        "node_modules/@sentry/cli-win32-x64": {
+            "version": "2.25.3",
+            "resolved": "https://registry.npmjs.org/@sentry/cli-win32-x64/-/cli-win32-x64-2.25.3.tgz",
+            "integrity": "sha512-KGIYiW2kbh5VKM82NDll/kc8WDd/sP8W1Pb0NQ6irS46bggoER1AMgWduzSb7qlLRIJp1e4N6yP+z2peB+jWqw==",
+            "cpu": ["x64"],
+            "dev": true,
+            "optional": true,
+            "os": ["win32"],
+            "engines": {
+                "node": ">=10"
+            }
+        },
         "node_modules/@sentry/core": {
             "version": "7.93.0",
             "resolved": "https://registry.npmjs.org/@sentry/core/-/core-7.93.0.tgz",
@@ -7605,14 +7717,6 @@
             "dev": true,
             "license": "MIT"
         },
-        "node_modules/@types/lodash.debounce": {
-            "version": "4.0.7",
-            "dev": true,
-            "license": "MIT",
-            "dependencies": {
-                "@types/lodash": "*"
-            }
-        },
         "node_modules/@types/mdx": {
             "version": "2.0.10",
             "resolved": "https://registry.npmjs.org/@types/mdx/-/mdx-2.0.10.tgz",
@@ -8466,8 +8570,6 @@
             "version": "6.0.2",
             "dev": true,
             "license": "MIT",
-            "optional": true,
-            "peer": true,
             "dependencies": {
                 "debug": "4"
             },
@@ -12415,8 +12517,6 @@
             "version": "5.0.1",
             "dev": true,
             "license": "MIT",
-            "optional": true,
-            "peer": true,
             "dependencies": {
                 "agent-base": "6",
                 "debug": "4"
