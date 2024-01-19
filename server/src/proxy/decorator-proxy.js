@@ -15,7 +15,7 @@ const setup = (router) => {
                 ...response.data,
                 API_INNLOGGINGSLINJE_URL: '/dekoratoren/api',
                 APP_URL: '/dekoratoren',
-                LOGOUT_URL: '/logout',
+                LOGOUT_URL: '/oauth2/logout',
             });
         })
     );

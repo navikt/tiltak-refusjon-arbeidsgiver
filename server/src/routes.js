@@ -23,11 +23,6 @@ const setup = (tokenxClient) => {
 
     router.all(['/refusjon', '/refusjon/*'], asyncHandler(ensureAuthenticated));
 
-    router.get('/logout', (req, res) => {
-        req.session.destroy();
-        //res.redirect(idportenClient.endSessionUrl({ post_logout_redirect_uri: config.idporten().logoutRedirectUri }));
-    });
-
     apiProxy.setup(router, tokenxClient);
     decoratorProxy.setup(router);
 
