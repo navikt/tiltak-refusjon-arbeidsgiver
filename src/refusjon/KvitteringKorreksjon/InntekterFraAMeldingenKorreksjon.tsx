@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import React, { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
@@ -11,6 +9,7 @@ import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 import BEMHelper from '../../utils/bem';
 import '../RefusjonSide/InntekterFraAMeldingen.less';
 import Boks from '../../komponenter/Boks/Boks';
+import { Korreksjon } from '../refusjon';
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
@@ -22,12 +21,12 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     }
 };
 
-const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
-    const cls = BEMHelper('inntekterFraAMeldingen');
-    const { refusjonId } = useParams();
-    const korreksjonId = useHentRefusjon(refusjonId).korreksjonId;
+type Props = {
+    korreksjon: Korreksjon;
+};
 
-    const korreksjon = useHentKorreksjon(korreksjonId!);
+const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon }) => {
+    const cls = BEMHelper('inntekterFraAMeldingen');
 
     const antallInntekterSomErMedIGrunnlag = korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.erMedIInntektsgrunnlag

@@ -8,7 +8,7 @@ import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
 import { BodyShort } from '@navikt/ds-react';
 import { useParams } from 'react-router-dom';
-import { oppdaterRefusjonFetcher, useHentRefusjon } from '../../services/rest-service';
+import { oppdaterRefusjonFetcher, useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import useSWRMutation from 'swr/mutation';
 import { mutate } from 'swr';
 
@@ -82,8 +82,10 @@ const Komponent: FunctionComponent = () => {
         case RefusjonStatus.UTBETALT:
         case RefusjonStatus.UTBETALING_FEILET:
             return <KvitteringSide refusjon={refusjon} />;
-        case RefusjonStatus.KORRIGERT:
-            return <KvitteringKorreksjon />;
+        case RefusjonStatus.KORRIGERT: {
+            const korreksjon = useHentKorreksjon(refusjon.korreksjonId!);
+            return <KvitteringKorreksjon refusjon={refusjon} korreksjon={korreksjon} />;
+        }
     }
 };
 
