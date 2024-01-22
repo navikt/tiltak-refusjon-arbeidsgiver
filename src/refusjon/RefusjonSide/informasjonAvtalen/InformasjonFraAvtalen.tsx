@@ -11,7 +11,11 @@ import IkonRad from '../../../komponenter/IkonRad/IkonRad';
 import Boks from '../../../komponenter/Boks/Boks';
 import { Refusjon } from '@/refusjon/refusjon';
 
-const InformasjonFraAvtalen: FunctionComponent<{ refusjon: Refusjon }> = ({ refusjon }) => {
+type Props = {
+    refusjon: Refusjon;
+};
+
+const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
     const avtaleLenke = `http://arbeidsgiver.nav.no/tiltaksgjennomforing/avtale/${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleId}`;
 
     const refusjonsnummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;

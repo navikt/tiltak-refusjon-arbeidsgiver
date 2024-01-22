@@ -22,8 +22,12 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     }
 };
 
+type Props = {
+    refusjon: Refusjon;
+};
+
 // DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
-const InntekterFraAMeldingen: FunctionComponent<{ refusjon: Refusjon }> = ({ refusjon }) => {
+const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon }) => {
     const cls = BEMHelper('inntekterFraAMeldingen');
     const antallInntekterSomErMedIGrunnlag = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.erMedIInntektsgrunnlag

@@ -43,7 +43,12 @@ export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     }
     return <Tag variant="info">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
 };
-const KvitteringSide: FunctionComponent<{ refusjon: Refusjon }> = ({ refusjon }) => {
+
+type Props = {
+    refusjon: Refusjon;
+};
+
+const KvitteringSide: FunctionComponent<Props> = ({ refusjon }) => {
     if (!refusjon.refusjonsgrunnlag.inntektsgrunnlag) return null;
 
     return (
