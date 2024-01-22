@@ -14,6 +14,7 @@ interface Props {
     labelSats?: number;
     verdiOperator?: string | ReactNode;
     verdi: number | string;
+    ignorert?: boolean;
     ikkePenger?: boolean;
     border?: 'NORMAL' | 'TYKK' | 'INGEN';
     inntekter?: Inntektslinje[];
@@ -64,7 +65,13 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
                 </div>
                 <div className={cls.element('utregning-verdi')}>
                     {setOperator(props.verdiOperator)}
-                    <BodyShort size="small" className={cls.element('sum')} aria-labelledby={labelTekstString}>
+                    <BodyShort
+                        size="small"
+                        className={
+                            cls.element('sum') + ' ' + (props.ignorert ? cls.element('utregning-verdi-ignorert') : '')
+                        }
+                        aria-labelledby={labelTekstString}
+                    >
                         {props.ikkePenger || typeof props.verdi === 'string'
                             ? props.verdi
                             : formatterPenger(props.verdi)}

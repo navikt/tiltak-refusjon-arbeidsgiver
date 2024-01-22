@@ -128,6 +128,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     labelIkon={<Pengesekken />}
                     labelTekst="Beregning basert på innhentede innteker"
                     verdiOperator={<ErlikTegn />}
+                    ignorert={true}
                     verdi={beregning.beregnetBeløp}
                     border="TYKK"
                 />
@@ -140,6 +141,14 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     border="TYKK"
                 />
             )}
+            {beregning?.overTilskuddsbeløp &&
+                !beregning?.overFemGrunnbeløp &&
+                props.beregning?.tidligereUtbetalt != null && (
+                    <Alert variant="warning" size="small">
+                        Beregnet beløp ({formatterPenger(beregning.beregnetBeløp)}) er høyere enn avtalt tilskuddsbeløp,
+                        som er inntil {formatterPenger(tilskuddsgrunnlag.tilskuddsbeløp)} for denne perioden.
+                    </Alert>
+                )}
             {beregning && beregning.tidligereUtbetalt > 0 && (
                 <Utregningsrad
                     labelIkon={<Endret />}
@@ -149,12 +158,21 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     border="TYKK"
                 />
             )}
+            {beregning && (beregning.overTilskuddsbeløp || beregning.tidligereUtbetalt > 0 || harMinusBeløp) && (
+                <Utregningsrad
+                    labelIkon={<Pengesekken />}
+                    labelTekst="Avtalt tilskuddsbeløp"
+                    verdiOperator={<ErlikTegn />}
+                    verdi={tilskuddsgrunnlag.tilskuddsbeløp}
+                    border="TYKK"
+                />
+            )}
             {harMinusBeløp && (
                 <Utregningsrad
                     labelIkon={<Endret />}
-                    labelTekst={'Resterende fratrekk for ferie fra tidligere refusjoner'}
+                    labelTekst={'Resterende fratrekk for ferie fra refusjonsnummer 3456-1'}
                     verdiOperator={<MinusTegn />}
-                    verdi={forrigeRefusjonMinusBeløp}
+                    verdi={-forrigeRefusjonMinusBeløp}
                     border="TYKK"
                 />
             )}
@@ -187,13 +205,15 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     </EksternLenke>
                 </Alert>
             )}
-            {beregning?.overTilskuddsbeløp && !beregning?.overFemGrunnbeløp && (
-                <Alert variant="warning" size="small">
-                    Beregnet beløp er høyere enn refusjonsbeløpet. Avtalt beløp er inntil{' '}
-                    {formatterPenger(tilskuddsgrunnlag.tilskuddsbeløp)} for denne perioden. Lønn i denne
-                    refusjonsperioden kan ikke endres og dere vil få utbetalt maks av avtalt beløp.
-                </Alert>
-            )}
+            {beregning?.overTilskuddsbeløp &&
+                !beregning?.overFemGrunnbeløp &&
+                props.beregning?.tidligereUtbetalt == null && (
+                    <Alert variant="warning" size="small">
+                        Beregnet beløp er høyere enn avtalt tilskuddsbeløp. Avtalt beløp er inntil{' '}
+                        {formatterPenger(tilskuddsgrunnlag.tilskuddsbeløp)} for denne perioden. Lønn i denne
+                        refusjonsperioden kan ikke endres og dere vil få utbetalt maks av avtalt beløp.
+                    </Alert>
+                )}
         </GråRamme>
     );
 };
