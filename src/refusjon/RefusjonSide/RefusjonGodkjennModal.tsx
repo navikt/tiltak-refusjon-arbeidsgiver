@@ -13,7 +13,7 @@ interface Properties {
     godkjennRefusjonen: () => Promise<void>;
 }
 
-const RefusjonGodjennModal: FunctionComponent<Properties> = ({
+const RefusjonGodkjennModal: FunctionComponent<Properties> = ({
     refusjon,
     visGodkjennModal,
     setVisGodkjennModal,
@@ -69,4 +69,4 @@ const RefusjonGodjennModal: FunctionComponent<Properties> = ({
         );
     }
 };
-export default RefusjonGodjennModal;
+export default RefusjonGodkjennModal;
