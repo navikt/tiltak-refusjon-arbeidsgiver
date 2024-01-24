@@ -142,7 +142,7 @@ export const RefusjonMinusbelop: Story = {
     decorators: [
         (Story, args) => (
             <div>
-                <h1>KvitteringSide: Refusjon med plussbeløp</h1>
+                <h1>KvitteringSide: Refusjon med minusbeløp</h1>
                 <Story {...args} />
             </div>
         ),

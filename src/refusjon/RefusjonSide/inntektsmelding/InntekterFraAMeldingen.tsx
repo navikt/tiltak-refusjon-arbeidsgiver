@@ -1,6 +1,6 @@
 import { Alert, Button, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 import _ from 'lodash';
-import { FunctionComponent } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
 import { hentInntekterLengerFrem } from '../../../services/rest-service';
@@ -108,7 +108,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
                 <>
                     <VerticalSpacer rem={1} />
                     {inntektGrupperListeSortert.map(([aarManed, inntektslinjer]) => (
-                        <div key={aarManed}>
+                        <Fragment key={aarManed}>
                             <Heading level="4" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
                                 Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})
                             </Heading>
@@ -124,7 +124,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
                                 </table>
                             </div>
                             <VerticalSpacer rem={1} />
-                        </div>
+                        </Fragment>
                     ))}
                 </>
             )}
