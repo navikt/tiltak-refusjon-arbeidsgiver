@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sjekk ut kode
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Server yarn install
         working-directory: ./server
         run: yarn install
@@ -44,7 +44,7 @@ jobs:
     needs: bygg
     steps:
       - name: Sjekk ut kode
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
@@ -60,7 +60,7 @@ jobs:
     needs: bygg
     steps:
       - name: Sjekk ut kode
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
@@ -76,7 +76,7 @@ jobs:
     needs: bygg
     steps:
       - name: Sjekk ut kode
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Deploy til prod-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
