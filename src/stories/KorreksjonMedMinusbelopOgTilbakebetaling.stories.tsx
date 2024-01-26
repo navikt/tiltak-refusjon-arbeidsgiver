@@ -256,7 +256,7 @@ export const KorreksjonMedMinusbelopOgTilbakebetaling: Story = {
     decorators: [
         (Story, args) => (
             <div>
-                <h1>KvitteringKorreksjon: Korreksjon med plussbeløp og tilbakekreving</h1>
+                <h1>KvitteringKorreksjon: Korreksjon med minusbeløp og tilbakebetaling</h1>
                 <Story {...args} />
             </div>
         ),
