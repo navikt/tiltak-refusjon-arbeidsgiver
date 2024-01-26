@@ -77,7 +77,7 @@ const KvitteringSide: FunctionComponent<Props> = ({ refusjon }) => {
                 <>
                     <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={true} />
                     <VerticalSpacer rem={2} />
-                    <InntekterFraTiltaketSvar refusjon={refusjon} />
+                    <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                     <TidligereRefunderbarBeløpKvittering refusjon={refusjon} />
                 </>
             ) : (
