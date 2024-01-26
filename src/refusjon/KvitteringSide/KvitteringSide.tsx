@@ -22,14 +22,6 @@ import Boks from '../../komponenter/Boks/Boks';
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
         return <Tag variant="error">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
-    } else if (refusjon.status === RefusjonStatus.SENDT_KRAV) {
-        return (
-            <Tag variant="info">
-                {storForbokstav(statusTekst[refusjon.status])}{' '}
-                {refusjon.godkjentAvArbeidsgiver &&
-                    formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
-            </Tag>
-        );
     } else if (refusjon.status === RefusjonStatus.UTBETALT) {
         return (
             <Tag variant="info">
@@ -40,8 +32,15 @@ export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
                 {refusjon.utbetaltTidspunkt && formatterDato(refusjon.utbetaltTidspunkt, NORSK_DATO_FORMAT)}
             </Tag>
         );
+    } else {
+        return (
+            <Tag variant="info">
+                {storForbokstav(statusTekst[refusjon.status])}{' '}
+                {refusjon.godkjentAvArbeidsgiver &&
+                    formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
+            </Tag>
+        );
     }
-    return <Tag variant="info">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
 };
 
 type Props = {
