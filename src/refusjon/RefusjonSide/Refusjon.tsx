@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { oppdaterRefusjonFetcher, useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import useSWRMutation from 'swr/mutation';
 import { mutate } from 'swr';
+import { Refusjon as RefusjonType } from '../refusjon';
 
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -83,10 +84,14 @@ const Komponent: FunctionComponent = () => {
         case RefusjonStatus.UTBETALING_FEILET:
             return <KvitteringSide refusjon={refusjon} />;
         case RefusjonStatus.KORRIGERT: {
-            const korreksjon = useHentKorreksjon(refusjon.korreksjonId!);
-            return <KvitteringKorreksjon refusjon={refusjon} korreksjon={korreksjon} />;
+            return <Korreksjonskvittering refusjon={refusjon} />;
         }
     }
+};
+
+const Korreksjonskvittering: FunctionComponent<{ refusjon: RefusjonType }> = ({ refusjon }) => {
+    const korreksjon = useHentKorreksjon(refusjon.korreksjonId!);
+    return <KvitteringKorreksjon refusjon={refusjon} korreksjon={korreksjon} />;
 };
 
 const Refusjon: FunctionComponent = () => {
