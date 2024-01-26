@@ -31,7 +31,6 @@ const fratrekkData = {
         fratrekkLønnFerie: 0,
         tidligereRefundertBeløp: 0,
         sumUtgifterFratrukketRefundertBeløp: 140926,
-        commitHash: '123',
         id: '01HKM6MGVB5ENFQRXTSSFAJN8C',
     },
     tilskuddsgrunnlag: {

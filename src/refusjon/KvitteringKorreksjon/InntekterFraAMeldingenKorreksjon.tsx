@@ -1,16 +1,21 @@
 import _ from 'lodash';
 import React, { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
-import { formatterDato, formatterPeriode, NORSK_DATO_OG_TID_FORMAT, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
+import {
+    formatterDato,
+    formatterPeriode,
+    månedsNavn,
+    NORSK_DATO_OG_TID_FORMAT,
+    NORSK_MÅNEDÅR_FORMAT,
+} from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 
 import BEMHelper from '../../utils/bem';
 import '../RefusjonSide/InntekterFraAMeldingen.less';
 import Boks from '../../komponenter/Boks/Boks';
+import { Korreksjon } from '../refusjon';
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
@@ -22,12 +27,12 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     }
 };
 
-const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
-    const cls = BEMHelper('inntekterFraAMeldingen');
-    const { refusjonId } = useParams();
-    const korreksjonId = useHentRefusjon(refusjonId).korreksjonId;
+type Props = {
+    korreksjon: Korreksjon;
+};
 
-    const korreksjon = useHentKorreksjon(korreksjonId!);
+const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon }) => {
+    const cls = BEMHelper('inntekterFraAMeldingen');
 
     const antallInntekterSomErMedIGrunnlag = korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.erMedIInntektsgrunnlag
@@ -41,6 +46,8 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
         !!korreksjon.refusjonsgrunnlag.inntektsgrunnlag &&
         korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.length > 0 &&
         antallInntekterSomErMedIGrunnlag === 0;
+
+    const månedNavn = månedsNavn(korreksjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
     return (
         <Boks variant="grå">
@@ -71,7 +78,8 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                                 <tr>
                                     <th>Beskriv&shy;else</th>
                                     <th>År/mnd</th>
-                                    <th>Opptjenings&shy;periode</th>
+                                    <th>Rapportert opptjenings&shy;periode</th>
+                                    <th>Opptjent i {månedNavn}?</th>
                                     <th>Beløp</th>
                                 </tr>
                             </thead>
@@ -81,29 +89,36 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent = () => {
                                         (inntekt) => inntekt.erMedIInntektsgrunnlag
                                     ),
                                     ['måned', 'opptjeningsperiodeFom', 'opptjeningsperiodeTom', 'beskrivelse', 'id']
-                                ).map((inntekt) => (
-                                    <tr key={inntekt.id}>
-                                        <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
-                                        <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
+                                ).map((inntekt) => {
+                                    let inntektValg = 'Ikke valgt';
+                                    if (inntekt.erOpptjentIPeriode) inntektValg = 'Ja';
+                                    if (inntekt.erOpptjentIPeriode === false) inntektValg = 'Nei';
+                                    return (
+                                        <tr key={inntekt.id}>
+                                            <td>{inntektBeskrivelse(inntekt.beskrivelse)}</td>
+                                            <td>{formatterDato(inntekt.måned, NORSK_MÅNEDÅR_FORMAT)}</td>
 
-                                        <td>
-                                            {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
-                                                formatterPeriode(
-                                                    inntekt.opptjeningsperiodeFom,
-                                                    inntekt.opptjeningsperiodeTom,
-                                                    'DD.MM'
-                                                )
-                                            ) : (
-                                                <em>Ikke rapportert opptjenings&shy;periode</em>
-                                            )}
-                                        </td>
-
-                                        <td>{formatterPenger(inntekt.beløp)}</td>
-                                    </tr>
-                                ))}
+                                            <td>
+                                                {inntekt.opptjeningsperiodeFom && inntekt.opptjeningsperiodeTom ? (
+                                                    formatterPeriode(
+                                                        inntekt.opptjeningsperiodeFom,
+                                                        inntekt.opptjeningsperiodeTom,
+                                                        'DD.MM'
+                                                    )
+                                                ) : (
+                                                    <em>Ikke rapportert opptjenings&shy;periode</em>
+                                                )}
+                                            </td>
+                                            <div className="inntektsmelding__valgtInntekt">
+                                                <label>{inntektValg}</label>
+                                            </div>
+                                            <td>{formatterPenger(inntekt.beløp)}</td>
+                                        </tr>
+                                    );
+                                })}
                                 {korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn && (
                                     <tr>
-                                        <td colSpan={3}>
+                                        <td colSpan={4}>
                                             <b>Sum</b>
                                         </td>
                                         <td>

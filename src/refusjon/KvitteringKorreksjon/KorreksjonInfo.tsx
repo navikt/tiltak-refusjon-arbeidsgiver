@@ -17,12 +17,14 @@ const KorreksjonInfo: FunctionComponent<Props> = (props) => {
             <BodyShort size="small">
                 Saksbehandler har oppgitt følgende grunn{props.korreksjon.korreksjonsgrunner.length > 1 && 'er'} til
                 denne korreksjonen
-                <ul style={{ margin: '0.25rem' }}>
-                    {props.korreksjon.korreksjonsgrunner.map((kg) => (
-                        <li key={kg}>{korreksjonsgrunnTekst[kg]}</li>
-                    ))}
-                </ul>
             </BodyShort>
+            <ul style={{ margin: '0.25rem' }}>
+                {props.korreksjon.korreksjonsgrunner.map((kg) => (
+                    <li key={kg}>
+                        <BodyShort size="small">{korreksjonsgrunnTekst[kg]}</BodyShort>
+                    </li>
+                ))}
+            </ul>
         </>
     );
 

@@ -1,7 +1,5 @@
 import _ from 'lodash';
 import { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
-import { useHentRefusjon } from '../../../../services/rest-service';
 import { formatterPenger } from '../../../../utils/PengeUtils';
 import { NORSK_MÅNEDÅR_FORMAT, formatterDato, formatterPeriode } from '../../../../utils/datoUtils';
 import { Inntektslinje } from '../../../refusjon';
@@ -9,13 +7,13 @@ import { inntektBeskrivelse } from '../InntekterFraAMeldingen';
 import InntektValg from './InntektValg';
 
 type Props = {
+    refusjonId: string;
+    refusjonSistEndret: string;
     inntektslinjer: Inntektslinje[];
     kvitteringVisning: boolean;
 };
 
 const InntektsmeldingTabellBody: FunctionComponent<Props> = (props) => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
     return (
         <tbody>
             {_.sortBy(
@@ -36,9 +34,9 @@ const InntektsmeldingTabellBody: FunctionComponent<Props> = (props) => {
                     {props.inntektslinjer.filter((inntekt) => inntekt.erOpptjentIPeriode) && (
                         <InntektValg
                             inntekt={inntekt}
-                            refusjonId={refusjon.id}
+                            refusjonId={props.refusjonId}
                             kvitteringVisning={props.kvitteringVisning}
-                            sistEndret={refusjon.sistEndret}
+                            sistEndret={props.refusjonSistEndret}
                         />
                     )}
                     <td>{formatterPenger(inntekt.beløp)}</td>

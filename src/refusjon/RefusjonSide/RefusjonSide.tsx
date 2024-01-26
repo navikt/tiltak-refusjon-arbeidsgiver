@@ -8,7 +8,7 @@ import RefusjonIngress from './RefusjonIngress';
 import RefusjonInnsending from './refusjonInnsending/RefusjonInnsending';
 import InntekterFraTiltaketSpørsmål from './InntekterFraTiltaketSpørsmål';
 import TidligereRefunderbarBeløp from './TidligereRefunderbarBeløp';
-import RefusjonGodjennModal from './RefusjonGodjennModal';
+import RefusjonGodkjennModal from './RefusjonGodkjennModal';
 import RefusjonFullførNullbeløp from './refusjonFullførNullbeløp/RefusjonFullførNullbeløp';
 import './RefusjonSide.less';
 import Boks from '../../komponenter/Boks/Boks';
@@ -36,14 +36,14 @@ const RefusjonSide: FunctionComponent = () => {
         <>
             <Boks variant="hvit">
                 <RefusjonIngress refusjon={refusjon} />
-                <InformasjonFraAvtalen />
-                <InntekterFraAMeldingen kvitteringVisning={false} />
+                <InformasjonFraAvtalen refusjon={refusjon} />
+                <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={false} />
                 <RefusjonFullførNullbeløp />
                 <InntekterFraTiltaketSpørsmål />
                 <TidligereRefunderbarBeløp refusjon={refusjon} />
                 <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
             </Boks>
-            <RefusjonGodjennModal
+            <RefusjonGodkjennModal
                 refusjon={refusjon}
                 visGodkjennModal={visGodkjennModal}
                 setVisGodkjennModal={setVisGodkjennModal}

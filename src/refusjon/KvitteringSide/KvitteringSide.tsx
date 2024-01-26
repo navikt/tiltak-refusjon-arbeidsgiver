@@ -1,11 +1,9 @@
 import { Heading, Tag } from '@navikt/ds-react';
 import { FunctionComponent, ReactElement } from 'react';
-import { useParams } from 'react-router';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { statusTekst } from '../../messages';
 import { RefusjonStatus } from '../../refusjon/status';
-import { useHentRefusjon } from '../../services/rest-service';
 import { NORSK_DATO_FORMAT, NORSK_DATO_OG_TID_FORMAT, formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import InntekterFraAMeldingenGammel from '../RefusjonSide/InntekterFraAMeldingenGammel';
@@ -24,14 +22,6 @@ import Boks from '../../komponenter/Boks/Boks';
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
         return <Tag variant="error">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
-    } else if (refusjon.status === RefusjonStatus.SENDT_KRAV) {
-        return (
-            <Tag variant="info">
-                {storForbokstav(statusTekst[refusjon.status])}{' '}
-                {refusjon.godkjentAvArbeidsgiver &&
-                    formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
-            </Tag>
-        );
     } else if (refusjon.status === RefusjonStatus.UTBETALT) {
         return (
             <Tag variant="info">
@@ -42,12 +32,22 @@ export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
                 {refusjon.utbetaltTidspunkt && formatterDato(refusjon.utbetaltTidspunkt, NORSK_DATO_FORMAT)}
             </Tag>
         );
+    } else {
+        return (
+            <Tag variant="info">
+                {storForbokstav(statusTekst[refusjon.status])}{' '}
+                {refusjon.godkjentAvArbeidsgiver &&
+                    formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
+            </Tag>
+        );
     }
-    return <Tag variant="info">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
 };
-const KvitteringSide: FunctionComponent = () => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
+
+type Props = {
+    refusjon: Refusjon;
+};
+
+const KvitteringSide: FunctionComponent<Props> = ({ refusjon }) => {
     if (!refusjon.refusjonsgrunnlag.inntektsgrunnlag) return null;
 
     return (
@@ -67,18 +67,21 @@ const KvitteringSide: FunctionComponent = () => {
             </div>
 
             <VerticalSpacer rem={2} />
-            <InformasjonFraAvtalen />
+            <InformasjonFraAvtalen refusjon={refusjon} />
             <VerticalSpacer rem={2} />
-            {refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find((i) => i.erOpptjentIPeriode === true) ? (
+            {refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find(
+                // Dersom det ikke finnes en eneste inntektslinje som har blitt huket av (ja eller nei), så viser vi gammel versjon av InntekterFraAMeldingen
+                (i) => i.erOpptjentIPeriode !== null && i.erOpptjentIPeriode !== undefined
+            ) ? (
                 <>
-                    <InntekterFraAMeldingen kvitteringVisning={true} />
+                    <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={true} />
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                     <TidligereRefunderbarBeløpKvittering refusjon={refusjon} />
                 </>
             ) : (
                 <>
-                    {refusjon.status !== 'GODKJENT_NULLBELØP' && <InntekterFraAMeldingenGammel />}
+                    {refusjon.status !== 'GODKJENT_NULLBELØP' && <InntekterFraAMeldingenGammel refusjon={refusjon} />}
                     <VerticalSpacer rem={2} />
                     <InntekterFraTiltaketSvarGammel refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                     <TidligereRefunderbarBeløpKvittering refusjon={refusjon} />

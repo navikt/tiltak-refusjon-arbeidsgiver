@@ -1,10 +1,9 @@
 import { Alert, Button, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 import _ from 'lodash';
-import { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
+import { Fragment, FunctionComponent } from 'react';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
-import { hentInntekterLengerFrem, useHentRefusjon } from '../../../services/rest-service';
+import { hentInntekterLengerFrem } from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
 import { formatterPeriode, månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
@@ -16,6 +15,7 @@ import InntektsmeldingTabellBody from './inntektsmeldingTabell/InntektsmeldingTa
 import InntektsmeldingTabellHeader from './inntektsmeldingTabell/InntektsmeldingTabellHeader';
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
+import { Refusjon } from '@/refusjon/refusjon';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -24,13 +24,12 @@ export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 };
 
 export interface Props {
+    refusjon: Refusjon;
     kvitteringVisning: boolean;
 }
 
-const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning }) => {
+const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvitteringVisning }) => {
     const cls = BEMHelper('inntektsmelding');
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
     const { inntektsgrunnlag } = refusjon.refusjonsgrunnlag;
 
     const { antallInntekterSomErMedIGrunnlag, ingenInntekter, ingenRefunderbareInntekter } =
@@ -54,8 +53,8 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
         return ingenAvInntekteneErOpptjentIPerioden;
     };
 
-    const merkForHentingAvInntekterFrem = (merking: boolean, sistEndret: string) => {
-        hentInntekterLengerFrem(refusjon.id, merking, sistEndret);
+    const merkForHentingAvInntekterFrem = () => {
+        hentInntekterLengerFrem(refusjon.id, true, refusjon.sistEndret);
     };
 
     const harBruttolønn = inntektsgrunnlag ? inntektsgrunnlag?.bruttoLønn > 0 : false;
@@ -109,7 +108,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                 <>
                     <VerticalSpacer rem={1} />
                     {inntektGrupperListeSortert.map(([aarManed, inntektslinjer]) => (
-                        <div key={aarManed}>
+                        <Fragment key={aarManed}>
                             <Heading level="4" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
                                 Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})
                             </Heading>
@@ -117,13 +116,15 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                                 <table className={cls.element('inntektstabell')}>
                                     <InntektsmeldingTabellHeader refusjon={refusjon} />
                                     <InntektsmeldingTabellBody
+                                        refusjonId={refusjon.id}
+                                        refusjonSistEndret={refusjon.sistEndret}
                                         inntektslinjer={inntektslinjer}
                                         kvitteringVisning={kvitteringVisning}
                                     />
                                 </table>
                             </div>
                             <VerticalSpacer rem={1} />
-                        </div>
+                        </Fragment>
                     ))}
                 </>
             )}
@@ -138,10 +139,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ kvitteringVisning })
                             Finner du ikke inntekten(e) du leter etter? Klikk på knappen under for å hente inntekter
                             rapportert i {nesteMånedNavn} også.
                             <VerticalSpacer rem={1} />
-                            <Button
-                                onClick={() => merkForHentingAvInntekterFrem(true, refusjon.sistEndret)}
-                                size="small"
-                            >
+                            <Button onClick={() => merkForHentingAvInntekterFrem()} size="small">
                                 Hent inntekter rapportert i {nesteMånedNavn}
                             </Button>
                         </Alert>

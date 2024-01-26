@@ -28,7 +28,6 @@ export interface Refusjon {
     status: RefusjonStatus;
     forrigeFristForGodkjenning?: string;
     fristForGodkjenning: string;
-    harInntektIAlleMåneder: boolean;
     harTattStillingTilAlleInntektslinjer: boolean;
     korreksjonId?: string;
     refusjonsgrunnlag: Refusjonsgrunnlag;
@@ -45,7 +44,6 @@ export interface Korreksjon {
     bedriftNr: string;
     deltakerFnr: string;
     status: KorreksjonStatus;
-    harInntektIAlleMåneder: boolean;
     kostnadssted?: string;
     korreksjonsgrunner: Korreksjonsgrunn[];
     refusjonsgrunnlag: Refusjonsgrunnlag;
@@ -108,12 +106,11 @@ export interface Inntektslinje {
     opptjeningsperiodeFom?: string;
     opptjeningsperiodeTom?: string;
     erMedIInntektsgrunnlag: boolean;
-    erOpptjentIPeriode: boolean | undefined;
+    erOpptjentIPeriode: boolean | undefined | null;
 }
 
 export interface Beregning {
     arbeidsgiveravgift: number;
-    commitHash: string;
     feriepenger: number;
     id: string;
     lønn: number;

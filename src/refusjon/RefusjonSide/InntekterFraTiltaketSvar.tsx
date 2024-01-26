@@ -1,9 +1,7 @@
 import { Label, BodyShort, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
-import { useHentRefusjon } from '../../services/rest-service';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjonsgrunnlag } from '../refusjon';
@@ -15,12 +13,10 @@ type Props = {
 };
 
 const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
-    const refusjonNummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;
+    const refusjonNummer = `${props.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${props.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;
     const periode = formatterPeriode(
-        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom,
+        props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+        props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom,
         'DD.MM'
     );
 
@@ -39,7 +35,7 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
     if (!props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter) {
         return null;
     }
-    const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
+    const månedNavn = månedsNavn(props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
     return (
         <div>
@@ -47,8 +43,8 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
                 <Heading size="small">
                     Inntekter som refunderes for{' '}
                     {formatterPeriode(
-                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                        props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                        props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                     )}
                 </Heading>
                 <VerticalSpacer rem={1} />
@@ -61,7 +57,7 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
                     Er inntektene du har huket av ({formatterPenger(valgtBruttoLønn as number)}) tilknyttet
                     refusjonssnummer {refusjonNummer} <br />
                     for perioden {periode} for tiltaket{' '}
-                    {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
+                    {tiltakstypeTekst[props.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
                 </Label>
                 <BodyShort size="small">{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</BodyShort>
                 {props.refusjonsgrunnlag.endretBruttoLønn !== null &&

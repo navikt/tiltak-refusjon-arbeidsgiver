@@ -8,9 +8,10 @@ import FeilSide from './FeilSide';
 import RefusjonSide from './RefusjonSide';
 import { BodyShort } from '@navikt/ds-react';
 import { useParams } from 'react-router-dom';
-import { oppdaterRefusjonFetcher, useHentRefusjon } from '../../services/rest-service';
+import { oppdaterRefusjonFetcher, useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import useSWRMutation from 'swr/mutation';
 import { mutate } from 'swr';
+import { Refusjon as RefusjonType } from '../refusjon';
 
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -81,10 +82,16 @@ const Komponent: FunctionComponent = () => {
         case RefusjonStatus.GODKJENT_NULLBELØP:
         case RefusjonStatus.UTBETALT:
         case RefusjonStatus.UTBETALING_FEILET:
-            return <KvitteringSide />;
-        case RefusjonStatus.KORRIGERT:
-            return <KvitteringKorreksjon />;
+            return <KvitteringSide refusjon={refusjon} />;
+        case RefusjonStatus.KORRIGERT: {
+            return <Korreksjonskvittering refusjon={refusjon} />;
+        }
     }
+};
+
+const Korreksjonskvittering: FunctionComponent<{ refusjon: RefusjonType }> = ({ refusjon }) => {
+    const korreksjon = useHentKorreksjon(refusjon.korreksjonId!);
+    return <KvitteringKorreksjon refusjon={refusjon} korreksjon={korreksjon} />;
 };
 
 const Refusjon: FunctionComponent = () => {

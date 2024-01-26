@@ -1,10 +1,8 @@
 import { ExpansionCard, Heading, Tag } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { korreksjonStatusTekst } from '../../messages';
-import { useHentKorreksjon, useHentRefusjon } from '../../services/rest-service';
 import { NORSK_DATO_OG_TID_FORMAT, formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
@@ -15,12 +13,14 @@ import { KorreksjonStatus } from '../status';
 import InntekterFraAMeldingenKorreksjon from './InntekterFraAMeldingenKorreksjon';
 import KorreksjonInfo from './KorreksjonInfo';
 import Boks from '../../komponenter/Boks/Boks';
+import { Korreksjon, Refusjon } from '../refusjon';
 
-const KvitteringKorreksjon: FunctionComponent = () => {
-    const { refusjonId } = useParams();
-    const refusjon = useHentRefusjon(refusjonId);
-    const korreksjon = useHentKorreksjon(refusjon.korreksjonId!);
+type Props = {
+    refusjon: Refusjon;
+    korreksjon: Korreksjon;
+};
 
+const KvitteringKorreksjon: FunctionComponent<Props> = ({ refusjon, korreksjon }) => {
     return (
         <>
             <Boks variant="hvit">
@@ -37,9 +37,9 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                 <VerticalSpacer rem={1} />
                 <KorreksjonInfo korreksjon={korreksjon} />
                 <VerticalSpacer rem={2} />
-                <InformasjonFraAvtalen />
+                <InformasjonFraAvtalen refusjon={refusjon} />
                 <VerticalSpacer rem={2} />
-                <InntekterFraAMeldingenKorreksjon />
+                <InntekterFraAMeldingenKorreksjon korreksjon={korreksjon} />
                 <VerticalSpacer rem={2} />
                 <InntekterFraTiltaketSvar refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} />
                 <VerticalSpacer rem={2} />
@@ -69,7 +69,7 @@ const KvitteringKorreksjon: FunctionComponent = () => {
                         </div>
                         <VerticalSpacer rem={1} />
                         <VerticalSpacer rem={2} />
-                        <InntekterFraAMeldingen kvitteringVisning={true} />
+                        <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={true} />
                         <VerticalSpacer rem={2} />
                         <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                         <VerticalSpacer rem={2} />
