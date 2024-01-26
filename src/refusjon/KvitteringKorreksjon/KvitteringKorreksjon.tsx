@@ -41,7 +41,7 @@ const KvitteringKorreksjon: FunctionComponent<Props> = ({ refusjon, korreksjon }
                 <VerticalSpacer rem={2} />
                 <InntekterFraAMeldingenKorreksjon korreksjon={korreksjon} />
                 <VerticalSpacer rem={2} />
-                <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
+                <InntekterFraTiltaketSvar refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} />
                 <VerticalSpacer rem={2} />
                 <Utregning
                     beregning={korreksjon.refusjonsgrunnlag.beregning}
