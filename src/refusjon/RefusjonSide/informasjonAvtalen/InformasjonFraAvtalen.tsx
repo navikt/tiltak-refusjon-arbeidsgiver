@@ -1,4 +1,3 @@
-import { Calender, File, FileContent, Money, Office1, People, Warning } from '@navikt/ds-icons';
 import KIDInputValidator from '../../../komponenter/KIDInputValidator/KIDInputValidator';
 import { FunctionComponent } from 'react';
 import EksternLenke from '../../../komponenter/EksternLenke/EksternLenke';
@@ -28,13 +27,11 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <EksternLenke href={avtaleLenke}>
-                    <File />
                     Avtale om {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
                 </EksternLenke>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <File />
                 <Label>Refusjonsnummer: </Label>
                 <BodyShort size="small">{refusjonsnummer}</BodyShort>
             </IkonRad>
@@ -42,7 +39,6 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn && (
                 <>
                     <IkonRad>
-                        <People />
                         <Label>Arbeidsgiver: </Label>
                         <BodyShort size="small">
                             {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn}{' '}
@@ -57,13 +53,11 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
                 </>
             )}
             <IkonRad>
-                <Office1 style={{ marginTop: '0.125rem' }} />
                 <Label>Bedriftens navn: </Label>
                 <BodyShort size="small">{refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.bedriftNavn}</BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <People />
                 <Label>Deltaker: </Label>
                 <BodyShort size="small">
                     {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.deltakerFornavn}{' '}
@@ -72,7 +66,6 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Calender />
                 <Label>Periode: </Label>
                 <BodyShort size="small">
                     {formatterPeriode(
@@ -83,13 +76,11 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Warning />
                 <Label>Frist: </Label>
                 <BodyShort size="small">{formatterDato(refusjon.fristForGodkjenning)}</BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <FileContent />
                 <Label>Avtalt beløp for perioden:</Label>
                 <BodyShort size="small">
                     Inntil {formatterPenger(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp)}
@@ -97,7 +88,6 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Money />
                 <Label>Kontonummer:</Label>
                 {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && !refusjon.åpnetFørsteGang && (
                     <Loader type="L" />
@@ -113,7 +103,6 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
                 <>
                     <VerticalSpacer rem={1} />
                     <IkonRad>
-                        <Money />
                         <Label>KID:</Label>
                         {refusjon.status === 'KLAR_FOR_INNSENDING' ? (
                             <>

@@ -44,6 +44,10 @@ const KvitteringKorreksjon: FunctionComponent<Props> = ({ refusjon, korreksjon }
                 <InntekterFraTiltaketSvar refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} />
                 <VerticalSpacer rem={2} />
                 <Utregning
+                    refusjonsnummer={{
+                        avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
+                        løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
+                    }}
                     beregning={korreksjon.refusjonsgrunnlag.beregning}
                     tilskuddsgrunnlag={korreksjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                     inntektsgrunnlag={korreksjon.refusjonsgrunnlag.inntektsgrunnlag}
@@ -74,6 +78,10 @@ const KvitteringKorreksjon: FunctionComponent<Props> = ({ refusjon, korreksjon }
                         <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                         <VerticalSpacer rem={2} />
                         <Utregning
+                            refusjonsnummer={{
+                                avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
+                                løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
+                            }}
                             beregning={refusjon.refusjonsgrunnlag.beregning}
                             tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                             forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}

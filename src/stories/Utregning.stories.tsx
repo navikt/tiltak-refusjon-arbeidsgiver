@@ -15,6 +15,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const fratrekkData = {
+    refusjonsnummer: {
+        avtalenr: 1234,
+        løpenummer: 2,
+    },
     forrigeRefusjonMinusBeløp: -6558,
     beregning: {
         lønn: 108115,
