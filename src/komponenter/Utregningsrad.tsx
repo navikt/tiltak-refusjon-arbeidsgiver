@@ -3,7 +3,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 import { Inntektslinje, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import BEMHelper from '../utils/bem';
-import { visSatsMedNorskLocale } from '../utils/utregningUtil';
+import { visSatsMedNorskFormatering } from '../utils/utregningUtil';
 import './Utregningsrad.less';
 
 interface Props {
@@ -34,7 +34,7 @@ const Utregningsrad: FunctionComponent<PropsWithChildren<Props>> = (props) => {
         ) : null;
 
     const setLabelSats = (sats?: number) =>
-        sats ? <BodyShort size="small">({visSatsMedNorskLocale(sats)}%)</BodyShort> : null;
+        sats ? <BodyShort size="small">({visSatsMedNorskFormatering(sats)}%)</BodyShort> : null;
 
     const border = () => {
         switch (props.border) {
