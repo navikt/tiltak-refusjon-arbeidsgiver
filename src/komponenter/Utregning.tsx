@@ -13,10 +13,11 @@ import { FunctionComponent } from 'react';
 import { Beregning, Inntektsgrunnlag, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import EksternLenke from './EksternLenke/EksternLenke';
-import GråRamme from './GråRamme/GråRamme';
 import Utregningsrad from './Utregningsrad';
 import VerticalSpacer from './VerticalSpacer';
 import UtregningsradHvaInngårIDette from './UtregningsradHvaInngårIDette';
+import BEMHelper from '@/utils/bem';
+import './Utregning.less';
 
 interface Props {
     refusjonsnummer: {
@@ -30,6 +31,8 @@ interface Props {
 }
 
 const Utregning: FunctionComponent<Props> = (props) => {
+    const cls = BEMHelper('utregning');
+
     const { beregning, tilskuddsgrunnlag, forrigeRefusjonMinusBeløp } = props;
     const bruttoLønnsInntekter = props.inntektsgrunnlag?.inntekter.filter(
         (inntekt) => inntekt.erMedIInntektsgrunnlag && inntekt.erOpptjentIPeriode === true
@@ -41,6 +44,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
     const harMinusBeløp = forrigeRefusjonMinusBeløp != null && forrigeRefusjonMinusBeløp < 0;
     const refusjonsnummer = props.refusjonsnummer.avtalenr + '-' + props.refusjonsnummer.løpenummer;
     const beløpOverMaks = beregning && beregning.overTilskuddsbeløp;
+    const erKorreksjon = beregning?.tidligereUtbetalt != 0;
 
     const tilUtbetaling = (tykkBunn: boolean) => (
         <Utregningsrad
@@ -54,7 +58,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
     );
 
     return (
-        <GråRamme>
+        <div className={cls.className}>
             <Heading level="3" size="medium">
                 Utregningen
             </Heading>
@@ -155,6 +159,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                         </>
                     }
                     verdiOperator={<ErlikTegn />}
+                    border={erKorreksjon ? 'INGEN' : 'NORMAL'}
                     verdi={beregning.beregnetBeløp}
                 >
                     {beløpOverMaks && (
@@ -173,8 +178,8 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     )}
                 </Utregningsrad>
             )}
-            {beregning?.tidligereUtbetalt != 0 && (
-                <div style={{ backgroundColor: '#f7f7f7', border: '2px solid #eee' }}>
+            {erKorreksjon && (
+                <div className={beløpOverMaks ? cls.element('korreksjons-oppsummering') : ''}>
                     {beløpOverMaks && beregning && beregning.tidligereUtbetalt != 0 && (
                         <Utregningsrad
                             labelIkon={<Pengesekken />}
@@ -206,7 +211,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                                     <BodyShort size="small">
                                         Den opprinnelige refusjonen medførte et trekk på
                                         {formatterPenger(Math.abs(props.beregning?.tidligereUtbetalt))}; dette
-                                        kompenseres for i korreksjonen.
+                                        kompenseres for i beregningen.
                                     </BodyShort>
                                 </ReadMore>
                             )}
@@ -253,7 +258,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     </Alert>
                 </>
             )}
-        </GråRamme>
+        </div>
     );
 };
 
