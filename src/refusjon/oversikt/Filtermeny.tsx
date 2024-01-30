@@ -17,7 +17,9 @@ const Filtermeny: FunctionComponent = () => {
         <div role="menubar" aria-label="filtermeny for filtrering av refusjon på status og tiltakstype">
             <ExpansionCard size="small" aria-label="Small-variant" defaultOpen={true}>
                 <ExpansionCard.Header>
-                    <ExpansionCard.Title size="small">Status</ExpansionCard.Title>
+                    <ExpansionCard.Title aria-level={2} size="small">
+                        Status
+                    </ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content style={{ paddingTop: '0' }}>
                     <RadioGroup legend="" value={filter.status || ''} size="small">
@@ -91,7 +93,9 @@ const Filtermeny: FunctionComponent = () => {
             <div style={{ marginTop: '0.75rem' }} />
             <ExpansionCard size="small" aria-label="Small-variant" defaultOpen={true}>
                 <ExpansionCard.Header>
-                    <ExpansionCard.Title size="small">Tiltakstype</ExpansionCard.Title>
+                    <ExpansionCard.Title aria-level={2} size="small">
+                        Tiltakstype
+                    </ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content style={{ paddingTop: '0' }}>
                     <RadioGroup legend="" value={filter.tiltakstype || ''} size="small">

@@ -38,7 +38,9 @@ const Utregning: FunctionComponent<Props> = (props) => {
 
     return (
         <GråRamme>
-            <Heading size="medium">Utregningen</Heading>
+            <Heading level="3" size="medium">
+                Utregningen
+            </Heading>
             <VerticalSpacer rem={1} />
             <Utregningsrad
                 labelIkon={<Pengesekken />}

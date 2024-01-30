@@ -23,7 +23,7 @@ const FeilSide: FunctionComponent<Props> = (props) => {
         <Boks variant="hvit">
             <Alert variant={props.advarselType}>{props.feiltekst}</Alert>
             <VerticalSpacer rem={2} />
-            <Heading size="large">
+            <Heading level="2" size="large">
                 Refusjon av {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
             </Heading>
             <VerticalSpacer rem={1} />

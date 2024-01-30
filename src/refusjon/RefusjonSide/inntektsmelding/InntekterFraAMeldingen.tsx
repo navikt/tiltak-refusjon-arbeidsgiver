@@ -109,7 +109,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
                     <VerticalSpacer rem={1} />
                     {inntektGrupperListeSortert.map(([aarManed, inntektslinjer]) => (
                         <Fragment key={aarManed}>
-                            <Heading level="4" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
+                            <Heading level="3" size="small" style={{ display: 'flex', justifyContent: 'center' }}>
                                 Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})
                             </Heading>
                             <div style={{ borderTop: '1px solid #06893b' }}>
