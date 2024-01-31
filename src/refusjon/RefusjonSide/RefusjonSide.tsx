@@ -33,7 +33,7 @@ const RefusjonSide: FunctionComponent = () => {
     };
 
     return (
-        <>
+        <div role="main">
             <Boks variant="hvit">
                 <RefusjonIngress refusjon={refusjon} />
                 <InformasjonFraAvtalen refusjon={refusjon} />
@@ -49,7 +49,7 @@ const RefusjonSide: FunctionComponent = () => {
                 setVisGodkjennModal={setVisGodkjennModal}
                 godkjennRefusjonen={godkjennRefusjonen}
             />
-        </>
+        </div>
     );
 };
 

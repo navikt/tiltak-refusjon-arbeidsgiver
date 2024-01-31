@@ -84,7 +84,7 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
     };
 
     return (
-        <div className={cls.className}>
+        <div role="banner" className={cls.className}>
             <div className={cls.element('wrapper')}>
                 <div className={cls.element('container')}>
                     <div className={cls.element('brand')}>

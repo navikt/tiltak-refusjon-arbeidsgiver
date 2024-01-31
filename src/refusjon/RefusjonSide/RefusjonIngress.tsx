@@ -16,7 +16,7 @@ const RefusjonIngress: FunctionComponent<Properties> = ({ refusjon }: PropsWithC
     return (
         <>
             <div className={cls.element('ingress')}>
-                <Heading level="2" size="large" role="heading">
+                <Heading level="1" size="large" role="heading">
                     Beregning av refusjon
                 </Heading>
                 <Tag variant="info" size="small">
