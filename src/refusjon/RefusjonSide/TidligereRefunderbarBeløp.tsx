@@ -40,7 +40,7 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
     const cls = BEMHelper('refusjonside');
     return (
         <div className={cls.element('fratrekk-sykepenger')}>
-            <Heading size="small" className={cls.element('fratrekk-sykepenger-tittel')}>
+            <Heading level='3' size="small" className={cls.element('fratrekk-sykepenger-tittel')}>
                 Fravær i perioden
             </Heading>
             <div className={cls.element('fratrekk-sykepenger-txt')}>

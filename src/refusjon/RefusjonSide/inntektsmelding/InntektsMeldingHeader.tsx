@@ -14,7 +14,7 @@ const InntektsMeldingHeader: FunctionComponent<Properties> = ({ refusjon }: Prop
 
     return (
         <div className={cls.element('header')}>
-            <Heading size="small" className={cls.element('header-tittel')}>
+            <Heading level="3" size="small" className={cls.element('header-tittel')}>
                 Inntekter hentet fra a-meldingen for {månedNavn} måned{' '}
                 {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'SOMMERJOBB' ? (
                     <>

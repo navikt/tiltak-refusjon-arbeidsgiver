@@ -8,7 +8,7 @@ const cls = BEMHelper('OversiktSide');
 
 const OversiktSide: FunctionComponent = () => {
     return (
-        <div className={cls.className}>
+        <div role="main" className={cls.className}>
             <div className={cls.element('wrapper')}>
                 <div className={cls.element('meny')}>
                     <Filtermeny />

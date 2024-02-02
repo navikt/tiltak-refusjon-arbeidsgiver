@@ -45,7 +45,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     
     return (
         <div className={cls.element('inntekter-fra-tiltaket-boks')}>
-            <Heading size="small">
+            <Heading level='3' size="small">
                 Inntekter som skal refunderes for{' '}
                 {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}
             </Heading>

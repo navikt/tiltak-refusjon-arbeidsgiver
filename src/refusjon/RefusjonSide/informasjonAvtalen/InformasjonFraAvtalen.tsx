@@ -22,7 +22,9 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
 
     return (
         <Boks variant="grå">
-            <Heading size="small">Informasjon hentet fra avtalen</Heading>
+            <Heading level="3" size="small">
+                Informasjon hentet fra avtalen
+            </Heading>
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <EksternLenke href={avtaleLenke}>
