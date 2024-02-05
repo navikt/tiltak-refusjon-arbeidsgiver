@@ -125,7 +125,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             verdi={beregning?.tidligereRefundertBeløp}
                         />
                         <Utregningsrad
-                            className={'grå'}
+                            className={cls.element('grå-utregningsrad')}
                             labelTekst="Refusjonsgrunnlag"
                             verdiOperator={<ErlikTegn />}
                             verdi={beregning?.sumUtgifterFratrukketRefundertBeløp}
@@ -134,7 +134,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     </>
                 ) : (
                     <Utregningsrad
-                        className={'grå'}
+                        className={cls.element('grå-utregningsrad')}
                         labelTekst="Refusjonsgrunnlag"
                         verdiOperator={<ErlikTegn />}
                         verdi={beregning?.sumUtgifter || 0}
@@ -169,14 +169,16 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             {beløpOver5G && (
                                 <>
                                     <BodyShort size="small">
-                                        Refusjonen har nå oversteget fem ganger grunnbeløpet per år (utbetalt så langt
-                                        for tilskuddet: {formatterPenger(props.sumUtbetaltVarig || 0)}). Det vil bli
-                                        utbetalt {formatterPenger(beregning?.refusjonsbeløp)} for denne perioden.
+                                        Avtalen har nå oversteget fem ganger grunnbeløpet per år.{' '}
+                                        <b>
+                                            Det vil bli utbetalt {formatterPenger(beregning?.refusjonsbeløp)} for denne
+                                            perioden.
+                                        </b>{' '}
                                         Refusjoner for resten av året vil settes til 0 kr, men dere må fortsatt sende
                                         inn refusjoner hver måned.
                                     </BodyShort>
                                     <BodyShort size="small">
-                                        <EksternLenke href="https://lovdata.no/dokument/SF/forskrift/2015-12-11-1598/KAPITTEL_10#KAPITTEL_10">
+                                        <EksternLenke href="https://lovdata.no/forskrift/2015-12-11-1598/§10-7">
                                             Forskrift om arbeidsmarkedstiltak (tiltaksforskriften) - Kapittel 10. Varig
                                             lønnstilskudd
                                         </EksternLenke>
