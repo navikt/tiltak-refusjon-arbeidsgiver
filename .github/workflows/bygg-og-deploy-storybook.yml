@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sjekk ut kode
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Konfigurer Node
         uses: actions/setup-node@v4
         with:
@@ -37,7 +37,7 @@ jobs:
     needs: bygg
     steps:
       - name: Sjekk ut kode
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
