@@ -1,6 +1,9 @@
 name: Bygg og deploy storybook
 
 on:
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
 
 env:
@@ -21,9 +24,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Frontend npm install
+      - name: npm install
         run: npm ci
-      - name: Frontend - test, lint og bygg
+      - name: Bygg storybook
         run: npm run build-storybook
       - name: Bygg, tag og push Docker-image
         run: |
