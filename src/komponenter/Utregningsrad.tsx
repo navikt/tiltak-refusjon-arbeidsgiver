@@ -1,12 +1,10 @@
 import { BodyShort, Heading } from '@navikt/ds-react';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 import { Inntektslinje, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
 import BEMHelper from '../utils/bem';
-import { visSatsMedEttDesimal } from '../utils/utregningUtil';
+import { visSatsMedNorskFormatering } from '../utils/utregningUtil';
 import './Utregningsrad.less';
-import UtregningsradHvaInngårIDette from './UtregningsradHvaInngårIDette';
-import VerticalSpacer from './VerticalSpacer';
 
 interface Props {
     labelIkon?: React.ReactNode;
@@ -18,13 +16,15 @@ interface Props {
     border?: 'NORMAL' | 'TYKK' | 'INGEN';
     inntekter?: Inntektslinje[];
     tilskuddsgunnlag?: Tilskuddsgrunnlag;
+    className?: string;
+    utgår?: boolean;
 }
 
 const cls = BEMHelper('utregning-rad');
 
-const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
+const Utregningsrad: FunctionComponent<PropsWithChildren<Props>> = (props) => {
     const setIkon = (ikon?: React.ReactNode) =>
-        ikon ? ikon : <div className={cls.element('ikon-placeholder')} aria-hidden={true} />;
+        ikon ? ikon : <span className={cls.element('ikon-placeholder')} aria-hidden={true} />;
 
     const setOperator = (operator?: string | ReactNode) =>
         operator ? (
@@ -34,7 +34,7 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
         ) : null;
 
     const setLabelSats = (sats?: number) =>
-        sats ? <BodyShort size="small">({visSatsMedEttDesimal(sats)}%)</BodyShort> : null;
+        sats ? <BodyShort size="small">({visSatsMedNorskFormatering(sats)}%)</BodyShort> : null;
 
     const border = () => {
         switch (props.border) {
@@ -53,33 +53,30 @@ const Utregningsrad: FunctionComponent<Props> = (props: Props) => {
     const labelTekstString = typeof props.labelTekst === 'string' ? props.labelTekst : undefined;
 
     return (
-        <div className={cls.element('utregning-wrapper', border())}>
-            <div className={cls.element('utregning-rad')}>
+        <div className={cls.element('utregning-wrapper', border()) + (props.className ? ' ' + props.className : '')}>
+            <div className={cls.element('rad')}>
                 <div className={cls.element('utregning-label')}>
                     <div className={cls.element('label-innhold')}>
                         {setIkon(props.labelIkon)}
-                        {<div id={labelTekstString}>{props.labelTekst}</div>}
+                        {<span id={labelTekstString}>{props.labelTekst}</span>}
                     </div>
-                    {setLabelSats(props.labelSats)}
+                    {props.labelSats && setLabelSats(props.labelSats)}
                 </div>
-                <div className={cls.element('utregning-verdi')}>
+                <span className={cls.element('utregning-verdi')}>
                     {setOperator(props.verdiOperator)}
-                    <BodyShort size="small" className={cls.element('sum')} aria-labelledby={labelTekstString}>
+                    <BodyShort
+                        size="small"
+                        className={[cls.element('sum'), props.utgår && cls.element('utgår')].filter((x) => x).join(' ')}
+                        aria-labelledby={labelTekstString}
+                    >
                         {props.ikkePenger || typeof props.verdi === 'string'
                             ? props.verdi
                             : formatterPenger(props.verdi)}
                     </BodyShort>
-                </div>
+                </span>
             </div>
-
-            {props.inntekter && (
-                <>
-                    <UtregningsradHvaInngårIDette
-                        inntekter={props.inntekter}
-                        tilskuddsgrunnlag={props.tilskuddsgunnlag}
-                    />
-                    <VerticalSpacer rem={1} />
-                </>
+            {props.children && (
+                <div style={{ marginLeft: '2rem', marginRight: '10rem', marginBottom: '1rem' }}>{props.children}</div>
             )}
         </div>
     );

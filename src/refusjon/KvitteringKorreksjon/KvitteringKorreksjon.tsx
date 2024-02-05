@@ -44,12 +44,21 @@ const KvitteringKorreksjon: FunctionComponent<Props> = ({ refusjon, korreksjon }
                 <InntekterFraTiltaketSvar refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} />
                 <VerticalSpacer rem={2} />
                 <Utregning
+                    refusjonsnummer={{
+                        avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
+                        løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
+                    }}
                     beregning={korreksjon.refusjonsgrunnlag.beregning}
                     tilskuddsgrunnlag={korreksjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                     inntektsgrunnlag={korreksjon.refusjonsgrunnlag.inntektsgrunnlag}
+                    sumUtbetaltVarig={korreksjon.refusjonsgrunnlag.sumUtbetaltVarig}
                 />
                 <VerticalSpacer rem={4} />
-                <SummeringBoks refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} status={refusjon.status} />
+                <SummeringBoks
+                    erForKorreksjon={true}
+                    refusjonsgrunnlag={korreksjon.refusjonsgrunnlag}
+                    status={refusjon.status}
+                />
             </Boks>
 
             <VerticalSpacer rem={2} />
@@ -74,13 +83,21 @@ const KvitteringKorreksjon: FunctionComponent<Props> = ({ refusjon, korreksjon }
                         <InntekterFraTiltaketSvar refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                         <VerticalSpacer rem={2} />
                         <Utregning
+                            refusjonsnummer={{
+                                avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
+                                løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
+                            }}
                             beregning={refusjon.refusjonsgrunnlag.beregning}
                             tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                             forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
                             inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
                         />
                         <VerticalSpacer rem={4} />
-                        <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
+                        <SummeringBoks
+                            erForKorreksjon={false}
+                            refusjonsgrunnlag={refusjon.refusjonsgrunnlag}
+                            status={refusjon.status}
+                        />
                     </Boks>
                 </ExpansionCard.Content>
             </ExpansionCard>

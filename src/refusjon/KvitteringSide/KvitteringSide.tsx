@@ -90,6 +90,11 @@ const KvitteringSide: FunctionComponent<Props> = ({ refusjon }) => {
             <VerticalSpacer rem={2} />
             {refusjon.refusjonsgrunnlag.beregning && (
                 <Utregning
+                    refusjonsnummer={{
+                        avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
+                        løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
+                    }}
+                    sumUtbetaltVarig={refusjon.refusjonsgrunnlag.sumUtbetaltVarig}
                     beregning={refusjon.refusjonsgrunnlag.beregning}
                     tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                     forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag.forrigeRefusjonMinusBeløp}
@@ -101,7 +106,11 @@ const KvitteringSide: FunctionComponent<Props> = ({ refusjon }) => {
                 <SummeringBoksNullbeløp refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
             )}
             {refusjon.status !== 'GODKJENT_NULLBELØP' && (
-                <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
+                <SummeringBoks
+                    erForKorreksjon={false}
+                    refusjonsgrunnlag={refusjon.refusjonsgrunnlag}
+                    status={refusjon.status}
+                />
             )}
         </Boks>
     );
