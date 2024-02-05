@@ -1,4 +1,3 @@
-
 import { FunctionComponent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { godkjennRefusjonMedNullbeløp, useHentRefusjon } from '../../../services/rest-service';
@@ -7,7 +6,6 @@ import LagreKnapp from '../../../komponenter/LagreKnapp';
 import RefusjonFullførNullbeløpModal from './RefusjonFullførNullbeløpModal';
 import { UtbetaltStatus, innSendingRefusjon } from '../../../utils/amplitude-utils';
 import './refusjonFullførNullbeløp.less';
-
 
 const RefusjonFullførNullbeløp: FunctionComponent = () => {
     const [visRefusjonFullførNullbeløpModal, setVisRefusjonFullførNullbeløpModal] = useState<boolean>(false);
@@ -34,18 +32,21 @@ const RefusjonFullførNullbeløp: FunctionComponent = () => {
     };
 
     const harFerietrekkIPerioden = refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.find((i) => {
-        if(i.måned) {
-            const periode = Number(i.måned.slice(-2))
-            return (i.beskrivelse === 'trekkILoennForFerie' && periode === new Date().getMonth())
+        if (i.måned) {
+            const periode = Number(i.måned.slice(-2));
+            return i.beskrivelse === 'trekkILoennForFerie' && periode === new Date().getMonth();
         }
         return false;
-    })
+    });
 
-    if(harFerietrekkIPerioden || refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.find((i) => i.erOpptjentIPeriode === true)) {
+    if (
+        harFerietrekkIPerioden ||
+        refusjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.find((i) => i.erOpptjentIPeriode === true)
+    ) {
         return null;
     }
 
-    if(harFerietrekkIPerioden || refusjon.refusjonsgrunnlag.beregning) {
+    if (harFerietrekkIPerioden || refusjon.refusjonsgrunnlag.beregning) {
         return null;
     }
 
@@ -54,14 +55,14 @@ const RefusjonFullførNullbeløp: FunctionComponent = () => {
             <LagreKnapp variant="primary" lagreFunksjon={() => fullførRefusjon()}>
                 Fullfør med nullbeløp
             </LagreKnapp>
-            <RefusjonFullførNullbeløpModal 
+            <RefusjonFullførNullbeløpModal
                 refusjon={refusjon}
                 visGodkjennModal={visRefusjonFullførNullbeløpModal}
                 setVisGodkjennModal={setVisRefusjonFullførNullbeløpModal}
-                godkjennRefusjonen={godkjennRefusjonen}/>
+                godkjennRefusjonen={godkjennRefusjonen}
+            />
         </div>
-        
-    )
-}
+    );
+};
 
 export default RefusjonFullførNullbeløp;

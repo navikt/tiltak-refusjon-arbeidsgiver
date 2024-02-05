@@ -21,7 +21,11 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const [endringBruttoLønn, setEndringBruttoLønn] = useState<string>(endretBruttoLønn?.toString() ?? '');
 
     const refusjonNummer = `${tilskuddsgrunnlag.avtaleNr}-${tilskuddsgrunnlag.løpenummer}`;
-    const periode = (formatterPeriode(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom, refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom, 'DD.MM'));
+    const periode = formatterPeriode(
+        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom,
+        'DD.MM'
+    );
 
     useEffect(() => {
         setInntekterKunTiltaket(inntekterKunFraTiltaket);
@@ -42,7 +46,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
 
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
-    
+
     return (
         <div className={cls.element('inntekter-fra-tiltaket-boks')}>
             <Heading level='3' size="small">
@@ -56,16 +60,21 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             </BodyShort>
             <VerticalSpacer rem={1} />
             <InntekterOpptjentIPeriodeTabell inntekter={inntektsgrunnlag?.inntekter} månedsNavn={månedNavn} />
-            <VerticalSpacer rem={1}/>
+            <VerticalSpacer rem={1} />
             <Label htmlFor={'inntekterKunFraTiltaket'}>
-            Er inntektene du har huket av {' '}{sumInntekterOpptjent > 0 && <>({formatterPenger(sumInntekterOpptjent)})</>} 
-            {' '}tilknyttet refusjonssnummer {refusjonNummer} for perioden {periode} for tiltaket {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
+                Er inntektene du har huket av{' '}
+                {sumInntekterOpptjent > 0 && <>({formatterPenger(sumInntekterOpptjent)})</>} tilknyttet refusjonssnummer{' '}
+                {refusjonNummer} for perioden {periode} for tiltaket{' '}
+                {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
             </Label>
             <p>
                 <i>Du skal svare ja hvis perioden og bruttolønn samsvarer.</i>
             </p>
             <p>
-                <i>Du skal svare nei hvis inntekter skal brukes i andre refusjoner tilknyttet andre tilskuddsperioder eller bruttolønn blir høyere.</i>
+                <i>
+                    Du skal svare nei hvis inntekter skal brukes i andre refusjoner tilknyttet andre tilskuddsperioder
+                    eller bruttolønn blir høyere.
+                </i>
             </p>
             <RadioGroup legend="" className={cls.element('inntekter-kun-fra-tiltaket')} value={inntekterKunTiltaket}>
                 <Radio
@@ -106,7 +115,14 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                                 setEndringBruttoLønn('');
                             }
                         }}
-                        onBlur={() => delayEndreBruttolønn(refusjonId!, false, refusjon.sistEndret, parseInt(endringBruttoLønn, 10))}
+                        onBlur={() =>
+                            delayEndreBruttolønn(
+                                refusjonId!,
+                                false,
+                                refusjon.sistEndret,
+                                parseInt(endringBruttoLønn, 10)
+                            )
+                        }
                         value={endringBruttoLønn}
                     />
                 </>

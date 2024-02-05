@@ -1,0 +1,31 @@
+import { Meta, Story } from '@storybook/blocks';
+
+import * as RefusjonOver5G from './RefusjonOver5G.stories';
+
+<Meta title="Historier/Refusjon overskrider 5G" />
+
+# Refusjon overskrider 5G for et varig lønnstilskudd
+
+Varig lønnstilskudd har en øvre grense på 5 ganger grunnbeløp hvert år (se [g.nav.no](g.nav.no)). Det betyr at arbeidsgivere som har deltakere med høy lønn etter hvert vil oppleve å få redusert utbetaling på refusjoner, og grensesnittet bør gi tilstrekkelig informasjon om dette.
+
+Dette eksempelet viser hvordan refusjoner ser ut før deltaker har opptjent over 5G, samt hvordan refusjonene ser ut når 5G inntreffer, og alle refusjonene etter (hvor de vil få utbetalt kr 0).
+
+**OBS:** Merk at beløpet i eksempelet også er så høyt at refusjonen påvirkes av maks avtalt beløpsgrense.
+
+## Før 5G inntreffer
+
+Før 5G inntreffer vil refusjonen stort sett se "normal" ut. I dette eksempelet er riktignok utbetalt lønn høyere enn avtalt beløp, og vil bli redusert.
+
+<Story of={RefusjonOver5G.RefusjonFør5G} />
+
+## Når 5G inntreffer
+
+Når 5G inntreffer, vil beløpet reduseres slik at det kun utbetales den summen som gjenstår. Påfølgende refusjoner vil gå i 0, og arbeidsgiver vil ikke få mer penger på denne avtalen.
+
+<Story of={RefusjonOver5G.RefusjonOverskrider5G} />
+
+## Etter 5G har inntruffet
+
+I alle påfølgende refusjoner vil utbetalt beløp være 0 fordi man har gått over 5G.
+
+<Story of={RefusjonOver5G.RefusjonEtter5G} />

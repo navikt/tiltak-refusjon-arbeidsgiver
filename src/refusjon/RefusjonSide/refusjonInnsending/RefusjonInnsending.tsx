@@ -49,12 +49,21 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
     return (
         <div className={cls.className}>
             <Utregning
+                refusjonsnummer={{
+                    avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
+                    løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
+                }}
                 forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag?.forrigeRefusjonMinusBeløp || 0}
                 beregning={refusjon.refusjonsgrunnlag.beregning}
                 tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
                 inntektsgrunnlag={refusjon.refusjonsgrunnlag.inntektsgrunnlag}
+                sumUtbetaltVarig={refusjon.refusjonsgrunnlag.sumUtbetaltVarig}
             />
-            <SummeringBoks refusjonsgrunnlag={refusjon.refusjonsgrunnlag} status={refusjon.status} />
+            <SummeringBoks
+                erForKorreksjon={false}
+                refusjonsgrunnlag={refusjon.refusjonsgrunnlag}
+                status={refusjon.status}
+            />
 
             <VerticalSpacer rem={1} />
 

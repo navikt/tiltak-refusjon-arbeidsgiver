@@ -8,7 +8,7 @@ import PlussTegn from '@/asset/image/plussTegn.svg?react';
 import ProsentTegn from '@/asset/image/prosentTegn.svg?react';
 import Sparegris from '@/asset/image/sparegris.svg?react';
 import Stranden from '@/asset/image/strand.svg?react';
-import { Alert, BodyShort, Heading, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import { Beregning, Inntektsgrunnlag, Tilskuddsgrunnlag } from '../refusjon/refusjon';
 import { formatterPenger } from '../utils/PengeUtils';
@@ -28,6 +28,7 @@ interface Props {
     tilskuddsgrunnlag: Tilskuddsgrunnlag;
     forrigeRefusjonMinusBeløp?: number;
     inntektsgrunnlag?: Inntektsgrunnlag;
+    sumUtbetaltVarig?: number;
 }
 
 const Utregning: FunctionComponent<Props> = (props) => {
@@ -44,7 +45,8 @@ const Utregning: FunctionComponent<Props> = (props) => {
     const harMinusBeløp = forrigeRefusjonMinusBeløp != null && forrigeRefusjonMinusBeløp < 0;
     const refusjonsnummer = props.refusjonsnummer.avtalenr + '-' + props.refusjonsnummer.løpenummer;
     const beløpOverMaks = beregning && beregning.overTilskuddsbeløp;
-    const erKorreksjon = beregning?.tidligereUtbetalt != 0;
+    const beløpOver5G = beregning?.overFemGrunnbeløp;
+    const erKorreksjon = beregning?.tidligereUtbetalt !== 0;
 
     const tilUtbetaling = (tykkBunn: boolean) => (
         <Utregningsrad
@@ -164,23 +166,41 @@ const Utregning: FunctionComponent<Props> = (props) => {
                 >
                     {beløpOverMaks && (
                         <ReadMore size="small" header="Hva betyr dette?">
-                            {}
-                            <BodyShort size="small">
-                                Beregnet beløp er høyere enn refusjonsbeløpet.{' '}
-                                <b>
-                                    Avtalt beløp er inntil {formatterPenger(props.tilskuddsgrunnlag.tilskuddsbeløp)} for
-                                    denne perioden.
-                                </b>{' '}
-                                Lønn i denne refusjonsperioden kan ikke endres og dere vil få utbetalt maks av avtalt
-                                beløp.
-                            </BodyShort>
+                            {beløpOver5G && (
+                                <>
+                                    <BodyShort size="small">
+                                        Refusjonen har nå oversteget fem ganger grunnbeløpet per år (utbetalt så langt
+                                        for tilskuddet: {formatterPenger(props.sumUtbetaltVarig || 0)}). Det vil bli
+                                        utbetalt {formatterPenger(beregning?.refusjonsbeløp)} for denne perioden.
+                                        Refusjoner for resten av året vil settes til 0 kr, men dere må fortsatt sende
+                                        inn refusjoner hver måned.
+                                    </BodyShort>
+                                    <BodyShort size="small">
+                                        <EksternLenke href="https://lovdata.no/dokument/SF/forskrift/2015-12-11-1598/KAPITTEL_10#KAPITTEL_10">
+                                            Forskrift om arbeidsmarkedstiltak (tiltaksforskriften) - Kapittel 10. Varig
+                                            lønnstilskudd
+                                        </EksternLenke>
+                                    </BodyShort>
+                                </>
+                            )}
+                            {!beløpOver5G && (
+                                <BodyShort size="small">
+                                    Beregnet beløp er høyere enn refusjonsbeløpet.{' '}
+                                    <b>
+                                        Avtalt beløp er inntil {formatterPenger(props.tilskuddsgrunnlag.tilskuddsbeløp)}{' '}
+                                        for denne perioden.
+                                    </b>{' '}
+                                    Lønn i denne refusjonsperioden kan ikke endres og dere vil få utbetalt maks av
+                                    avtalt beløp.
+                                </BodyShort>
+                            )}
                         </ReadMore>
                     )}
                 </Utregningsrad>
             )}
             {erKorreksjon && (
                 <div className={beløpOverMaks ? cls.element('korreksjons-oppsummering') : ''}>
-                    {beløpOverMaks && beregning && beregning.tidligereUtbetalt != 0 && (
+                    {beløpOverMaks && beregning && beregning.tidligereUtbetalt !== 0 && (
                         <Utregningsrad
                             labelIkon={<Pengesekken />}
                             labelTekst="Avtalt tilskuddsbeløp brukes som beregningsgrunnlag"
@@ -198,7 +218,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             border="INGEN"
                         />
                     )}
-                    {props.beregning?.tidligereUtbetalt != null && props.beregning?.tidligereUtbetalt != 0 && (
+                    {props.beregning?.tidligereUtbetalt != null && props.beregning?.tidligereUtbetalt !== 0 && (
                         <Utregningsrad
                             labelTekst={'Opprinnelig refusjonsbeløp fra refusjonsnummer ' + refusjonsnummer}
                             verdiOperator={props.beregning?.tidligereUtbetalt > 0 ? <MinusTegn /> : <PlussTegn />}
@@ -229,9 +249,9 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     {tilUtbetaling(false)}
                 </div>
             )}
-            {beregning?.tidligereUtbetalt == 0 && (
+            {beregning?.tidligereUtbetalt === 0 && (
                 <>
-                    {beløpOverMaks && beregning && beregning.tidligereUtbetalt != 0 && (
+                    {beløpOverMaks && beregning && beregning.tidligereUtbetalt !== 0 && (
                         <Utregningsrad
                             labelIkon={<Pengesekken />}
                             labelTekst="Avtalt tilskuddsbeløp brukes som beregningsgrunnlag"
@@ -241,21 +261,6 @@ const Utregning: FunctionComponent<Props> = (props) => {
                         />
                     )}
                     {tilUtbetaling(true)}
-                </>
-            )}
-
-            {beregning?.overFemGrunnbeløp && (
-                <>
-                    <VerticalSpacer rem={1} />
-                    <Alert variant="warning" size="small">
-                        Refusjonen har nå oversteget fem ganger grunnbeløpet per år. Det vil bli utbetalt{' '}
-                        {formatterPenger(beregning?.refusjonsbeløp)} for denne perioden. Refusjoner for resten av året
-                        vil settes til 0 kr, men dere må fortsatt sende inn refusjoner hver måned.
-                        <br />{' '}
-                        <EksternLenke href="https://lovdata.no/dokument/SF/forskrift/2015-12-11-1598/KAPITTEL_10#KAPITTEL_10">
-                            Forskrift om arbeidsmarkedstiltak (tiltaksforskriften) - Kapittel 10. Varig lønnstilskudd
-                        </EksternLenke>
-                    </Alert>
                 </>
             )}
         </div>

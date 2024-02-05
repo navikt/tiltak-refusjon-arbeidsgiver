@@ -61,6 +61,7 @@ export interface Refusjonsgrunnlag {
     refunderbarBeløp?: number;
     beregning?: Beregning;
     forrigeRefusjonMinusBeløp: number;
+    sumUtbetaltVarig?: number;
 }
 
 export interface Tilskuddsgrunnlag {

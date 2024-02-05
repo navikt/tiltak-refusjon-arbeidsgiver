@@ -109,7 +109,14 @@ const TidligereRefunderbarBeløp: FunctionComponent<Properties> = ({ refusjon }:
                                 setBelop('');
                             }
                         }}
-                        onBlur={() => delaySettTidligereRefunderbarBeløp(refusjonId!, true, refusjon.sistEndret, parseInt(belop, 10))}
+                        onBlur={() =>
+                            delaySettTidligereRefunderbarBeløp(
+                                refusjonId!,
+                                true,
+                                refusjon.sistEndret,
+                                parseInt(belop, 10)
+                            )
+                        }
                         value={belop}
                     />
                 </>

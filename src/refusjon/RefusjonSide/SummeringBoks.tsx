@@ -11,6 +11,7 @@ import Boks from '../../komponenter/Boks/Boks';
 type Props = {
     refusjonsgrunnlag: Refusjonsgrunnlag;
     status: RefusjonStatus;
+    erForKorreksjon: boolean;
 };
 
 // Dersom vi vet at dette er siste tilskuddsperiode så vil vi vise alternativ tekst
@@ -25,7 +26,7 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
 
     return (
         <Boks variant="blå">
-            <div style={{ paddingRight: '1.5rem' }}>
+            <div style={{ margin: 'auto 1.5rem auto 0' }}>
                 <Pengesedler />
             </div>
             {props.refusjonsgrunnlag.beregning?.refusjonsbeløp > 0 && (
@@ -149,7 +150,11 @@ const SummeringBoks: FunctionComponent<Props> = (props) => {
                                 props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                                 props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
                             )}
-                            . Dette vil trekkes fra neste refusjon.
+                            .{' '}
+                            {props.erForKorreksjon
+                                ? 'Beløpet vil tilbakekreves'
+                                : 'Dette vil trekkes fra neste refusjon'}
+                            .
                         </BodyShort>
                     )}
                 </div>
