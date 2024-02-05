@@ -233,7 +233,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                                     <BodyShort size="small">
                                         Den opprinnelige refusjonen medførte et trekk på
                                         {formatterPenger(Math.abs(props.beregning?.tidligereUtbetalt))}; dette
-                                        kompenseres for i beregningen.
+                                        kompenseres for i denne beregningen.
                                     </BodyShort>
                                 </ReadMore>
                             )}
@@ -242,7 +242,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                                     <BodyShort size="small">
                                         Den opprinnelige refusjonen medførte en utbetaling på
                                         {formatterPenger(Math.abs(props.beregning?.tidligereUtbetalt))}; dette trekkes
-                                        fra den nye beregningen.
+                                        fra denne beregningen.
                                     </BodyShort>
                                 </ReadMore>
                             )}
