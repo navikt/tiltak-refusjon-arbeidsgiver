@@ -7,14 +7,14 @@ metadata:
     team: team-tiltak
 spec:
   image: {{image}}
-  port: 80
+  port: 8080
   ingresses:
     - https://tiltak-refusjon-arbeidsgiver-storybook.intern.dev.nav.no
   liveness:
-    path: /
+    path: /isAlive
     initialDelay: 10
   readiness:
-    path: /
+    path: /isReady
     initialDelay: 10
   replicas:
     min: 1
