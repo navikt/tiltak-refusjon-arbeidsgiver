@@ -8,6 +8,7 @@ import PlussTegn from '@/asset/image/plussTegn.svg?react';
 import ProsentTegn from '@/asset/image/prosentTegn.svg?react';
 import Sparegris from '@/asset/image/sparegris.svg?react';
 import Stranden from '@/asset/image/strand.svg?react';
+
 import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import { Beregning, Inntektsgrunnlag, Tilskuddsgrunnlag } from '../refusjon/refusjon';

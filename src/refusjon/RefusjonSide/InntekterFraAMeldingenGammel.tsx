@@ -60,7 +60,11 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon }) => {
             )}
             {refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
                 refusjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
-                    <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
+                    <i>
+                        Her hentes inntekter i form av fastlønn, timelønn, faste tillegg, uregelmessige tillegg knyttet
+                        til arbeidet tid og inntekt fra veldedige eller allmennyttige organisasjoner som er rapportert
+                        inn i A-meldingen for måneden refusjonen gjelder for.
+                    </i>
                 )}
             {refusjon.refusjonsgrunnlag.inntektsgrunnlag &&
                 refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find(

@@ -5,6 +5,7 @@ import { NORSK_MÅNEDÅR_FORMAT, formatterDato, formatterPeriode } from '../../.
 import { Inntektslinje } from '../../../refusjon';
 import { inntektBeskrivelse } from '../InntekterFraAMeldingen';
 import InntektValg from './InntektValg';
+import { valgtBruttoLønn } from '@/utils/inntekterUtiles';
 
 type Props = {
     refusjonId: string;
@@ -42,6 +43,14 @@ const InntektsmeldingTabellBody: FunctionComponent<Props> = (props) => {
                     <td>{formatterPenger(inntekt.beløp)}</td>
                 </tr>
             ))}
+            <tr>
+                <td colSpan={4}>
+                    <b>Sum</b>
+                </td>
+                <td>
+                    <b>{formatterPenger(valgtBruttoLønn(props.inntektslinjer))}</b>
+                </td>
+            </tr>
         </tbody>
     );
 };

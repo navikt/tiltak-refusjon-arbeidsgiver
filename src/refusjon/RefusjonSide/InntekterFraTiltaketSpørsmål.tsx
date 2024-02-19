@@ -65,7 +65,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 Er inntektene du har huket av{' '}
                 {sumInntekterOpptjent > 0 && <>({formatterPenger(sumInntekterOpptjent)})</>} tilknyttet refusjonssnummer{' '}
                 {refusjonNummer} for perioden {periode} for tiltaket{' '}
-                {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
+                {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
             </Label>
             <p>
                 <i>Du skal svare ja hvis perioden og bruttolønn samsvarer.</i>

@@ -1,6 +1,6 @@
 import { Inntektsgrunnlag } from './../refusjon/refusjon';
 export const formatterPenger = (penger: number) =>
-    `${penger < 0 ? '– ' : ''} ${new Intl.NumberFormat('nb-NO', {
+    `${penger < 0 ? '– ' : ''}${new Intl.NumberFormat('nb-NO', {
         signDisplay: 'never',
         style: 'decimal',
         maximumFractionDigits: 2,

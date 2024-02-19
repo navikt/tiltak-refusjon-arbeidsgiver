@@ -39,7 +39,7 @@ const KvitteringKorreksjon: FunctionComponent<Props> = ({ refusjon, korreksjon }
                 <VerticalSpacer rem={2} />
                 <InformasjonFraAvtalen refusjon={refusjon} />
                 <VerticalSpacer rem={2} />
-                <InntekterFraAMeldingenKorreksjon korreksjon={korreksjon} />
+                <InntekterFraAMeldingenKorreksjon korreksjon={korreksjon} kvitteringVisning={true} />
                 <VerticalSpacer rem={2} />
                 <InntekterFraTiltaketSvar refusjonsgrunnlag={korreksjon.refusjonsgrunnlag} />
                 <VerticalSpacer rem={2} />

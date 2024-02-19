@@ -34,7 +34,7 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                     <tr>
                         <th>Beskriv&shy;else</th>
                         <th>År/mnd</th>
-                        <th>Rapportert opptjeningsperiode</th>
+                        <th>Opptjenings&shy;periode</th>
                         <th>Opptjent i {props.månedsNavn}?</th>
                         <th>Beløp</th>
                     </tr>

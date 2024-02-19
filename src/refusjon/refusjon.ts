@@ -48,6 +48,8 @@ export interface Korreksjon {
     korreksjonsgrunner: Korreksjonsgrunn[];
     refusjonsgrunnlag: Refusjonsgrunnlag;
     godkjentTidspunkt?: string;
+    unntakOmInntekterFremitid: number;
+    sistEndret: string;
 }
 
 export interface Refusjonsgrunnlag {

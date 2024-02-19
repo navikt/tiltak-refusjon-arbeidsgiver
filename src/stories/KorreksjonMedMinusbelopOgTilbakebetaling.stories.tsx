@@ -181,7 +181,7 @@ const korreksjon: Korreksjon = {
                 },
                 {
                     inntektType: 'LOENNSINNTEKT',
-                    beskrivelse: 'fastloenn',
+                    beskrivelse: 'loennUtbetaltAvVeldedigEllerAllmennyttigInstitusjonEllerOrganisasjon',
                     beløp: 2000.0,
                     måned: '2023-12',
                     opptjeningsperiodeFom: '2023-12-31',
@@ -248,6 +248,8 @@ const korreksjon: Korreksjon = {
     status: KorreksjonStatus.TILLEGSUTBETALING,
     kostnadssted: '1000',
     godkjentTidspunkt: '2024-01-22T15:57:08.799741Z',
+    unntakOmInntekterFremitid: 0,
+    sistEndret: '2024-01-22T15:56:06.292479Z',
 };
 
 export const KorreksjonMedMinusbelopOgTilbakebetaling: Story = {

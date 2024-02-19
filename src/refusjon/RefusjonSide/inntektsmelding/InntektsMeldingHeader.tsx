@@ -2,43 +2,40 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import BEMHelper from '../../../utils/bem';
 import { formatterDato, månedsNavn, NORSK_DATO_OG_TID_FORMAT } from '../../../utils/datoUtils';
-import { Refusjon } from '../../refusjon';
+import { Refusjonsgrunnlag } from '../../refusjon';
 
 interface Properties {
-    refusjon: Refusjon;
+    refusjonsgrunnlag: Refusjonsgrunnlag;
+    unntakOmInntekterFremitid: number;
 }
 
-const InntektsMeldingHeader: FunctionComponent<Properties> = ({ refusjon }: Properties) => {
+const InntektsMeldingHeader: FunctionComponent<Properties> = ({
+    refusjonsgrunnlag,
+    unntakOmInntekterFremitid,
+}: Properties) => {
     const cls = BEMHelper('inntektsmelding');
-    const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
+    const månedNavn = månedsNavn(refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
     return (
         <div className={cls.element('header')}>
             <Heading level="3" size="small" className={cls.element('header-tittel')}>
                 Inntekter hentet fra a-meldingen for {månedNavn} måned{' '}
-                {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'SOMMERJOBB' ? (
+                {refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'SOMMERJOBB' ? (
                     <>
-                        {refusjon.unntakOmInntekterFremitid > 0 ? (
-                            <>og {refusjon.unntakOmInntekterFremitid} måneder etter</>
+                        {unntakOmInntekterFremitid > 0 ? (
+                            <>og {unntakOmInntekterFremitid} måneder etter</>
                         ) : (
                             'og 1 måned etter'
                         )}
                     </>
                 ) : (
-                    <>
-                        {refusjon.unntakOmInntekterFremitid > 0 && (
-                            <>og {refusjon.unntakOmInntekterFremitid} måneder etter</>
-                        )}
-                    </>
+                    <>{unntakOmInntekterFremitid > 0 && <>og {unntakOmInntekterFremitid} måneder etter</>}</>
                 )}
             </Heading>
-            {refusjon.refusjonsgrunnlag.inntektsgrunnlag && (
+            {refusjonsgrunnlag.inntektsgrunnlag && (
                 <BodyShort size="small">
                     Sist hentet:{' '}
-                    {formatterDato(
-                        refusjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
-                        NORSK_DATO_OG_TID_FORMAT
-                    )}
+                    {formatterDato(refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt, NORSK_DATO_OG_TID_FORMAT)}
                 </BodyShort>
             )}
         </div>
