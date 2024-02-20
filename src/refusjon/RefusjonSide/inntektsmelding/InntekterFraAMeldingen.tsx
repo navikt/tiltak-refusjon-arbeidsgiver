@@ -16,6 +16,7 @@ import InntektsmeldingTabellHeader from './inntektsmeldingTabell/Inntektsmelding
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
 import { Refusjon } from '@/refusjon/refusjon';
+import Boks from '@/komponenter/Boks/Boks';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -67,7 +68,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
     let inntektGrupperListeSortert = _.sortBy(inntektGrupperListe, [(i) => i[0]]);
 
     return (
-        <div className={cls.element('graboks-wrapper')}>
+        <Boks variant="grå">
             <InntektsMeldingHeader
                 refusjonsgrunnlag={refusjon.refusjonsgrunnlag}
                 unntakOmInntekterFremitid={refusjon.unntakOmInntekterFremitid}
@@ -149,7 +150,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
                     </Alert>
                 </>
             )}
-        </div>
+        </Boks>
     );
 };
 export default InntekterFraAMeldingen;

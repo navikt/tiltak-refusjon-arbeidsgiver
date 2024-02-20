@@ -248,6 +248,8 @@ const korreksjon: Korreksjon = {
     status: KorreksjonStatus.TILBAKEKREVING,
     kostnadssted: undefined,
     godkjentTidspunkt: '2024-01-22T15:23:37.346428Z',
+    unntakOmInntekterFremitid: 0,
+    sistEndret: '2024-01-22T15:56:06.292479Z',
 };
 
 export const KorreksjonMedPlussbelopOgTilbakekreving: Story = {
