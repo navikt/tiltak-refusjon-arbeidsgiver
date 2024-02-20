@@ -166,7 +166,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     verdi={beregning.beregnetBeløp}
                 >
                     {beløpOverMaks && (
-                        <ReadMore size="small" header="Hva betyr dette?">
+                        <ReadMore size="small" header="Hva betyr dette?" defaultOpen={true}>
                             {beløpOver5G && (
                                 <>
                                     <BodyShort size="small">
@@ -230,7 +230,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             border="INGEN"
                         >
                             {props.beregning?.tidligereUtbetalt < 0 && (
-                                <ReadMore size="small" header="Hva betyr dette?">
+                                <ReadMore size="small" header="Hva betyr dette?" defaultOpen={true}>
                                     <BodyShort size="small">
                                         Den opprinnelige refusjonen medførte et trekk på
                                         {formatterPenger(Math.abs(props.beregning?.tidligereUtbetalt))}; dette
@@ -239,7 +239,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                                 </ReadMore>
                             )}
                             {props.beregning?.tidligereUtbetalt >= 0 && (
-                                <ReadMore size="small" header="Hva betyr dette?">
+                                <ReadMore size="small" header="Hva betyr dette?" defaultOpen={true}>
                                     <BodyShort size="small">
                                         Den opprinnelige refusjonen medførte en utbetaling på
                                         {formatterPenger(Math.abs(props.beregning?.tidligereUtbetalt))}; dette trekkes
