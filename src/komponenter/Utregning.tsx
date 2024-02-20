@@ -45,8 +45,8 @@ const Utregning: FunctionComponent<Props> = (props) => {
 
     const harMinusBeløp = forrigeRefusjonMinusBeløp != null && forrigeRefusjonMinusBeløp < 0;
     const refusjonsnummer = props.refusjonsnummer.avtalenr + '-' + props.refusjonsnummer.løpenummer;
-    const beløpOverMaks = beregning && beregning.overTilskuddsbeløp;
     const beløpOver5G = beregning?.overFemGrunnbeløp;
+    const beløpOverMaks = beregning && (beregning.overTilskuddsbeløp || beløpOver5G);
     const erKorreksjon = beregning?.tidligereUtbetalt !== 0;
 
     const tilUtbetaling = (tykkBunn: boolean) => (
@@ -152,7 +152,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
             </>
 
             <VerticalSpacer rem={2} />
-            {beregning && (beregning.overTilskuddsbeløp || beregning.tidligereUtbetalt > 0 || harMinusBeløp) && (
+            {beregning && (beløpOverMaks || beregning.tidligereUtbetalt > 0 || harMinusBeløp) && (
                 <Utregningsrad
                     utgår={beløpOverMaks}
                     labelTekst={
