@@ -1,22 +1,16 @@
-import _ from 'lodash';
 import React, { Fragment, FunctionComponent } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import {
-    formatterDato,
-    formatterPeriode,
-    månedsNavn,
-    NORSK_DATO_OG_TID_FORMAT,
-    NORSK_MÅNEDÅR_FORMAT,
-} from '../../utils/datoUtils';
+import { formatterDato, formatterPeriode, månedsNavn, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Alert, BodyShort, Heading } from '@navikt/ds-react';
-
+import { Alert, Heading } from '@navikt/ds-react';
 import BEMHelper from '../../utils/bem';
 import '../RefusjonSide/InntekterFraAMeldingen.less';
 import Boks from '../../komponenter/Boks/Boks';
 import { Korreksjon } from '../refusjon';
 import InntektsMeldingHeader from '../RefusjonSide/inntektsmelding/InntektsMeldingHeader';
+import groupBy from 'lodash.groupby';
+import sortBy from 'lodash.sortby';
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
@@ -49,12 +43,12 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon
         korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.length > 0 &&
         antallInntekterSomErMedIGrunnlag === 0;
 
-    const inntektGrupperObjekt = _.groupBy(
+    const inntektGrupperObjekt = groupBy(
         korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter,
         (inntekt) => inntekt.måned
     );
     const inntektGrupperListe = Object.entries(inntektGrupperObjekt);
-    let inntektGrupperListeSortert = _.sortBy(inntektGrupperListe, [(i) => i[0]]);
+    let inntektGrupperListeSortert = sortBy(inntektGrupperListe, [(i) => i[0]]);
 
     const månedNavn = månedsNavn(korreksjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
@@ -109,7 +103,7 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon
                                 </tr>
                             </thead>
                             <tbody>
-                                {_.sortBy(
+                                {sortBy(
                                     korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.filter(
                                         (inntekt) => inntekt.erMedIInntektsgrunnlag
                                     ),

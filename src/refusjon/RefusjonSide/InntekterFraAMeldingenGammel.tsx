@@ -1,5 +1,5 @@
 // DENNE KOMPONENTEN SKAL KUN BRUKES TIL VISNING AV KVITTERINGER PÅ REFUSJONER SOM ER SENDT INN FØR SPØRSMÅL OM INNTEKTSLINJE ER OPPTJENT I PERIODEN
-import _ from 'lodash';
+import { sortBy } from 'lodash';
 import { FunctionComponent } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
@@ -82,7 +82,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {_.sortBy(
+                                {sortBy(
                                     refusjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.filter(
                                         (inntekt) => inntekt.erMedIInntektsgrunnlag
                                     ),

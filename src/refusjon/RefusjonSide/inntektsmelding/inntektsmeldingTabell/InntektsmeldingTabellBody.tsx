@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { sortBy } from 'lodash';
 import { FunctionComponent } from 'react';
 import { formatterPenger } from '../../../../utils/PengeUtils';
 import { NORSK_MÅNEDÅR_FORMAT, formatterDato, formatterPeriode } from '../../../../utils/datoUtils';
@@ -17,7 +17,7 @@ type Props = {
 const InntektsmeldingTabellBody: FunctionComponent<Props> = (props) => {
     return (
         <tbody>
-            {_.sortBy(
+            {sortBy(
                 props.inntektslinjer.filter((i) => i.erMedIInntektsgrunnlag),
                 ['måned', 'opptjeningsperiodeFom', 'opptjeningsperiodeTom', 'opptjent', 'beskrivelse', 'id']
             ).map((inntekt) => (

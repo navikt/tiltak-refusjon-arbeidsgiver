@@ -1,5 +1,4 @@
 import { Alert, Button, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
-import _ from 'lodash';
 import { Fragment, FunctionComponent } from 'react';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
@@ -17,6 +16,7 @@ import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
 import { Refusjon } from '@/refusjon/refusjon';
 import Boks from '@/komponenter/Boks/Boks';
+import { groupBy, sortBy } from 'lodash';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -63,9 +63,9 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
     const nesteMånedNavn = månedsNavnPlusMåned(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom, 1);
 
-    const inntektGrupperObjekt = _.groupBy(inntektsgrunnlag?.inntekter, (inntekt) => inntekt.måned);
+    const inntektGrupperObjekt = groupBy(inntektsgrunnlag?.inntekter, (inntekt) => inntekt.måned);
     const inntektGrupperListe = Object.entries(inntektGrupperObjekt);
-    let inntektGrupperListeSortert = _.sortBy(inntektGrupperListe, [(i) => i[0]]);
+    let inntektGrupperListeSortert = sortBy(inntektGrupperListe, [(i) => i[0]]);
 
     return (
         <Boks variant="grå">
