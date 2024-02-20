@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { sortBy, sumBy } from 'lodash';
 import { Label } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import { NORSK_MÅNEDÅR_FORMAT, formatterDato, formatterPeriode } from '../../utils/datoUtils';
@@ -15,10 +15,10 @@ type Props = {
 const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
     const cls = BEMHelper('inntekterFraAMeldingen');
     const inntekterHuketAvForOpptjentIPeriode = props.inntekter.filter((inntekt) => inntekt.erOpptjentIPeriode);
-    const sumInntekterOpptjentIPeriode = _.sumBy(inntekterHuketAvForOpptjentIPeriode, 'beløp');
+    const sumInntekterOpptjentIPeriode = sumBy(inntekterHuketAvForOpptjentIPeriode, 'beløp');
 
     const sorterInntektslinjer = (inntektslinjer: Inntektslinje[]) =>
-        _.sortBy(inntektslinjer, [
+        sortBy(inntektslinjer, [
             'måned',
             'opptjeningsperiodeFom',
             'opptjeningsperiodeTom',
@@ -34,7 +34,7 @@ const InntekterOpptjentIPeriodeTabell: FunctionComponent<Props> = (props) => {
                     <tr>
                         <th>Beskriv&shy;else</th>
                         <th>År/mnd</th>
-                        <th>Rapportert opptjeningsperiode</th>
+                        <th>Opptjenings&shy;periode</th>
                         <th>Opptjent i {props.månedsNavn}?</th>
                         <th>Beløp</th>
                     </tr>

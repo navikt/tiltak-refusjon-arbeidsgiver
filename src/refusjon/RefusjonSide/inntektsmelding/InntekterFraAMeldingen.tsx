@@ -1,12 +1,11 @@
 import { Alert, Button, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
-import _ from 'lodash';
 import { Fragment, FunctionComponent } from 'react';
 import VerticalSpacer from '../../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../../messages';
 import { hentInntekterLengerFrem } from '../../../services/rest-service';
 import { refusjonApnet } from '../../../utils/amplitude-utils';
 import BEMHelper from '../../../utils/bem';
-import { formatterPeriode, månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
+import { månedsNavn, månedsNavnPlusMåned } from '../../../utils/datoUtils';
 import { RefusjonStatus } from '../../status';
 import InntektsMeldingHeader from './InntektsMeldingHeader';
 import { inntektProperties } from './inntektProperties';
@@ -16,6 +15,8 @@ import InntektsmeldingTabellHeader from './inntektsmeldingTabell/Inntektsmelding
 import IngenInntekter from './inntektsmeldingVarsel/IngenInntekter';
 import IngenRefunderbareInntekter from './inntektsmeldingVarsel/IngenRefunderbareInntekter';
 import { Refusjon } from '@/refusjon/refusjon';
+import Boks from '@/komponenter/Boks/Boks';
+import { groupBy, sortBy } from 'lodash';
 
 export const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) return '';
@@ -62,36 +63,26 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
     const månedNavn = månedsNavn(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
     const nesteMånedNavn = månedsNavnPlusMåned(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom, 1);
 
-    const inntektGrupperObjekt = _.groupBy(inntektsgrunnlag?.inntekter, (inntekt) => inntekt.måned);
+    const inntektGrupperObjekt = groupBy(inntektsgrunnlag?.inntekter, (inntekt) => inntekt.måned);
     const inntektGrupperListe = Object.entries(inntektGrupperObjekt);
-    let inntektGrupperListeSortert = _.sortBy(inntektGrupperListe, [(i) => i[0]]);
+    let inntektGrupperListeSortert = sortBy(inntektGrupperListe, [(i) => i[0]]);
 
     return (
-        <div className={cls.element('graboks-wrapper')}>
-            <InntektsMeldingHeader refusjon={refusjon} />
+        <Boks variant="grå">
+            <InntektsMeldingHeader
+                refusjonsgrunnlag={refusjon.refusjonsgrunnlag}
+                unntakOmInntekterFremitid={refusjon.unntakOmInntekterFremitid}
+            />
             {ingenInntekter && !refusjon.åpnetFørsteGang && <Loader type="L" />}
             {harBruttolønn && (
                 <i>
-                    Her hentes inntekter i form av fastlønn, timelønn, faste tillegg og uregelmessige tillegg knyttet
-                    til arbeidet tid, som er rapportert inn i a-meldingen for måneden refusjonen gjelder for (
-                    {formatterPeriode(
-                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
-                    )}
-                    ){' '}
-                    {refusjon.unntakOmInntekterFremitid ? (
-                        <>og {refusjon.unntakOmInntekterFremitid} måneder etter</>
-                    ) : (
-                        ''
-                    )}
-                    {refusjon.unntakOmInntekterFremitid <= 1 &&
-                        refusjon.hentInntekterLengerFrem !== null &&
-                        'og 1 måned frem'}
-                    . Løsningen henter også inntekt rapportert inn fra veldedige eller allmennyttige organisasjoner.
+                    Her hentes inntekter i form av fastlønn, timelønn, faste tillegg, uregelmessige tillegg knyttet til
+                    arbeidet tid og inntekt fra veldedige eller allmennyttige organisasjoner som er rapportert inn i
+                    A-meldingen for måneden refusjonen gjelder for.
                 </i>
             )}
-
-            {inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) &&
+            {!kvitteringVisning &&
+                inntektsgrunnlag?.inntekter.find((inntekt) => inntekt.erMedIInntektsgrunnlag) &&
                 inntektsgrunnlag?.inntekter.filter((i) => i.erMedIInntektsgrunnlag).length > 1 && (
                     <>
                         <VerticalSpacer rem={1} />
@@ -114,7 +105,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
                             </Heading>
                             <div style={{ borderTop: '1px solid #06893b' }}>
                                 <table className={cls.element('inntektstabell')}>
-                                    <InntektsmeldingTabellHeader refusjon={refusjon} />
+                                    <InntektsmeldingTabellHeader refusjonsgrunnlag={refusjon.refusjonsgrunnlag} />
                                     <InntektsmeldingTabellBody
                                         refusjonId={refusjon.id}
                                         refusjonSistEndret={refusjon.sistEndret}
@@ -159,7 +150,7 @@ const InntekterFraAMeldingen: FunctionComponent<Props> = ({ refusjon, kvittering
                     </Alert>
                 </>
             )}
-        </div>
+        </Boks>
     );
 };
 export default InntekterFraAMeldingen;

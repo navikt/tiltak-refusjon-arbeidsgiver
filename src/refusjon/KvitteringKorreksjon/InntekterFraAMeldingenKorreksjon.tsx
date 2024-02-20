@@ -1,21 +1,16 @@
-import _ from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { Fragment, FunctionComponent } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { lønnsbeskrivelseTekst } from '../../messages';
-import {
-    formatterDato,
-    formatterPeriode,
-    månedsNavn,
-    NORSK_DATO_OG_TID_FORMAT,
-    NORSK_MÅNEDÅR_FORMAT,
-} from '../../utils/datoUtils';
+import { formatterDato, formatterPeriode, månedsNavn, NORSK_MÅNEDÅR_FORMAT } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Alert, BodyShort, Heading } from '@navikt/ds-react';
-
+import { Alert, Heading } from '@navikt/ds-react';
 import BEMHelper from '../../utils/bem';
 import '../RefusjonSide/InntekterFraAMeldingen.less';
 import Boks from '../../komponenter/Boks/Boks';
 import { Korreksjon } from '../refusjon';
+import InntektsMeldingHeader from '../RefusjonSide/inntektsmelding/InntektsMeldingHeader';
+import groupBy from 'lodash.groupby';
+import sortBy from 'lodash.sortby';
 
 const inntektBeskrivelse = (beskrivelse: string | undefined) => {
     if (beskrivelse === undefined) {
@@ -29,9 +24,10 @@ const inntektBeskrivelse = (beskrivelse: string | undefined) => {
 
 type Props = {
     korreksjon: Korreksjon;
+    kvitteringVisning: boolean;
 };
 
-const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon }) => {
+const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon, kvitteringVisning }) => {
     const cls = BEMHelper('inntekterFraAMeldingen');
 
     const antallInntekterSomErMedIGrunnlag = korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter.filter(
@@ -47,44 +43,67 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon
         korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.length > 0 &&
         antallInntekterSomErMedIGrunnlag === 0;
 
+    const inntektGrupperObjekt = groupBy(
+        korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.inntekter,
+        (inntekt) => inntekt.måned
+    );
+    const inntektGrupperListe = Object.entries(inntektGrupperObjekt);
+    let inntektGrupperListeSortert = sortBy(inntektGrupperListe, [(i) => i[0]]);
+
     const månedNavn = månedsNavn(korreksjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom);
 
     return (
         <Boks variant="grå">
-            <Heading size="small" style={{ marginBottom: '1rem' }}>
-                Inntekter hentet fra a-meldingen
-            </Heading>
-            {korreksjon.refusjonsgrunnlag.inntektsgrunnlag && (
-                <BodyShort size="small">
-                    Sist hentet:{' '}
-                    {formatterDato(
-                        korreksjon.refusjonsgrunnlag.inntektsgrunnlag.innhentetTidspunkt,
-                        NORSK_DATO_OG_TID_FORMAT
-                    )}
-                </BodyShort>
-            )}
+            <InntektsMeldingHeader
+                refusjonsgrunnlag={korreksjon.refusjonsgrunnlag}
+                unntakOmInntekterFremitid={korreksjon.unntakOmInntekterFremitid}
+            />
             {korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== undefined &&
                 korreksjon.refusjonsgrunnlag.inntektsgrunnlag?.bruttoLønn !== null && (
-                    <i>Her hentes inntekter rapportert inn til a-meldingen i tilskuddsperioden og en måned etter.</i>
+                    <i>
+                        Her hentes inntekter i form av fastlønn, timelønn, faste tillegg, uregelmessige tillegg knyttet
+                        til arbeidet tid og inntekt fra veldedige eller allmennyttige organisasjoner som er rapportert
+                        inn i A-meldingen for måneden refusjonen gjelder for.
+                    </i>
                 )}
             {korreksjon.refusjonsgrunnlag.inntektsgrunnlag &&
                 korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.find(
                     (inntekt) => inntekt.erMedIInntektsgrunnlag
                 ) && (
                     <>
+                        <div>
+                            <VerticalSpacer rem={1} />
+                            {inntektGrupperListeSortert.map(([aarManed, inntektslinjer]) => (
+                                <Fragment key={aarManed}>
+                                    <Heading
+                                        level="3"
+                                        size="small"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            borderBottom: '1px solid #06893b',
+                                        }}
+                                    >
+                                        Inntekt rapportert for {månedsNavn(aarManed)} ({aarManed})
+                                    </Heading>
+                                    <VerticalSpacer rem={1} />
+                                </Fragment>
+                            ))}
+                        </div>
+
                         <VerticalSpacer rem={1} />
                         <table className={cls.element('inntekterTabell')}>
                             <thead>
                                 <tr>
                                     <th>Beskriv&shy;else</th>
                                     <th>År/mnd</th>
-                                    <th>Rapportert opptjenings&shy;periode</th>
+                                    <th>Opptjenings&shy;periode</th>
                                     <th>Opptjent i {månedNavn}?</th>
                                     <th>Beløp</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {_.sortBy(
+                                {sortBy(
                                     korreksjon.refusjonsgrunnlag.inntektsgrunnlag.inntekter.filter(
                                         (inntekt) => inntekt.erMedIInntektsgrunnlag
                                     ),
@@ -109,9 +128,9 @@ const InntekterFraAMeldingenKorreksjon: FunctionComponent<Props> = ({ korreksjon
                                                     <em>Ikke rapportert opptjenings&shy;periode</em>
                                                 )}
                                             </td>
-                                            <div className="inntektsmelding__valgtInntekt">
+                                            <td>
                                                 <label>{inntektValg}</label>
-                                            </div>
+                                            </td>
                                             <td>{formatterPenger(inntekt.beløp)}</td>
                                         </tr>
                                     );

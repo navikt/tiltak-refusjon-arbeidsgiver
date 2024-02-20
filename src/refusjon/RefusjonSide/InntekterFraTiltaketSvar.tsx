@@ -7,6 +7,7 @@ import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjonsgrunnlag } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 import Boks from '../../komponenter/Boks/Boks';
+import { valgtBruttoLønn } from '@/utils/inntekterUtiles';
 
 type Props = {
     refusjonsgrunnlag: Refusjonsgrunnlag;
@@ -26,11 +27,6 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
     ) {
         return null;
     }
-
-    const valgtBruttoLønn = props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter
-        .filter((inntekt) => inntekt.erOpptjentIPeriode)
-        .map((el) => el.beløp)
-        .reduce((el, el2) => el + el2, 0);
 
     if (!props.refusjonsgrunnlag.inntektsgrunnlag?.inntekter) {
         return null;
@@ -54,10 +50,11 @@ const InntekterFraTiltaketSvar: FunctionComponent<Props> = (props) => {
                 />
                 <VerticalSpacer rem={2} />
                 <Label>
-                    Er inntektene du har huket av ({formatterPenger(valgtBruttoLønn as number)}) tilknyttet
+                    Er inntektene du har huket av (
+                    {formatterPenger(valgtBruttoLønn(props.refusjonsgrunnlag.inntektsgrunnlag.inntekter))}) tilknyttet
                     refusjonssnummer {refusjonNummer} <br />
                     for perioden {periode} for tiltaket{' '}
-                    {tiltakstypeTekst[props.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]} ?
+                    {tiltakstypeTekst[props.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}?
                 </Label>
                 <BodyShort size="small">{props.refusjonsgrunnlag.inntekterKunFraTiltaket ? 'Ja' : 'Nei'}</BodyShort>
                 {props.refusjonsgrunnlag.endretBruttoLønn !== null &&
