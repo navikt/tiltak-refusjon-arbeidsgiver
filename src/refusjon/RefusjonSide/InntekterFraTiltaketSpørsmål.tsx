@@ -10,6 +10,7 @@ import { formatterPenger } from '../../utils/PengeUtils';
 import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 import { BodyShort, Heading, Label, Radio, RadioGroup, TextField, debounce } from '@navikt/ds-react';
+import BruttolønnUtbetaltInput from '@/refusjon/RefusjonSide/BruttolønnUtbetaltInput';
 
 const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
     const cls = BEMHelper('refusjonside');
@@ -49,7 +50,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
 
     return (
         <div className={cls.element('inntekter-fra-tiltaket-boks')}>
-            <Heading level='3' size="small">
+            <Heading level="3" size="small">
                 Inntekter som skal refunderes for{' '}
                 {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}
             </Heading>
@@ -100,30 +101,12 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             {inntekterKunTiltaket === false && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <TextField
-                        className={cls.element('bruttolønn-utbetalt-for-periode')}
-                        size="small"
-                        label={`Skriv inn bruttolønn utbetalt for perioden med ${
-                            tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
-                        }`}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            const verdi: string = event.currentTarget.value;
-                            if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {
-                                setEndringBruttoLønn(verdi);
-                            }
-                            if (!verdi) {
-                                setEndringBruttoLønn('');
-                            }
-                        }}
-                        onBlur={() =>
-                            delayEndreBruttolønn(
-                                refusjonId!,
-                                false,
-                                refusjon.sistEndret,
-                                parseInt(endringBruttoLønn, 10)
-                            )
-                        }
-                        value={endringBruttoLønn}
+                    <BruttolønnUtbetaltInput
+                        delayEndreBruttolønn={delayEndreBruttolønn}
+                        endringBruttoLønn={endringBruttoLønn}
+                        inntektsgrunnlag={inntektsgrunnlag}
+                        setEndringBruttoLønn={setEndringBruttoLønn}
+                        refusjon={refusjon}
                     />
                 </>
             )}
