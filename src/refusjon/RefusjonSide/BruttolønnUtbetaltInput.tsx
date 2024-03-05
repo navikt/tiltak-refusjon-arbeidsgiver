@@ -1,9 +1,10 @@
-import React, { ChangeEvent, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
-import { BodyShort, TextField } from '@navikt/ds-react';
+import React, { ChangeEvent, Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
+import { Alert, BodyShort, TextField } from '@navikt/ds-react';
 import { Inntektsgrunnlag, Refusjon } from '../refusjon';
 import { tiltakstypeTekst } from '@/messages';
 import BEMHelper from '@/utils/bem';
 import { sumInntekterOpptjentIPeriode } from '@/utils/inntekterUtiles';
+import VerticalSpacer from '@/komponenter/VerticalSpacer';
 
 interface Properties {
     refusjon: Refusjon;
@@ -11,6 +12,7 @@ interface Properties {
     setEndringBruttoLønn: React.Dispatch<SetStateAction<string>>;
     endringBruttoLønn: string;
     delayEndreBruttolønn: Function;
+    setVisRefusjonInnsending: Dispatch<SetStateAction<boolean>>;
 }
 
 const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
@@ -19,6 +21,7 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
     setEndringBruttoLønn,
     endringBruttoLønn,
     delayEndreBruttolønn,
+    setVisRefusjonInnsending,
 }: PropsWithChildren<Properties>) => {
     const cls = BEMHelper('refusjonside');
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
@@ -30,6 +33,7 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
             <TextField
                 className={cls.element('bruttolønn-utbetalt-for-periode')}
                 size="small"
+                inputMode="numeric"
                 style={feilmelding.trim().length > 0 ? { borderColor: 'red', borderWidth: 'thick' } : {}}
                 label={`Skriv inn bruttolønn utbetalt for perioden med ${
                     tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
@@ -42,23 +46,29 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
                     if (verdi.trim().length > 0 && !verdi.match(/^\d*$/)) {
                         setLokalBruttolønnVerdi(lokalBruttolønnVerdi);
                         setEndringBruttoLønn('0');
+                        setVisRefusjonInnsending(false);
                         return;
                     }
                     if (verdi.trim().length > 0 && verdi.match(/^\d*$/) && parseInt(verdi, 10) > sumInntekterOpptjent) {
                         setFeilmelding(
-                            `Tallet er høyre enn opptjent inntekt. Det må være det samme eller lavere enn ${sumInntekterOpptjent} kr.`
+                            `Beløpet er høyre enn sum bruttolønn. Det må være det samme eller lavere enn ${sumInntekterOpptjent} kr.`
                         );
                         setEndringBruttoLønn('0');
+                        setVisRefusjonInnsending(false);
                         return;
                     }
 
                     setEndringBruttoLønn(verdi);
                     setFeilmelding('');
+                    if (verdi.trim().length === 0) setVisRefusjonInnsending(false);
                 }}
                 onBlur={(event) => {
                     let verdi: string = event.currentTarget.value;
                     if (feilmelding.trim().length !== 0) {
                         verdi = '0';
+                        setVisRefusjonInnsending(false);
+                    } else {
+                        setVisRefusjonInnsending(true);
                     }
                     delayEndreBruttolønn(refusjon.id!, false, refusjon.sistEndret, parseInt(verdi, 10));
 
@@ -66,7 +76,14 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
                 }}
                 value={lokalBruttolønnVerdi}
             />
-            <div style={{ color: 'Red', fontWeight: 'Bold' }}>{feilmelding}</div>
+            {feilmelding.trim().length > 0 && (
+                <div>
+                    <VerticalSpacer rem={0.5} />
+                    <Alert variant="warning" size="small">
+                        {feilmelding}
+                    </Alert>
+                </div>
+            )}
         </>
     );
 };

@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
@@ -7,12 +7,14 @@ import BEMHelper from '../../utils/bem';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Refusjon } from '../refusjon';
+import { Inntektsgrunnlag, Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 import { BodyShort, Heading, Label, Radio, RadioGroup, TextField, debounce } from '@navikt/ds-react';
 import BruttolønnUtbetaltInput from '@/refusjon/RefusjonSide/BruttolønnUtbetaltInput';
-
-const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
+interface Properties {
+    setVisRefusjonInnsending: Dispatch<SetStateAction<boolean>>;
+}
+const InntekterFraTiltaketSpørsmål: FunctionComponent<Properties> = ({ setVisRefusjonInnsending }) => {
     const cls = BEMHelper('refusjonside');
     const { refusjonId } = useParams();
     const refusjon: Refusjon = useHentRefusjon(refusjonId);
@@ -85,6 +87,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                         setInntekterKunTiltaket(event.currentTarget.checked);
                         setEndringBruttoLønn('');
                         delayEndreBruttolønn(refusjonId!, true, refusjon.sistEndret, undefined);
+                        setVisRefusjonInnsending(true);
                     }}
                 >
                     Ja
@@ -92,7 +95,10 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 <Radio
                     name="inntekterKunFraTiltaket"
                     value={false}
-                    onChange={(e) => setInntekterKunTiltaket(!e.currentTarget.checked)}
+                    onChange={(e) => {
+                        setInntekterKunTiltaket(!e.currentTarget.checked);
+                        setVisRefusjonInnsending(false);
+                    }}
                 >
                     Nei
                 </Radio>
@@ -102,6 +108,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 <>
                     <VerticalSpacer rem={1} />
                     <BruttolønnUtbetaltInput
+                        setVisRefusjonInnsending={setVisRefusjonInnsending}
                         delayEndreBruttolønn={delayEndreBruttolønn}
                         endringBruttoLønn={endringBruttoLønn}
                         inntektsgrunnlag={inntektsgrunnlag}
