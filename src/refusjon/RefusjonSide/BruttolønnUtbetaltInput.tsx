@@ -30,6 +30,7 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
             <TextField
                 className={cls.element('bruttolønn-utbetalt-for-periode')}
                 size="small"
+                style={feilmelding.trim().length > 0 ? { borderColor: 'red', borderWidth: 'thick' } : {}}
                 label={`Skriv inn bruttolønn utbetalt for perioden med ${
                     tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
                 }`}
@@ -39,7 +40,7 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
                     setLokalBruttolønnVerdi(verdi);
 
                     if (verdi.trim().length > 0 && !verdi.match(/^\d*$/)) {
-                        setFeilmelding('Feltet må kun inneholde tall uten spesielle tegn eller symboler.');
+                        setLokalBruttolønnVerdi(lokalBruttolønnVerdi);
                         setEndringBruttoLønn('0');
                         return;
                     }
@@ -53,18 +54,15 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
 
                     setEndringBruttoLønn(verdi);
                     setFeilmelding('');
-                    console.log('LAGRET ', verdi, 'CTXT: ', endringBruttoLønn);
                 }}
                 onBlur={(event) => {
                     let verdi: string = event.currentTarget.value;
                     if (feilmelding.trim().length !== 0) {
                         verdi = '0';
-                        console.log('BLUR RESTE: ', endringBruttoLønn);
                     }
                     delayEndreBruttolønn(refusjon.id!, false, refusjon.sistEndret, parseInt(verdi, 10));
 
                     setEndringBruttoLønn(verdi);
-                    console.log('BLUR ', verdi);
                 }}
                 value={lokalBruttolønnVerdi}
             />
