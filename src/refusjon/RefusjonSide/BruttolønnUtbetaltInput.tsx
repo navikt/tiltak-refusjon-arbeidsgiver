@@ -1,5 +1,5 @@
-import React, { ChangeEvent, Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
-import { Alert, BodyShort, TextField } from '@navikt/ds-react';
+import React, { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useState } from 'react';
+import { Alert, TextField } from '@navikt/ds-react';
 import { Inntektsgrunnlag, Refusjon } from '../refusjon';
 import { tiltakstypeTekst } from '@/messages';
 import BEMHelper from '@/utils/bem';
@@ -25,7 +25,7 @@ const BruttolønnUtbetaltInput: FunctionComponent<Properties> = ({
 }: PropsWithChildren<Properties>) => {
     const cls = BEMHelper('refusjonside');
     const sumInntekterOpptjent: number = sumInntekterOpptjentIPeriode(inntektsgrunnlag);
-    const { tilskuddsgrunnlag, beregning } = refusjon.refusjonsgrunnlag;
+    const { tilskuddsgrunnlag } = refusjon.refusjonsgrunnlag;
     const [lokalBruttolønnVerdi, setLokalBruttolønnVerdi] = useState('');
     const [feilmelding, setFeilmelding] = useState('');
     return (

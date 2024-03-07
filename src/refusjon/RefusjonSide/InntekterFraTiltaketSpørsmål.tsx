@@ -7,9 +7,9 @@ import BEMHelper from '../../utils/bem';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Inntektsgrunnlag, Refusjon } from '../refusjon';
+import { Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
-import { BodyShort, Heading, Label, Radio, RadioGroup, TextField, debounce } from '@navikt/ds-react';
+import { BodyShort, Heading, Label, Radio, RadioGroup, debounce } from '@navikt/ds-react';
 import BruttolønnUtbetaltInput from '@/refusjon/RefusjonSide/BruttolønnUtbetaltInput';
 interface Properties {
     setVisRefusjonInnsending: Dispatch<SetStateAction<boolean>>;
