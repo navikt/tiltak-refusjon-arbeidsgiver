@@ -18,6 +18,7 @@ const RefusjonSide: FunctionComponent = () => {
     const { refusjonId } = useParams();
     const refusjon = useHentRefusjon(refusjonId);
     const [visGodkjennModal, setVisGodkjennModal] = useState<boolean>(false);
+    const [visRefusjonInnsending, setVisRefusjonInnsending] = useState<boolean>(false);
 
     const godkjennRefusjonen = async (): Promise<void> => {
         try {
@@ -39,9 +40,11 @@ const RefusjonSide: FunctionComponent = () => {
                 <InformasjonFraAvtalen refusjon={refusjon} />
                 <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={false} />
                 <RefusjonFullførNullbeløp />
-                <InntekterFraTiltaketSpørsmål />
+                <InntekterFraTiltaketSpørsmål setVisRefusjonInnsending={setVisRefusjonInnsending} />
                 <TidligereRefunderbarBeløp refusjon={refusjon} />
-                <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                {visRefusjonInnsending && (
+                    <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                )}
             </Boks>
             <RefusjonGodkjennModal
                 refusjon={refusjon}

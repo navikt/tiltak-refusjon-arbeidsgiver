@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { tiltakstypeTekst } from '../../messages';
@@ -7,11 +7,14 @@ import BEMHelper from '../../utils/bem';
 import { formatterPeriode, månedsNavn } from '../../utils/datoUtils';
 import { sumInntekterOpptjentIPeriode } from '../../utils/inntekterUtiles';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Refusjon } from '../refusjon';
+import { Inntektsgrunnlag, Refusjon } from '../refusjon';
 import InntekterOpptjentIPeriodeTabell from './InntekterOpptjentIPeriodeTabell';
 import { BodyShort, Heading, Label, Radio, RadioGroup, TextField, debounce } from '@navikt/ds-react';
-
-const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
+import BruttolønnUtbetaltInput from '@/refusjon/RefusjonSide/BruttolønnUtbetaltInput';
+interface Properties {
+    setVisRefusjonInnsending: Dispatch<SetStateAction<boolean>>;
+}
+const InntekterFraTiltaketSpørsmål: FunctionComponent<Properties> = ({ setVisRefusjonInnsending }) => {
     const cls = BEMHelper('refusjonside');
     const { refusjonId } = useParams();
     const refusjon: Refusjon = useHentRefusjon(refusjonId);
@@ -49,7 +52,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
 
     return (
         <div className={cls.element('inntekter-fra-tiltaket-boks')}>
-            <Heading level='3' size="small">
+            <Heading level="3" size="small">
                 Inntekter som skal refunderes for{' '}
                 {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}
             </Heading>
@@ -84,6 +87,7 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                         setInntekterKunTiltaket(event.currentTarget.checked);
                         setEndringBruttoLønn('');
                         delayEndreBruttolønn(refusjonId!, true, refusjon.sistEndret, undefined);
+                        setVisRefusjonInnsending(true);
                     }}
                 >
                     Ja
@@ -91,7 +95,10 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
                 <Radio
                     name="inntekterKunFraTiltaket"
                     value={false}
-                    onChange={(e) => setInntekterKunTiltaket(!e.currentTarget.checked)}
+                    onChange={(e) => {
+                        setInntekterKunTiltaket(!e.currentTarget.checked);
+                        setVisRefusjonInnsending(false);
+                    }}
                 >
                     Nei
                 </Radio>
@@ -100,30 +107,13 @@ const InntekterFraTiltaketSpørsmål: FunctionComponent = () => {
             {inntekterKunTiltaket === false && (
                 <>
                     <VerticalSpacer rem={1} />
-                    <TextField
-                        className={cls.element('bruttolønn-utbetalt-for-periode')}
-                        size="small"
-                        label={`Skriv inn bruttolønn utbetalt for perioden med ${
-                            tiltakstypeTekst[tilskuddsgrunnlag.tiltakstype]
-                        }`}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            const verdi: string = event.currentTarget.value;
-                            if (verdi.match(/^\d*$/) && parseInt(verdi, 10) <= sumInntekterOpptjent) {
-                                setEndringBruttoLønn(verdi);
-                            }
-                            if (!verdi) {
-                                setEndringBruttoLønn('');
-                            }
-                        }}
-                        onBlur={() =>
-                            delayEndreBruttolønn(
-                                refusjonId!,
-                                false,
-                                refusjon.sistEndret,
-                                parseInt(endringBruttoLønn, 10)
-                            )
-                        }
-                        value={endringBruttoLønn}
+                    <BruttolønnUtbetaltInput
+                        setVisRefusjonInnsending={setVisRefusjonInnsending}
+                        delayEndreBruttolønn={delayEndreBruttolønn}
+                        endringBruttoLønn={endringBruttoLønn}
+                        inntektsgrunnlag={inntektsgrunnlag}
+                        setEndringBruttoLønn={setEndringBruttoLønn}
+                        refusjon={refusjon}
                     />
                 </>
             )}
