@@ -4,6 +4,23 @@ import * as path from 'path';
 import svgr from 'vite-plugin-svgr';
 const axios = require('axios');
 
+function parseCookies(request) {
+    const list = {};
+    const cookieHeader = request.headers?.cookie;
+    if (!cookieHeader) return list;
+
+    cookieHeader.split(`;`).forEach(function (cookie) {
+        let [name, ...rest] = cookie.split(`=`);
+        name = name?.trim();
+        if (!name) return;
+        const value = rest.join(`=`).trim();
+        if (!value) return;
+        list[name] = decodeURIComponent(value);
+    });
+
+    return list;
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
     preview: {
@@ -19,7 +36,42 @@ export default defineConfig({
     server: {
         port: 3001,
         proxy: {
-            '/api': { target: 'http://localhost:8081', changeOrigin: true },
+            '/api': {
+                target: 'http://localhost:8081',
+                changeOrigin: true,
+                bypass(req, res, options) {
+                    const token = parseCookies(req)['tokenx-token'];
+                    const headers = req.headers;
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token;
+                    }
+                    res.appendHeader('content-type', 'application/json');
+
+                    let body = '';
+                    req.on('data', (chunk) => {
+                        body += chunk;
+                    });
+                    req.on('end', () => {
+                        axios
+                            .request({
+                                method: req.method,
+                                url: 'http://localhost:8081' + req.url,
+                                headers,
+                                data: body,
+                            })
+                            .then(
+                                (response) => {
+                                    res.end(JSON.stringify(response.data));
+                                },
+                                (error) => {
+                                    console.log('FEIL', error.response.data);
+                                    res.statusCode = error.response.status;
+                                    res.end(JSON.stringify(error.response.data));
+                                }
+                            );
+                    });
+                },
+            },
             '/dekoratoren/env': {
                 target: 'http://localhost:3001/',
                 bypass(req, res, options) {
@@ -48,17 +100,20 @@ export default defineConfig({
             '/dekoratoren/api/auth': {
                 target: 'http://localhost:3001',
                 bypass(req, res, options) {
+                    const token = parseCookies(req)['tokenx-token'];
+                    const headers = req.headers;
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token;
+                    }
+                    res.appendHeader('content-type', 'application/json');
                     axios
-                        .get('http://localhost:8081/api/arbeidsgiver/innlogget-bruker', {
-                            headers: req.headers,
-                            secure: false,
-                        })
+                        .get('http://localhost:8081/api/arbeidsgiver/innlogget-bruker', { headers, secure: false })
                         .then(
                             (response) => {
                                 res.end(JSON.stringify({ ...response.data, ident: response.data.identifikator || '' }));
                             },
                             (error) => {
-                                console.error('Feil i dekorator-auth', error);
+                                console.error('Feil i dekorator-auth', error.code);
                                 res.end(JSON.stringify({ authenticated: false }));
                             }
                         );
