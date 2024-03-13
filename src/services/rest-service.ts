@@ -189,11 +189,16 @@ export const useHentRefusjon = (refusjonId?: string, sistEndret?: string): Refus
 };
 
 export const oppdaterRefusjonFetcher = async (key: string, { arg }: { arg: string }) => {
-    await api.post(`${key}/sett-kontonummer-og-inntekter`, null, {
-        headers: {
-            'If-Unmodified-Since': arg,
-        },
-    });
+    await api.post(
+        `${key}/sett-kontonummer-og-inntekter`,
+        // TODO: Fjern body
+        { sistEndret: arg },
+        {
+            headers: {
+                'If-Unmodified-Since': arg,
+            },
+        }
+    );
 };
 
 export const useHentTidligereRefusjoner = (refusjonId: string): Refusjon[] => {
