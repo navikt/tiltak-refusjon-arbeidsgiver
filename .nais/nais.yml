@@ -36,7 +36,7 @@ spec:
   observability:
     autoInstrumentation:
       enabled: true
-      runtime: node
+      runtime: nodejs
   {{#if labs}}
   replicas:
     min: 1
