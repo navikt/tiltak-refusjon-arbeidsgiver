@@ -1,23 +1,20 @@
 name: Bygg og deploy dev
 
 on:
-  push:
-    tags:
-      - "v*-dev"
   workflow_dispatch:
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_REPOSITORY: ${{ github.repository }}
-  IMAGE: ghcr.io/${{ github.repository }}/tiltak-refusjon-arbeidsgiver:${{ github.sha }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   bygg:
     permissions:
-      packages: write
+      contents: read
+      id-token: write
     name: Bygg og deploy
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
@@ -31,40 +28,46 @@ jobs:
         run: npm ci
       - name: Frontend build
         run: npm run test-and-build
-      - name: Bygg, tag og push Docker-image
-        run: |
-          echo ${GITHUB_TOKEN} | docker login ghcr.io -u ${GITHUB_REPOSITORY} --password-stdin
-          docker build --tag ${IMAGE} .
-          docker push ${IMAGE}
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: arbeidsgiver
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   deploy-dev:
     name: Deploy til dev-gcp
     runs-on: ubuntu-latest
     needs: bygg
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
       - name: Deploy til dev-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais.yml
-          PRINT_PAYLOAD: true
           VARS: .nais/dev.yml
+          VAR: image=${{ needs.bygg.outputs.image }}
 
   deploy-labs:
     name: Deploy til dev-gcp (tidligere labs)
     runs-on: ubuntu-latest
     needs: bygg
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
       - name: Deploy til dev-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais.yml
-          PRINT_PAYLOAD: true
           VARS: .nais/labs.yml
+          VAR: image=${{ needs.bygg.outputs.image }}
