@@ -8,15 +8,16 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_REPOSITORY: ${{ github.repository }}
-  IMAGE: ghcr.io/${{ github.repository }}/tiltak-refusjon-arbeidsgiver-storybook:${{ github.sha }}
 
 jobs:
   bygg:
     permissions:
-      packages: write
+      contents: read
+      id-token: write
     name: Bygg og deploy
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
@@ -28,11 +29,13 @@ jobs:
         run: npm ci
       - name: Bygg storybook
         run: npm run build-storybook
-      - name: Bygg, tag og push Docker-image
-        run: |
-          echo ${GITHUB_TOKEN} | docker login ghcr.io -u ${GITHUB_REPOSITORY} --password-stdin
-          docker build --tag ${IMAGE} -f StorybookDockerfile .
-          docker push ${IMAGE}
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: team-tiltak
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   deploy-dev:
     name: Deploy til dev-gcp
@@ -42,9 +45,8 @@ jobs:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
       - name: Deploy til dev-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY_TEAMTILTAK }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-dev-gcp-storybook.yml
-          PRINT_PAYLOAD: true
+          VAR: image=${{ needs.bygg.outputs.image }}
