@@ -1,6 +1,9 @@
 name: Bygg og deploy main
 
 on:
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
 
 env:
