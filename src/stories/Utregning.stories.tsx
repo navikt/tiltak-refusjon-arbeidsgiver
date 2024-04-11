@@ -31,7 +31,7 @@ const fratrekkData = {
         beregnetBeløp: 56370,
         refusjonsbeløp: 14021,
         overTilskuddsbeløp: true,
-        overFemGrunnbeløp: true,
+        overFemGrunnbeløp: false,
         tidligereUtbetalt: 0,
         fratrekkLønnFerie: 0,
         tidligereRefundertBeløp: 0,
