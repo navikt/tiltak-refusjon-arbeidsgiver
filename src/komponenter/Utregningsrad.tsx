@@ -58,7 +58,11 @@ const Utregningsrad: FunctionComponent<PropsWithChildren<Props>> = (props) => {
                 <div className={cls.element('utregning-label')}>
                     <div className={cls.element('label-innhold')}>
                         {setIkon(props.labelIkon)}
-                        {<span id={labelTekstString}>{props.labelTekst}</span>}
+                        {
+                            <span id={labelTekstString}>
+                                {props.labelTekst} {props.utgår ? <b>UTGÅR</b> : null}
+                            </span>
+                        }
                     </div>
                     {props.labelSats && setLabelSats(props.labelSats)}
                 </div>

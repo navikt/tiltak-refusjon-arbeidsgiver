@@ -94,6 +94,7 @@ const KvitteringSide: FunctionComponent<Props> = ({ refusjon }) => {
                         avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
                         løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
                     }}
+                    erKorreksjon={false}
                     sumUtbetaltVarig={refusjon.refusjonsgrunnlag.sumUtbetaltVarig}
                     beregning={refusjon.refusjonsgrunnlag.beregning}
                     tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}

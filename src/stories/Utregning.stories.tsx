@@ -20,6 +20,7 @@ const fratrekkData = {
         avtalenr: 1234,
         løpenummer: 2,
     },
+    erKorreksjon: false,
     forrigeRefusjonMinusBeløp: -6558,
     beregning: {
         lønn: 108115,
@@ -88,11 +89,15 @@ export const OppgjortMinusbeløp: Story = {
     ],
 };
 
-const refusjondata: Refusjonsgrunnlag & { refusjonsnummer: { avtalenr: number; løpenummer: number } } = {
+const refusjondata: Refusjonsgrunnlag & {
+    refusjonsnummer: { avtalenr: number; løpenummer: number };
+    erKorreksjon: boolean;
+} = {
     refusjonsnummer: {
         avtalenr: 1234,
         løpenummer: 2,
     },
+    erKorreksjon: false,
     forrigeRefusjonMinusBeløp: 0,
     beregning: {
         lønn: 42846,
@@ -258,11 +263,15 @@ export const Belopsgrense: Story = {
     ),
 };
 
-const refusjondata5G: Refusjonsgrunnlag & { refusjonsnummer: { avtalenr: number; løpenummer: number } } = {
+const refusjondata5G: Refusjonsgrunnlag & {
+    refusjonsnummer: { avtalenr: number; løpenummer: number };
+    erKorreksjon: boolean;
+} = {
     refusjonsnummer: {
         avtalenr: 1234,
         løpenummer: 2,
     },
+    erKorreksjon: false,
     forrigeRefusjonMinusBeløp: 0,
     beregning: {
         lønn: 42846,

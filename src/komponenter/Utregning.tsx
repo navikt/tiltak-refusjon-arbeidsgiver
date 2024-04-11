@@ -25,6 +25,7 @@ interface Props {
         avtalenr: number;
         løpenummer: number;
     };
+    erKorreksjon: boolean;
     beregning?: Beregning;
     tilskuddsgrunnlag: Tilskuddsgrunnlag;
     forrigeRefusjonMinusBeløp?: number;
@@ -47,7 +48,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
     const refusjonsnummer = props.refusjonsnummer.avtalenr + '-' + props.refusjonsnummer.løpenummer;
     const beløpOver5G = beregning?.overFemGrunnbeløp;
     const beløpOverMaks = beregning && (beregning.overTilskuddsbeløp || beløpOver5G);
-    const erKorreksjon = beregning?.tidligereUtbetalt !== 0;
+    const erKorreksjon = props.erKorreksjon;
 
     const tilUtbetaling = (tykkBunn: boolean) => (
         <Utregningsrad
@@ -155,12 +156,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
             {beregning && (beløpOverMaks || erKorreksjon || harMinusBeløp) && (
                 <Utregningsrad
                     utgår={beløpOverMaks}
-                    labelTekst={
-                        <>
-                            Beregning basert på innhentede inntekter
-                            {beløpOverMaks ? <b> UTGÅR</b> : null}
-                        </>
-                    }
+                    labelTekst={'Beregning basert på innhentede inntekter'}
                     verdiOperator={<ErlikTegn />}
                     border={erKorreksjon ? 'INGEN' : 'NORMAL'}
                     verdi={beregning.beregnetBeløp}
@@ -221,7 +217,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             border="INGEN"
                         />
                     )}
-                    {props.beregning?.tidligereUtbetalt != null && props.beregning?.tidligereUtbetalt !== 0 && (
+                    {props.beregning?.tidligereUtbetalt != null && erKorreksjon && (
                         <Utregningsrad
                             labelTekst={'Opprinnelig refusjonsbeløp fra refusjonsnummer ' + refusjonsnummer}
                             verdiOperator={props.beregning?.tidligereUtbetalt > 0 ? <MinusTegn /> : <PlussTegn />}
@@ -232,7 +228,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             {props.beregning?.tidligereUtbetalt < 0 && (
                                 <ReadMore size="small" header="Hva betyr dette?" defaultOpen={true}>
                                     <BodyShort size="small">
-                                        Den opprinnelige refusjonen medførte et trekk på
+                                        Den opprinnelige refusjonen medførte et trekk på{' '}
                                         {formatterPenger(Math.abs(props.beregning?.tidligereUtbetalt))}; dette
                                         kompenseres for i denne beregningen.
                                     </BodyShort>
@@ -241,7 +237,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             {props.beregning?.tidligereUtbetalt >= 0 && (
                                 <ReadMore size="small" header="Hva betyr dette?" defaultOpen={true}>
                                     <BodyShort size="small">
-                                        Den opprinnelige refusjonen medførte en utbetaling på
+                                        Den opprinnelige refusjonen medførte en utbetaling på{' '}
                                         {formatterPenger(Math.abs(props.beregning?.tidligereUtbetalt))}; dette trekkes
                                         fra denne beregningen.
                                     </BodyShort>
@@ -252,31 +248,22 @@ const Utregning: FunctionComponent<Props> = (props) => {
                     {tilUtbetaling(false)}
                 </div>
             )}
-            {beregning && beregning.overTilskuddsbeløp && harMinusBeløp && (
-                <Utregningsrad
-                    labelIkon={<Pengesekken />}
-                    labelTekst="Tilskuddsbeløp (avtalt beløp for perioden)"
-                    verdi={props.tilskuddsgrunnlag.tilskuddsbeløp}
-                />
-            )}
-            {harMinusBeløp && (
-                <Utregningsrad
-                    labelIkon={<Endret />}
-                    labelTekst={'Resterende fratrekk for ferie fra tidligere refusjoner'}
-                    verdiOperator={<MinusTegn />}
-                    verdi={Math.abs(forrigeRefusjonMinusBeløp)}
-                    border="TYKK"
-                />
-            )}
             {!erKorreksjon && (
                 <>
-                    {beløpOverMaks && beregning && beregning.tidligereUtbetalt !== 0 && (
+                    {beregning && beregning.overTilskuddsbeløp && harMinusBeløp && (
                         <Utregningsrad
                             labelIkon={<Pengesekken />}
-                            labelTekst="Avtalt tilskuddsbeløp brukes som beregningsgrunnlag"
-                            verdiOperator={<ErlikTegn />}
+                            labelTekst="Tilskuddsbeløp (avtalt beløp for perioden)"
                             verdi={props.tilskuddsgrunnlag.tilskuddsbeløp}
-                            border="INGEN"
+                        />
+                    )}
+                    {harMinusBeløp && (
+                        <Utregningsrad
+                            labelIkon={<Endret />}
+                            labelTekst={'Resterende fratrekk for ferie fra tidligere refusjoner'}
+                            verdiOperator={<MinusTegn />}
+                            verdi={Math.abs(forrigeRefusjonMinusBeløp)}
+                            border="TYKK"
                         />
                     )}
                     {tilUtbetaling(true)}
