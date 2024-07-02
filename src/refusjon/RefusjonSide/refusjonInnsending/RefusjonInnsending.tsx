@@ -53,6 +53,7 @@ const RefusjonInnsending: FunctionComponent<Properties> = ({
                     avtalenr: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr,
                     løpenummer: refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer,
                 }}
+                erKorreksjon={false}
                 forrigeRefusjonMinusBeløp={refusjon.refusjonsgrunnlag?.forrigeRefusjonMinusBeløp || 0}
                 beregning={refusjon.refusjonsgrunnlag.beregning}
                 tilskuddsgrunnlag={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag}
