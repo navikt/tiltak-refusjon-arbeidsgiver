@@ -213,7 +213,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                             labelIkon={<Endret />}
                             labelTekst={'Resterende fratrekk for ferie fra tidligere refusjoner'}
                             verdiOperator={<MinusTegn />}
-                            verdi={forrigeRefusjonMinusBeløp}
+                            verdi={Math.abs(forrigeRefusjonMinusBeløp)}
                             border="INGEN"
                         />
                     )}
@@ -221,7 +221,7 @@ const Utregning: FunctionComponent<Props> = (props) => {
                         <Utregningsrad
                             labelTekst={'Opprinnelig refusjonsbeløp fra refusjonsnummer ' + refusjonsnummer}
                             verdiOperator={props.beregning?.tidligereUtbetalt > 0 ? <MinusTegn /> : <PlussTegn />}
-                            verdi={Math.abs(props.beregning?.tidligereUtbetalt ?? 0)}
+                            verdi={Math.abs(props.beregning?.tidligereUtbetalt)}
                             ikkePenger={props.beregning === undefined}
                             border="INGEN"
                         >
