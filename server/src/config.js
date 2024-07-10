@@ -55,7 +55,7 @@ const api = () => {
     };
 };
 
-export default {
+module.exports = {
     server,
     api,
     tokenx,

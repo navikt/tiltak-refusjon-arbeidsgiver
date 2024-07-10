@@ -1,5 +1,5 @@
 const winston = require('winston');
 
-export default winston.createLogger({
+module.exports = winston.createLogger({
     transports: [new winston.transports.Console()],
 });
