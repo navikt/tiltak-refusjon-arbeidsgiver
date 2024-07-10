@@ -1,7 +1,7 @@
-import { custom, Issuer } from 'openid-client';
-import config from '../config';
-import httpProxy from '../proxy/http-proxy';
-import logger from '../logger';
+const { custom, Issuer } = require('openid-client');
+const config = require('../config');
+const httpProxy = require('../proxy/http-proxy');
+const logger = require('../logger');
 
 const metadata = () => {
     const idportenConfig = config.idporten();
@@ -69,4 +69,4 @@ const refresh = (idportenClient, oldTokenSet) => {
     return idportenClient.refresh(oldTokenSet, additionalClaims);
 };
 
-export default { client, authUrl, validateOidcCallback, refresh };
+module.exports = { client, authUrl, validateOidcCallback, refresh };

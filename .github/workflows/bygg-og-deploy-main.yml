@@ -23,10 +23,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Server yarn install
         working-directory: ./server
-        run: yarn install
-      - name: Server yarn build
-        working-directory: ./server
-        run: yarn build
+        run: npm ci
       - name: Frontend install
         run: npm ci
       - name: Frontend build

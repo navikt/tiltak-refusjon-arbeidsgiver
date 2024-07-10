@@ -1,9 +1,9 @@
-import { startLabs } from './labs';
-import express from 'express';
-import bodyParser from 'body-parser';
-import tokenx from './auth/tokenx';
-import routes from './routes';
-import logger from './logger';
+const { startLabs } = require('./labs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const tokenx = require('./auth/tokenx');
+const routes = require('./routes');
+const logger = require('./logger');
 
 const cors = require('cors');
 

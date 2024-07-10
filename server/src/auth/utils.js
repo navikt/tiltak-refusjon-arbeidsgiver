@@ -1,4 +1,4 @@
-import { TokenSet } from 'openid-client';
+const { TokenSet } = require('openid-client');
 
 export const frontendTokenSetFromSession = (req) => {
     return req.session.frontendTokenSet ? new TokenSet(req.session.frontendTokenSet) : undefined;

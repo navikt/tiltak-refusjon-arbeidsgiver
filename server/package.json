@@ -1,35 +1,21 @@
 {
     "name": "tiltak-refusjon-arbeidsgiver",
     "version": "1.0.0",
-    "scripts": {
-        "start": "NODE_ENV=development nodemon --exec babel-node src/main.js",
-        "build": "./node_modules/.bin/babel src -d dist",
-        "serve": "node ../dist/main.js"
-    },
     "license": "MIT",
     "dependencies": {
-        "axios": "1.6.4",
+        "axios": "1.7.2",
         "body-parser": "1.20.2",
         "cors": "2.8.5",
-        "dotenv": "16.3.1",
-        "express": "4.18.2",
+        "dotenv": "16.4.5",
+        "express": "4.19.2",
         "express-async-handler": "1.2.0",
         "express-http-proxy": "2.0.0",
-        "express-session": "1.17.3",
+        "express-session": "1.18.0",
         "helmet": "7.1.0",
-        "http-proxy-middleware": "2.0.6",
-        "openid-client": "5.6.2",
+        "http-proxy-middleware": "3.0.0",
+        "openid-client": "5.6.5",
         "passport": "0.7.0",
         "tunnel": "0.0.6",
-        "winston": "3.11.0"
-    },
-    "devDependencies": {
-        "@babel/cli": "7.23.4",
-        "@babel/core": "7.23.7",
-        "@babel/node": "7.22.19",
-        "@babel/preset-env": "7.23.7",
-        "morgan": "1.10.0",
-        "morgan-body": "2.6.9",
-        "nodemon": "3.0.2"
+        "winston": "3.13.0"
     }
 }

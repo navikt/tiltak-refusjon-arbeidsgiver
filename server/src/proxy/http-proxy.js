@@ -1,6 +1,6 @@
-import config from '../config';
-import tunnel from 'tunnel';
-import logger from '../logger';
+const config = require('../config');
+const tunnel = require('tunnel');
+const logger = require('../logger');
 
 const agent = () => {
     const proxyUri = config.server().proxy;
@@ -19,4 +19,4 @@ const agent = () => {
     }
 };
 
-export default { agent };
+module.exports = { agent };

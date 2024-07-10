@@ -1,7 +1,7 @@
-import { custom, Issuer } from 'openid-client';
-import config from '../config';
-import httpProxy from '../proxy/http-proxy';
-import logger from '../logger';
+const { custom, Issuer } = require('openid-client');
+const config = require('../config');
+const httpProxy = require('../proxy/http-proxy');
+const logger = require('../logger');
 
 const metadata = () => {
     const tokenxConfig = config.tokenx();
@@ -50,4 +50,4 @@ const getTokenExchangeAccessToken = async (tokenxClient, req) => {
     return backendTokenSet.access_token;
 };
 
-export default { client, getTokenExchangeAccessToken };
+module.exports = { client, getTokenExchangeAccessToken };

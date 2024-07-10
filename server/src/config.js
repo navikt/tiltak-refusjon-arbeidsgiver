@@ -1,6 +1,6 @@
-import 'dotenv/config';
+require('dotenv/config');
 
-import logger from './logger';
+const logger = require('./logger');
 
 const envVar = ({ name, required = true }) => {
     if (!process.env[name] && required) {
@@ -55,7 +55,7 @@ const api = () => {
     };
 };
 
-export default {
+module.exports = {
     server,
     api,
     tokenx,

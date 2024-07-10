@@ -1,4 +1,4 @@
-import { createProxyMiddleware } from 'http-proxy-middleware';
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const setup = (router) => {
     router.use(
@@ -7,4 +7,4 @@ const setup = (router) => {
     );
 };
 
-export default { setup };
+module.exports = { setup };
