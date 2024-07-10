@@ -1,10 +1,10 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import path from 'path';
-import { createProxyMiddleware } from 'http-proxy-middleware';
-import axios from 'axios';
+const bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const axios = require('axios');
 const asyncHandler = require('express-async-handler');
-import logger from './logger';
+const logger = require('./logger');
 
 const cors = require('cors');
 

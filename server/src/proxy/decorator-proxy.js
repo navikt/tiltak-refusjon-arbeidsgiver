@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+const axios = require('axios');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const asyncHandler = require('express-async-handler');
 
 const setup = (router) => {

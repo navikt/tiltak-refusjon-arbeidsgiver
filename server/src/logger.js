@@ -1,4 +1,4 @@
-import winston from 'winston';
+const winston = require('winston');
 
 export default winston.createLogger({
     transports: [new winston.transports.Console()],

@@ -1,7 +1,7 @@
-import express from 'express';
-import path from 'path';
-import apiProxy from './proxy/api-proxy';
-import decoratorProxy from './proxy/decorator-proxy';
+const express = require('express');
+const path = require('path');
+const apiProxy = require('./proxy/api-proxy');
+const decoratorProxy = require('./proxy/decorator-proxy');
 
 const asyncHandler = require('express-async-handler');
 
