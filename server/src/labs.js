@@ -104,4 +104,4 @@ async function startLabs(server) {
     }
 }
 
-export { startLabs };
+module.exports = { startLabs };

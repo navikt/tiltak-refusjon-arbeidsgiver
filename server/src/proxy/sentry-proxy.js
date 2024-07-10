@@ -7,4 +7,4 @@ const setup = (router) => {
     );
 };
 
-export default { setup };
+module.exports = { setup };

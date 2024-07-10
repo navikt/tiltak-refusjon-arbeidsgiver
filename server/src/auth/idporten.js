@@ -69,4 +69,4 @@ const refresh = (idportenClient, oldTokenSet) => {
     return idportenClient.refresh(oldTokenSet, additionalClaims);
 };
 
-export default { client, authUrl, validateOidcCallback, refresh };
+module.exports = { client, authUrl, validateOidcCallback, refresh };

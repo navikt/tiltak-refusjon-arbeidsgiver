@@ -23,4 +23,4 @@ const setup = (router) => {
     router.use('/dekoratoren', createProxyMiddleware({ target: 'https://www.nav.no', changeOrigin: true }));
 };
 
-export default { setup };
+module.exports = { setup };

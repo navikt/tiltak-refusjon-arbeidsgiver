@@ -18,4 +18,4 @@ const setup = (router, tokenxClient) => {
     );
 };
 
-export default { setup };
+module.exports = { setup };

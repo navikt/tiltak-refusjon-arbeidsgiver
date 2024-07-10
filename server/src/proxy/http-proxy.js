@@ -19,4 +19,4 @@ const agent = () => {
     }
 };
 
-export default { agent };
+module.exports = { agent };

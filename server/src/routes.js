@@ -35,4 +35,4 @@ const setup = (tokenxClient) => {
     return router;
 };
 
-export default { setup };
+module.exports = { setup };

@@ -50,4 +50,4 @@ const getTokenExchangeAccessToken = async (tokenxClient, req) => {
     return backendTokenSet.access_token;
 };
 
-export default { client, getTokenExchangeAccessToken };
+module.exports = { client, getTokenExchangeAccessToken };
