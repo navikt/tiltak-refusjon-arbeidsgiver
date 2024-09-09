@@ -99,7 +99,6 @@ async function startLabs(server) {
         );
         server.use('/logout', (req, res) => {
             res.clearCookie('tokenx-token');
-            res.clearCookie('aad-token');
             res.redirect('/');
         });
 
