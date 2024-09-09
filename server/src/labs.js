@@ -56,6 +56,19 @@ async function startLabs(server) {
                 onError: (err, req, res) => {
                     logger.error('error in proxy', err, req, res);
                 },
+                configure: (proxy) => {
+                    proxy.on('proxyReq', (proxyReq, req, res) => {
+                        const cookies = req.headers?.cookie?.split(';');
+                        const cookieWithFakeToken = cookies?.filter((c) => c === 'tokenx-token');
+                        if (!cookieWithFakeToken?.length) {
+                            res.writeHead(401);
+                            res.end();
+                            return;
+                        }
+                        const accessToken = cookieWithFakeToken[0].split('=')[1];
+                        proxyReq.setHeader('Authorization', `Bearer ${accessToken}`);
+                    });
+                },
             })
         );
 
