@@ -35,26 +35,23 @@ async function startLabs(server) {
 
         server.use(express.static(path.join(__dirname, '../build')));
 
-        const restream = (proxyReq, req, res, options) => {
-            if (req.body) {
-                let bodyData = JSON.stringify(req.body);
-                proxyReq.setHeader('Content-Type', 'application/json');
-                proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
-                proxyReq.write(bodyData);
-            }
-        };
-
         server.use(
             '/api',
             createProxyMiddleware({
-                target: 'http://tiltak-refusjon-api-labs',
-                onProxyReq: restream,
+                target: 'http://tiltak-refusjon-api-labs/api',
                 changeOrigin: true,
-                proxyTimeout: 30000,
-                secure: true,
-                logLevel: 'info',
-                onError: (err, req, res) => {
-                    logger.error('error in proxy', err, req, res);
+                on: {
+                    proxyReq: (proxyReq, req, res, options) => {
+                        const cookies = req.headers?.cookie?.split(';');
+                        const cookieWithFakeToken = cookies?.filter((c) => c.includes('tokenx-token'));
+                        if (!cookieWithFakeToken?.length) {
+                            res.writeHead(401);
+                            res.end();
+                            return;
+                        }
+                        const accessToken = cookieWithFakeToken[0].split('=')[1];
+                        proxyReq.setHeader('Authorization', `Bearer ${accessToken}`);
+                    },
                 },
             })
         );
@@ -86,7 +83,6 @@ async function startLabs(server) {
         );
         server.use('/logout', (req, res) => {
             res.clearCookie('tokenx-token');
-            res.clearCookie('aad-token');
             res.redirect('/');
         });
 
