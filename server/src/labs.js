@@ -38,7 +38,7 @@ async function startLabs(server) {
         server.use(
             '/api',
             createProxyMiddleware({
-                target: 'http://tiltak-refusjon-api-labs',
+                target: 'http://tiltak-refusjon-api-labs/api',
                 changeOrigin: true,
                 on: {
                     proxyReq: (proxyReq, req, res, options) => {
