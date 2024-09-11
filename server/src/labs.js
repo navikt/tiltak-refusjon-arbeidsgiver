@@ -18,7 +18,7 @@ async function startLabs(server) {
         server.use(express.urlencoded({ extended: true }));
 
         // setup sane defaults for CORS and HTTP headers
-        //server.use(helmet());
+        // server.use(helmet());
         server.use(
             cors({
                 allowedHeaders: ['sessionId', 'Content-Type'],
