@@ -2,6 +2,10 @@ import { KorreksjonStatus, RefusjonStatus } from './status';
 import { Tiltak } from './tiltak';
 
 export enum SortingOrder {
+    TILTAKSTYPE_ASC = 'TILTAKSTYPE_ASC',
+    TILTAKSTYPE_DESC = 'TILTAKSTYPE_DESC',
+    BEDRIFT_ASC = 'BEDRIFT_ASC',
+    BEDRIFT_DESC = 'BEDRIFT_DESC',
     DELTAKER_ASC = 'DELTAKER_ASC',
     DELTAKER_DESC = 'DELTAKER_DESC',
     PERIODE_ASC = 'PERIODE_ASC',

@@ -6,6 +6,8 @@ import BEMHelper from '../../utils/bem';
 import { formatterDato, formatterPeriode, NORSK_DATO_FORMAT_SHORT } from '../../utils/datoUtils';
 import { Refusjon } from '../refusjon';
 import './OversiktTabell.less';
+import { storForbokstav } from '@/utils/stringUtils';
+import { tiltakstypeTekst } from '@/messages';
 
 type Props = {
     refusjoner: Refusjon[];
@@ -32,6 +34,20 @@ const OversiktTabell: FunctionComponent<Props> = (props) => {
                     href={`/refusjon/${refusjon.id}`}
                 >
                     <LinkPanel.Title className={cls.element('linkpanel_title_row')}>
+                        <BodyShort
+                            size="small"
+                            className={cls.element('title_row_column')}
+                            aria-labelledby={cls.element('deltaker')}
+                        >
+                            {storForbokstav(tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype])}{' '}
+                        </BodyShort>
+                        <BodyShort
+                            size="small"
+                            className={cls.element('title_row_column')}
+                            aria-labelledby={cls.element('deltaker')}
+                        >
+                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.bedriftNavn}{' '}
+                        </BodyShort>
                         <BodyShort
                             size="small"
                             className={cls.element('title_row_column')}

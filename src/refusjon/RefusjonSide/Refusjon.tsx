@@ -12,6 +12,7 @@ import { oppdaterRefusjonFetcher, useHentKorreksjon, useHentRefusjon } from '../
 import useSWRMutation from 'swr/mutation';
 import { mutate } from 'swr';
 import { Refusjon as RefusjonType } from '../refusjon';
+import KvitteringSideVTAO from '../KvitteringSide/KvitteringSideVTAO';
 
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -82,7 +83,11 @@ const Komponent: FunctionComponent = () => {
         case RefusjonStatus.GODKJENT_NULLBELØP:
         case RefusjonStatus.UTBETALT:
         case RefusjonStatus.UTBETALING_FEILET:
-            return <KvitteringSide refusjon={refusjon} />;
+            return refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'VTAO' ? (
+                <KvitteringSideVTAO refusjon={refusjon} />
+            ) : (
+                <KvitteringSide refusjon={refusjon} />
+            );
         case RefusjonStatus.KORRIGERT: {
             return <Korreksjonskvittering refusjon={refusjon} />;
         }

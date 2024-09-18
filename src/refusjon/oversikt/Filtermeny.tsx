@@ -6,7 +6,7 @@ import { storForbokstav } from '../../utils/stringUtils';
 import { RefusjonStatus } from '../status';
 import { Tiltak } from '../tiltak';
 import { useFilter } from './FilterContext';
-import { ExpansionCard, Radio, RadioGroup } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, Radio, RadioGroup } from '@navikt/ds-react';
 import PagnationAntallValg from '../OversiktSide/PaginationAntallValg';
 
 const Filtermeny: FunctionComponent = () => {
@@ -131,6 +131,17 @@ const Filtermeny: FunctionComponent = () => {
                             onChange={() => oppdaterFilter({ tiltakstype: Tiltak.SOMMERJOBB })}
                         >
                             Sommerjobb
+                        </Radio>
+                        <Radio
+                            role="radio"
+                            value={Tiltak.VTAO}
+                            name={Tiltak.VTAO}
+                            onChange={() => oppdaterFilter({ tiltakstype: Tiltak.VTAO })}
+                        >
+                            <div>
+                                <BodyShort>Varig tilrettelagt arbeid</BodyShort>
+                                <BodyShort>i ordinær virksomhet(VTA-O)</BodyShort>
+                            </div>
                         </Radio>
                     </RadioGroup>
                 </ExpansionCard.Content>

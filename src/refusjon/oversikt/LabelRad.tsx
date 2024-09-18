@@ -13,6 +13,26 @@ const LabelRad = () => {
     return (
         <div className={cls.className} aria-label="rad overkrifter for kolonnene i refusonslisten">
             <div className={cls.element('kolonne')} id={cls.element('deltaker')}>
+                <Label className={cls.element('label')}>Tiltakstype</Label>
+                <SortingValg
+                    className={cls.className}
+                    sortingAsc={SortingOrder.TILTAKSTYPE_ASC}
+                    sortingDesc={SortingOrder.TILTAKSTYPE_DESC}
+                    highlightSortOrderAsc={filter.sorting === SortingOrder.TILTAKSTYPE_ASC}
+                    highlightSortOrderDesc={filter.sorting === SortingOrder.TILTAKSTYPE_DESC}
+                />
+            </div>
+            <div className={cls.element('kolonne')} id={cls.element('deltaker')}>
+                <Label className={cls.element('label')}>Bedrift</Label>
+                <SortingValg
+                    className={cls.className}
+                    sortingAsc={SortingOrder.BEDRIFT_ASC}
+                    sortingDesc={SortingOrder.BEDRIFT_DESC}
+                    highlightSortOrderAsc={filter.sorting === SortingOrder.BEDRIFT_ASC}
+                    highlightSortOrderDesc={filter.sorting === SortingOrder.BEDRIFT_DESC}
+                />
+            </div>
+            <div className={cls.element('kolonne')} id={cls.element('deltaker')}>
                 <Label className={cls.element('label')}>Deltaker</Label>
                 <SortingValg
                     className={cls.className}

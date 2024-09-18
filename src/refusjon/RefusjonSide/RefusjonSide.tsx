@@ -12,6 +12,9 @@ import RefusjonGodkjennModal from './RefusjonGodkjennModal';
 import RefusjonFullførNullbeløp from './refusjonFullførNullbeløp/RefusjonFullførNullbeløp';
 import './RefusjonSide.less';
 import Boks from '../../komponenter/Boks/Boks';
+import RefusjonVTAOInnsending from './refusjonInnsending/RefusjonVTAOInnsending';
+import RefusjonIngressVTAO from './RefusjonIngressVTAO';
+import InformasjonFraAvtalenVTAO from './informasjonAvtalen/InformasjonFraAvtalenVTAO';
 
 const RefusjonSide: FunctionComponent = () => {
     const navigate = useNavigate();
@@ -36,14 +39,24 @@ const RefusjonSide: FunctionComponent = () => {
     return (
         <div role="main">
             <Boks variant="hvit">
-                <RefusjonIngress refusjon={refusjon} />
-                <InformasjonFraAvtalen refusjon={refusjon} />
-                <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={false} />
-                <RefusjonFullførNullbeløp />
-                <InntekterFraTiltaketSpørsmål setVisRefusjonInnsending={setVisRefusjonInnsending} />
-                <TidligereRefunderbarBeløp refusjon={refusjon} />
-                {visRefusjonInnsending && (
-                    <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype != 'VTAO' ? (
+                    <>
+                        <RefusjonIngress refusjon={refusjon} />
+                        <InformasjonFraAvtalen refusjon={refusjon} />
+                        <InntekterFraAMeldingen refusjon={refusjon} kvitteringVisning={false} />
+                        <RefusjonFullførNullbeløp />
+                        <InntekterFraTiltaketSpørsmål setVisRefusjonInnsending={setVisRefusjonInnsending} />
+                        <TidligereRefunderbarBeløp refusjon={refusjon} />
+                        {visRefusjonInnsending && (
+                            <RefusjonInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                        )}
+                    </>
+                ) : (
+                    <>
+                        <RefusjonIngressVTAO refusjon={refusjon} />
+                        <InformasjonFraAvtalenVTAO refusjon={refusjon} />
+                        <RefusjonVTAOInnsending refusjon={refusjon} setVisGodkjennModal={setVisGodkjennModal} />
+                    </>
                 )}
             </Boks>
             <RefusjonGodkjennModal
