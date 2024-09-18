@@ -138,9 +138,10 @@ const Filtermeny: FunctionComponent = () => {
                             name={Tiltak.VTAO}
                             onChange={() => oppdaterFilter({ tiltakstype: Tiltak.VTAO })}
                         >
-                            <div>
+                            <div style={{}}>
                                 <BodyShort>Varig tilrettelagt arbeid</BodyShort>
-                                <BodyShort>i ordinær virksomhet(VTA-O)</BodyShort>
+                                <BodyShort>i ordinær virksomhet</BodyShort>
+                                <BodyShort>(VTA-O)</BodyShort>
                             </div>
                         </Radio>
                     </RadioGroup>

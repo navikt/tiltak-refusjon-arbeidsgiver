@@ -88,14 +88,9 @@ const BedriftsmenyRefusjon: FunctionComponent<Props> = (props: PropsWithChildren
             <div className={cls.element('wrapper')}>
                 <div className={cls.element('container')}>
                     <div className={cls.element('brand')}>
-                        <div>
-                            <NavIkon />
-                        </div>
-                        {desktopview && (
-                            <Heading size="medium" className={cls.element('tittel')}>
-                                Tiltaksrefusjon
-                            </Heading>
-                        )}
+                        <Heading size="medium" className={cls.element('tittel')}>
+                            Tiltaksrefusjon
+                        </Heading>
                     </div>
                     <div className={cls.element('innhold')}>
                         <MenyContext.Provider value={contextData}>

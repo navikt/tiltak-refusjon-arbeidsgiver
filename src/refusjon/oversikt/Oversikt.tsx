@@ -27,7 +27,7 @@ const Oversikt: FunctionComponent = () => {
     return (
         <nav className={cls.className} aria-label="Main">
             <div role="list">
-                <LabelRad />
+                {/*<LabelRad />*/}
                 {refusjoner.length > 0 ? (
                     <>
                         <OversiktTabell refusjoner={pageable.refusjoner} />

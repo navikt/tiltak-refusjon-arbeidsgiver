@@ -48,8 +48,6 @@ type Props = {
 };
 
 const KvitteringSideVTAO: FunctionComponent<Props> = ({ refusjon }) => {
-    if (!refusjon.refusjonsgrunnlag.inntektsgrunnlag) return null;
-
     return (
         <Boks variant="hvit">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
