@@ -26,35 +26,7 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             </Heading>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <EksternLenke href={avtaleLenke}>
-                    Avtale om {tiltakstypeTekst[refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype]}
-                </EksternLenke>
-            </IkonRad>
-            <VerticalSpacer rem={1} />
-            <IkonRad>
-                <Label>Refusjonsnummer: </Label>
-                <BodyShort size="small">{refusjonsnummer}</BodyShort>
-            </IkonRad>
-            <VerticalSpacer rem={1} />
-            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn && (
-                <>
-                    <IkonRad>
-                        <Label>Arbeidsgiver: </Label>
-                        <BodyShort size="small">
-                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverFornavn}{' '}
-                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverEtternavn}
-                        </BodyShort>
-                        <Label>Mobil: </Label>
-                        <BodyShort size="small">
-                            {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.arbeidsgiverTlf}
-                        </BodyShort>
-                    </IkonRad>
-                    <VerticalSpacer rem={1} />
-                </>
-            )}
-            <IkonRad>
-                <Label>Bedriftens navn: </Label>
-                <BodyShort size="small">{refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.bedriftNavn}</BodyShort>
+                <EksternLenke href={avtaleLenke}>Avtale om varig tilrettelagt arbeid i ordinær virksomhet</EksternLenke>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
@@ -66,7 +38,7 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Label>Periode: </Label>
+                <Label>Avtaleperiode: </Label>
                 <BodyShort size="small">
                     {formatterPeriode(
                         refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
@@ -76,15 +48,18 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Label>Frist: </Label>
-                <BodyShort size="small">{formatterDato(refusjon.fristForGodkjenning)}</BodyShort>
+                <Label>Tilskuddsperiode: </Label>
+                <BodyShort size="small">
+                    {formatterPeriode(
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                    )}
+                </BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
-                <Label>Avtalt beløp for perioden:</Label>
-                <BodyShort size="small">
-                    Inntil {formatterPenger(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp)}
-                </BodyShort>
+                <Label>Forventet utbetalt: </Label>
+                <BodyShort size="small">{formatterDato(refusjon.fristForGodkjenning)}</BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
@@ -93,7 +68,16 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
                     <Loader type="L" />
                 )}
                 {refusjon.refusjonsgrunnlag.bedriftKontonummer && (
-                    <BodyShort size="small">{refusjon.refusjonsgrunnlag.bedriftKontonummer}</BodyShort>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <BodyShort size="small">{refusjon.refusjonsgrunnlag.bedriftKontonummer}</BodyShort>
+                        <VerticalSpacer rem={1} />
+                        <BodyShort size="small">
+                            Kontonummer hentes automatisk fra Altinn. Hvis kontonummeret ikke stemmer så må dere
+                            <EksternLenke href="https://www.altinn.no/skjemaoversikt/arbeids--og-velferdsetaten-nav/bankkontonummer-for-refusjoner-fra-nav-til-arbeidsgiver/">
+                                oppdatere det hos Altinn.
+                            </EksternLenke>
+                        </BodyShort>
+                    </div>
                 )}
             </IkonRad>
             {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && refusjon.åpnetFørsteGang && (

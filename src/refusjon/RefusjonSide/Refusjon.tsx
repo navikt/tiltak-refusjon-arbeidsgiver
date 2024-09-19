@@ -13,6 +13,7 @@ import useSWRMutation from 'swr/mutation';
 import { mutate } from 'swr';
 import { Refusjon as RefusjonType } from '../refusjon';
 import KvitteringSideVTAO from '../KvitteringSide/KvitteringSideVTAO';
+import FortidligSideVTAO from './FortidligSideVTAO';
 
 const Komponent: FunctionComponent = () => {
     const { refusjonId } = useParams();
@@ -46,7 +47,9 @@ const Komponent: FunctionComponent = () => {
 
     switch (refusjon.status) {
         case RefusjonStatus.FOR_TIDLIG:
-            return (
+            return refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype === 'VTAO' ? (
+                <FortidligSideVTAO feiltekst="1" advarselType="info" />
+            ) : (
                 <FeilSide
                     advarselType="info"
                     feiltekst={
