@@ -1,23 +1,15 @@
-import { Heading, Tag } from '@navikt/ds-react';
+import { BodyLong, Heading, Tag } from '@navikt/ds-react';
 import { FunctionComponent, ReactElement } from 'react';
-import Utregning from '../../komponenter/Utregning';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { statusTekst } from '../../messages';
 import { RefusjonStatus } from '../status';
 import { NORSK_DATO_FORMAT, NORSK_DATO_OG_TID_FORMAT, formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
-import InntekterFraAMeldingenGammel from '../RefusjonSide/InntekterFraAMeldingenGammel';
-import InntekterFraTiltaketSvar from '../RefusjonSide/InntekterFraTiltaketSvar';
-import InntekterFraTiltaketSvarGammel from '../RefusjonSide/InntekterFraTiltaketSvarGammel';
-import SummeringBoks from '../RefusjonSide/SummeringBoks';
-import TidligereRefunderbarBeløpKvittering from '../RefusjonSide/TidligereRefunderbarBeløpKvittering';
-import InformasjonFraAvtalen from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalen';
-import InntekterFraAMeldingen from '../RefusjonSide/inntektsmelding/InntekterFraAMeldingen';
 import { Refusjon } from '../refusjon';
-import LagreSomPdfKnapp from './LagreSomPdfKnapp';
-import Statusmelding from './Statusmelding';
-import SummeringBoksNullbeløp from '../RefusjonSide/SummeringsBoksNullbeløp';
 import Boks from '../../komponenter/Boks/Boks';
+import TilskuddssatsVTAO from '../RefusjonSide/TilskuddssatsVTAO';
+import SummeringBoksVTAO from '../RefusjonSide/SummeringBoksVTAO';
+import InformasjonFraAvtalenVTAO from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalenVTAO';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -50,24 +42,25 @@ type Props = {
 const KvitteringSideVTAO: FunctionComponent<Props> = ({ refusjon }) => {
     return (
         <Boks variant="hvit">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Heading size="large" role="heading">
-                    Kvittering for refusjon
-                </Heading>
-                {etikettForRefusjonStatus(refusjon)}
-            </div>
+            <Tag style={{ float: 'right' }} variant={'info'}>
+                Status: For tidlig
+            </Tag>
+            <VerticalSpacer rem={3} />
+            <Heading level="2" size="large">
+                Refusjon av Varig tilrettelagt arbeid i ordinær virksomhet (VTA-O)
+            </Heading>
             <VerticalSpacer rem={1} />
-            <div style={{ display: 'flex' }}>
-                <Statusmelding status={refusjon.status} />
-                <div style={{ marginLeft: '5rem' }}>
-                    <LagreSomPdfKnapp avtaleId={refusjon.id} />
-                </div>
-            </div>
-
+            <BodyLong>
+                Arbeidsgiveren får et tilskudd fra NAV for varig tilrettelagt arbeid. Tilskuddssatsen er 6 808 kroner
+                per måned. Satsen settes årlig av departementet og avtale- og refusjonsløsningen vil automatisk
+                oppdateres når det kommer nye satser.
+            </BodyLong>
+            <VerticalSpacer rem={1} />
+            <InformasjonFraAvtalenVTAO refusjon={refusjon} />
             <VerticalSpacer rem={2} />
-            <InformasjonFraAvtalen refusjon={refusjon} />
-            <VerticalSpacer rem={2} />
-            <SummeringBoks
+            <TilskuddssatsVTAO />
+            <VerticalSpacer rem={1} />
+            <SummeringBoksVTAO
                 erForKorreksjon={false}
                 refusjonsgrunnlag={refusjon.refusjonsgrunnlag}
                 status={refusjon.status}

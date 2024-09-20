@@ -17,7 +17,7 @@ type Props = {
 const SummeringBoksVTAO: FunctionComponent<Props> = (props) => {
     return (
         <Boks variant="blå">
-            <div style={{ margin: 'auto 1.5rem auto 0' }}>
+            <div style={{ margin: '0.5rem 1rem 0 0' }}>
                 <Pengesedler />
             </div>
             <div>

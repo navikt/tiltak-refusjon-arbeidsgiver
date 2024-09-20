@@ -20,7 +20,13 @@ const TilskuddssatsVTAO: FunctionComponent = () => {
                 Refusjon for {formatterPeriode(tilskuddsgrunnlag.tilskuddFom, tilskuddsgrunnlag.tilskuddTom)}
             </Heading>
             <VerticalSpacer rem={1} />
-            <TextField label="Månedlig tilskuddssats" description="Sats for 2024" value="6 808 kr" readOnly />
+            <TextField
+                style={{ width: '40%' }}
+                label="Månedlig tilskuddssats"
+                description="Sats for 2024"
+                value="6 808 kr"
+                readOnly
+            />
         </div>
     );
 };

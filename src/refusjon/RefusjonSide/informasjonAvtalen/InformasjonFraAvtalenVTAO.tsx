@@ -70,16 +70,16 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
                 {refusjon.refusjonsgrunnlag.bedriftKontonummer && (
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <BodyShort size="small">{refusjon.refusjonsgrunnlag.bedriftKontonummer}</BodyShort>
-                        <VerticalSpacer rem={1} />
-                        <BodyShort size="small">
-                            Kontonummer hentes automatisk fra Altinn. Hvis kontonummeret ikke stemmer så må dere
-                            <EksternLenke href="https://www.altinn.no/skjemaoversikt/arbeids--og-velferdsetaten-nav/bankkontonummer-for-refusjoner-fra-nav-til-arbeidsgiver/">
-                                oppdatere det hos Altinn.
-                            </EksternLenke>
-                        </BodyShort>
                     </div>
                 )}
             </IkonRad>
+            <VerticalSpacer rem={1} />
+            <BodyShort size="small">
+                Kontonummer hentes automatisk fra Altinn. Hvis kontonummeret ikke stemmer så må dere
+                <EksternLenke href="https://www.altinn.no/skjemaoversikt/arbeids--og-velferdsetaten-nav/bankkontonummer-for-refusjoner-fra-nav-til-arbeidsgiver/">
+                    oppdatere det hos Altinn.
+                </EksternLenke>
+            </BodyShort>
             {refusjon.refusjonsgrunnlag.bedriftKontonummer === null && refusjon.åpnetFørsteGang && (
                 <>
                     <VerticalSpacer rem={1} />
