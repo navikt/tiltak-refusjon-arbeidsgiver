@@ -9,6 +9,7 @@ import { Alert, Heading, Label, BodyShort, Loader } from '@navikt/ds-react';
 import IkonRad from '../../../komponenter/IkonRad/IkonRad';
 import Boks from '../../../komponenter/Boks/Boks';
 import { Refusjon } from '@/refusjon/refusjon';
+import moment from 'moment';
 
 type Props = {
     refusjon: Refusjon;
@@ -59,7 +60,11 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             <VerticalSpacer rem={1} />
             <IkonRad>
                 <Label>Forventet utbetalt: </Label>
-                <BodyShort size="small">{formatterDato(refusjon.fristForGodkjenning)}</BodyShort>
+                <BodyShort size="small">
+                    {formatterDato(
+                        moment(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom).add(3, 'days').toString()
+                    )}
+                </BodyShort>
             </IkonRad>
             <VerticalSpacer rem={1} />
             <IkonRad>
