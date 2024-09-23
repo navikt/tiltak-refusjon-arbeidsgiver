@@ -146,6 +146,7 @@ const OversiktTabell: FunctionComponent<Props> = (props) => {
                             <div className={cls.element('title_row_column')}>
                                 <StatusTekst
                                     status={refusjon.status}
+                                    tiltakstype={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype}
                                     tilskuddFom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom}
                                     tilskuddTom={refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom}
                                     fratrekkRefunderbarBeløp={refusjon.refusjonsgrunnlag.fratrekkRefunderbarBeløp}
@@ -158,7 +159,9 @@ const OversiktTabell: FunctionComponent<Props> = (props) => {
                                 className={cls.element('title_row_column')}
                                 aria-labelledby={cls.element('frist-godkjenning')}
                             >
-                                {formatterDato(refusjon.fristForGodkjenning)}
+                                {refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tiltakstype !== 'VTAO'
+                                    ? formatterDato(refusjon.fristForGodkjenning)
+                                    : ''}
                             </BodyShort>
                         </Table.DataCell>
                     </Table.Row>

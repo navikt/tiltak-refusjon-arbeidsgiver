@@ -13,10 +13,14 @@ import InformasjonFraAvtalenVTAO from '../RefusjonSide/informasjonAvtalen/Inform
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
-        return <Tag variant="error">{storForbokstav(statusTekst[refusjon.status])} </Tag>;
+        return (
+            <Tag variant="error" style={{ float: 'right' }}>
+                {storForbokstav(statusTekst[refusjon.status])}{' '}
+            </Tag>
+        );
     } else if (refusjon.status === RefusjonStatus.UTBETALT) {
         return (
-            <Tag variant="info">
+            <Tag variant="success" style={{ float: 'right' }}>
                 {storForbokstav(statusTekst[RefusjonStatus.SENDT_KRAV])}{' '}
                 {refusjon.godkjentAvArbeidsgiver && formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_FORMAT)}
                 {', '}
@@ -26,7 +30,7 @@ export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
         );
     } else {
         return (
-            <Tag variant="info">
+            <Tag variant="info" style={{ float: 'right' }}>
                 {storForbokstav(statusTekst[refusjon.status])}{' '}
                 {refusjon.godkjentAvArbeidsgiver &&
                     formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
@@ -42,9 +46,7 @@ type Props = {
 const KvitteringSideVTAO: FunctionComponent<Props> = ({ refusjon }) => {
     return (
         <Boks variant="hvit">
-            <Tag style={{ float: 'right' }} variant={'info'}>
-                Status: For tidlig
-            </Tag>
+            {etikettForRefusjonStatus(refusjon)}
             <VerticalSpacer rem={3} />
             <Heading level="2" size="large">
                 Refusjon av Varig tilrettelagt arbeid i ordinær virksomhet (VTA-O)

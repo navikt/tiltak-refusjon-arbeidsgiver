@@ -5,9 +5,12 @@ import { RefusjonStatus } from '../../refusjon/status';
 import { formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import { Tag } from '@navikt/ds-react';
+import { Tiltak } from '@/refusjon/tiltak';
+import moment from 'moment';
 
 interface Props {
     status: RefusjonStatus;
+    tiltakstype: Tiltak;
     tilskuddFom: string;
     tilskuddTom: string;
     fratrekkRefunderbarBeløp?: boolean;
@@ -21,6 +24,11 @@ const StatusTekst: FunctionComponent<Props> = (props) => {
             return <Tag variant="success">Klar for innsending</Tag>;
         }
     } else if (props.status === RefusjonStatus.FOR_TIDLIG) {
+        if (props.tiltakstype === Tiltak.VTAO) {
+            return (
+                <Tag variant="info">Sendes {formatterDato(moment(props.tilskuddTom).add(1, 'days').toString())}</Tag>
+            );
+        }
         return <Tag variant="info">Søk fra {formatterDato(props.tilskuddTom)}</Tag>;
     } else if (
         props.status === RefusjonStatus.UTGÅTT ||

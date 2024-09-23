@@ -42,8 +42,8 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
                 <Label>Avtaleperiode: </Label>
                 <BodyShort size="small">
                     {formatterPeriode(
-                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
-                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleFom || '',
+                        refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleTom || ''
                     )}
                 </BodyShort>
             </IkonRad>

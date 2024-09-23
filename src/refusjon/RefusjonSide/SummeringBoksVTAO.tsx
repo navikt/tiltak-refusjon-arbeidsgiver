@@ -24,7 +24,7 @@ const SummeringBoksVTAO: FunctionComponent<Props> = (props) => {
                 <Label>Dere får utbetalt</Label>
                 <VerticalSpacer rem={0.5} />
                 <BodyShort size="small">
-                    <b>{formatterPenger(props.refusjonsgrunnlag.beregning?.refusjonsbeløp || 0)}</b> for perioden{' '}
+                    <b>{formatterPenger(props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddsbeløp || 0)}</b> for perioden{' '}
                     {formatterPeriode(
                         props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddFom,
                         props.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom
