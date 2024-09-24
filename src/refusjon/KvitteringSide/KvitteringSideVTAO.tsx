@@ -49,7 +49,7 @@ const KvitteringSideVTAO: FunctionComponent<Props> = ({ refusjon }) => {
             {etikettForRefusjonStatus(refusjon)}
             <VerticalSpacer rem={3} />
             <Heading level="2" size="large">
-                Refusjon av Varig tilrettelagt arbeid i ordinær virksomhet (VTA-O)
+                Refusjon av varig tilrettelagt arbeid i ordinær virksomhet
             </Heading>
             <VerticalSpacer rem={1} />
             <BodyLong>
