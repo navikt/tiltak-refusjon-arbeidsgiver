@@ -18,8 +18,6 @@ type Props = {
 const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
     const avtaleLenke = `http://arbeidsgiver.nav.no/tiltaksgjennomforing/avtale/${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleId}`;
 
-    const refusjonsnummer = `${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.avtaleNr}-${refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.løpenummer}`;
-
     return (
         <Boks variant="grå">
             <Heading level="3" size="small">
