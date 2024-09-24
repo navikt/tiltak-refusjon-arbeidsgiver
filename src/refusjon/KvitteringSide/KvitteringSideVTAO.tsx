@@ -10,6 +10,7 @@ import Boks from '../../komponenter/Boks/Boks';
 import TilskuddssatsVTAO from '../RefusjonSide/TilskuddssatsVTAO';
 import SummeringBoksVTAO from '../RefusjonSide/SummeringBoksVTAO';
 import InformasjonFraAvtalenVTAO from '../RefusjonSide/informasjonAvtalen/InformasjonFraAvtalenVTAO';
+import moment from 'moment';
 
 export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
     if (refusjon.status === RefusjonStatus.UTBETALING_FEILET) {
@@ -28,12 +29,21 @@ export const etikettForRefusjonStatus = (refusjon: Refusjon): ReactElement => {
                 {refusjon.utbetaltTidspunkt && formatterDato(refusjon.utbetaltTidspunkt, NORSK_DATO_FORMAT)}
             </Tag>
         );
+    } else if (refusjon.status === RefusjonStatus.FOR_TIDLIG) {
+        return (
+            <Tag variant="info" style={{ float: 'right' }}>
+                Sendes{' '}
+                {formatterDato(
+                    moment(refusjon.refusjonsgrunnlag.tilskuddsgrunnlag.tilskuddTom).add(1, 'days').toString(),
+                    NORSK_DATO_FORMAT
+                )}
+            </Tag>
+        );
     } else {
         return (
             <Tag variant="info" style={{ float: 'right' }}>
                 {storForbokstav(statusTekst[refusjon.status])}{' '}
-                {refusjon.godkjentAvArbeidsgiver &&
-                    formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_OG_TID_FORMAT)}
+                {refusjon.godkjentAvArbeidsgiver && formatterDato(refusjon.godkjentAvArbeidsgiver, NORSK_DATO_FORMAT)}
             </Tag>
         );
     }
