@@ -3,7 +3,7 @@ import { FunctionComponent, ReactElement } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { statusTekst } from '../../messages';
 import { RefusjonStatus } from '../status';
-import { NORSK_DATO_FORMAT, NORSK_DATO_OG_TID_FORMAT, formatterDato } from '../../utils/datoUtils';
+import { NORSK_DATO_FORMAT, formatterDato } from '../../utils/datoUtils';
 import { storForbokstav } from '../../utils/stringUtils';
 import { Refusjon } from '../refusjon';
 import Boks from '../../komponenter/Boks/Boks';

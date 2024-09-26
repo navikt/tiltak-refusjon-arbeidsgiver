@@ -103,7 +103,7 @@ const Korreksjonskvittering: FunctionComponent<{ refusjon: RefusjonType }> = ({ 
 
 const Refusjon: FunctionComponent = () => {
     return (
-        <div style={{ margin: '0 auto', maxWidth: '55rem' }}>
+        <div style={{ margin: '0 auto', maxWidth: '80rem' }}>
             <div style={{ flex: '0 0 55rem', flexShrink: 1 }}>
                 <TilbakeTilOversikt />
                 <Komponent />
