@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import VerticalSpacer from '../../komponenter/VerticalSpacer';
 import { formatterPeriode } from '../../utils/datoUtils';
 import { formatterPenger } from '../../utils/PengeUtils';
-import { Refusjonsgrunnlag, Tilskuddsgrunnlag } from '../refusjon';
+import { Refusjonsgrunnlag } from '../refusjon';
 import { RefusjonStatus } from '../status';
 import Boks from '../../komponenter/Boks/Boks';
 
@@ -34,8 +34,7 @@ const SummeringBoksVTAO: FunctionComponent<Props> = (props) => {
                 <VerticalSpacer rem={1} />
                 <BodyShort size="small">
                     Tilskudd for varig tilrettelagt arbeid i ordinær virksomhet blir automatisk utbetalt på konto
-                    etterskuddsvis, hver måned. Det tar 2-3 dager før pengene står på konto etter at status er endret
-                    til utbetalt.
+                    etterskuddsvis, hver måned. Det tar 2-3 dager før pengene står på konto.
                 </BodyShort>
             </div>
         </Boks>
