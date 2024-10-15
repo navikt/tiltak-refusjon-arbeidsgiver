@@ -78,7 +78,7 @@ const InformasjonFraAvtalen: FunctionComponent<Props> = ({ refusjon }) => {
             </IkonRad>
             <VerticalSpacer rem={1} />
             <BodyShort size="small">
-                Kontonummer hentes automatisk fra Altinn. Hvis kontonummeret ikke stemmer så må dere
+                Kontonummer hentes automatisk fra Altinn. Hvis kontonummeret ikke stemmer så må dere{' '}
                 <EksternLenke href="https://www.altinn.no/skjemaoversikt/arbeids--og-velferdsetaten-nav/bankkontonummer-for-refusjoner-fra-nav-til-arbeidsgiver/">
                     oppdatere det hos Altinn.
                 </EksternLenke>
