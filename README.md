@@ -1,7 +1,3 @@
-# Tiltak refusjon utside
+# tiltak-refusjon-arbeidsgiver
 
-### Lokal oppstart:
-
-yarn install
-
-yarn start
+Dette prosjektet er flyttet til [tiltak-refusjon](https://github.com/navikt/tiltak-refusjon)
